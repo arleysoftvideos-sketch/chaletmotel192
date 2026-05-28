@@ -327,7 +327,7 @@
                     <div class="flex flex-col">
                         <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('Ubicados en') }}</span>
                         <span class="text-white font-extrabold font-outfit text-xs sm:text-sm leading-snug">
-                            4743 W Irlo Bronson Memorial Hwy #192, <br class="hidden sm:inline">Kissimmee, FL 34746
+                            4741 W Irlo Bronson Memorial Hwy #192, <br class="hidden sm:inline">Kissimmee, FL 34746
                         </span>
                     </div>
                 </div>
