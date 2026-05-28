@@ -41,6 +41,26 @@ Route::get('/test-json', function () {
     $content = @file_get_contents($path);
     $decoded = json_decode($content, true);
     
+    $sheets_connection = 'No probado';
+    $sheets_error = null;
+    $spreadsheet_title = null;
+    
+    if ($exists && $readable && !is_null($decoded)) {
+        try {
+            $client = new \Google\Client();
+            $client->setAuthConfig($path);
+            $client->setScopes([\Google\Service\Sheets::SPREADSHEETS]);
+            $service = new \Google\Service\Sheets($client);
+            
+            $spreadsheet = $service->spreadsheets->get('1_HLh9a0v70MrRMd2ZGQy9j_v41HeNI-1i8xqsyd9RXE');
+            $spreadsheet_title = $spreadsheet->getProperties()->getTitle();
+            $sheets_connection = 'Exitosa';
+        } catch (\Exception $e) {
+            $sheets_connection = 'Fallida';
+            $sheets_error = $e->getMessage();
+        }
+    }
+    
     return response()->json([
         'path' => $path,
         'exists' => $exists,
@@ -48,7 +68,10 @@ Route::get('/test-json', function () {
         'size_bytes' => $content !== false ? strlen($content) : null,
         'decoded_valid' => !is_null($decoded),
         'client_email' => $decoded['client_email'] ?? 'Not found',
-        'json_error' => json_last_error_msg()
+        'json_error' => json_last_error_msg(),
+        'sheets_api_connection' => $sheets_connection,
+        'sheets_api_error' => $sheets_error,
+        'spreadsheet_title' => $spreadsheet_title
     ]);
 });
 
