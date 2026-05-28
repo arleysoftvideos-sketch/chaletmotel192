@@ -30,50 +30,6 @@ Route::get('/nosotros', function () {
 Route::post('/api/sync-room', [GoogleSheetController::class, 'syncRoom'])->name('api.sync-room');
 Route::get('/api/load-room/{room}', [GoogleSheetController::class, 'loadRoom'])->name('api.load-room');
 
-Route::get('/test', function () {
-    return 'hola mundogit';
-});
-
-Route::get('/test-json', function () {
-    $path = storage_path('app/google-credentials.json');
-    $exists = file_exists($path);
-    $readable = is_readable($path);
-    $content = @file_get_contents($path);
-    $decoded = json_decode($content, true);
-    
-    $sheets_connection = 'No probado';
-    $sheets_error = null;
-    $spreadsheet_title = null;
-    
-    if ($exists && $readable && !is_null($decoded)) {
-        try {
-            $client = new \Google\Client();
-            $client->setAuthConfig($path);
-            $client->setScopes([\Google\Service\Sheets::SPREADSHEETS]);
-            $service = new \Google\Service\Sheets($client);
-            
-            $spreadsheet = $service->spreadsheets->get('1_HLh9a0v70MrRMd2ZGQy9j_v41HeNI-1i8xqsyd9RXE');
-            $spreadsheet_title = $spreadsheet->getProperties()->getTitle();
-            $sheets_connection = 'Exitosa';
-        } catch (\Exception $e) {
-            $sheets_connection = 'Fallida';
-            $sheets_error = $e->getMessage();
-        }
-    }
-    
-    return response()->json([
-        'path' => $path,
-        'exists' => $exists,
-        'readable' => $readable,
-        'size_bytes' => $content !== false ? strlen($content) : null,
-        'decoded_valid' => !is_null($decoded),
-        'client_email' => $decoded['client_email'] ?? 'Not found',
-        'json_error' => json_last_error_msg(),
-        'sheets_api_connection' => $sheets_connection,
-        'sheets_api_error' => $sheets_error,
-        'spreadsheet_title' => $spreadsheet_title
-    ]);
-});
 
 // Rutas Públicas de Contacto
 Route::get('/contactar', [ContactController::class, 'create'])->name('contact.create');
