@@ -105,6 +105,13 @@ class GoogleSheetController extends Controller
 
         $camasRaw = isset($row[2]) ? $row[2] : '';
         $camas = str_starts_with($camasRaw, '2') ? '2' : '1';
+        
+        $bano = null;
+        if (str_contains($camasRaw, 'Bañera')) {
+            $bano = 'banera';
+        } elseif (str_contains($camasRaw, 'Ducha sola') || str_contains($camasRaw, 'Ducha')) {
+            $bano = 'ducha';
+        }
 
         $inspector = isset($row[3]) && $row[3] !== 'N/A' ? $row[3] : '';
         $fecha = isset($row[4]) ? $row[4] : '';
@@ -171,6 +178,7 @@ class GoogleSheetController extends Controller
             'estado' => $estado,
             'camas' => $camas,
             'ac' => $ac,
+            'bano' => $bano,
             'inspector' => $inspector,
             'fecha' => $fecha,
             'chk_remiendo' => $chk_remiendo,
@@ -306,6 +314,13 @@ class GoogleSheetController extends Controller
     {
         $estado = isset($data['estado']) ? strtoupper($data['estado']) : 'NO ESPECIFICADO';
         $camas = isset($data['camas']) ? $data['camas'] . ' Cama(s)' : 'N/A';
+        if (isset($data['bano'])) {
+            if ($data['bano'] === 'banera') {
+                $camas .= ' / Bañera';
+            } elseif ($data['bano'] === 'ducha') {
+                $camas .= ' / Ducha sola';
+            }
+        }
         $inspector = isset($data['inspector']) && $data['inspector'] !== '' ? $data['inspector'] : 'N/A';
         $fecha = isset($data['fecha']) && $data['fecha'] !== '' ? $data['fecha'] : date('Y-m-d');
         

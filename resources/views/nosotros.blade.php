@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Chalet Motel 192 - Quiénes Somos</title>
+        <title>Chalet Motel 192 - {{ __('Quiénes Somos') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,22 +66,28 @@
                     </span>
                 </a>
 
-                <nav class="flex items-center gap-3">
-                    <a href="/" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        Inicio
-                    </a>
-                    <a href="/nosotros" class="px-4 py-2 text-gold font-semibold transition-all duration-300 text-sm">
-                        Nosotros
-                    </a>
-                    <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        Contacto
-                    </a>
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-navy border border-blue-900/60 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 flex items-center gap-2 text-sm">
-                            <span>Mi Dashboard</span>
+                <div class="flex items-center gap-4">
+                    <nav class="flex items-center gap-3">
+                        <a href="/" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
+                            {{ __('Inicio') }}
                         </a>
-                    @endauth
-                </nav>
+                        <a href="/nosotros" class="px-4 py-2 text-gold font-semibold transition-all duration-300 text-sm">
+                            {{ __('Nosotros') }}
+                        </a>
+                        <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
+                            {{ __('Contacto') }}
+                        </a>
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-navy border border-blue-900/60 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 flex items-center gap-2 text-sm">
+                                <span>{{ __('Mi Dashboard') }}</span>
+                            </a>
+                        @endauth
+                    </nav>
+                    <div class="flex items-center gap-2 border-l border-blue-950 pl-4">
+                        <a href="?lang=es" class="text-lg hover:scale-110 transition-transform" title="Español">🇪🇸</a>
+                        <a href="?lang=en" class="text-lg hover:scale-110 transition-transform" title="English">🇺🇸</a>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -94,14 +100,14 @@
                     <div class="flex items-center gap-2">
                         <span class="h-[1px] w-8 bg-gold"></span>
                         <span class="text-gold font-extrabold text-xs uppercase tracking-widest">
-                            Conoce Nuestra Historia
+                            {{ __('Conoce Nuestra Historia') }}
                         </span>
                     </div>
                     <h1 class="text-4xl sm:text-5.5xl font-black font-outfit text-white uppercase tracking-tight">
-                        Quiénes <span class="text-gold">Somos</span>
+                        {{ __('Quiénes') }} <span class="text-gold">{{ __('Somos') }}</span>
                     </h1>
                     <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                        Chalet Motel 192 ofrece un concepto único de alquileres a largo plazo en Kissimmee, Florida. Brindamos un espacio seguro, cómodo y accesible para estancias extendidas de 6 meses a 1 año.
+                        {{ __('Chalet Motel 192 ofrece un concepto único de alquileres a largo plazo en Kissimmee, Florida. Brindamos un espacio seguro, cómodo y accesible para estancias extendidas de 6 meses a 1 año.') }}
                     </p>
                 </div>
             </div>
@@ -115,40 +121,40 @@
                 <div class="lg:col-span-8 space-y-8">
                     <div class="space-y-4">
                         <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide border-b border-blue-950 pb-3">
-                            Nuestra Historia
+                            {{ __('Nuestra Historia') }}
                         </h2>
                         <p class="text-slate-300 text-sm leading-relaxed">
-                            Fundado con la visión de resolver la alta demanda de alojamiento a largo plazo de calidad en el área de Kissimmee y Orlando, <strong>Chalet Motel 192</strong> ha sido completamente rediseñado para ofrecer una alternativa residencial cómoda y económica. 
+                            {!! __('Fundado con la visión de resolver la alta demanda de alojamiento a largo plazo de calidad en el área de Kissimmee y Orlando, <strong>Chalet Motel 192</strong> ha sido completamente rediseñado para ofrecer una alternativa residencial cómoda y económica.') !!}
                         </p>
                         <p class="text-slate-300 text-sm leading-relaxed">
-                            Ubicado estratégicamente sobre la conocida autopista 192 (Irlo Bronson Memorial Highway), nos encontramos a solo minutos de los principales centros comerciales, restaurantes y atracciones turísticas más famosas de Florida Central, incluyendo Walt Disney World. Nuestro motel ha evolucionado de un alojamiento temporal a una verdadera comunidad de residentes de estancias prolongadas.
+                            {{ __('Ubicado estratégicamente sobre la conocida autopista 192 (Irlo Bronson Memorial Highway), nos encontramos a solo minutos de los principales centros comerciales, restaurantes y atracciones turísticas más famosas de Florida Central, incluyendo Walt Disney World. Nuestro motel ha evolucionado de un alojamiento temporal a una verdadera comunidad de residentes de estancias prolongadas.') }}
                         </p>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
                         <div class="bg-[#061021]/60 p-6 rounded-2xl border border-blue-900/30 space-y-2">
                             <span class="text-gold text-2xl">🎯</span>
-                            <h3 class="text-white font-bold font-outfit text-lg uppercase tracking-wide">Nuestra Misión</h3>
+                            <h3 class="text-white font-bold font-outfit text-lg uppercase tracking-wide">{{ __('Nuestra Misión') }}</h3>
                             <p class="text-slate-400 text-xs leading-relaxed">
-                                Ofrecer soluciones habitacionales a largo plazo a través de tarifas competitivas, un servicio de mantenimiento de primera clase y un entorno pacífico y limpio que nuestros residentes puedan llamar hogar.
+                                {{ __('Ofrecer soluciones habitacionales a largo plazo a través de tarifas competitivas, un servicio de mantenimiento de primera clase y un entorno pacífico y limpio que nuestros residentes puedan llamar hogar.') }}
                             </p>
                         </div>
 
                         <div class="bg-[#061021]/60 p-6 rounded-2xl border border-blue-900/30 space-y-2">
                             <span class="text-gold text-2xl">✨</span>
-                            <h3 class="text-white font-bold font-outfit text-lg uppercase tracking-wide">Nuestra Visión</h3>
+                            <h3 class="text-white font-bold font-outfit text-lg uppercase tracking-wide">{{ __('Nuestra Visión') }}</h3>
                             <p class="text-slate-400 text-xs leading-relaxed">
-                                Consolidarnos como la principal opción de renta de largo plazo en Kissimmee, destacando por la seguridad de nuestras instalaciones, la renovación constante de nuestros espacios y la calidez en la atención.
+                                {{ __('Consolidarnos como la principal opción de renta de largo plazo en Kissimmee, destacando por la seguridad de nuestras instalaciones, la renovación constante de nuestros espacios y la calidez en la atención.') }}
                             </p>
                         </div>
                     </div>
 
                     <div class="space-y-4 pt-4">
                         <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide border-b border-blue-950 pb-3">
-                            El Concepto de Larga Estancia
+                            {{ __('El Concepto de Larga Estancia') }}
                         </h2>
                         <p class="text-slate-300 text-sm leading-relaxed">
-                            A diferencia de los moteles tradicionales enfocados en turistas de paso, en Chalet Motel 192 nos especializamos en alquileres de <strong>6 meses a 1 año</strong>. Este enfoque nos permite fomentar una atmósfera residencial de paz y respeto mutuo. Cada una de nuestras habitaciones cuenta con las amenidades básicas que garantizan un estilo de vida sin complicaciones: aire acondicionado de alta eficiencia, refrigerador, televisión con cable, Internet inalámbrico de alta velocidad y amplios estacionamientos para ti y tus visitas.
+                            {!! __('A diferencia de los moteles tradicionales enfocados en turistas de paso, en Chalet Motel 192 nos especializamos en alquileres de <strong>6 meses a 1 año</strong>. Este enfoque nos permite fomentar una atmósfera residencial de paz y respeto mutuo. Cada una de nuestras habitaciones cuenta con las amenidades básicas que garantizan un estilo de vida sin complicaciones: aire acondicionado de alta eficiencia, refrigerador, televisión con cable, Internet inalámbrico de alta velocidad y amplios estacionamientos para ti y tus visitas.') !!}
                         </p>
                     </div>
                 </div>
@@ -156,7 +162,7 @@
                 <!-- Right Side: Stats & Contact Info (4 cols) -->
                 <div class="lg:col-span-4 flex flex-col space-y-6 lg:pl-8 lg:border-l lg:border-blue-950">
                     <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide border-b border-blue-950 pb-3">
-                        Datos Clave
+                        {{ __('Datos Clave') }}
                     </h2>
 
                     <!-- Key stats cards -->
@@ -165,8 +171,8 @@
                         <div class="flex items-center gap-4 p-4 bg-[#081326] border border-blue-900/40 rounded-xl">
                             <div class="text-3xl font-black font-outfit text-gold">$1,200</div>
                             <div class="flex flex-col">
-                                <span class="text-white font-bold text-xs uppercase tracking-wide">Tarifa Fija Mensual</span>
-                                <span class="text-slate-500 text-[10px]">Servicios incluidos</span>
+                                <span class="text-white font-bold text-xs uppercase tracking-wide">{{ __('Tarifa Fija Mensual') }}</span>
+                                <span class="text-slate-500 text-[10px]">{{ __('Servicios incluidos') }}</span>
                             </div>
                         </div>
 
@@ -174,8 +180,8 @@
                         <div class="flex items-center gap-4 p-4 bg-[#081326] border border-blue-900/40 rounded-xl">
                             <div class="text-3xl font-black font-outfit text-gold">1º Mes</div>
                             <div class="flex flex-col">
-                                <span class="text-white font-bold text-xs uppercase tracking-wide">¡Completamente Gratis!</span>
-                                <span class="text-slate-500 text-[10px]">En contratos calificados</span>
+                                <span class="text-white font-bold text-xs uppercase tracking-wide">{{ __('¡Completamente Gratis!') }}</span>
+                                <span class="text-slate-500 text-[10px]">{{ __('En contratos calificados') }}</span>
                             </div>
                         </div>
 
@@ -183,8 +189,8 @@
                         <div class="flex items-center gap-4 p-4 bg-[#081326] border border-blue-900/40 rounded-xl">
                             <div class="text-3xl font-black font-outfit text-gold">10 min</div>
                             <div class="flex flex-col">
-                                <span class="text-white font-bold text-xs uppercase tracking-wide font-outfit">De Disney World</span>
-                                <span class="text-slate-500 text-[10px]">Ubicación céntrica</span>
+                                <span class="text-white font-bold text-xs uppercase tracking-wide font-outfit">{{ __('De Disney World') }}</span>
+                                <span class="text-slate-500 text-[10px]">{{ __('Ubicación céntrica') }}</span>
                             </div>
                         </div>
 
@@ -192,8 +198,8 @@
                         <div class="flex items-center gap-4 p-4 bg-[#081326] border border-blue-900/40 rounded-xl">
                             <div class="text-3xl font-black font-outfit text-gold">24/7</div>
                             <div class="flex flex-col">
-                                <span class="text-white font-bold text-xs uppercase tracking-wide">Atención y Seguridad</span>
-                                <span class="text-slate-500 text-[10px]">Residentes tranquilos</span>
+                                <span class="text-white font-bold text-xs uppercase tracking-wide">{{ __('Atención y Seguridad') }}</span>
+                                <span class="text-slate-500 text-[10px]">{{ __('Residentes tranquilos') }}</span>
                             </div>
                         </div>
                     </div>
@@ -201,13 +207,13 @@
                     <!-- Short card about long term -->
                     <div class="p-6 bg-navy-light/40 border border-blue-900/40 rounded-2xl space-y-3">
                         <span class="block text-xs font-bold text-yellow-500 uppercase tracking-widest">
-                            Requisitos de Renta
+                            {{ __('Requisitos de Renta') }}
                         </span>
                         <ul class="text-slate-400 text-xs space-y-2 list-disc list-inside">
-                            <li>Identificación oficial vigente.</li>
-                            <li>Comprobante de ingresos.</li>
-                            <li>Contrato mínimo de 6 meses.</li>
-                            <li>Verificación de antecedentes básicos.</li>
+                            <li>{{ __('Identificación oficial vigente.') }}</li>
+                            <li>{{ __('Comprobante de ingresos.') }}</li>
+                            <li>{{ __('Contrato mínimo de 6 meses.') }}</li>
+                            <li>{{ __('Verificación de antecedentes básicos.') }}</li>
                         </ul>
                     </div>
                 </div>
@@ -218,10 +224,10 @@
             <div class="space-y-6">
                 <div class="text-center">
                     <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide">
-                        Nuestros Valores Corporativos
+                        {{ __('Nuestros Valores Corporativos') }}
                     </h2>
                     <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">
-                        Los pilares que guían nuestro servicio diario
+                        {{ __('Los pilares que guían nuestro servicio diario') }}
                     </p>
                     <div class="h-1 w-12 bg-gold rounded-full mx-auto mt-3"></div>
                 </div>
@@ -233,10 +239,10 @@
                             🤝
                         </div>
                         <h3 class="text-white font-bold font-outfit text-base uppercase tracking-wider group-hover:text-gold transition-colors">
-                            Hospitalidad y Respeto
+                            {{ __('Hospitalidad y Respeto') }}
                         </h3>
                         <p class="text-slate-400 text-xs leading-relaxed">
-                            Tratamos a cada residente como parte de nuestra familia, fomentando una convivencia armoniosa y respetuosa entre todos los miembros de la comunidad.
+                            {{ __('Tratamos a cada residente como parte de nuestra familia, fomentando una convivencia armoniosa y respetuosa entre todos los miembros de la comunidad.') }}
                         </p>
                     </div>
 
@@ -246,10 +252,10 @@
                             🛡️
                         </div>
                         <h3 class="text-white font-bold font-outfit text-base uppercase tracking-wider group-hover:text-gold transition-colors">
-                            Seguridad y Confianza
+                            {{ __('Seguridad y Confianza') }}
                         </h3>
                         <p class="text-slate-400 text-xs leading-relaxed">
-                            Mantenemos un estricto control de ingreso y cámaras de seguridad para asegurar que las instalaciones permanezcan seguras y tranquilas a cualquier hora.
+                            {{ __('Mantenemos un estricto control de ingreso y cámaras de seguridad para asegurar que las instalaciones permanezcan seguras y tranquilas a cualquier hora.') }}
                         </p>
                     </div>
 
@@ -259,10 +265,10 @@
                             🧹
                         </div>
                         <h3 class="text-white font-bold font-outfit text-base uppercase tracking-wider group-hover:text-gold transition-colors">
-                            Limpieza y Calidad
+                            {{ __('Limpieza y Calidad') }}
                         </h3>
                         <p class="text-slate-400 text-xs leading-relaxed">
-                            Nos enorgullecemos de ofrecer áreas comunes limpias, mantenimiento rápido para cualquier reporte en tu habitación e inspecciones periódicas de calidad.
+                            {{ __('Nos enorgullecemos de ofrecer áreas comunes limpias, mantenimiento rápido para cualquier reporte en tu habitación e inspecciones periódicas de calidad.') }}
                         </p>
                     </div>
                 </div>
@@ -275,16 +281,16 @@
                 
                 <div class="relative z-10 max-w-xl mx-auto space-y-4">
                     <h2 class="text-2xl sm:text-3xl font-black font-outfit text-white uppercase tracking-wide">
-                        ¿Listo para Mudarte?
+                        {{ __('¿Listo para Mudarte?') }}
                     </h2>
                     <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                        Nuestras habitaciones King y 2 Kings se rentan rápidamente. Ponte en contacto con nosotros hoy mismo para consultar disponibilidad y agendar una visita a nuestras instalaciones.
+                        {{ __('Nuestras habitaciones King y 2 Kings se rentan rápidamente. Ponte en contacto con nosotros hoy mismo para consultar disponibilidad y agendar una visita a nuestras instalaciones.') }}
                     </p>
                     <div class="h-1 w-12 bg-gold rounded-full mx-auto mt-2"></div>
                     
                     <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
                         <a href="{{ route('contact.create') }}" class="px-8 py-3.5 bg-gold hover:bg-gold-hover text-[#0a1831] font-black font-outfit rounded-xl transition-all duration-300 text-sm uppercase tracking-wider shadow-lg shadow-gold/10 hover:shadow-gold/20 hover:-translate-y-0.5">
-                            Contáctanos Ahora
+                            {{ __('Contáctanos Ahora') }}
                         </a>
                     </div>
                 </div>
@@ -303,7 +309,7 @@
                         </svg>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">¿Preguntas? Llámanos</span>
+                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('¿Preguntas? Llámanos') }}</span>
                         <a href="tel:+14077731461" class="text-gold font-black font-outfit text-xl sm:text-2xl hover:underline leading-none">
                             +1 407 773 1461
                         </a>
@@ -319,7 +325,7 @@
                         </svg>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">Ubicados en</span>
+                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('Ubicados en') }}</span>
                         <span class="text-white font-extrabold font-outfit text-xs sm:text-sm leading-snug">
                             4743 W Irlo Bronson Memorial Hwy #192, <br class="hidden sm:inline">Kissimmee, FL 34746
                         </span>
@@ -330,7 +336,7 @@
             
             <!-- Bottom Copyright Bar -->
             <div class="w-full bg-[#061021] py-4 text-center text-xs text-slate-500 border-t border-blue-950">
-                <p>&copy; {{ date('Y') }} Chalet Motel 192. Todos los derechos reservados. Powered by Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
+                <p>&copy; {{ date('Y') }} Chalet Motel 192. {{ __('Todos los derechos reservados.') }} Powered by Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
             </div>
         </footer>
 

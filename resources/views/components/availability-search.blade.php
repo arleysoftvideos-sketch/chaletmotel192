@@ -5,7 +5,7 @@
             <!-- Check In Date -->
             <div class="relative group">
                 <label for="check_in" class="block text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2 group-focus-within:text-yellow-400 transition-colors">
-                    Fecha de Entrada
+                    {{ __('Fecha de Entrada') }}
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -22,7 +22,7 @@
             <!-- Check Out Date -->
             <div class="relative group">
                 <label for="check_out" class="block text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2 group-focus-within:text-yellow-400 transition-colors">
-                    Fecha de Salida
+                    {{ __('Fecha de Salida') }}
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -39,7 +39,7 @@
             <!-- Guests Count -->
             <div class="relative group">
                 <label for="guests" class="block text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2 group-focus-within:text-yellow-400 transition-colors">
-                    Huéspedes
+                    {{ __('Huéspedes') }}
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -49,11 +49,11 @@
                     </div>
                     <select name="guests" id="guests"
                         class="block w-full pl-10 pr-4 py-3 bg-[#081326] border border-blue-900 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all hover:border-blue-800 appearance-none">
-                        <option value="1" {{ request('guests') == 1 ? 'selected' : '' }}>1 Persona</option>
-                        <option value="2" {{ request('guests', 2) == 2 ? 'selected' : '' }}>2 Personas</option>
-                        <option value="3" {{ request('guests') == 3 ? 'selected' : '' }}>3 Personas</option>
-                        <option value="4" {{ request('guests') == 4 ? 'selected' : '' }}>4 Personas</option>
-                        <option value="5" {{ request('guests') == 5 ? 'selected' : '' }}>5+ Personas</option>
+                        <option value="1" {{ request('guests') == 1 ? 'selected' : '' }}>{{ __('1 Persona') }}</option>
+                        <option value="2" {{ request('guests', 2) == 2 ? 'selected' : '' }}>{{ __('2 Personas') }}</option>
+                        <option value="3" {{ request('guests') == 3 ? 'selected' : '' }}>{{ __('3 Personas') }}</option>
+                        <option value="4" {{ request('guests') == 4 ? 'selected' : '' }}>{{ __('4 Personas') }}</option>
+                        <option value="5" {{ request('guests') == 5 ? 'selected' : '' }}>{{ __('5+ Personas') }}</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +66,7 @@
             <!-- Room Type -->
             <div class="relative group">
                 <label for="room_type" class="block text-xs font-bold text-yellow-500 uppercase tracking-wider mb-2 group-focus-within:text-yellow-400 transition-colors">
-                    Tipo de Habitación
+                    {{ __('Tipo de Habitación') }}
                 </label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -76,11 +76,11 @@
                     </div>
                     <select name="room_type" id="room_type"
                         class="block w-full pl-10 pr-4 py-3 bg-[#081326] border border-blue-900 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all hover:border-blue-800 appearance-none">
-                        <option value="">Todas las categorías</option>
-                        <option value="Individual" {{ request('room_type') == 'Individual' ? 'selected' : '' }}>Individual</option>
-                        <option value="Doble" {{ request('room_type') == 'Doble' ? 'selected' : '' }}>Doble</option>
-                        <option value="Suite" {{ request('room_type') == 'Suite' ? 'selected' : '' }}>Suite</option>
-                        <option value="Deluxe" {{ request('room_type') == 'Deluxe' ? 'selected' : '' }}>Deluxe</option>
+                        <option value="">{{ __('Todas las categorías') }}</option>
+                        <option value="Individual" {{ request('room_type') == 'Individual' ? 'selected' : '' }}>{{ __('Individual') }}</option>
+                        <option value="Doble" {{ request('room_type') == 'Doble' ? 'selected' : '' }}>{{ __('Doble') }}</option>
+                        <option value="Suite" {{ request('room_type') == 'Suite' ? 'selected' : '' }}>{{ __('Suite') }}</option>
+                        <option value="Deluxe" {{ request('room_type') == 'Deluxe' ? 'selected' : '' }}>{{ __('Deluxe') }}</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                         <svg class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,7 +98,7 @@
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                Buscar Disponibilidad
+                {{ __('Buscar Disponibilidad') }}
             </button>
         </div>
     </form>

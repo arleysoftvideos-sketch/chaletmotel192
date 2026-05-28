@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Chalet Motel 192 - Motel Rentals</title>
+        <title>Chalet Motel 192 - {{ __('Motel Rentals') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,19 +66,25 @@
                     </span>
                 </a>
 
-                <nav class="flex items-center gap-3">
-                    <a href="/nosotros" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        Nosotros
-                    </a>
-                    <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        Contacto
-                    </a>
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-navy border border-blue-900/60 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 flex items-center gap-2 text-sm">
-                            <span>Mi Dashboard</span>
+                <div class="flex items-center gap-4">
+                    <nav class="flex items-center gap-3">
+                        <a href="/nosotros" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
+                            {{ __('Nosotros') }}
                         </a>
-                    @endauth
-                </nav>
+                        <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
+                            {{ __('Contacto') }}
+                        </a>
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-navy border border-blue-900/60 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 flex items-center gap-2 text-sm">
+                                <span>{{ __('Mi Dashboard') }}</span>
+                            </a>
+                        @endauth
+                    </nav>
+                    <div class="flex items-center gap-2 border-l border-blue-950 pl-4">
+                        <a href="?lang=es" class="text-lg hover:scale-110 transition-transform" title="Español">🇪🇸</a>
+                        <a href="?lang=en" class="text-lg hover:scale-110 transition-transform" title="English">🇺🇸</a>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -97,23 +103,23 @@
                         <!-- Main Title: MOTEL RENTALS -->
                         <div class="space-y-0.5">
                             <span class="block text-4xl sm:text-5xl font-black font-outfit text-white leading-none tracking-tight">
-                                MOTEL
+                                {{ __('MOTEL') }}
                             </span>
                             <span class="block text-5xl sm:text-6.5xl font-black font-outfit text-gold leading-none tracking-tight">
-                                RENTALS
+                                {{ __('RENTALS') }}
                             </span>
                         </div>
 
                         <!-- Ribbon: LONG TERM STAYS -->
                         <div class="inline-block bg-[#0284c7] px-6 py-2 text-center text-white font-black font-outfit text-md sm:text-xl tracking-wider uppercase clip-ribbon shadow-lg shadow-sky-600/10 max-w-xs">
-                            Long Term Stays
+                            {{ __('Long Term Stays') }}
                         </div>
 
                         <!-- Duration Subheading -->
                         <div class="flex items-center gap-3 max-w-sm">
                             <div class="h-[1px] bg-gold/50 flex-grow"></div>
                             <span class="text-gold font-extrabold text-xs sm:text-sm tracking-widest whitespace-nowrap uppercase">
-                                6 Month to 1 Year
+                                {{ __('6 Month to 1 Year') }}
                             </span>
                             <div class="h-[1px] bg-gold/50 flex-grow"></div>
                         </div>
@@ -126,7 +132,7 @@
                             <div class="flex items-center gap-2 mt-0.5">
                                 <div class="h-[1px] w-6 bg-white/40"></div>
                                 <span class="text-white/70 font-extrabold uppercase tracking-widest text-[10px] sm:text-xs">
-                                    Per Month
+                                    {{ __('Per Month') }}
                                 </span>
                                 <div class="h-[1px] w-6 bg-white/40"></div>
                             </div>
@@ -147,9 +153,9 @@
                                     <svg class="w-2 h-2 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                                     <svg class="w-2 h-2 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                                 </div>
-                                <span class="block text-[13px] font-black font-outfit leading-tight uppercase text-navy">First</span>
-                                <span class="block text-[18px] font-black font-outfit leading-none uppercase text-navy">Month</span>
-                                <span class="block text-[18px] font-black font-outfit leading-none uppercase text-navy">Free!</span>
+                                <span class="block text-[13px] font-black font-outfit leading-tight uppercase text-navy">{{ __('First') }}</span>
+                                <span class="block text-[18px] font-black font-outfit leading-none uppercase text-navy">{{ __('Month') }}</span>
+                                <span class="block text-[18px] font-black font-outfit leading-none uppercase text-navy">{{ __('Free!') }}</span>
                                 <div class="flex gap-0.5 text-navy mt-0.5">
                                     <svg class="w-2 h-2 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                                     <svg class="w-2 h-2 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -180,8 +186,8 @@
                     
                     <!-- Title -->
                     <div class="border-b border-blue-950 pb-4">
-                        <h2 class="text-2xl font-black font-outfit text-white tracking-wide uppercase">Nuestras Habitaciones</h2>
-                        <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Espacios listos y equipados para tu comodidad</p>
+                        <h2 class="text-2xl font-black font-outfit text-white tracking-wide uppercase">{{ __('Nuestras Habitaciones') }}</h2>
+                        <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">{{ __('Espacios listos y equipados para tu comodidad') }}</p>
                     </div>
 
                     <!-- 2 Kings Room Ready -->
@@ -193,21 +199,21 @@
                                 </svg>
                             </span>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-white font-bold font-outfit text-lg uppercase tracking-wide">2 Kings Room</span>
-                                <span class="text-gold font-extrabold text-xs uppercase tracking-widest bg-gold/10 px-2 py-0.5 rounded-full">Ready!</span>
+                                <span class="text-white font-bold font-outfit text-lg uppercase tracking-wide">{{ __('2 Kings Room') }}</span>
+                                <span class="text-gold font-extrabold text-xs uppercase tracking-widest bg-gold/10 px-2 py-0.5 rounded-full">{{ __('Ready!') }}</span>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="group border border-blue-950 rounded-2xl overflow-hidden aspect-[4/3] bg-navy-dark relative shadow-md">
                                 <img src="/images/room_2kings.png" alt="2 Kings Bed Room" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex justify-between items-end">
-                                    <span class="text-xs font-bold text-white uppercase tracking-wider">Dormitorio Principal</span>
+                                    <span class="text-xs font-bold text-white uppercase tracking-wider">{{ __('Dormitorio Principal') }}</span>
                                 </div>
                             </div>
                             <div class="group border border-blue-950 rounded-2xl overflow-hidden aspect-[4/3] bg-navy-dark relative shadow-md">
                                 <img src="/images/bathroom.png" alt="2 Kings Bath Room" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex justify-between items-end">
-                                    <span class="text-xs font-bold text-white uppercase tracking-wider">Baño Privado</span>
+                                    <span class="text-xs font-bold text-white uppercase tracking-wider">{{ __('Baño Privado') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -222,23 +228,23 @@
                                 </svg>
                             </span>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-white font-bold font-outfit text-lg uppercase tracking-wide">More Rooms</span>
-                                <span class="text-gold font-extrabold text-xs uppercase tracking-widest bg-gold/10 px-2 py-0.5 rounded-full">To Come!</span>
+                                <span class="text-white font-bold font-outfit text-lg uppercase tracking-wide">{{ __('More Rooms') }}</span>
+                                <span class="text-gold font-extrabold text-xs uppercase tracking-widest bg-gold/10 px-2 py-0.5 rounded-full">{{ __('To Come!') }}</span>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="group border border-blue-950 rounded-2xl overflow-hidden aspect-[4/3] bg-navy-dark relative shadow-md">
                                 <img src="/images/room_king.png" alt="King Bed Room" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                                 <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex justify-between items-end">
-                                    <span class="text-xs font-bold text-white uppercase tracking-wider">King Suite</span>
+                                    <span class="text-xs font-bold text-white uppercase tracking-wider">{{ __('King Suite') }}</span>
                                 </div>
                             </div>
                             <div class="border border-blue-900/20 border-dashed flex flex-col justify-center items-center p-6 text-center rounded-2xl aspect-[4/3] bg-[#081326]/40">
                                 <svg class="w-10 h-10 text-blue-900/60 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                 </svg>
-                                <span class="text-slate-400 font-bold text-xs uppercase tracking-wider">Próximas Suites</span>
-                                <p class="text-slate-500 text-[10px] mt-1 max-w-[180px]">Estamos renovando más espacios exclusivos para ti.</p>
+                                <span class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Próximas Suites') }}</span>
+                                <p class="text-slate-500 text-[10px] mt-1 max-w-[180px]">{{ __('Estamos renovando más espacios exclusivos para ti.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -250,8 +256,8 @@
                     
                     <!-- Header -->
                     <div class="border-b border-blue-950 pb-4">
-                        <h2 class="text-2xl font-black font-outfit text-white tracking-wide uppercase">Servicios</h2>
-                        <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Comodidades incluidas para tu estancia</p>
+                        <h2 class="text-2xl font-black font-outfit text-white tracking-wide uppercase">{{ __('Servicios') }}</h2>
+                        <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">{{ __('Comodidades incluidas para tu estancia') }}</p>
                     </div>
 
                     <!-- Amenities Checklist -->
@@ -264,7 +270,7 @@
                                 </svg>
                             </div>
                             <span class="text-slate-200 font-bold font-outfit text-md uppercase tracking-wider group-hover:text-gold transition-colors">
-                                Free Wifi
+                                {{ __('Free Wifi') }}
                             </span>
                         </li>
 
@@ -276,7 +282,7 @@
                                 </svg>
                             </div>
                             <span class="text-slate-200 font-bold font-outfit text-md uppercase tracking-wider group-hover:text-gold transition-colors">
-                                Cable TV
+                                {{ __('Cable TV') }}
                             </span>
                         </li>
 
@@ -288,7 +294,7 @@
                                 </svg>
                             </div>
                             <span class="text-slate-200 font-bold font-outfit text-md uppercase tracking-wider group-hover:text-gold transition-colors">
-                                A/C
+                                {{ __('A/C') }}
                             </span>
                         </li>
 
@@ -300,7 +306,7 @@
                                 </svg>
                             </div>
                             <span class="text-slate-200 font-bold font-outfit text-md uppercase tracking-wider group-hover:text-gold transition-colors">
-                                Free Parking
+                                {{ __('Free Parking') }}
                             </span>
                         </li>
                     </ul>
@@ -323,7 +329,7 @@
                         </svg>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">Any Question? Call</span>
+                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('Any Question? Call') }}</span>
                         <a href="tel:+14077731461" class="text-gold font-black font-outfit text-xl sm:text-2xl hover:underline leading-none">
                             +1 407 773 1461
                         </a>
@@ -339,7 +345,7 @@
                         </svg>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">Located At</span>
+                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('Located At') }}</span>
                         <span class="text-white font-extrabold font-outfit text-xs sm:text-sm leading-snug">
                             4743 W Irlo Bronson Memorial Hwy #192, <br class="hidden sm:inline">Kissimmee, FL 34746
                         </span>
@@ -350,7 +356,7 @@
             
             <!-- Bottom Copyright Bar -->
             <div class="w-full bg-[#061021] py-4 text-center text-xs text-slate-500 border-t border-blue-950">
-                <p>&copy; {{ date('Y') }} Chalet Motel 192. Todos los derechos reservados. Powered by Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
+                <p>&copy; {{ date('Y') }} Chalet Motel 192. {{ __('Todos los derechos reservados.') }} Powered by Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
             </div>
         </footer>
 

@@ -676,10 +676,13 @@
         }
     };
 
-    let currentLang = 'es';
+    let currentLang = '{{ app()->getLocale() }}';
 
     function setLanguage(lang) {
         currentLang = lang;
+        
+        // Sincronizar idioma con la sesion del servidor de forma silenciosa
+        fetch('?lang=' + lang).catch(err => console.error(err));
         
         document.getElementById('btn-es').classList.toggle('active', lang === 'es');
         document.getElementById('btn-en').classList.toggle('active', lang === 'en');
@@ -1072,7 +1075,7 @@
     }
 
     // --- INICIALIZACIÓN ---
-    setLanguage('es');
+    setLanguage('{{ app()->getLocale() }}');
     lblRoom.innerText = currentRoom; 
     renderNav();
     loadRoomData(currentRoom);
