@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test', function () {
+    return 'hola mundo';
+});
+
+// Rutas Públicas de Contacto
+Route::get('/contactar', [ContactController::class, 'create'])->name('contact.create');
+Route::post('/contactar', [ContactController::class, 'store'])->name('contact.store');
+
+// Ruta de Inventario
+Route::get('/inventario', function () {
+    return view('inventario');
+})->name('inventario');
 
 // Rutas Públicas de Habitaciones
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
