@@ -768,6 +768,9 @@
         lblRoom.innerText = room;
         renderNav();
         loadRoomData(room);
+        
+        // Auto-cargar datos desde Google Sheets en segundo plano al cambiar de habitación
+        loadCurrentRoomFromGoogleSheetsSilently();
     }
 
     function toggleMesaSilla() {
@@ -992,6 +995,40 @@
         } catch (error) {
             console.error(error);
             alert((currentLang === 'es' ? 'Error de red al conectar con el servidor.' : 'Network error connecting to the server.'));
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            setLanguage(currentLang);
+        }
+    }
+
+    async function loadCurrentRoomFromGoogleSheetsSilently() {
+        const btn = document.getElementById('btn-load-sheets');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '⏳ <span data-i18n="btnLoadingSheets">Cargando...</span>';
+
+        try {
+            const response = await fetch(`/api/load-room/${currentRoom}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (result.success && result.exists && result.data) {
+                // Actualizar almacenamiento local
+                hotelData[currentRoom] = result.data;
+                localStorage.setItem('hotelControlData', JSON.stringify(hotelData));
+                
+                // Refrescar formulario y navegación
+                loadRoomData(currentRoom);
+                renderNav();
+            }
+        } catch (error) {
+            console.error('Error al precargar desde Google Sheets:', error);
         } finally {
             btn.disabled = false;
             btn.innerHTML = originalText;
