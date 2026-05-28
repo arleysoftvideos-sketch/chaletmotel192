@@ -34,6 +34,24 @@ Route::get('/test', function () {
     return 'hola mundogit';
 });
 
+Route::get('/test-json', function () {
+    $path = storage_path('app/google-credentials.json');
+    $exists = file_exists($path);
+    $readable = is_readable($path);
+    $content = @file_get_contents($path);
+    $decoded = json_decode($content, true);
+    
+    return response()->json([
+        'path' => $path,
+        'exists' => $exists,
+        'readable' => $readable,
+        'size_bytes' => $content !== false ? strlen($content) : null,
+        'decoded_valid' => !is_null($decoded),
+        'client_email' => $decoded['client_email'] ?? 'Not found',
+        'json_error' => json_last_error_msg()
+    ]);
+});
+
 // Rutas Públicas de Contacto
 Route::get('/contactar', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contactar', [ContactController::class, 'store'])->name('contact.store');
