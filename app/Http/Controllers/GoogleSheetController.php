@@ -110,6 +110,13 @@ class GoogleSheetController extends Controller
         $fecha = isset($row[4]) ? $row[4] : '';
 
         $maintRaw = isset($row[5]) ? $row[5] : '';
+        $ac = null;
+        if (str_contains($maintRaw, 'Aire acondicionado trabaja')) {
+            $ac = 'si';
+        } elseif (str_contains($maintRaw, 'Aire acondicionado no trabaja')) {
+            $ac = 'no';
+        }
+
         $chk_remiendo = str_contains($maintRaw, 'Falta remiendo/parche');
         $chk_pintura = str_contains($maintRaw, 'Requiere retoque pintura');
 
@@ -117,7 +124,14 @@ class GoogleSheetController extends Controller
         $customMaintParts = [];
         foreach ($maintParts as $part) {
             $trimmed = trim($part);
-            if ($trimmed !== 'Falta remiendo/parche' && $trimmed !== 'Requiere retoque pintura' && $trimmed !== 'Ninguno' && $trimmed !== '') {
+            if (
+                $trimmed !== 'Falta remiendo/parche' && 
+                $trimmed !== 'Requiere retoque pintura' && 
+                $trimmed !== 'Aire acondicionado trabaja' && 
+                $trimmed !== 'Aire acondicionado no trabaja' && 
+                $trimmed !== 'Ninguno' && 
+                $trimmed !== ''
+            ) {
                 $customMaintParts[] = $trimmed;
             }
         }
@@ -156,6 +170,7 @@ class GoogleSheetController extends Controller
         $formData = [
             'estado' => $estado,
             'camas' => $camas,
+            'ac' => $ac,
             'inspector' => $inspector,
             'fecha' => $fecha,
             'chk_remiendo' => $chk_remiendo,
@@ -296,6 +311,13 @@ class GoogleSheetController extends Controller
         
         // Mantenimiento
         $maintList = [];
+        if (isset($data['ac'])) {
+            if ($data['ac'] === 'si') {
+                $maintList[] = 'Aire acondicionado trabaja';
+            } elseif ($data['ac'] === 'no') {
+                $maintList[] = 'Aire acondicionado no trabaja';
+            }
+        }
         if (!empty($data['chk_remiendo'])) $maintList[] = 'Falta remiendo/parche';
         if (!empty($data['chk_pintura'])) $maintList[] = 'Requiere retoque pintura';
         if (isset($data['txt_mantenimiento']) && trim($data['txt_mantenimiento']) !== '') {
