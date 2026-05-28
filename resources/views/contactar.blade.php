@@ -62,20 +62,14 @@
                     <a href="/" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors">
                         Inicio
                     </a>
-                    <a href="{{ route('inventario') }}" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors">
-                        Inventario
+                    <a href="/nosotros" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors">
+                        Nosotros
                     </a>
-                    @if (Route::has('login'))
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="px-4 py-2 bg-navy-light border border-blue-900 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 text-xs">
-                                Mi Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" class="text-xs font-semibold text-slate-300 hover:text-white transition-colors">
-                                Iniciar Sesión
-                            </a>
-                        @endauth
-                    @endif
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="px-4 py-2 bg-navy-light border border-blue-900 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 text-xs">
+                            Mi Dashboard
+                        </a>
+                    @endauth
                 </nav>
             </div>
         </header>

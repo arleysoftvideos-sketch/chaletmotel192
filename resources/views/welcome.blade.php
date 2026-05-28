@@ -67,28 +67,17 @@
                 </a>
 
                 <nav class="flex items-center gap-3">
-                    <a href="{{ route('inventario') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        Inventario
+                    <a href="/nosotros" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
+                        Nosotros
                     </a>
                     <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                         Contacto
                     </a>
-                    @if (Route::has('login'))
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-navy border border-blue-900/60 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 flex items-center gap-2 text-sm">
-                                <span>Mi Dashboard</span>
-                            </a>
-                        @else
-                            <a href="{{ route('login') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                                Iniciar Sesión
-                            </a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="px-5 py-2 bg-gold hover:bg-gold-hover text-navy font-black rounded-xl transition-all duration-300 shadow-md text-sm">
-                                    Registrarse
-                                </a>
-                            @endif
-                        @endauth
-                    @endif
+                    @auth
+                        <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-navy border border-blue-900/60 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 flex items-center gap-2 text-sm">
+                            <span>Mi Dashboard</span>
+                        </a>
+                    @endauth
                 </nav>
             </div>
         </header>

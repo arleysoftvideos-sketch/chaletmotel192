@@ -22,6 +22,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/nosotros', function () {
+    return view('nosotros');
+})->name('nosotros');
+
 Route::get('/test', function () {
     return 'hola mundo, como vamos';
 });
