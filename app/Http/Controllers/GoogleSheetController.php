@@ -96,6 +96,88 @@ class GoogleSheetController extends Controller
         }
     }
 
+    private function parseRow($row)
+    {
+        $estado = isset($row[1]) ? strtolower($row[1]) : '';
+        if ($estado !== 'limpio' && $estado !== 'sucio') {
+            return null;
+        }
+
+        $camasRaw = isset($row[2]) ? $row[2] : '';
+        $camas = str_starts_with($camasRaw, '2') ? '2' : '1';
+
+        $inspector = isset($row[3]) && $row[3] !== 'N/A' ? $row[3] : '';
+        $fecha = isset($row[4]) ? $row[4] : '';
+
+        $maintRaw = isset($row[5]) ? $row[5] : '';
+        $chk_remiendo = str_contains($maintRaw, 'Falta remiendo/parche');
+        $chk_pintura = str_contains($maintRaw, 'Requiere retoque pintura');
+
+        $maintParts = explode('|', $maintRaw);
+        $customMaintParts = [];
+        foreach ($maintParts as $part) {
+            $trimmed = trim($part);
+            if ($trimmed !== 'Falta remiendo/parche' && $trimmed !== 'Requiere retoque pintura' && $trimmed !== 'Ninguno' && $trimmed !== '') {
+                $customMaintParts[] = $trimmed;
+            }
+        }
+        $txt_mantenimiento = implode(' | ', $customMaintParts);
+
+        $faltantesRaw = isset($row[6]) ? $row[6] : '';
+        $faltantesArray = array_map('trim', explode(',', $faltantesRaw));
+
+        $notas = isset($row[7]) && $row[7] !== 'N/A' ? $row[7] : '';
+
+        $requiredItems = [
+            'chk_cortina' => 'Cortina',
+            'chk_mesa' => 'Mesa',
+            'chk_silla' => 'Silla',
+            'chk_nevera' => 'Nevera',
+            'chk_parrilla' => 'Portaequipajes',
+            'chk_lamparas_hab' => 'Lámparas hab.',
+            'chk_outlet_ac' => 'Enchufe A/C',
+            'chk_tv' => 'Televisor',
+            'chk_tapas_emergencia' => 'Tapas emergencia',
+            'chk_covers_outlets' => 'Tapas enchufes',
+            'chk_covers_luces' => 'Tapas luces',
+            'chk_extractor' => 'Detector humo',
+            'chk_puerta' => 'Puerta principal',
+            'chk_stop_door' => 'Tope puerta',
+            'chk_paredes' => 'Paredes bien',
+            'chk_griferia' => 'Grifería baño',
+            'chk_lavamanos' => 'Lavamanos',
+            'chk_espejo' => 'Espejo',
+            'chk_toilet' => 'Inodoro',
+            'chk_coso_papel' => 'Set de baño',
+            'chk_lampara_bano' => 'Lámpara baño',
+            'chk_cover_extractor' => 'Tapa extractor baño'
+        ];
+
+        $formData = [
+            'estado' => $estado,
+            'camas' => $camas,
+            'inspector' => $inspector,
+            'fecha' => $fecha,
+            'chk_remiendo' => $chk_remiendo,
+            'chk_pintura' => $chk_pintura,
+            'txt_mantenimiento' => $txt_mantenimiento,
+            'txt_notas' => $notas
+        ];
+
+        foreach ($requiredItems as $key => $name) {
+            $isMissing = false;
+            foreach ($faltantesArray as $f) {
+                if (strcasecmp($f, $name) === 0) {
+                    $isMissing = true;
+                    break;
+                }
+            }
+            $formData[$key] = !$isMissing;
+        }
+
+        return $formData;
+    }
+
     public function loadRoom($room)
     {
         try {
@@ -119,86 +201,14 @@ class GoogleSheetController extends Controller
                 ]);
             }
 
-            $row = $values[0];
-            $estado = isset($row[1]) ? strtolower($row[1]) : '';
-            if ($estado !== 'limpio' && $estado !== 'sucio') {
+            $formData = $this->parseRow($values[0]);
+
+            if (is_null($formData)) {
                 return response()->json([
                     'success' => true,
                     'exists' => false,
                     'data' => null
                 ]);
-            }
-
-            $camasRaw = isset($row[2]) ? $row[2] : '';
-            $camas = str_starts_with($camasRaw, '2') ? '2' : '1';
-
-            $inspector = isset($row[3]) && $row[3] !== 'N/A' ? $row[3] : '';
-            $fecha = isset($row[4]) ? $row[4] : '';
-
-            $maintRaw = isset($row[5]) ? $row[5] : '';
-            $chk_remiendo = str_contains($maintRaw, 'Falta remiendo/parche');
-            $chk_pintura = str_contains($maintRaw, 'Requiere retoque pintura');
-
-            $maintParts = explode('|', $maintRaw);
-            $customMaintParts = [];
-            foreach ($maintParts as $part) {
-                $trimmed = trim($part);
-                if ($trimmed !== 'Falta remiendo/parche' && $trimmed !== 'Requiere retoque pintura' && $trimmed !== 'Ninguno' && $trimmed !== '') {
-                    $customMaintParts[] = $trimmed;
-                }
-            }
-            $txt_mantenimiento = implode(' | ', $customMaintParts);
-
-            $faltantesRaw = isset($row[6]) ? $row[6] : '';
-            $faltantesArray = array_map('trim', explode(',', $faltantesRaw));
-
-            $notas = isset($row[7]) && $row[7] !== 'N/A' ? $row[7] : '';
-
-            $requiredItems = [
-                'chk_cortina' => 'Cortina',
-                'chk_mesa' => 'Mesa',
-                'chk_silla' => 'Silla',
-                'chk_nevera' => 'Nevera',
-                'chk_parrilla' => 'Portaequipajes',
-                'chk_lamparas_hab' => 'Lámparas hab.',
-                'chk_outlet_ac' => 'Enchufe A/C',
-                'chk_tv' => 'Televisor',
-                'chk_tapas_emergencia' => 'Tapas emergencia',
-                'chk_covers_outlets' => 'Tapas enchufes',
-                'chk_covers_luces' => 'Tapas luces',
-                'chk_extractor' => 'Detector humo',
-                'chk_puerta' => 'Puerta principal',
-                'chk_stop_door' => 'Tope puerta',
-                'chk_paredes' => 'Paredes bien',
-                'chk_griferia' => 'Grifería baño',
-                'chk_lavamanos' => 'Lavamanos',
-                'chk_espejo' => 'Espejo',
-                'chk_toilet' => 'Inodoro',
-                'chk_coso_papel' => 'Set de baño',
-                'chk_lampara_bano' => 'Lámpara baño',
-                'chk_cover_extractor' => 'Tapa extractor baño'
-            ];
-
-            $formData = [
-                'estado' => $estado,
-                'camas' => $camas,
-                'inspector' => $inspector,
-                'fecha' => $fecha,
-                'chk_remiendo' => $chk_remiendo,
-                'chk_pintura' => $chk_pintura,
-                'txt_mantenimiento' => $txt_mantenimiento,
-                'txt_notas' => $notas
-            ];
-
-            foreach ($requiredItems as $key => $name) {
-                $isMissing = false;
-                foreach ($faltantesArray as $f) {
-                    if (strcasecmp($f, $name) === 0) {
-                        $isMissing = true;
-                        break;
-                    }
-                }
-                $formData[$key] = !$isMissing;
             }
 
             return response()->json([
@@ -211,6 +221,58 @@ class GoogleSheetController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error al cargar habitación de Google Sheets: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function loadAllRooms()
+    {
+        try {
+            $service = $this->getSheetsService();
+            $spreadsheetId = $this->spreadsheetId;
+
+            $range = "Estado Actual!A2:I29";
+            $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+            $values = $response->getValues();
+
+            $allRoomsData = [];
+
+            if (!empty($values)) {
+                foreach ($values as $row) {
+                    if (empty($row) || !isset($row[0])) {
+                        continue;
+                    }
+                    $room = (int)$row[0];
+                    $parsed = $this->parseRow($row);
+                    if ($parsed) {
+                        $allRoomsData[$room] = $parsed;
+                    } else {
+                        $allRoomsData[$room] = (object)[];
+                    }
+                }
+            }
+
+            // Completar con las habitaciones faltantes
+            for ($room = 101; $room <= 114; $room++) {
+                if (!isset($allRoomsData[$room])) {
+                    $allRoomsData[$room] = (object)[];
+                }
+            }
+            for ($room = 201; $room <= 214; $room++) {
+                if (!isset($allRoomsData[$room])) {
+                    $allRoomsData[$room] = (object)[];
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $allRoomsData
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cargar todas las habitaciones de Google Sheets: ' . $e->getMessage()
             ], 500);
         }
     }
