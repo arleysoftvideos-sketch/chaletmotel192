@@ -400,6 +400,45 @@
 
     <h1 data-i18n="appTitle">🏨 App Hotel Control</h1>
     
+    <!-- Under Construction Fun Banner -->
+    <div class="relative overflow-hidden w-full rounded-[2rem] bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 p-[2px] mb-8 shadow-[0_0_40px_rgba(249,115,22,0.2)] group no-print transform transition-transform hover:scale-[1.01] duration-300">
+        <!-- Animated striped background (caution tape style) -->
+        <div class="absolute inset-0 opacity-20 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,0,0,1)_10px,rgba(0,0,0,1)_20px)] animate-[pulse_4s_ease-in-out_infinite]"></div>
+        
+        <div class="relative bg-[#061021] rounded-[calc(2rem-2px)] px-6 py-8 md:px-10 flex flex-col md:flex-row items-center justify-between overflow-hidden">
+            <!-- Glow effect -->
+            <div class="absolute -right-20 -top-20 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl group-hover:bg-orange-500/20 transition-all duration-700"></div>
+            <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-yellow-500/10 rounded-full blur-3xl group-hover:bg-yellow-500/20 transition-all duration-700"></div>
+            
+            <div class="flex flex-col md:flex-row items-center gap-6 z-10 text-center md:text-left">
+                <!-- Bouncing Icon -->
+                <div class="flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/30 animate-[bounce_2s_infinite] border-2 border-white/20 relative">
+                    <span class="text-4xl">🚧</span>
+                    <div class="absolute -bottom-2 w-12 h-2 bg-black/30 blur-sm rounded-full"></div>
+                </div>
+                
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-outfit font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400 mb-2 tracking-wide uppercase">
+                        ¡Zona en Construcción! 🛠️
+                    </h2>
+                    <p class="text-slate-300 font-medium text-sm md:text-base max-w-xl leading-relaxed">
+                        Ponte el casco de seguridad. Estamos programando y martillando código para traer nuevas e increíbles funciones a esta sección de Inventario. 
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-6 md:mt-0 z-10 flex-shrink-0">
+                <div class="group-hover:animate-pulse px-6 py-3 rounded-xl border border-yellow-500/30 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 text-yellow-400 font-bold text-sm backdrop-blur-md flex items-center gap-3 shadow-inner">
+                    <span class="relative flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
+                    </span>
+                    ¡Pronto Novedades!
+                </div>
+            </div>
+        </div>
+    </div>
+    
     
     <div class="room-nav-title" data-i18n="floor1">Piso 1 (101 - 114)</div>
     <div class="room-grid" id="nav-piso1"></div>
