@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    return 'hola mundo';
+    return 'hola mundo, como vamos';
 });
 
 // Rutas Públicas de Contacto
