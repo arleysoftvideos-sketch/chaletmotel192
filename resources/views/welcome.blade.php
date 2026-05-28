@@ -170,10 +170,7 @@
         </div>
         </section>
 
-        <!-- Booking Search Bar (Overlapping) -->
-        <div class="w-full max-w-7xl mx-auto px-6 -mt-8 relative z-20">
-            <x-availability-search />
-        </div>
+
 
         <!-- Main Content Area (Rooms Gallery & Amenities) -->
         <main class="w-full max-w-7xl mx-auto px-6 py-12 flex-grow flex flex-col justify-center gap-12 relative z-10">
