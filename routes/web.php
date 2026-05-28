@@ -5,6 +5,7 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GoogleSheetController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,8 +27,11 @@ Route::get('/nosotros', function () {
     return view('nosotros');
 })->name('nosotros');
 
+Route::post('/api/sync-room', [GoogleSheetController::class, 'syncRoom'])->name('api.sync-room');
+Route::get('/api/load-room/{room}', [GoogleSheetController::class, 'loadRoom'])->name('api.load-room');
+
 Route::get('/test', function () {
-    return 'hola mundo, como vamos';
+    return 'hola mundogit';
 });
 
 // Rutas Públicas de Contacto

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>App Hotel Control - Inventario</title>
 
     <!-- Fonts -->
@@ -334,6 +335,14 @@
         .btn-print:hover { background-color: #138496; }
         .btn-report { background-color: #28a745; }
         .btn-report:hover { background-color: #218838; }
+        .btn-sync { background-color: #10b981; }
+        .btn-sync:hover { background-color: #059669; }
+        .btn-cloud-load:hover {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #ffb703 !important;
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.2) !important;
+        }
 
         /* Pantalla de Reporte y Modal */
         #consolidated-view { display: none; }
@@ -477,7 +486,15 @@
     <div class="room-nav-title" data-i18n="floor2">Piso 2 (201 - 214)</div>
     <div class="room-grid" id="nav-piso2"></div>
 
-    <h2 style="margin-top: 20px; color: var(--text-color);"><span data-i18n="selectedRoom">Habitación Seleccionada:</span> <span id="lbl-room" style="color: var(--primary);">101</span></h2>
+    <h2 style="margin-top: 20px; color: var(--text-color); display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+        <span>
+            <span data-i18n="selectedRoom">Habitación Seleccionada:</span> 
+            <span id="lbl-room" style="color: var(--primary);">101</span>
+        </span>
+        <button type="button" class="btn-cloud-load" onclick="loadCurrentRoomFromGoogleSheets()" id="btn-load-sheets" style="background: #14274c; border: 1px solid #1e293b; color: #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 5px;">
+            ☁️ <span data-i18n="btnLoadSheets">Cargar desde Google Sheets</span>
+        </button>
+    </h2>
 
     <form id="checklist-form">
         <div class="header-info">
@@ -563,6 +580,7 @@
             <button type="button" class="btn btn-summary" onclick="showSummaryModal()">📊 <span data-i18n="btnViewSummary">Ver Resumen en Pantalla</span></button>
             <button type="button" class="btn btn-print" onclick="printCurrentRoom()">🖨️ <span data-i18n="btnPrintRoom">Imprimir Hab. Actual</span></button>
             <button type="button" class="btn btn-report" onclick="printConsolidatedReport()">📑 <span data-i18n="btnPrintReport">Imprimir Consolidado Faltantes</span></button>
+            <button type="button" class="btn btn-sync" onclick="syncCurrentRoomToGoogleSheets()" id="btn-sync-sheets">🟢 <span data-i18n="btnSyncSheets">Guardar en Google Sheets</span></button>
         </div>
     </form>
 </div>
@@ -582,6 +600,8 @@
             doorTitle: "🚪 Puertas y Paredes", bathTitle: "🛁 Área del Baño", bathType: "Tipo de baño:", tub: "Bañera", showerOnly: "Ducha sola",
             maintTitle: "🛠️ Mantenimiento Pendiente", notesTitle: "➕ Notas Adicionales",
             btnViewSummary: "Ver Resumen en Pantalla", btnPrintRoom: "Imprimir Hab. Actual", btnPrintReport: "Imprimir Consolidado Faltantes", btnClose: "Cerrar",
+            btnSyncSheets: "Guardar en Google Sheets", btnSyncing: "Guardando...",
+            btnLoadSheets: "Cargar desde Google Sheets", btnLoadingSheets: "Cargando...",
             maintPh: "Describe los daños o pinturas necesarias...", notesPh: "Observaciones extra, anexos...",
             
             // Textos largos para la pantalla principal
@@ -623,6 +643,8 @@
             doorTitle: "🚪 Doors & Walls", bathTitle: "🛁 Bathroom Area", bathType: "Bath Type:", tub: "Bathtub", showerOnly: "Shower Only",
             maintTitle: "🛠️ Pending Maintenance", notesTitle: "➕ Additional Notes",
             btnViewSummary: "View On-Screen Summary", btnPrintRoom: "Print Current Room", btnPrintReport: "Print Consolidated Report", btnClose: "Close",
+            btnSyncSheets: "Save to Google Sheets", btnSyncing: "Saving...",
+            btnLoadSheets: "Load from Google Sheets", btnLoadingSheets: "Loading...",
             maintPh: "Describe damages or paint needed...", notesPh: "Extra observations, attachments...",
             
             chk_cortina: "Curtain installed and in good condition", chk_mesa: "Table", 
@@ -881,6 +903,100 @@
         document.getElementById('app-view').classList.remove('no-print');
         reportDiv.classList.remove('print-only');
         reportDiv.style.display = 'none';
+    }
+
+    async function syncCurrentRoomToGoogleSheets() {
+        const btn = document.getElementById('btn-sync-sheets');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '⏳ <span data-i18n="btnSyncing">Guardando...</span>';
+
+        saveCurrentRoom();
+        const data = hotelData[currentRoom] || {};
+
+        try {
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const response = await fetch('/api/sync-room', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    room: currentRoom,
+                    data: data
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('✓ ' + (currentLang === 'es' ? 'Sincronizado correctamente con Google Sheets.' : 'Successfully synced with Google Sheets.'));
+            } else {
+                if (result.error_type === 'api_disabled') {
+                    if (confirm((currentLang === 'es' 
+                        ? 'La API de Google Sheets no está habilitada en tu Consola de Google Cloud. ¿Deseas abrir la consola para habilitarla?' 
+                        : 'Google Sheets API is not enabled. Do you want to go and enable it now?'))) {
+                        window.open('https://console.developers.google.com/apis/api/sheets.googleapis.com/overview?project=jovan-gprh', '_blank');
+                    }
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            alert((currentLang === 'es' ? 'Error de red al conectar con el servidor.' : 'Network error connecting to the server.'));
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            setLanguage(currentLang);
+        }
+    }
+
+    async function loadCurrentRoomFromGoogleSheets() {
+        const btn = document.getElementById('btn-load-sheets');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '⏳ <span data-i18n="btnLoadingSheets">Cargando...</span>';
+
+        try {
+            const response = await fetch(`/api/load-room/${currentRoom}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                if (result.exists && result.data) {
+                    // Actualizar base de datos local y almacenamiento
+                    hotelData[currentRoom] = result.data;
+                    localStorage.setItem('hotelControlData', JSON.stringify(hotelData));
+                    
+                    // Cargar datos en el formulario
+                    loadRoomData(currentRoom);
+                    renderNav();
+                    
+                    alert('✓ ' + (currentLang === 'es' ? 'Datos cargados desde Google Sheets correctamente.' : 'Data loaded from Google Sheets successfully.'));
+                } else {
+                    alert((currentLang === 'es' 
+                        ? 'No se encontraron datos registrados para esta habitación en Google Sheets.' 
+                        : 'No inspection records found for this room in Google Sheets.'));
+                }
+            } else {
+                alert('Error: ' + result.message);
+            }
+        } catch (error) {
+            console.error(error);
+            alert((currentLang === 'es' ? 'Error de red al conectar con el servidor.' : 'Network error connecting to the server.'));
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            setLanguage(currentLang);
+        }
     }
 
     // --- INICIALIZACIÓN ---
