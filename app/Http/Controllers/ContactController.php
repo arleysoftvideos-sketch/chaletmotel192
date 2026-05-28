@@ -68,8 +68,8 @@ class ContactController extends Controller
                 'valueInputOption' => 'USER_ENTERED'
             ]);
         } catch (\Exception $e) {
-            // Regresamos el error a la pantalla para poder ver exactamente qué falla
-            return redirect()->back()->withErrors(['google' => 'Error de Google: ' . $e->getMessage()])->withInput();
+            // Guardamos el error en los logs pero permitimos que la web continúe
+            logger()->error('Error al guardar contacto en Google Sheets: ' . $e->getMessage());
         }
 
         return redirect()->back()->with('success', '¡Gracias por contactarnos! Tu mensaje ha sido enviado.');
