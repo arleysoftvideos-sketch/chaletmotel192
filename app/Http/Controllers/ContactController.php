@@ -12,7 +12,7 @@ use App\Models\Contact;
 
 class ContactController extends Controller
 {
-    private $spreadsheetId = '1_HLh9a0v70MrRMd2ZGQy9j_v41HeNl-1i8xqsyd9RXE';
+    private $spreadsheetId = '1_HLh9a0v70MrRMd2ZGQy9j_v41HeNI-1i8xqsyd9RXE';
 
     private function getSheetsService()
     {
@@ -58,8 +58,8 @@ class ContactController extends Controller
                 $validated['message']
             ];
 
-            // Apendamos el registro en la pestaña 'contac', columnas A-D
-            $range = 'contac!A:D';
+            // Apendamos el registro en la pestaña 'contact', columnas A-D
+            $range = 'contact!A:D';
             $body = new ValueRange([
                 'values' => [$rowValues]
             ]);
