@@ -40,7 +40,7 @@ class ContactController extends Controller
         // 1. Protección contra Bots (Honeypot)
         if ($request->filled('website_url')) {
             // Si el campo invisible está lleno, es un bot. Lo ignoramos y fingimos éxito.
-            return redirect()->back()->with('success', '¡Gracias por escribirnos! Hemos recibido tu mensaje y muy pronto nos pondremos en contacto contigo para ayudarte.');
+            return redirect()->back()->with('success', 'Gracias por escribirnos. Hemos recibido su mensaje y nos pondremos en contacto con usted a la brevedad posible.');
         }
 
         $validated = $request->validate([
@@ -84,6 +84,6 @@ class ContactController extends Controller
             logger()->error('Error al guardar contacto en Google Sheets: ' . $e->getMessage());
         }
 
-        return redirect()->back()->with('success', '¡Gracias por escribirnos! Hemos recibido tu mensaje y muy pronto nos pondremos en contacto contigo para ayudarte.');
+        return redirect()->back()->with('success', 'Gracias por escribirnos. Hemos recibido su mensaje y nos pondremos en contacto con usted a la brevedad posible.');
     }
 }
