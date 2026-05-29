@@ -122,6 +122,12 @@
                 <form action="{{ route('contact.store') }}" method="POST" class="space-y-6">
                     @csrf
 
+                    <!-- Honeypot antispam -->
+                    <div class="hidden" aria-hidden="true">
+                        <label for="website_url">No llenar este campo si eres humano:</label>
+                        <input type="text" name="website_url" id="website_url" tabindex="-1" autocomplete="off">
+                    </div>
+
                     <!-- Full Name -->
                     <div class="space-y-2">
                         <label for="name" class="block text-xs font-bold text-yellow-500 uppercase tracking-wider">

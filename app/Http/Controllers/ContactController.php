@@ -37,6 +37,12 @@ class ContactController extends Controller
 
     public function store(Request $request)
     {
+        // 1. Protección contra Bots (Honeypot)
+        if ($request->filled('website_url')) {
+            // Si el campo invisible está lleno, es un bot. Lo ignoramos y fingimos éxito.
+            return redirect()->back()->with('success', '¡Gracias por contactarnos! Tu mensaje ha sido enviado.');
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
@@ -44,7 +50,13 @@ class ContactController extends Controller
             'message' => 'required|string|min:5',
         ]);
 
-        // 1. Guardar localmente en la base de datos
+        // 2. Protección contra Inyección JavaScript/XSS
+        $validated['name'] = strip_tags($validated['name']);
+        $validated['email'] = strip_tags($validated['email']);
+        $validated['phone'] = strip_tags($validated['phone'] ?? '');
+        $validated['message'] = strip_tags($validated['message']);
+
+        // Guardar localmente en la base de datos
         Contact::create($validated);
 
         // 2. Sincronizar con Google Sheets en la pestaña 'contact'
