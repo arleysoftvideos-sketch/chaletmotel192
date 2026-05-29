@@ -122,8 +122,11 @@
 
                         <!-- Price -->
                         <div class="flex flex-col">
+                            <span class="text-white/70 font-bold uppercase tracking-widest text-xs mb-1">
+                                {{ __('Desde') }}
+                            </span>
                             <span class="text-5xl sm:text-7xl font-black font-outfit text-gold leading-none">
-                                $1,200
+                                $1,000
                             </span>
                             <div class="flex items-center gap-2 mt-0.5">
                                 <div class="h-[1px] w-6 bg-white/40"></div>
