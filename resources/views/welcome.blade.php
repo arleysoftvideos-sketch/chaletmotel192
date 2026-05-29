@@ -60,11 +60,7 @@
         <!-- Navigation Header -->
         <header class="w-full bg-[#061021]/80 backdrop-blur-md sticky top-0 border-b border-blue-950 relative z-50">
             <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                <a href="/" class="flex items-center gap-2 group">
-                    <span class="text-xl font-black font-outfit tracking-wider text-white group-hover:text-gold transition-colors duration-300">
-                        CHALET MOTEL 192
-                    </span>
-                </a>
+                <div></div>
 
                 <div class="flex items-center gap-4">
                     <nav class="flex items-center gap-3">
