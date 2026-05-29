@@ -418,10 +418,10 @@
                 </div>
                 
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-outfit font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400 mb-2 tracking-wide uppercase">
+                    <h2 data-i18n="bannerTitle" class="text-2xl md:text-3xl font-outfit font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400 mb-2 tracking-wide uppercase">
                         ¡Zona en Construcción! 🛠️
                     </h2>
-                    <p class="text-slate-300 font-medium text-sm md:text-base max-w-xl leading-relaxed">
+                    <p data-i18n="bannerDesc" class="text-slate-300 font-medium text-sm md:text-base max-w-xl leading-relaxed">
                         Ponte el casco de seguridad. Estamos programando y martillando código para traer nuevas e increíbles funciones a esta sección de Inventario. 
                     </p>
                 </div>
@@ -433,7 +433,7 @@
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
                       <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
                     </span>
-                    ¡Pronto Novedades!
+                    <span data-i18n="bannerBadge">¡Pronto Novedades!</span>
                 </div>
             </div>
         </div>
@@ -563,6 +563,7 @@
             btnSyncSheets: "Guardar en Google Sheets", btnSyncing: "Guardando...",
             btnLoadSheets: "Cargar desde Google Sheets", btnLoadingSheets: "Cargando...",
             maintPh: "Describe los daños o pinturas necesarias...", notesPh: "Observaciones extra, anexos...",
+            bannerTitle: "¡Zona en Construcción! 🛠️", bannerDesc: "Ponte el casco de seguridad. Estamos programando y martillando código para traer nuevas e increíbles funciones a esta sección de Inventario.", bannerBadge: "¡Pronto Novedades!",
             
             // Textos largos para la pantalla principal
             chk_cortina: "Cortina instalada y en buen estado", chk_mesa: "Mesa", 
@@ -606,6 +607,7 @@
             btnSyncSheets: "Save to Google Sheets", btnSyncing: "Saving...",
             btnLoadSheets: "Load from Google Sheets", btnLoadingSheets: "Loading...",
             maintPh: "Describe damages or paint needed...", notesPh: "Extra observations, attachments...",
+            bannerTitle: "Under Construction! 🛠️", bannerDesc: "Put on your hard hat. We're coding and hammering away to bring amazing new features to this Inventory section.", bannerBadge: "Coming Soon!",
             
             chk_cortina: "Curtain installed and in good condition", chk_mesa: "Table", 
             chk_silla: "Chair (with the table)", chk_nevera: "Refrigerator",
