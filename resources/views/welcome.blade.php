@@ -258,17 +258,6 @@
 
                     <!-- Amenities Checklist -->
                     <ul class="space-y-6">
-                        <!-- Free Wifi -->
-                        <li class="flex items-center gap-4 group">
-                            <div class="w-10 h-10 bg-gold/10 text-gold border border-gold/20 rounded-xl flex items-center justify-center transition-all group-hover:scale-110 duration-300">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071a10.5 10.5 0 0114.14 0M1.414 8.05a16 16 0 0121.172 0" />
-                                </svg>
-                            </div>
-                            <span class="text-slate-200 font-bold font-outfit text-md uppercase tracking-wider group-hover:text-gold transition-colors">
-                                {{ __('Free Wifi') }}
-                            </span>
-                        </li>
 
                         <!-- Cable TV -->
                         <li class="flex items-center gap-4 group">
