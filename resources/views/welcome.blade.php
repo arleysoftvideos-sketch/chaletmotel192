@@ -301,6 +301,28 @@
             </div>
 
             <!-- Photo Gallery Section -->
+            @php
+            $nombresBonitos = [
+                'Suite King Majestic',
+                'Rincón de Descanso',
+                'Confort Absoluto',
+                'Baño de Lujo',
+                'Iluminación Cálida',
+                'Diseño Contemporáneo',
+                'Detalles Elegantes',
+                'Suite Presidencial King',
+                'Ambiente Relajante',
+                'Espacio Renovado',
+                'Suite King Premium',
+                'Comodidad Total',
+                'Estilo Moderno',
+                'Cama King Size',
+                'Baño Privado Renovado',
+                'Suite King Ejecutiva',
+                'Acabados de Lujo',
+                'Descanso Perfecto'
+            ];
+            @endphp
             <div class="bg-[#0a1831]/90 p-8 sm:p-10 rounded-[2rem] border border-blue-950 shadow-2xl w-full mt-12">
                 <!-- Header -->
                 <div class="border-b border-blue-950 pb-4 mb-8">
@@ -311,11 +333,12 @@
                 <!-- Grid Gallery -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     @for ($i = 1; $i <= 18; $i++)
-                    <div class="group border border-blue-950 rounded-xl overflow-hidden aspect-[3/4] bg-navy-dark relative shadow-md">
-                        <img src="/images/room_king.png ({{ $i }}).jpg" loading="lazy" alt="Gallery Photo {{ $i }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer">
+                    @php $nombreActual = $nombresBonitos[$i - 1]; @endphp
+                    <div class="group border border-blue-950 rounded-xl overflow-hidden aspect-[3/4] bg-navy-dark relative shadow-md" onclick="openLightbox('/images/room_king.png ({{ $i }}).jpg', '{{ $nombreActual }}')">
+                        <img src="/images/room_king.png ({{ $i }}).jpg" loading="lazy" alt="{{ $nombreActual }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer">
                         <!-- Overlay on hover -->
-                        <div class="absolute inset-0 bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-                            <span class="text-white border-2 border-white/50 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-lg font-bold font-outfit text-xs uppercase tracking-wider">{{ __('King Suite') }}</span>
+                        <div class="absolute inset-0 bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end items-center pointer-events-none pb-4">
+                            <span class="text-white border border-white/30 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-lg font-bold font-outfit text-[10px] uppercase tracking-wider shadow-lg text-center mx-2">{{ $nombreActual }}</span>
                         </div>
                     </div>
                     @endfor
@@ -391,6 +414,75 @@
                 <p>&copy; {{ date('Y') }} Chalet Motel 192. {{ __('Todos los derechos reservados.') }} Powered by Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
             </div>
         </footer>
+
+        <!-- Lightbox Modal -->
+        <div id="gallery-lightbox" class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm hidden flex-col items-center justify-center opacity-0 transition-opacity duration-300">
+            <!-- Close Button -->
+            <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/50 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all duration-300 z-[101]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            
+            <!-- Image Container -->
+            <div class="relative max-w-5xl w-full max-h-[85vh] flex flex-col items-center px-4">
+                <img id="lightbox-img" src="" alt="Gallery Image" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl border border-white/10">
+                
+                <!-- Beautiful Name Title -->
+                <div class="mt-6 text-center">
+                    <span id="lightbox-title" class="text-2xl md:text-3xl font-black font-outfit text-gold uppercase tracking-widest drop-shadow-lg">
+                        Nombre Bonito
+                    </span>
+                    <div class="flex items-center justify-center gap-2 mt-2">
+                        <div class="h-[1px] w-12 bg-gold/50"></div>
+                        <span class="text-white/60 font-bold text-xs uppercase tracking-widest">Chalet Motel 192</span>
+                        <div class="h-[1px] w-12 bg-gold/50"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lightbox Script -->
+        <script>
+            const lightbox = document.getElementById('gallery-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxTitle = document.getElementById('lightbox-title');
+
+            function openLightbox(src, title) {
+                lightboxImg.src = src;
+                lightboxTitle.textContent = title;
+                lightbox.classList.remove('hidden');
+                lightbox.style.display = 'flex';
+                // Trigger reflow for animation
+                void lightbox.offsetWidth;
+                lightbox.classList.remove('opacity-0');
+                lightbox.classList.add('opacity-100');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('opacity-100');
+                lightbox.classList.add('opacity-0');
+                setTimeout(() => {
+                    lightbox.classList.add('hidden');
+                    lightbox.style.display = '';
+                    lightboxImg.src = '';
+                    document.body.style.overflow = ''; // Restore scrolling
+                }, 300);
+            }
+
+            // Close on click outside image
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                    closeLightbox();
+                }
+            });
+        </script>
 
     </body>
 </html>
