@@ -451,9 +451,6 @@
             <span data-i18n="selectedRoom">Habitación Seleccionada:</span> 
             <span id="lbl-room" style="color: var(--primary);">101</span>
         </span>
-        <button type="button" class="btn-cloud-load" onclick="loadCurrentRoomFromGoogleSheets()" id="btn-load-sheets" style="background: #14274c; border: 1px solid #1e293b; color: #cbd5e1; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: bold; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 5px;">
-            ☁️ <span data-i18n="btnLoadSheets">Cargar desde Google Sheets</span>
-        </button>
     </h2>
 
     <form id="checklist-form">
@@ -733,9 +730,6 @@
         lblRoom.innerText = room;
         renderNav();
         loadRoomData(room);
-        
-        // Auto-cargar eliminado para evitar borrar cambios no guardados
-        // loadCurrentRoomFromGoogleSheetsSilently();
     }
 
     function toggleMesaSilla() {
@@ -922,129 +916,11 @@
         }
     }
 
-    async function loadCurrentRoomFromGoogleSheets() {
-        const btn = document.getElementById('btn-load-sheets');
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '⏳ <span data-i18n="btnLoadingSheets">Cargando...</span>';
-
-        try {
-            const response = await fetch(`/api/load-room/${currentRoom}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                if (result.exists && result.data) {
-                    // Actualizar base de datos local y almacenamiento
-                    hotelData[currentRoom] = result.data;
-                    localStorage.setItem('hotelControlData', JSON.stringify(hotelData));
-                    
-                    // Cargar datos en el formulario
-                    loadRoomData(currentRoom);
-                    renderNav();
-                    
-                    alert('✓ ' + (currentLang === 'es' ? 'Datos cargados desde Google Sheets correctamente.' : 'Data loaded from Google Sheets successfully.'));
-                } else {
-                    alert((currentLang === 'es' 
-                        ? 'No se encontraron datos registrados para esta habitación en Google Sheets.' 
-                        : 'No inspection records found for this room in Google Sheets.'));
-                }
-            } else {
-                alert('Error: ' + result.message);
-            }
-        } catch (error) {
-            console.error(error);
-            alert((currentLang === 'es' ? 'Error de red al conectar con el servidor.' : 'Network error connecting to the server.'));
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-            setLanguage(currentLang);
-        }
-    }
-
-    async function loadCurrentRoomFromGoogleSheetsSilently() {
-        const btn = document.getElementById('btn-load-sheets');
-        const originalText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '⏳ <span data-i18n="btnLoadingSheets">Cargando...</span>';
-
-        try {
-            const response = await fetch(`/api/load-room/${currentRoom}`, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-
-            const result = await response.json();
-
-            if (result.success && result.exists && result.data) {
-                // Actualizar almacenamiento local
-                hotelData[currentRoom] = result.data;
-                localStorage.setItem('hotelControlData', JSON.stringify(hotelData));
-                
-                // Refrescar formulario y navegación
-                loadRoomData(currentRoom);
-                renderNav();
-            }
-        } catch (error) {
-            console.error('Error al precargar desde Google Sheets:', error);
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-            setLanguage(currentLang);
-        }
-    }
-
-    async function syncAllRoomsFromGoogleSheets() {
-        try {
-            const response = await fetch('/api/load-all-rooms', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            const result = await response.json();
-            if (result.success && result.data) {
-                const activeElement = document.activeElement;
-                const isFormFocused = activeElement && form.contains(activeElement);
-                
-                allRooms.forEach(room => {
-                    if (room === currentRoom && isFormFocused) {
-                        return;
-                    }
-                    if (result.data[room] && Object.keys(result.data[room]).length > 0) {
-                        hotelData[room] = result.data[room];
-                    } else {
-                        hotelData[room] = {};
-                    }
-                });
-                localStorage.setItem('hotelControlData', JSON.stringify(hotelData));
-                
-                if (!isFormFocused) {
-                    loadRoomData(currentRoom);
-                }
-                renderNav();
-            }
-        } catch (error) {
-            console.error('Error al sincronizar habitaciones desde la nube:', error);
-        }
-    }
-
     // --- INICIALIZACIÓN ---
     setLanguage('{{ app()->getLocale() }}');
     lblRoom.innerText = currentRoom; 
     renderNav();
     loadRoomData(currentRoom);
-
-    // Cargar todas las habitaciones al iniciar (sin ciclo de cada 15 segundos para no borrar local)
-    // syncAllRoomsFromGoogleSheets();
-    // setInterval(syncAllRoomsFromGoogleSheets, 15000);
 
 </script>
 </body>
