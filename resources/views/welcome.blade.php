@@ -303,24 +303,24 @@
             <!-- Photo Gallery Section -->
             @php
             $nombresBonitos = [
-                'Suite King Majestic',
-                'Rincón de Descanso',
-                'Confort Absoluto',
-                'Baño de Lujo',
-                'Iluminación Cálida',
-                'Diseño Contemporáneo',
-                'Detalles Elegantes',
-                'Suite Presidencial King',
-                'Ambiente Relajante',
-                'Espacio Renovado',
-                'Suite King Premium',
-                'Comodidad Total',
-                'Estilo Moderno',
-                'Cama King Size',
-                'Baño Privado Renovado',
-                'Suite King Ejecutiva',
-                'Acabados de Lujo',
-                'Descanso Perfecto'
+                __('Suite King Majestic'),
+                __('Rincón de Descanso'),
+                __('Confort Absoluto'),
+                __('Baño de Lujo'),
+                __('Iluminación Cálida'),
+                __('Diseño Contemporáneo'),
+                __('Detalles Elegantes'),
+                __('Suite Presidencial King'),
+                __('Ambiente Relajante'),
+                __('Espacio Renovado'),
+                __('Suite King Premium'),
+                __('Comodidad Total'),
+                __('Estilo Moderno'),
+                __('Cama King Size'),
+                __('Baño Privado Renovado'),
+                __('Suite King Ejecutiva'),
+                __('Acabados de Lujo'),
+                __('Descanso Perfecto')
             ];
             @endphp
             <div class="bg-[#0a1831]/90 p-8 sm:p-10 rounded-[2rem] border border-blue-950 shadow-2xl w-full mt-12">
