@@ -343,8 +343,8 @@
                         $fileName = basename($imagePath);
                         $nombreActual = $nombresBonitos[$index % count($nombresBonitos)]; 
                     @endphp
-                    <div class="group border border-blue-950 rounded-xl overflow-hidden aspect-[3/4] bg-navy-dark relative shadow-md" onclick="openLightbox('/images/{{ urlencode($fileName) }}', '{{ $nombreActual }}')">
-                        <img src="/images/{{ urlencode($fileName) }}" loading="lazy" alt="{{ $nombreActual }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer">
+                    <div class="group border border-blue-950 rounded-xl overflow-hidden aspect-[3/4] bg-navy-dark relative shadow-md" onclick="openLightbox('/images/{{ $fileName }}', '{{ $nombreActual }}')">
+                        <img src="/images/{{ $fileName }}" loading="lazy" alt="{{ $nombreActual }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer">
                         <!-- Overlay on hover -->
                         <div class="absolute inset-0 bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end items-center pointer-events-none pb-4">
                             <span class="text-white border border-white/30 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-lg font-bold font-outfit text-[10px] uppercase tracking-wider shadow-lg text-center mx-2">{{ $nombreActual }}</span>
