@@ -734,8 +734,8 @@
         renderNav();
         loadRoomData(room);
         
-        // Auto-cargar datos desde Google Sheets en segundo plano al cambiar de habitación
-        loadCurrentRoomFromGoogleSheetsSilently();
+        // Auto-cargar eliminado para evitar borrar cambios no guardados
+        // loadCurrentRoomFromGoogleSheetsSilently();
     }
 
     function toggleMesaSilla() {
@@ -1042,9 +1042,9 @@
     renderNav();
     loadRoomData(currentRoom);
 
-    // Cargar todas las habitaciones al iniciar y configurar sondeo cada 15 segundos
-    syncAllRoomsFromGoogleSheets();
-    setInterval(syncAllRoomsFromGoogleSheets, 15000);
+    // Cargar todas las habitaciones al iniciar (sin ciclo de cada 15 segundos para no borrar local)
+    // syncAllRoomsFromGoogleSheets();
+    // setInterval(syncAllRoomsFromGoogleSheets, 15000);
 
 </script>
 </body>
