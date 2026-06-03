@@ -916,11 +916,49 @@
         }
     }
 
+    async function syncAllRoomsFromGoogleSheets() {
+        try {
+            const response = await fetch('/api/load-all-rooms', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            const result = await response.json();
+            if (result.success && result.data) {
+                const activeElement = document.activeElement;
+                const isFormFocused = activeElement && form.contains(activeElement);
+                
+                allRooms.forEach(room => {
+                    if (room === currentRoom && isFormFocused) {
+                        return;
+                    }
+                    if (result.data[room] && Object.keys(result.data[room]).length > 0) {
+                        hotelData[room] = result.data[room];
+                    } else {
+                        hotelData[room] = {};
+                    }
+                });
+                localStorage.setItem('hotelControlData', JSON.stringify(hotelData));
+                
+                if (!isFormFocused) {
+                    loadRoomData(currentRoom);
+                }
+                renderNav();
+            }
+        } catch (error) {
+            console.error('Error al sincronizar habitaciones desde la nube:', error);
+        }
+    }
+
     // --- INICIALIZACIÓN ---
     setLanguage('{{ app()->getLocale() }}');
     lblRoom.innerText = currentRoom; 
     renderNav();
     loadRoomData(currentRoom);
+
+    // Cargar todas las habitaciones al iniciar (solo 1 vez, sin setInterval)
+    syncAllRoomsFromGoogleSheets();
 
 </script>
 </body>
