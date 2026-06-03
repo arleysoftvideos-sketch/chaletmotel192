@@ -300,6 +300,28 @@
 
             </div>
 
+            <!-- Photo Gallery Section -->
+            <div class="bg-[#0a1831]/90 p-8 sm:p-10 rounded-[2rem] border border-blue-950 shadow-2xl w-full mt-12">
+                <!-- Header -->
+                <div class="border-b border-blue-950 pb-4 mb-8">
+                    <h2 class="text-2xl font-black font-outfit text-white tracking-wide uppercase">{{ __('Galería de Fotos') }}</h2>
+                    <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">{{ __('Conoce nuestros espacios completamente renovados') }}</p>
+                </div>
+
+                <!-- Grid Gallery -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    @for ($i = 1; $i <= 18; $i++)
+                    <div class="group border border-blue-950 rounded-xl overflow-hidden aspect-[3/4] bg-navy-dark relative shadow-md">
+                        <img src="/images/room_king.png ({{ $i }}).jpg" loading="lazy" alt="Gallery Photo {{ $i }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer">
+                        <!-- Overlay on hover -->
+                        <div class="absolute inset-0 bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                            <span class="text-white border-2 border-white/50 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-lg font-bold font-outfit text-xs uppercase tracking-wider">{{ __('King Suite') }}</span>
+                        </div>
+                    </div>
+                    @endfor
+                </div>
+            </div>
+
         </main>
 
         <!-- Bottom Contact Expedia-style Banner -->
