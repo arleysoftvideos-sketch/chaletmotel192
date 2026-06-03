@@ -41,6 +41,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <style>
+            html {
+                scroll-behavior: smooth;
+            }
             body {
                 background-color: #040a17;
                 font-family: 'Inter', sans-serif;
@@ -235,13 +238,15 @@
                                     <span class="text-xs font-bold text-white uppercase tracking-wider">{{ __('King Suite') }}</span>
                                 </div>
                             </div>
-                            <div class="border border-blue-900/20 border-dashed flex flex-col justify-center items-center p-6 text-center rounded-2xl aspect-[4/3] bg-[#081326]/40">
-                                <svg class="w-10 h-10 text-blue-900/60 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            <a href="#photo-gallery" class="border border-gold/30 hover:border-gold flex flex-col justify-center items-center p-6 text-center rounded-2xl aspect-[4/3] bg-gold/5 hover:bg-gold/10 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-gold/20">
+                                <svg class="w-10 h-10 text-gold mb-3 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
-                                <span class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Próximas Suites') }}</span>
-                                <p class="text-slate-500 text-[10px] mt-1 max-w-[180px]">{{ __('Estamos renovando más espacios exclusivos para ti.') }}</p>
-                            </div>
+                                <span class="text-white font-black font-outfit text-sm uppercase tracking-widest group-hover:text-gold transition-colors">{{ __('Ver Galería Completa') }}</span>
+                                <div class="mt-4 flex items-center justify-center animate-bounce text-gold/60 group-hover:text-gold">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                                </div>
+                            </a>
                         </div>
                     </div>
 
@@ -323,7 +328,7 @@
                 __('Descanso Perfecto')
             ];
             @endphp
-            <div class="bg-[#0a1831]/90 p-8 sm:p-10 rounded-[2rem] border border-blue-950 shadow-2xl w-full mt-12">
+            <div id="photo-gallery" class="bg-[#0a1831]/90 p-8 sm:p-10 rounded-[2rem] border border-blue-950 shadow-2xl w-full mt-12 scroll-mt-24">
                 <!-- Header -->
                 <div class="border-b border-blue-950 pb-4 mb-8">
                     <h2 class="text-2xl font-black font-outfit text-white tracking-wide uppercase">{{ __('Galería de Fotos') }}</h2>
