@@ -412,7 +412,7 @@
                     { es: "Ya tengo mi código de barras listo.", en: "I have my barcode ready.", pro: "ai jaf mai bar-coud re-di" },
                     { es: "¡Nos vemos en el próximo partido!", en: "See you at the next game!", pro: "sii iu at de nekst gueim" }
                 ],
-                "ABECEDARIO 🔤": [
+                "Abecedario 🔤": [
                     { es: "A (como en Apple)", en: "A /ei/", pro: "ei" },
                     { es: "B (como en Boy)", en: "B /bi/", pro: "bi" },
                     { es: "C (como en Cat)", en: "C /si/", pro: "si" },
@@ -1125,7 +1125,58 @@
                     { es: "El viento está calmado.", en: "The wind is calm.", pro: "de guind is calm" },
                     { es: "Disfruta el día soleado.", en: "Enjoy the sunny day.", pro: "in-joi de sa-ni-dei" }
                 ],
-                "Colores Básicos 🎨": [],
+                "Colores Básicos 🎨": [
+                    { es: "Rojo", en: "Red", pro: "red" },
+                    { es: "Azul", en: "Blue", pro: "bluu" },
+                    { es: "Verde", en: "Green", pro: "griin" },
+                    { es: "Amarillo", en: "Yellow", pro: "ie-lou" },
+                    { es: "Negro", en: "Black", pro: "blak" },
+                    { es: "Blanco", en: "White", pro: "uait" },
+                    { es: "Gris", en: "Gray", pro: "grei" },
+                    { es: "Naranja", en: "Orange", pro: "o-rench" },
+                    { es: "Rosa / Rosado", en: "Pink", pro: "pink" },
+                    { es: "Morado", en: "Purple", pro: "per-pol" },
+                    { es: "Marrón / Café", en: "Brown", pro: "braun" },
+                    { es: "Dorado", en: "Gold", pro: "gould" },
+                    { es: "Plateado", en: "Silver", pro: "sil-ver" },
+                    { es: "Claro (Color)", en: "Light", pro: "lait" },
+                    { es: "Oscuro", en: "Dark", pro: "dark" },
+                    { es: "Brillante", en: "Bright", pro: "brait" },
+                    { es: "Azul marino", en: "Navy blue", pro: "nei-vi bluu" },
+                    { es: "Beige", en: "Beige", pro: "beish" },
+                    { es: "Turquesa", en: "Turquoise", pro: "ter-cois" },
+                    { es: "Verde neón", en: "Neon green", pro: "ni-on griin" },
+                    { es: "Morado oscuro", en: "Dark purple", pro: "dark per-pol" },
+                    { es: "Azul claro", en: "Light blue", pro: "lait bluu" },
+                    { es: "Verde oliva", en: "Olive green", pro: "o-liv griin" },
+                    { es: "Gris oscuro", en: "Dark gray", pro: "dark grei" },
+                    { es: "Blanco hueso", en: "Off-white", pro: "of uait" },
+                    { es: "Bronce", en: "Bronze", pro: "brons" },
+                    { es: "Crema", en: "Cream", pro: "criim" },
+                    { es: "Castaño / Marrón oscuro", en: "Chestnut", pro: "ches-nat" },
+                    { es: "Rojo oscuro", en: "Dark red", pro: "dark red" },
+                    { es: "Amarillo mostaza", en: "Mustard yellow", pro: "mas-tard ie-lou" },
+                    { es: "Color pastel", en: "Pastel color", pro: "pas-tel co-lor" },
+                    { es: "Transparente", en: "Transparent", pro: "trans-pa-rent" },
+                    { es: "Multicolor", en: "Multicolor", pro: "mal-ti-co-lor" },
+                    { es: "Arcoíris", en: "Rainbow", pro: "rein-bou" },
+                    { es: "¿Cuál es tu color favorito?", en: "What is your favorite color?", pro: "uat is ior fei-vo-rit co-lor" },
+                    { es: "Mi color favorito es el azul.", en: "My favorite color is blue.", pro: "mai fei-vo-rit co-lor is bluu" },
+                    { es: "Me gusta la camisa roja.", en: "I like the red shirt.", pro: "ai laik de red shert" },
+                    { es: "El carro es negro.", en: "The car is black.", pro: "de car is blak" },
+                    { es: "Las paredes son blancas.", en: "The walls are white.", pro: "de uols ar uait" },
+                    { es: "Prefiero los colores oscuros.", en: "I prefer dark colors.", pro: "ai pri-fer dark co-lors" },
+                    { es: "Este color es muy brillante.", en: "This color is very bright.", pro: "dis co-lor is ve-ri brait" },
+                    { es: "Combina el rojo con el blanco.", en: "Combine red with white.", pro: "com-bain red guiz uait" },
+                    { es: "Esa gorra es de color verde neón.", en: "That cap is neon green.", pro: "dat kap is ni-on griin" },
+                    { es: "Los zapatos son de color marrón.", en: "The shoes are brown.", pro: "de shuus ar braun" },
+                    { es: "El logo tiene letras doradas.", en: "The logo has gold letters.", pro: "de lo-gou jas gould le-ters" },
+                    { es: "El cielo está azul hoy.", en: "The sky is blue today.", pro: "de es-kai is bluu tu-dei" },
+                    { es: "La minivan es gris.", en: "The minivan is gray.", pro: "de mi-ni-van is grei" },
+                    { es: "El Jeep Cherokee es rojo.", en: "The Jeep Cherokee is red.", pro: "de yiip che-ro-kii is red" },
+                    { es: "Me gusta ese tono de verde.", en: "I like that shade of green.", pro: "ai laik dat sheid of griin" },
+                    { es: "Color seleccionado.", en: "Color selected.", pro: "co-lor se-lek-ted" }
+                ],
                 "Compras y Dinero 💰": [
                     { es: "¿Cuánto cuesta esto?", en: "How much is this?", pro: "jau mach is dis" },
                     { es: "Efectivo", en: "Cash", pro: "kash" },
@@ -1724,7 +1775,7 @@
                     { es: "El amor lo cambia todo.", en: "Love changes everything.", pro: "lav chein-jis ev-ri-zin" },
                     { es: "Mañana será un mejor día.", en: "Tomorrow will be a better day.", pro: "tu-ma-rou guil bi a be-ter dei" }
                 ],
-                "FRASES: Agencia de Viajes": [
+                "Frases: Agencia de Viajes": [
                     { es: "Bienvenidos a Magic Travel.", en: "Welcome to Magic Travel.", pro: "guel-kam tu ma-yik tra-vel" },
                     { es: "¿Cuál es su destino?", en: "What is your destination?", pro: "uat is ior des-ti-nei-shon" },
                     { es: "Tengo una oferta excelente.", en: "I have an excellent deal.", pro: "ai jaf an ek-se-lent diil" },
@@ -1776,7 +1827,7 @@
                     { es: "Los impuestos ya están incluidos.", en: "Taxes are already included.", pro: "tak-ses ar ol-re-di in-cluu-ded" },
                     { es: "¡Prepárese para las mejores vacaciones!", en: "Get ready for the best vacation!", pro: "guet re-di for de best vei-kei-shon" }
                 ],
-                "FRASES: Cerrajería": [
+                "Frases: Cerrajería": [
                     { es: "Me quedé por fuera de mi casa.", en: "I'm locked out of my house.", pro: "aim lokt aut of mai jaus" },
                     { es: "Perdí las llaves de mi carro.", en: "I lost my car keys.", pro: "ai lost mai car kiis" },
                     { es: "Necesito cambiar la cerradura.", en: "I need to change the lock.", pro: "ai niid tu cheinch de lok" },
@@ -1828,7 +1879,7 @@
                     { es: "Pruebe la nueva llave usted mismo.", en: "Try the new key yourself.", pro: "trai de niu kii ior-self" },
                     { es: "Que tenga un día seguro.", en: "Have a safe day.", pro: "jaf a seif dei" }
                 ],
-                "FRASES: Delivery & Instacart": [
+                "Frases: Delivery & Instacart": [
                     { es: "Dejé el paquete en la puerta.", en: "I left the package at the door.", pro: "ai left de pa-kich at de door" },
                     { es: "Tu pedido está afuera.", en: "Your order is outside.", pro: "ior or-der is aut-said" },
                     { es: "Estoy buscando un reemplazo para este artículo.", en: "I'm looking for a replacement for this item.", pro: "aim lu-kin for a ri-pleis-ment for dis ai-tem" },
@@ -1880,7 +1931,7 @@
                     { es: "¡Muchas gracias por elegirnos hoy!", en: "Thank you so much for choosing us today!", pro: "zenk iu sou mach for chu-sin as tu-dei" },
                     { es: "Que tengas una excelente noche.", en: "Have an excellent night.", pro: "jaf an ek-se-lent nait" }
                 ],
-                "FRASES: Publicidad & Ventas": [
+                "Frases: Publicidad & Ventas": [
                     { es: "Esta es una oferta por tiempo limitado.", en: "This is a limited-time offer.", pro: "dis is a li-mi-ted taim o-fer" },
                     { es: "Compra uno y llévate el segundo gratis.", en: "Buy one, get one free.", pro: "bai uan, guet uan frii" },
                     { es: "Tenemos el mejor precio del mercado.", en: "We have the best price on the market.", pro: "gui jaf de best prais on de mar-ket" },
@@ -1932,7 +1983,7 @@
                     { es: "La oferta se activará automáticamente.", en: "The offer will be activated automatically.", pro: "di o-fer guil bi ak-ti-vei-ted o-to-ma-ti-cal-i" },
                     { es: "Gracias por confiar en nuestro equipo.", en: "Thank you for trusting our team.", pro: "zenk iu for tras-tin au-ar tiim" }
                 ],
-                "FRASES: Royal Prestige": [
+                "Frases: Royal Prestige": [
                     { es: "Este sistema de cocina cuida la salud de tu familia.", en: "This cooking system takes care of your family's health.", pro: "dis cu-kin sis-tem teiks ker of ior fa-mi-lis jelz" },
                     { es: "Puedes cocinar sin usar aceite ni agua.", en: "You can cook without using oil or water.", pro: "iu can cuk gui-daut iu-sin oil or ua-ter" },
                     { es: "El acero quirúrgico no contamina la comida.", en: "Surgical stainless steel does not contaminate food.", pro: "ser-yi-kol stein-les stil das not con-ta-mi-neit fuud" },
@@ -1984,7 +2035,7 @@
                     { es: "Cualquier duda que tengas, puedes llamarme directamente.", en: "Any questions you have, you can call me directly.", pro: "e-ni kues-shons iu jaf, iu can col mi di-rekt-li" },
                     { es: "Gracias por abrirme las puertas de tu hogar.", en: "Thank you for opening the doors of your home.", pro: "zenk iu for ou-pe-nin de doors of ior joum" }
                 ],
-                "FRASES: Tienda de Ropa": [
+                "Frases: Tienda de Ropa": [
                     { es: "¿Puedo medirme esto?", en: "Can I try this on?", pro: "can ai trai dis on" },
                     { es: "¿Dónde están los probadores?", en: "Where are the fitting rooms?", pro: "guer ar de fi-tin ruums" },
                     { es: "Busco esto en una talla más grande.", en: "I'm looking for this in a larger size.", pro: "aim lu-kin for dis in a lar-yer sais" },
@@ -2036,7 +2087,7 @@
                     { es: "Paga aquí para evitar la fila.", en: "Pay here to avoid the line.", pro: "pei jiar tu a-void de lain" },
                     { es: "¡Disfruta tus nuevas prendas!", en: "Enjoy your new clothes!", pro: "in-joi ior niu clous" }
                 ],
-                "FRASES: Transportes y Viajes": [
+                "Frases: Transportes y Viajes": [
                     { es: "¿A qué hora sale el próximo autobús?", en: "What time does the next bus leave?", pro: "uat taim das de nekst bas liiv" },
                     { es: "Necesito comprar un boleto de ida y vuelta.", en: "I need to buy a round-trip ticket.", pro: "ai niid tu bai a raund trip ti-ket" },
                     { es: "¿Dónde se toma el taxi?", en: "Where do I catch a taxi?", pro: "guer du ai kach a tak-si" },
@@ -2088,7 +2139,7 @@
                     { es: "Guarde el recibo del alquiler del auto.", en: "Keep the car rental receipt.", pro: "kiip de car ren-tal re-siit" },
                     { es: "¡Bienvenidos a su destino final!", en: "Welcome to your final destination!", pro: "guel-kam tu ior fai-nal des-ti-nei-shon" }
                 ],
-                "FRASES: Venta de Chorizos": [
+                "Frases: Venta de Chorizos": [
                     { es: "Tenemos chorizos artesanales listos.", en: "We have artisan chorizos ready.", pro: "gui jaf ar-ti-san cho-ri-sos re-di" },
                     { es: "¿Cuántos chorizos vas a llevar hoy?", en: "How many chorizos are you taking today?", pro: "jau me-ni cho-ri-sos ar iu tei-kin tu-dei" },
                     { es: "Están hechos con carne de cerdo seleccionada.", en: "They are made with selected pork meat.", pro: "dei ar meid guiz se-lek-ted pork miit" },
@@ -2140,7 +2191,7 @@
                     { es: "Cualquier comentario nos ayuda a mejorar.", en: "Any feedback helps us improve.", pro: "e-ni fiid-bak jelps as im-pruuv" },
                     { es: "¡Muchas gracias por tu compra de corazón!", en: "Thank you so much for your purchase from the heart!", pro: "zenk iu sou mach for ior per-chas rom de jart" }
                 ],
-                "FRASES: Warehouse (Bodega)": [
+                "Frases: Warehouse (Bodega)": [
                     { es: "Mueve este pallet al fondo.", en: "Move this pallet to the back.", pro: "muuv dis pa-let tu de bak" },
                     { es: "Necesitas usar las botas con punta de acero.", en: "You need to wear steel-toe boots.", pro: "iu niid tu guer es-tiil tou buuts" },
                     { es: "El montacargas está viniendo por el pasillo.", en: "The forklift is coming down the aisle.", pro: "de fork-lift is ca-min daun de ail" },
@@ -3038,7 +3089,7 @@
 
             const categoryTranslations = {
                 "01. MUNDIAL FIFA 2026 🏆": "{{ __('01. MUNDIAL FIFA 2026 🏆') }}",
-                "ABECEDARIO 🔤": "{{ __('ABECEDARIO 🔤') }}",
+                "Abecedario 🔤": "{{ __('Abecedario 🔤') }}",
                 "Adjetivos Comunes 💡": "{{ __('Adjetivos Comunes 💡') }}",
                 "Alimentos y Bebidas 🍕": "{{ __('Alimentos y Bebidas 🍕') }}",
                 "Animales y Naturaleza 🦁": "{{ __('Animales y Naturaleza 🦁') }}",
@@ -3052,15 +3103,15 @@
                 "Educación y Escuela 📚": "{{ __('Educación y Escuela 📚') }}",
                 "El Cuerpo Humano 🧠": "{{ __('El Cuerpo Humano 🧠') }}",
                 "Emociones y Sentimientos 😊": "{{ __('Emociones y Sentimientos 😊') }}",
-                "FRASES: Agencia de Viajes": "{{ __('FRASES: Agencia de Viajes') }}",
-                "FRASES: Cerrajería": "{{ __('FRASES: Cerrajería') }}",
-                "FRASES: Delivery & Instacart": "{{ __('FRASES: Delivery & Instacart') }}",
-                "FRASES: Publicidad & Ventas": "{{ __('FRASES: Publicidad & Ventas') }}",
-                "FRASES: Royal Prestige": "{{ __('FRASES: Royal Prestige') }}",
-                "FRASES: Tienda de Ropa": "{{ __('FRASES: Tienda de Ropa') }}",
-                "FRASES: Transportes y Viajes": "{{ __('FRASES: Transportes y Viajes') }}",
-                "FRASES: Venta de Chorizos": "{{ __('FRASES: Venta de Chorizos') }}",
-                "FRASES: Warehouse (Bodega)": "{{ __('FRASES: Warehouse (Bodega)') }}",
+                "Frases: Agencia de Viajes": "{{ __('Frases: Agencia de Viajes') }}",
+                "Frases: Cerrajería": "{{ __('Frases: Cerrajería') }}",
+                "Frases: Delivery & Instacart": "{{ __('Frases: Delivery & Instacart') }}",
+                "Frases: Publicidad & Ventas": "{{ __('Frases: Publicidad & Ventas') }}",
+                "Frases: Royal Prestige": "{{ __('Frases: Royal Prestige') }}",
+                "Frases: Tienda de Ropa": "{{ __('Frases: Tienda de Ropa') }}",
+                "Frases: Transportes y Viajes": "{{ __('Frases: Transportes y Viajes') }}",
+                "Frases: Venta de Chorizos": "{{ __('Frases: Venta de Chorizos') }}",
+                "Frases: Warehouse (Bodega)": "{{ __('Frases: Warehouse (Bodega)') }}",
                 "Familia y Relaciones 👨👩👧": "{{ __('Familia y Relaciones 👨👩👧') }}",
                 "Farmacia 💊": "{{ __('Farmacia 💊') }}",
                 "Horas y Tiempo ⏱️": "{{ __('Horas y Tiempo ⏱️') }}",
