@@ -242,13 +242,16 @@
                                     <span class="text-xs font-bold text-white uppercase tracking-wider">{{ __('King Suite') }}</span>
                                 </div>
                             </div>
-                            <a href="#photo-gallery" class="border border-gold/30 hover:border-gold flex flex-col justify-center items-center p-6 text-center rounded-2xl aspect-[4/3] bg-gold/5 hover:bg-gold/10 transition-all duration-300 group cursor-pointer shadow-lg hover:shadow-gold/20">
-                                <svg class="w-10 h-10 text-gold mb-3 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span class="text-white font-black font-outfit text-sm uppercase tracking-widest group-hover:text-gold transition-colors">{{ __('Ver Galería Completa') }}</span>
-                                <div class="mt-4 flex items-center justify-center animate-bounce text-gold/60 group-hover:text-gold">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                            <a href="#photo-gallery" class="group border border-blue-950 rounded-2xl overflow-hidden aspect-[4/3] relative shadow-md block">
+                                <img src="/images/room_2kings.png" alt="Gallery Preview" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-colors duration-300 flex flex-col justify-center items-center p-6 text-center">
+                                    <svg class="w-10 h-10 text-gold mb-3 group-hover:scale-110 group-hover:-translate-y-1 transition-transform duration-300 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span class="text-white font-black font-outfit text-sm uppercase tracking-widest group-hover:text-gold transition-colors drop-shadow-md">{{ __('Ver Galería Completa') }}</span>
+                                    <div class="mt-4 flex items-center justify-center animate-bounce text-gold group-hover:text-gold drop-shadow-md">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                                    </div>
                                 </div>
                             </a>
                         </div>
@@ -394,9 +397,9 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('Located At') }}</span>
-                        <span class="text-white font-extrabold font-outfit text-xs sm:text-sm leading-snug">
+                        <a href="https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746" target="_blank" class="text-white hover:text-gold transition-colors font-extrabold font-outfit text-xs sm:text-sm leading-snug">
                             4741 W Irlo Bronson Memorial Hwy, <br class="hidden sm:inline">Kissimmee, FL 34746
-                        </span>
+                        </a>
                     </div>
                 </div>
 

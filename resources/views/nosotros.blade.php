@@ -329,9 +329,9 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('Ubicados en') }}</span>
-                        <span class="text-white font-extrabold font-outfit text-xs sm:text-sm leading-snug">
+                        <a href="https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746" target="_blank" class="text-white hover:text-gold transition-colors font-extrabold font-outfit text-xs sm:text-sm leading-snug">
                             4741 W Irlo Bronson Memorial Hwy, <br class="hidden sm:inline">Kissimmee, FL 34746
-                        </span>
+                        </a>
                     </div>
                 </div>
 
