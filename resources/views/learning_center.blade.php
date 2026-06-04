@@ -55,8 +55,8 @@
             }
 
             /* ARLINGO APP CSS */
-            .screen { display: none; min-height: 400px; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
-            .active-screen { display: flex; }
+            .screen { display: none !important; min-height: 400px; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
+            .active-screen { display: flex !important; }
             .modal-header { display: flex; flex-direction: column; padding: 15px 20px; border-bottom: 1px solid #ffb703; position: sticky; top: 0; background-color: rgba(6, 16, 33, 0.95); z-index: 1000; backdrop-filter: blur(10px); }
             .back-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.3s; }
             .back-btn:hover { background: rgba(255,255,255,0.1); border-color: #ffb703; }
