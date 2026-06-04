@@ -178,6 +178,9 @@
                 let responseHtml = '';
 
                 switch(intent) {
+                    case 'saludo':
+                        responseHtml = `{!! __('¡Hola! ¿En qué te puedo ayudar hoy? Puedes usar los botones o escribirme lo que necesitas.') !!}`;
+                        break;
                     case 'habitaciones':
                         responseHtml = `{!! __('Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. ¡Pronto añadiremos más! Si deseas reservar o saber precios exactos, <a href="tel:+14077731461" class="text-gold underline font-bold">llámanos al +1 407 773 1461</a>.') !!}`;
                         break;
@@ -222,6 +225,8 @@
                 intent = 'nosotros';
             } else if(val.includes('redes') || val.includes('facebook') || val.includes('instagram') || val.includes('social') || val.includes('network')) {
                 intent = 'redes';
+            } else if(val.includes('hola') || val.includes('buenas') || val.includes('buenos') || val.includes('hi') || val.includes('hello') || val.includes('hey') || val.includes('saludos')) {
+                intent = 'saludo';
             }
 
             akiAsk(intent, originalText);
