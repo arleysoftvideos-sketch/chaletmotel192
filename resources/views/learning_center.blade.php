@@ -244,21 +244,21 @@
                 <div class="w-full max-w-5xl mx-auto flex justify-start items-center mb-4">
                     <button class="back-btn" onclick="closeModal()">← {{ __('VOLVER') }}</button>
                 </div>
-                <div class="modal-top-row">
-                    <div class="flex items-center gap-4 sm:gap-6">
-                        <div id="modalTargetFlag" class="shrink-0"></div>
-                        <div class="flex flex-col">
-                            <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl sm:text-2xl uppercase tracking-wide m-0">DICCIONARIO</h2>
-                            <div class="flex items-center gap-3 mt-1">
-                                <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
-                                <span class="text-slate-600 text-xs">|</span>
-                                <span id="learningLabel" class="tracking-wider uppercase text-[10px] font-bold text-slate-300"></span>
-                            </div>
+                <div class="modal-top-row flex-col sm:flex-row items-start sm:items-center">
+                    <div class="flex flex-col w-full sm:w-auto">
+                        <h2 id="modalTitle" class="text-gold font-black font-outfit text-2xl sm:text-3xl uppercase tracking-wide m-0 drop-shadow-md">DICCIONARIO</h2>
+                        <div class="flex items-center gap-3 mt-2">
+                            <span id="itemCount" class="text-slate-400 text-sm font-bold tracking-widest">0 palabras</span>
+                            <span class="text-slate-600 text-sm">|</span>
+                            <span id="learningLabel" class="tracking-wider uppercase text-xs font-bold text-slate-300"></span>
                         </div>
                     </div>
-                    <div class="flex items-center gap-2 sm:gap-4 mt-4 sm:mt-0">
-                        <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
+                    <div class="mt-4 sm:mt-0">
+                        <button id="btnPlayCategory" class="play-all-btn font-outfit text-sm px-6 py-3" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
                     </div>
+                </div>
+                <div class="w-full max-w-[800px] mx-auto mt-6 flex justify-center">
+                    <div id="modalTargetFlag" class="w-full max-w-md overflow-hidden rounded-2xl shadow-2xl border-2 border-blue-900/50 opacity-80"></div>
                 </div>
             </div>
             <div id="modalBody" class="modal-body"></div>
@@ -2615,11 +2615,266 @@
                     { es: "Me voy a poner los tenis.", en: "I'm going to put on my sneakers.", pro: "aim gou-in tu put on mai snii-kers" },
                     { es: "Quítate los zapatos mojados.", en: "Take off your wet shoes.", pro: "teik of ior uet shuus" }
                 ],
-                "Salud y Medicina 🏥": [],
-                "Saludos y Despedidas ✨": [],
-                "Salón de Belleza ✨": [],
-                "Transportes y Viajes 🚀": [],
-                "Verbos de Acción 🏃": []
+                "Salud y Medicina 🏥": [
+                    { es: "Me siento enfermo.", en: "I feel sick.", pro: "ai fiil sik" },
+                    { es: "Necesito ver a un doctor.", en: "I need to see a doctor.", pro: "ai niid tu sii a dok-tor" },
+                    { es: "Tengo una cita médica.", en: "I have a medical appointment.", pro: "ai jaf a me-di-kol a-point-ment" },
+                    { es: "Me duele la cabeza.", en: "I have a headache.", pro: "ai jaf a jed-eik" },
+                    { es: "Tengo fiebre alta.", en: "I have a high fever.", pro: "ai jaf a jai fii-ver" },
+                    { es: "Tengo tos y dolor de garganta.", en: "I have a cough and a sore throat.", pro: "ai jaf a cof and a sor zrout" },
+                    { es: "Me duele mucho el estómago.", en: "My stomach hurts a lot.", pro: "mai es-to-mak jerts a lot" },
+                    { es: "Tengo alergia a este medicamento.", en: "I am allergic to this medication.", pro: "ai am a-ler-yik tu dis me-di-kei-shon" },
+                    { es: "Por favor, llame a una ambulancia.", en: "Please, call an ambulance.", pro: "pliis col an am-biu-lans" },
+                    { es: "Esta es una emergencia médica.", en: "This is a medical emergency.", pro: "dis is a me-di-kol i-mer-yen-si" },
+                    { es: "Hospital", en: "Hospital", pro: "jos-pi-tal" },
+                    { es: "Clínica de urgencias", en: "Urgent care", pro: "er-yent ker" },
+                    { es: "Sala de emergencias", en: "Emergency room / ER", pro: "i-mer-yen-si ruum / ii-ar" },
+                    { es: "Paciente", en: "Patient", pro: "plei-shent" },
+                    { es: "Presión arterial", en: "Blood pressure", pro: "blad pre-shur" },
+                    { es: "Dolor", en: "Pain / Ache", pro: "pein / eik" },
+                    { es: "Mareo", en: "Dizziness", pro: "di-si-nes" },
+                    { es: "Náuseas", en: "Nausea", pro: "no-shia" },
+                    { es: "Resfriado / Gripe", en: "Cold / Flu", pro: "could / fluu" },
+                    { es: "Infección", en: "Infection", pro: "in-fek-shon" },
+                    { es: "Inflamación / Hinchazón", en: "Swelling", pro: "suel-in" },
+                    { es: "Herida / Cortada", en: "Wound / Cut", pro: "guund / cat" },
+                    { es: "Quemadura", en: "Burn", pro: "bern" },
+                    { es: "Fractura / Hueso roto", en: "Fracture / Broken bone", pro: "frak-chur / brou-ken boun" },
+                    { es: "Seguro médico", en: "Health insurance", pro: "jelz in-shoo-rans" },
+                    { es: "Tarjeta de seguro", en: "Insurance card", pro: "in-shoo-rans card" },
+                    { es: "Análisis de sangre", en: "Blood test", pro: "blad test" },
+                    { es: "Radiografía", en: "X-ray", pro: "eks-rei" },
+                    { es: "Receta médica", en: "Prescription", pro: "pri-scrip-shon" },
+                    { es: "Tome este medicamento con agua.", en: "Take this medicine with water.", pro: "teik dis me-di-sin guiz ua-ter" },
+                    { es: "Descanse por un par de días.", en: "Rest for a couple of days.", pro: "rest for a ca-pol of deis" },
+                    { es: "Beba muchos líquidos.", en: "Drink plenty of fluids.", pro: "drink plen-ti of fluu-ids" },
+                    { es: "Me duele el pecho.", en: "I have chest pain.", pro: "ai jaf chest pein" },
+                    { es: "No puedo respirar bien.", en: "I can't breathe well.", pro: "ai kant briiz guel" },
+                    { es: "Tengo un esguince en el tobillo.", en: "I have a sprained ankle.", pro: "ai jaf a es-preind an-kol" },
+                    { es: "Me picó un insecto.", en: "An insect bit me.", pro: "an in-sekt bit mi" },
+                    { es: "Tengo la piel irritada.", en: "My skin is irritated.", pro: "mai skin is i-ri-tei-ted" },
+                    { es: "El dolor empezó ayer.", en: "The pain started yesterday.", pro: "de pein es-tar-ted ies-ter-dei" },
+                    { es: "¿Dónde le duele?", en: "Where does it hurt?", pro: "guer das it jert" },
+                    { es: "Póngase hielo en la herida.", en: "Put ice on the injury.", pro: "put ais on di in-joo-ri" },
+                    { es: "Limpie la herida con alcohol.", en: "Clean the wound with alcohol.", pro: "kliin de guund guiz al-co-jol" },
+                    { es: "Use una curita.", en: "Use a Band-Aid.", pro: "iuus a band-eid" },
+                    { es: "Tengo escalofríos.", en: "I have chills.", pro: "ai jaf chils" },
+                    { es: "Estoy perdiendo sangre.", en: "I'm bleeding.", pro: "aim blii-din" },
+                    { es: "¿Tiene alguna enfermedad crónica?", en: "Do you have any chronic illness?", pro: "du iu jaf e-ni cro-nik il-nes" },
+                    { es: "Tengo la presión alta.", en: "I have high blood pressure.", pro: "ai jaf jai blad pre-shur" },
+                    { es: "Soy diabético.", en: "I am diabetic.", pro: "ai am dai-a-be-tik" },
+                    { es: "Me siento mucho mejor hoy.", en: "I feel much better today.", pro: "ai fiil mach be-ter tu-dei" },
+                    { es: "Gracias por cuidarme.", en: "Thank you for taking care of me.", pro: "zenk iu for tei-kin ker of mi" },
+                    { es: "¡Cuida tu salud!", en: "Take care of your health!", pro: "teik ker of ior jelz" }
+                ],
+                "Saludos y Despedidas ✨": [
+                    { es: "Hola", en: "Hello / Hi", pro: "je-lou / jai" },
+                    { es: "Buenos días", en: "Good morning", pro: "gud mor-nin" },
+                    { es: "Buenas tardes", en: "Good afternoon", pro: "gud af-ter-nuun" },
+                    { es: "Buenas noches (Al llegar)", en: "Good evening", pro: "gud iiv-nin" },
+                    { es: "Buenas noches (Al despedirse / dormir)", en: "Good night", pro: "gud nait" },
+                    { es: "¿Cómo estás?", en: "How are you?", pro: "jau ar iu" },
+                    { es: "¿Cómo va todo?", en: "How is everything going?", pro: "jau is ev-ri-zin gou-in" },
+                    { es: "¿Qué hay de nuevo? / ¿Qué pasa?", en: "What's up?", pro: "uats ap" },
+                    { es: "Estoy bien, gracias.", en: "I'm doing well, thank you.", pro: "aim du-in guel zenk iu" },
+                    { es: "Todo excelente.", en: "Everything is great.", pro: "ev-ri-zin is greit" },
+                    { es: "Más o menos / Así así", en: "So-so", pro: "sou sou" },
+                    { es: "No muy bien.", en: "Not too good.", pro: "not tuu gud" },
+                    { es: "¿Y tú?", en: "And you?", pro: "and iu" },
+                    { es: "Mucho gusto.", en: "Nice to meet you.", pro: "nais tu miit iu" },
+                    { es: "Bienvenido", en: "Welcome", pro: "guel-kam" },
+                    { es: "Adiós", en: "Goodbye / Bye", pro: "gud-bai / bai" },
+                    { es: "Nos vemos.", en: "See you.", pro: "sii iu" },
+                    { es: "Nos vemos más tarde.", en: "See you later.", pro: "sii iu lei-ter" },
+                    { es: "Nos vemos mañana.", en: "See you tomorrow.", pro: "sii iu tu-ma-rou" },
+                    { es: "Nos vemos pronto.", en: "See you soon.", pro: "sii iu suun" },
+                    { es: "Cuídate.", en: "Take care.", pro: "teik ker" },
+                    { es: "Que tengas un buen día.", en: "Have a nice day.", pro: "jaf a nais dei" },
+                    { es: "Que tengas un buen fin de semana.", en: "Have a great weekend.", pro: "jaf a greit guiik-end" },
+                    { es: "Buen viaje.", en: "Have a safe trip.", pro: "jaf a seif trip" },
+                    { es: "Saludos a tu familia.", en: "Give my regards to your family.", pro: "guiv mai ri-gards tu ior fa-mi-li" },
+                    { es: "Fue un placer verte.", en: "It was nice seeing you.", pro: "it guas nais sii-in iu" },
+                    { es: "Igualmente", en: "Likewise / You too", pro: "laik-uais / iu tuu" },
+                    { es: "Por favor", en: "Please", pro: "pliiz" },
+                    { es: "Muchas gracias.", en: "Thank you so much.", pro: "zenk iu sou mach" },
+                    { es: "De nada / Con gusto", en: "You're welcome / My pleasure", pro: "ior guel-kam / mai ple-shur" },
+                    { es: "Disculpa / Con permiso", en: "Excuse me", pro: "eks-kiuus mi" },
+                    { es: "Lo siento mucho / Disculpa", en: "I'm so sorry.", pro: "aim sou so-ri" },
+                    { es: "No hay problema.", en: "No problem.", pro: "nou pro-blem" },
+                    { es: "No te preocupes.", en: "Don't worry.", pro: "dount gua-ri" },
+                    { es: "Está bien.", en: "It's okay / All right", pro: "its o-kei / ol rait" },
+                    { es: "Pasa adelante.", en: "Come in.", pro: "kam in" },
+                    { es: "Toma asiento.", en: "Have a seat.", pro: "jaf a siit" },
+                    { es: "¡Buena suerte!", en: "Good luck!", pro: "gud lak" },
+                    { es: "¡Felicidades!", en: "Congratulations!", pro: "con-gra-tu-lei-shons" },
+                    { es: "¡Feliz cumpleaños!", en: "Happy birthday!", pro: "ja-pi berz-dei" },
+                    { es: "¡Buen provecho!", en: "Enjoy your meal!", pro: "in-joi ior miil" },
+                    { es: "Hola a todos.", en: "Hello everyone.", pro: "je-lou ev-ri-uan" },
+                    { es: "¿Cómo estuvo tu día?", en: "How was your day?", pro: "jau guas ior deit" },
+                    { es: "Un gusto hablar contigo.", en: "Nice talking to you.", pro: "nais tol-kin tu iu" },
+                    { es: "Tengo que irme.", en: "I have to go.", pro: "ai jaf tu gou" },
+                    { es: "Escríbeme más tarde.", en: "Text me later.", pro: "tekst mi lei-ter" },
+                    { es: "Llámame cuando puedas.", en: "Call me when you can.", pro: "col mi guen iu can" },
+                    { es: "Que pases buenas noches.", en: "Have a good night.", pro: "jaf a gud nait" },
+                    { es: "¡Hasta luego!", en: "See you around!", pro: "sii iu a-raund" },
+                    { es: "¡Chao de pana!", en: "Bye, take it easy!", pro: "bai teik it ii-si" }
+                ],
+                "Salón de Belleza ✨": [
+                    { es: "Necesito un corte de cabello.", en: "I need a haircut.", pro: "ai niid a jer-cat" },
+                    { es: "Solo un corte de puntas, por favor.", en: "Just a trim, please.", pro: "jast a trim pliiz" },
+                    { es: "Quiero lavarme el cabello.", en: "I want to wash my hair.", pro: "ai uant tu uash mai jer" },
+                    { es: "Me gustaría teñirme el cabello.", en: "I would like to dye my hair.", pro: "ai guuld laik tu dai mai jer" },
+                    { es: "¿Qué color me recomiendas?", en: "What color do you recommend?", pro: "uat co-lor du iu re-co-miend" },
+                    { es: "Quiero hacerme reflejos / rayitos.", en: "I want to get highlights.", pro: "ai uant tu guet jai-laits" },
+                    { es: "Por favor, sécame el cabello con secador.", en: "Please, blow-dry my hair.", pro: "pliis blou drai mai jer" },
+                    { es: "Quiero un alisado de cabello.", en: "I want hair straightening.", pro: "ai uant jer estreit-nin" },
+                    { es: "Quiero hacerme la manicura.", en: "I want to get a manicure.", pro: "ai uant tu guet a ma-ni-kiur" },
+                    { es: "Quiero hacerme la pedicura.", en: "I want to get a pedicure.", pro: "ai uant tu guet a pe-di-kiur" },
+                    { es: "Corte de barba", en: "Beard trim", pro: "biard trim" },
+                    { es: "Afeitado completo", en: "Clean shave", pro: "kliin sheiv" },
+                    { es: "Champú", en: "Shampoo", pro: "sham-puu" },
+                    { es: "Acondicionador", en: "Conditioner", pro: "con-di-sho-ner" },
+                    { es: "Tinte para el cabello", en: "Hair dye", pro: "jer dai" },
+                    { es: "Tijeras", en: "Scissors", pro: "si-sors" },
+                    { es: "Máquina de afeitar / Rasuradora", en: "Clipper / Razor", pro: "cli-per / rei-sor" },
+                    { es: "Peine / Cepillo", en: "Comb / Brush", pro: "coum / brash" },
+                    { es: "Secador de cabello", en: "Hairdryer", pro: "jer-drai-er" },
+                    { es: "Plancha para el cabello", en: "Flat iron / Straightener", pro: "flat ai-ron / estreit-ner" },
+                    { es: "Espejo", en: "Mirror", pro: "mi-ror" },
+                    { es: "Esmalte de uñas", en: "Nail polish", pro: "neil po-lish" },
+                    { es: "Uñas de gel / acrílicas", en: "Gel / Acrylic nails", pro: "yel / a-cri-lik neils" },
+                    { es: "Limpieza facial", en: "Facial cleaning", pro: "fei-shal clii-nin" },
+                    { es: "Depilación con cera", en: "Waxing", pro: "uak-sin" },
+                    { es: "Depilación de cejas", en: "Eyebrow shaping", pro: "ai-brau shei-pin" },
+                    { es: "Tratamiento capilar", en: "Hair treatment", pro: "jer triit-ment" },
+                    { es: "Estilista / Peluquero", en: "Hairstylist / Barber", pro: "jer-es-tai-list / bar-ber" },
+                    { es: "Manicurista", en: "Manicurist", pro: "ma-ni-kiu-rist" },
+                    { es: "¿Tiene citas disponibles hoy?", en: "Do you have any openings today?", pro: "du iu jaf e-ni ou-pe-nins tu-dei" },
+                    { es: "Tengo una cita a las cuatro.", en: "I have an appointment at four.", pro: "ai jaf an a-point-ment at for" },
+                    { es: "Por favor, espere en la sala.", en: "Please wait in the lounge area.", pro: "pliis ueit in de launch e-ria" },
+                    { es: "¿Cuánto cuesta este servicio?", en: "How much is this service?", pro: "jau mach is dis ser-vis" },
+                    { es: "Me gusta mucho el resultado.", en: "I really like the result.", pro: "ai ria-li laik de ri-sal-tat" },
+                    { es: "No me gusta cómo quedó.", en: "I don't like how it turned out.", pro: "ai dount laik jau it ternd aut" },
+                    { es: "El agua está muy caliente.", en: "The water is too hot.", pro: "de ua-ter is tuu jot" },
+                    { es: "El agua está fría.", en: "The water is cold.", pro: "de ua-ter is could" },
+                    { es: "Por favor, corta un poco más arriba.", en: "Please cut a little higher.", pro: "pliis cat a li-tol jai-er" },
+                    { es: "No uses laca / spray, gracias.", en: "No hairspray, thank you.", pro: "nou jer-es-prei zenk iu" },
+                    { es: "Quiero un estilo moderno.", en: "I want a modern style.", pro: "ai uant a mo-dern es-tail" },
+                    { es: "Muéstrame una foto del diseño.", en: "Show me a photo of the design.", pro: "shou mi a fou-tou of de di-sain" },
+                    { es: "Usa aceite para la barba.", en: "Use beard oil.", pro: "iuus biard oil" },
+                    { es: "La manicura incluye masaje.", en: "The manicure includes a massage.", pro: "de ma-ni-kiur in-cluds a ma-sach" },
+                    { es: "El esmalte se está secando.", en: "The polish is drying.", pro: "de po-lish is drai-in" },
+                    { es: "Necesito remover este acrílico.", en: "I need to remove this acrylic.", pro: "ai niid tu ri-muuv dis a-cri-lik" },
+                    { es: "Por favor, limpia las herramientas.", en: "Please sanitize the tools.", pro: "pliis sa-ni-tais de tuuls" },
+                    { es: "Guarda el cambio como propina.", en: "Keep the change as a tip.", pro: "kiip de cheinch as a tip" },
+                    { es: "Muchas gracias, quedó excelente.", en: "Thank you so much, it looks excellent.", pro: "zenk iu sou mach, it luks ek-se-lent" },
+                    { es: "Nos vemos en un mes.", en: "See you in a month.", pro: "sii iu in a manz" },
+                    { es: "¡Quedaste espectacular!", en: "You look amazing!", pro: "iu luk a-mei-zin" }
+                ],
+                "Transportes y Viajes 🚀": [
+                    { es: "Tengo mi pasaporte listo.", en: "I have my passport ready.", pro: "ai jaf mai pas-port re-di" },
+                    { es: "Necesitamos pasar por seguridad.", en: "We need to go through security.", pro: "gui jaf tu gou zruu si-kiu-ri-ti" },
+                    { es: "¿Dónde queda la puerta de embarque?", en: "Where is the boarding gate?", pro: "guer is de boor-din gueit" },
+                    { es: "El equipaje está muy pesado.", en: "The luggage is too heavy.", pro: "de la-guich is tuu je-vi" },
+                    { es: "Necesito una etiqueta para mi maleta.", en: "I need a bag tag for my suitcase.", pro: "ai niid a bag tag for mai suut-keis" },
+                    { es: "El vuelo directo fue cancelado.", en: "The direct flight was canceled.", pro: "de di-rekt flait guas can-seld" },
+                    { es: "Tenemos una escala en Atlanta.", en: "We have a layover in Atlanta.", pro: "gui jaf a lei-ou-ver in at-lan-ta" },
+                    { es: "Quiero un asiento al lado de la ventana.", en: "I want a window seat.", pro: "ai uant a guin-dou siit" },
+                    { es: "Prefiero el asiento del pasillo.", en: "I prefer the aisle seat.", pro: "ai pri-fer di ail siit" },
+                    { es: "La turbulencia fue un poco fuerte.", en: "The turbulence was a bit rough.", pro: "de ter-biu-lens guas a bit raf" },
+                    { es: "Pasaporte", en: "Passport", pro: "pas-port" },
+                    { es: "Boleto de avión / Pasaje", en: "Flight ticket", pro: "flait ti-ket" },
+                    { es: "Pase de abordar", en: "Boarding pass", pro: "boor-din pas" },
+                    { es: "Maleta / Equipaje", en: "Suitcase / Luggage", pro: "suut-keis / la-guich" },
+                    { es: "Equipaje de mano", en: "Carry-on luggage", pro: "ca-ri on la-guich" },
+                    { es: "Control de aduanas", en: "Customs control", pro: "cas-toms con-troul" },
+                    { es: "Terminal del aeropuerto", en: "Airport terminal", pro: "er-port ter-mi-nal" },
+                    { es: "Avión", en: "Airplane / Plane", pro: "er-plein / plein" },
+                    { es: "Crucero (Barco)", en: "Cruise ship", pro: "cruus ship" },
+                    { es: "Alquiler de autos / Dealer", en: "Car rental", pro: "car ren-tal" },
+                    { es: "Agencia de viajes", en: "Travel agency", pro: "tra-vel ei-yen-si" },
+                    { es: "Destino turístico", en: "Tourist destination", pro: "tuu-rist des-ti-nei-shon" },
+                    { es: "Reserva de hotel", en: "Hotel reservation", pro: "jo-tel re-ser-vei-shon" },
+                    { es: "Itinerario de viaje", en: "Travel itinerary", pro: "tra-vel ai-ti-ne-re-ri" },
+                    { es: "Guía turístico", en: "Tour guide", pro: "tuur gaid" },
+                    { es: "Seguro de viaje", en: "Travel insurance", pro: "tra-vel in-shoo-rans" },
+                    { es: "Cambio de divisas / Moneda", en: "Currency exchange", pro: "ca-ren-si eks-cheinch" },
+                    { es: "Paseo en bote / barco", en: "Boat ride", pro: "bout raid" },
+                    { es: "Estación de abordaje", en: "Boarding station", pro: "boor-din estei-shon" },
+                    { es: "Llegamos a tiempo para el embarque.", en: "We arrived on time for boarding.", pro: "gui a-raivd on taim for boor-din" },
+                    { es: "El avión va a despegar pronto.", en: "The plane will take off soon.", pro: "de plein guil teik of suun" },
+                    { es: "El aterrizaje fue perfecto.", en: "The landing was perfect.", pro: "de lan-din guas per-fekt" },
+                    { es: "Reclame su equipaje en la banda tres.", en: "Claim your luggage at carousel three.", pro: "cleim ior la-guich at ca-rou-sel zrii" },
+                    { es: "El hotel queda frente a Disney Springs.", en: "The hotel is right in front of Disney Springs.", pro: "de jo-tel is rait in front of dis-ni es-prins" },
+                    { es: "Tenemos pases oficiales para los parques.", en: "We have official theme park passes.", pro: "gui jaf o-fi-shals ziim park pa-ses" },
+                    { es: "Manejar en la autopista de Florida es rápido.", en: "Driving on the Florida highway is fast.", pro: "drai-vin on de flo-ri-da jai-uei is fast" },
+                    { es: "Rentamos una minivan para toda la familia.", en: "We rented a minivan for the whole family.", pro: "gui ren-ted a mi-ni-van for de joul fa-mi-li" },
+                    { es: "El GPS nos dio la ruta más corta.", en: "The GPS gave us the shortest route.", pro: "de yii-pii-es guiv us de shor-test ruut" },
+                    { es: "Hay un peaje electrónico en esta vía.", en: "There is an electronic toll on this road.", pro: "der is an i-lek-tro-nik tol on dis roud" },
+                    { es: "Guarde sus pases digitales en el celular.", en: "Save your digital passes on your phone.", pro: "seiv ior di-yi-tal pa-ses on ior foun" },
+                    { es: "El crucero sale desde el puerto de Miami.", en: "The cruise departs from the port of Miami.", pro: "de cruus di-parts rom de port of mai-a-mi" },
+                    { es: "Disfrute las playas de la costa.", en: "Enjoy the beaches on the coast.", pro: "in-joi de bii-ches on de coust" },
+                    { es: "El clima está ideal para viajar.", en: "The weather is ideal for traveling.", pro: "de gue-der is ai-dial for tra-ve-lin" },
+                    { es: "Haga el check-in veinticuatro horas antes.", en: "Do the check-in twenty-four hours before.", pro: "du de chek-in tuen-ti for au-ars bi-for" },
+                    { es: "Su vuelo no incluye maleta pesada.", en: "Your flight doesn't include a heavy suitcase.", pro: "ior flait da-sent in-clud a je-vi suut-keis" },
+                    { es: "La cotización tiene un precio excelente.", en: "The quote has an excellent price.", pro: "de cuout jas an ek-se-lent prais" },
+                    { es: "Gracias por planear el viaje con Magic Travel.", en: "Thank you for planning the trip with Magic Travel.", pro: "zenk iu for plan-in de trip guiz ma-yik tra-vel" },
+                    { es: "Tome fotos de sus pases por seguridad.", en: "Take pictures of your passes for safety.", pro: "teik pik-churs of ior pa-ses for seif-ti" },
+                    { es: "¡Bienvenidos a bordo de las vacaciones!", en: "Welcome aboard the vacation!", pro: "guel-kam a-boord de vei-kei-shon" },
+                    { es: "¡Que tengan un viaje inolvidable!", en: "Have an unforgettable trip!", pro: "jaf an an-for-guet-a-bol trip" }
+                ],
+                "Verbos de Acción 🏃": [
+                    { es: "Correr", en: "To run", pro: "tu ran" },
+                    { es: "Caminar", en: "To walk", pro: "tu uolk" },
+                    { es: "Trabajar", en: "To work", pro: "tu uerk" },
+                    { es: "Aprender", en: "To learn", pro: "tu lern" },
+                    { es: "Estudiar", en: "To study", pro: "tu es-ta-di" },
+                    { es: "Cocinar", en: "To cook", pro: "tu cuk" },
+                    { es: "Comprar", en: "To buy", pro: "tu bai" },
+                    { es: "Pagar", en: "To pay", pro: "tu pei" },
+                    { es: "Escanear", en: "To scan", pro: "tu es-kan" },
+                    { es: "Entregar", en: "To deliver", pro: "tu di-li-ver" },
+                    { es: "Mover", en: "To move", pro: "tu muuv" },
+                    { es: "Limpiar", en: "To clean", pro: "tu kliin" },
+                    { es: "Reparar / Arreglar", en: "To repair / fix", pro: "tu ri-pear / fiks" },
+                    { es: "Abrir", en: "To open", pro: "tu ou-pen" },
+                    { es: "Cerrar", en: "To close", pro: "tu clous" },
+                    { es: "Manejar / Conducir", en: "To drive", pro: "tu draiv" },
+                    { es: "Viajar", en: "To travel", pro: "tu tra-vel" },
+                    { es: "Jugar", en: "To play", pro: "tu plei" },
+                    { es: "Ganar", en: "To win", pro: "tu guin" },
+                    { es: "Perder", en: "To lose", pro: "tu luus" },
+                    { es: "Escribir", en: "To write", pro: "tu rait" },
+                    { es: "Leer", en: "To read", pro: "tu riid" },
+                    { es: "Escuchar", en: "To listen", pro: "tu lis-sen" },
+                    { es: "Hablar", en: "To speak / talk", pro: "tu es-piik / tolk" },
+                    { es: "Comer", en: "To eat", pro: "tu iit" },
+                    { es: "Beber / Tomar", en: "To drink", pro: "tu drink" },
+                    { es: "Dormir", en: "To sleep", pro: "tu es-liip" },
+                    { es: "Despertarse", en: "To wake up", pro: "tu uouk ap" },
+                    { es: "Llamar", en: "To call", pro: "tu col" },
+                    { es: "Enviar / Mandar", en: "To send", pro: "tu send" },
+                    { es: "Recibir", en: "To receive", pro: "tu ri-siiv" },
+                    { es: "Traer", en: "To bring", pro: "tu bring" },
+                    { es: "Llevar / Tomar", en: "To take", pro: "tu teik" },
+                    { es: "Poner", en: "To put", pro: "tu put" },
+                    { es: "Hacer", en: "To do / make", pro: "tu du / meik" },
+                    { es: "Ayudar", en: "To help", pro: "tu jelp" },
+                    { es: "Buscar", en: "To look for", pro: "tu luk for" },
+                    { es: "Encontrar", en: "To find", pro: "tu faind" },
+                    { es: "Esperar (Tiempo)", en: "To wait", pro: "tu ueit" },
+                    { es: "Llegar", en: "To arrive", pro: "tu a-raiv" },
+                    { es: "Salir / Dejar un lugar", en: "To leave", pro: "tu liiv" },
+                    { es: "Prender / Encender", en: "To turn on", pro: "tu tern on" },
+                    { es: "Apagar", en: "To turn off", pro: "tu tern of" },
+                    { es: "Subir / Escalar", en: "To go up / climb", pro: "tu gou ap / claim" },
+                    { es: "Bajar", en: "To go down", pro: "tu gou daun" },
+                    { es: "Detenerse / Parar", en: "To stop", pro: "tu estop" },
+                    { es: "Empezar / Comenzar", en: "To start / begin", pro: "tu es-tart / bi-guin" },
+                    { es: "Terminar / Acabar", en: "To finish / end", pro: "tu fi-nish / end" },
+                    { es: "Pensar", en: "To think", pro: "tu zink" },
+                    { es: "Saber / Conocer", en: "To know", pro: "tu nou" }
+                ]
             };
 
             let isPlayingCategory = false;
@@ -2711,10 +2966,10 @@
                 const flagDiv = document.getElementById('modalTargetFlag');
                 const labelDiv = document.getElementById('learningLabel');
                 if (targetLang === 'en') {
-                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w80/us.png" alt="English" class="w-16 sm:w-20 rounded-lg shadow-xl border-2 border-slate-700/50">`;
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w320/us.png" alt="English" class="w-full h-auto object-cover">`;
                     labelDiv.innerText = "{{ __('APRENDIENDO INGLÉS') }}";
                 } else {
-                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w80/es.png" alt="Spanish" class="w-16 sm:w-20 rounded-lg shadow-xl border-2 border-slate-700/50">`;
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w320/es.png" alt="Spanish" class="w-full h-auto object-cover">`;
                     labelDiv.innerText = "{{ __('APRENDIENDO ESPAÑOL') }}";
                 }
                 
