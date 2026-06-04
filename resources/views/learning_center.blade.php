@@ -216,7 +216,7 @@
                     </div>
                 </button>
 
-                <button class="mode-card border-red-900/30 hover:border-red-500/50" onclick="alert('{{ __('Modo descanso próximamente...') }}')">
+                <button class="mode-card border-red-900/30 hover:border-red-500/50" onclick="openSleepMode()">
                     <span class="text-4xl">🌙</span>
                     <div class="flex flex-col">
                         <strong class="text-white font-outfit text-xl uppercase tracking-wider">{{ __('Modo Descanso') }}</strong>
@@ -262,6 +262,28 @@
                 </div>
             </div>
             <div id="modalBody" class="modal-body"></div>
+        </div>
+
+        <!-- SLEEP MODE MODAL -->
+        <div id="sleepModeModal" class="modal" style="background: rgba(2, 6, 15, 0.98);">
+            <div class="flex flex-col items-center justify-center h-full w-full p-6 text-center">
+                <span class="text-6xl sm:text-8xl mb-6 animate-pulse">🌙</span>
+                <h2 class="text-gold font-black font-outfit text-2xl sm:text-4xl uppercase tracking-widest mb-2">{{ __('Modo Descanso') }}</h2>
+                <p class="text-slate-400 text-sm sm:text-base mb-8">{{ __('Reproduciendo aleatoriamente todas las categorías durante 1 hora. La pantalla se mantendrá encendida.') }}</p>
+                
+                <div class="w-full max-w-md bg-navy-800 border border-blue-900/50 rounded-2xl p-6 mb-12 shadow-2xl">
+                    <p id="sleepModePhraseEs" class="text-white font-bold text-xl sm:text-2xl mb-4 leading-snug">Cargando...</p>
+                    <p id="sleepModePhraseEn" class="text-gold text-lg sm:text-xl font-outfit">Loading...</p>
+                </div>
+
+                <div class="w-full max-w-md bg-gray-800 rounded-full h-2 mb-8 overflow-hidden">
+                    <div id="sleepModeProgress" class="bg-gold h-2 rounded-full" style="width: 0%"></div>
+                </div>
+
+                <button class="bg-red-600 hover:bg-red-500 text-white font-bold py-4 px-10 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 flex items-center gap-3" onclick="stopSleepMode()">
+                    <span class="text-2xl">⏹️</span> {{ __('DETENER') }}
+                </button>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -3259,6 +3281,121 @@
 
                 isPlayingCategory = false;
                 document.getElementById('btnPlayCategory').innerHTML = "▶ {{ __('REPRODUCIR TODO') }}";
+            }
+
+            // SLEEP MODE LOGIC
+            let isSleepMode = false;
+            let wakeLock = null;
+            let sleepModeStartTime = 0;
+            let sleepModePhrases = [];
+            
+            async function requestWakeLock() {
+                try {
+                    if ('wakeLock' in navigator) {
+                        wakeLock = await navigator.wakeLock.request('screen');
+                        wakeLock.addEventListener('release', () => {
+                            console.log('Wake Lock released');
+                        });
+                        console.log('Wake Lock active');
+                    }
+                } catch (err) {
+                    console.warn(`Wake Lock error: ${err.name}, ${err.message}`);
+                }
+            }
+            
+            function releaseWakeLock() {
+                if (wakeLock !== null) {
+                    wakeLock.release();
+                    wakeLock = null;
+                }
+            }
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            async function openSleepMode() {
+                // Flatten all phrases
+                sleepModePhrases = [];
+                Object.values(data).forEach(categoryArray => {
+                    sleepModePhrases = sleepModePhrases.concat(categoryArray);
+                });
+                
+                if (sleepModePhrases.length === 0) {
+                    alert('No hay frases disponibles para reproducir.');
+                    return;
+                }
+                
+                shuffleArray(sleepModePhrases);
+                
+                // Show UI
+                document.getElementById('sleepModeModal').style.display = 'flex';
+                isSleepMode = true;
+                sleepModeStartTime = Date.now();
+                
+                // Request Wake Lock
+                await requestWakeLock();
+                
+                // Start playback loop
+                playSleepLoop();
+            }
+            
+            async function playSleepLoop() {
+                let currentIndex = 0;
+                
+                while (isSleepMode) {
+                    // Check if 1 hour (3,600,000 ms) has passed
+                    const elapsed = Date.now() - sleepModeStartTime;
+                    const duration = 3600000;
+                    
+                    if (elapsed >= duration) {
+                        stopSleepMode();
+                        break;
+                    }
+                    
+                    // Update progress bar
+                    const percent = (elapsed / duration) * 100;
+                    document.getElementById('sleepModeProgress').style.width = `${percent}%`;
+                    
+                    // If we reached the end of the shuffled list, reshuffle and restart index
+                    if (currentIndex >= sleepModePhrases.length) {
+                        shuffleArray(sleepModePhrases);
+                        currentIndex = 0;
+                    }
+                    
+                    const item = sleepModePhrases[currentIndex];
+                    
+                    // Update UI text
+                    document.getElementById('sleepModePhraseEs').innerText = item.es;
+                    document.getElementById('sleepModePhraseEn').innerText = item.en;
+                    
+                    // Play logic depending on target lang
+                    if (targetLang === 'en') {
+                        await new Promise(resolve => speak(item.es, 'es-ES', resolve));
+                        await new Promise(resolve => setTimeout(resolve, 800));
+                        if(!isSleepMode) break;
+                        await new Promise(resolve => speak(item.en, 'en-US', resolve));
+                    } else {
+                        await new Promise(resolve => speak(item.en, 'en-US', resolve));
+                        await new Promise(resolve => setTimeout(resolve, 800));
+                        if(!isSleepMode) break;
+                        await new Promise(resolve => speak(item.es, 'es-ES', resolve));
+                    }
+                    
+                    if(!isSleepMode) break;
+                    await new Promise(resolve => setTimeout(resolve, 1500)); // gap between phrases
+                    currentIndex++;
+                }
+            }
+            
+            function stopSleepMode() {
+                isSleepMode = false;
+                window.speechSynthesis.cancel();
+                releaseWakeLock();
+                document.getElementById('sleepModeModal').style.display = 'none';
             }
 
             function speak(text, lang, callback) {
