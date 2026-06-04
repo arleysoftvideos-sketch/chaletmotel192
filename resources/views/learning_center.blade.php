@@ -70,9 +70,6 @@
                         <a href="/nosotros" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                             {{ __('Nosotros') }}
                         </a>
-                        <a href="/learning-center" class="px-4 py-2 text-gold font-semibold transition-all duration-300 text-sm">
-                            {{ __('Learning Center') }}
-                        </a>
                         <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                             {{ __('Contacto') }}
                         </a>
