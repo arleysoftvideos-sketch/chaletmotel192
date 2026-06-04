@@ -248,6 +248,7 @@
                     <div class="flex flex-col">
                         <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl uppercase tracking-wide m-0">DICCIONARIO</h2>
                         <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
+                        <div id="modalTargetFlag" class="mt-1.5 flex items-center gap-2"></div>
                     </div>
                     <div class="flex items-center gap-2 sm:gap-4">
                         <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
@@ -547,6 +548,13 @@
                 document.getElementById('modalTitle').innerText = categoryTranslations[cat] || cat;
                 currentCategoryItems = data[cat];
                 document.getElementById('itemCount').innerText = `${currentCategoryItems.length} palabras`;
+                
+                const flagDiv = document.getElementById('modalTargetFlag');
+                if (targetLang === 'en') {
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w40/us.png" alt="English" class="w-6 h-4 rounded shadow-md border border-slate-700"> <span class="tracking-wider uppercase text-[10px] font-bold text-slate-300">{{ __('APRENDIENDO INGLÉS') }}</span>`;
+                } else {
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w40/es.png" alt="Spanish" class="w-6 h-4 rounded shadow-md border border-slate-700"> <span class="tracking-wider uppercase text-[10px] font-bold text-slate-300">{{ __('APRENDIENDO ESPAÑOL') }}</span>`;
+                }
                 
                 body.innerHTML = '';
                 currentCategoryItems.forEach((item, index) => {
