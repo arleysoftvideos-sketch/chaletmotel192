@@ -56,9 +56,9 @@
         const statusText = document.getElementById('aki-status-text');
 
         let isChatOpen = false;
-        let chatState = 'ASK_LANG'; // ASK_LANG, READY, COLLECT_NAME, COLLECT_PHONE, COLLECT_MESSAGE
+        let chatState = 'ASK_LANG'; // ASK_LANG, READY, COLLECT_NAME, COLLECT_EMAIL, COLLECT_PHONE, COLLECT_MESSAGE
         let botLang = 'es';
-        let contactData = { name: '', phone: '', message: '' };
+        let contactData = { name: '', email: '', phone: '', message: '' };
 
         const dict = {
             es: {
@@ -80,7 +80,8 @@
                 schedule_btn: "📅 Agendar llamada",
                 whatsapp_btn: "💬 WhatsApp",
                 collect_name: "¡Genial! Para agendar tu llamada necesito algunos datos. 😊<br>¿Cuál es tu <b>nombre</b>?",
-                collect_phone: "Mucho gusto, <b>{name}</b>! ¿A qué <b>número de teléfono</b> te llamamos?",
+                collect_email: "Gracias, <b>{name}</b>! ¿Cuál es tu <b>correo electrónico</b>?",
+                collect_phone: "¡Anotado! ¿A qué <b>número de teléfono</b> te llamamos?",
                 collect_message: "Perfecto! ¿Cuál es tu <b>consulta o pregunta</b> para nuestro equipo?",
                 success_msg: "✅ ¡Listo, <b>{name}</b>! Hemos recibido tu solicitud. Nuestro equipo te llamará al <b>{phone}</b> muy pronto. ¡Gracias por contactarnos! 🌴",
                 aki_personal: "😎 ¡Con mucho gusto te cuento! Soy <b>Aki</b>, el asistente virtual de <b>Chalet Motel 192</b>. Fui creado para ayudarte con todo lo que necesites sobre el motel: habitaciones, ubicación, contacto y más. No tengo vida personal fuera de aquí, ¡pero estoy 100% dedicado a ti! 😄",
@@ -107,7 +108,8 @@
                 schedule_btn: "📅 Schedule a call",
                 whatsapp_btn: "💬 WhatsApp",
                 collect_name: "Great! To schedule your call I need a few details. 😊<br>What is your <b>name</b>?",
-                collect_phone: "Nice to meet you, <b>{name}</b>! What <b>phone number</b> should we call you on?",
+                collect_email: "Thank you, <b>{name}</b>! What is your <b>email address</b>?",
+                collect_phone: "Got it! What <b>phone number</b> should we call you on?",
                 collect_message: "Perfect! What is your <b>question or inquiry</b> for our team?",
                 success_msg: "✅ Done, <b>{name}</b>! We have received your request. Our team will call you at <b>{phone}</b> very soon. Thank you for reaching out! 🌴",
                 aki_personal: "😎 Happy to introduce myself! I'm <b>Aki</b>, the virtual assistant for <b>Chalet Motel 192</b>. I was created to help you with everything about the motel: rooms, location, contact and more. I don't have a personal life outside of here, but I'm 100% dedicated to you! 😄",
@@ -257,7 +259,7 @@
         // --- Schedule call flow ---
         window.akiStartSchedule = function() {
             chatState = 'COLLECT_NAME';
-            contactData = { name: '', phone: '', message: '' };
+            contactData = { name: '', email: '', phone: '', message: '' };
             quickReplies.innerHTML = '';
             const typingId = showTypingIndicator();
             setTimeout(() => {
@@ -276,10 +278,11 @@
                 },
                 body: JSON.stringify({
                     name: contactData.name,
+                    email: contactData.email,
                     phone: contactData.phone,
                     message: contactData.message
                 })
-            }).catch(() => { /* silent fail – record already saved on server */ });
+            }).catch(() => { /* silent fail */ });
         }
 
         form.addEventListener('submit', function(e) {
@@ -311,11 +314,24 @@
             if (chatState === 'COLLECT_NAME') {
                 appendUserMessage(originalText);
                 contactData.name = originalText;
+                chatState = 'COLLECT_EMAIL';
+                const typingId = showTypingIndicator();
+                setTimeout(() => {
+                    document.getElementById(typingId)?.remove();
+                    appendBotMessage(dict[botLang].collect_email.replace('{name}', contactData.name));
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }, 600);
+                return;
+            }
+
+            if (chatState === 'COLLECT_EMAIL') {
+                appendUserMessage(originalText);
+                contactData.email = originalText;
                 chatState = 'COLLECT_PHONE';
                 const typingId = showTypingIndicator();
                 setTimeout(() => {
                     document.getElementById(typingId)?.remove();
-                    appendBotMessage(dict[botLang].collect_phone.replace('{name}', contactData.name));
+                    appendBotMessage(dict[botLang].collect_phone);
                     messagesArea.scrollTop = messagesArea.scrollHeight;
                 }, 600);
                 return;

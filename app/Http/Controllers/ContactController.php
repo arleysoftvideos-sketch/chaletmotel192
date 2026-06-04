@@ -91,14 +91,15 @@ class ContactController extends Controller
     {
         $validated = $request->validate([
             'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
             'phone'   => 'required|string|max:25',
             'message' => 'required|string|min:2',
         ]);
 
         $validated['name']    = strip_tags($validated['name']);
+        $validated['email']   = strip_tags($validated['email']);
         $validated['phone']   = strip_tags($validated['phone']);
         $validated['message'] = strip_tags($validated['message']);
-        $validated['email']   = 'chatbot@chaletmotel192.com'; // placeholder required by schema
 
         // Save to database
         Contact::create($validated);
