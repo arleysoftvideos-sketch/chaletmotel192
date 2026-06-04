@@ -53,6 +53,33 @@
                 background-size: cover;
                 background-position: center;
             }
+
+            /* ARLINGO APP CSS */
+            .screen { display: none; min-height: 400px; flex-direction: column; align-items: center; width: 100%; box-sizing: border-box; }
+            .active-screen { display: flex; }
+            .modal-header { display: flex; flex-direction: column; padding: 15px 20px; border-bottom: 1px solid #ffb703; position: sticky; top: 0; background-color: rgba(6, 16, 33, 0.95); z-index: 1000; backdrop-filter: blur(10px); }
+            .back-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 8px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.3s; }
+            .back-btn:hover { background: rgba(255,255,255,0.1); border-color: #ffb703; }
+            .tabs-container { display: grid; grid-template-columns: repeat(1, 1fr); gap: 15px; width: 100%; max-width: 1000px; }
+            @media (min-width: 640px) { .tabs-container { grid-template-columns: repeat(3, 1fr); } }
+            .tab-btn { background: rgba(10, 24, 49, 0.8); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 15px; border-radius: 15px; font-weight: 600; cursor: pointer; font-size: 0.9rem; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.3; transition: 0.3s; }
+            .tab-btn:hover { border-color: #ffb703; box-shadow: 0 0 15px rgba(255,183,3,0.15); transform: translateY(-2px); }
+
+            .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4,10,23, 0.95); z-index: 2000; flex-direction: column; backdrop-filter: blur(5px); }
+            .modal-body { padding: 20px; overflow-y: auto; flex: 1; max-width: 800px; margin: 0 auto; width: 100%; }
+            .card-word { background: rgba(10, 24, 49, 0.9); border-radius: 15px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+            .playing-card { border-color: #ffb703; background: rgba(255,183,3, 0.1); transform: scale(1.02); }
+            
+            .play-all-btn { background: #ffb703; color: #0a1831; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
+            .play-all-btn:hover { background: #fbc02d; transform: translateY(-2px); }
+            .play-btn { background: none; border: 1px solid #ffb703; color: #ffb703; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.3s; }
+            .play-btn:hover { background: #ffb703; color: #0a1831; }
+
+            .mode-card { background: rgba(10, 24, 49, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; margin: 10px 0; width: 100%; max-width: 450px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.3s; text-align: left; }
+            .mode-card:hover { border-color: #ffb703; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+            .dict-main-btn { width: 100%; max-width: 450px; margin-top: 15px; background: linear-gradient(45deg, #0a1831, #14274c); border: 2px solid #ffb703; color: white; border-radius: 20px; height: 80px; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+            .dict-main-btn:hover { box-shadow: 0 0 20px rgba(255,183,3,0.3); }
+            .modal-top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 800px; margin: 0 auto; gap: 10px; }
         </style>
     </head>
     <body class="text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy">
@@ -113,64 +140,67 @@
             </div>
         </section>
 
-        <!-- Main Content Area -->
-        <main class="w-full max-w-7xl mx-auto px-6 py-12 flex-grow flex flex-col gap-12 relative z-10">
-            <div class="text-center space-y-4 mb-8">
-                <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
-                    {{ __('Elige tu idioma') }}
-                </h2>
-                <p class="text-slate-400 text-sm max-w-2xl mx-auto uppercase tracking-wider">
-                    {{ __('Selecciona el idioma que deseas aprender hoy.') }}
-                </p>
+        <!-- Main Content Area / Interactive App -->
+        <main class="w-full max-w-7xl mx-auto px-6 py-12 flex-grow flex flex-col items-center relative z-10">
+            
+            <!-- WELCOME SCREEN -->
+            <div id="welcomeScreen" class="screen active-screen w-full flex flex-col items-center">
+                <div class="text-center space-y-4 mb-8">
+                    <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
+                        {{ __('ARLINGO') }} <span class="text-gold">{{ __('Interactive Guide') }}</span>
+                    </h2>
+                    <p class="text-slate-400 text-sm max-w-2xl mx-auto uppercase tracking-wider">
+                        {{ __('Selecciona un modo de aprendizaje para comenzar.') }}
+                    </p>
+                </div>
+
+                <button class="mode-card" onclick="showScreen('lobbyScreen')">
+                    <span class="text-4xl">⚡</span>
+                    <div class="flex flex-col">
+                        <strong class="text-white font-outfit text-xl uppercase tracking-wider">{{ __('Modo Interactivo') }}</strong>
+                        <p class="text-slate-400 text-xs mt-1">{{ __('Toca y aprende por categorías de vocabulario.') }}</p>
+                    </div>
+                </button>
+
+                <button class="mode-card border-red-900/30 hover:border-red-500/50" onclick="alert('{{ __('Modo descanso próximamente...') }}')">
+                    <span class="text-4xl">🌙</span>
+                    <div class="flex flex-col">
+                        <strong class="text-white font-outfit text-xl uppercase tracking-wider">{{ __('Modo Descanso') }}</strong>
+                        <p class="text-slate-400 text-xs mt-1">{{ __('Escucha lecciones continuas mientras duermes.') }}</p>
+                    </div>
+                </button>
+
+                <button class="dict-main-btn flex items-center justify-center gap-3 font-outfit uppercase tracking-widest" onclick="showScreen('lobbyScreen')">
+                    <span class="text-2xl">📖</span> {{ __('Diccionario Master (A-Z)') }}
+                </button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto w-full">
-                <!-- English Card -->
-                <a href="#" class="group relative overflow-hidden rounded-[2.5rem] border border-blue-900/50 bg-[#061021]/80 aspect-square sm:aspect-auto sm:h-[400px] flex flex-col items-center justify-center p-8 hover:border-gold/50 transition-all duration-500 shadow-2xl hover:shadow-gold/20">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    
-                    <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2">
-                        <!-- US/UK Flag abstract representation or icon -->
-                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
-                            <img src="https://flagcdn.com/w160/us.png" srcset="https://flagcdn.com/w320/us.png 2x" alt="English" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
-                        {{ __('Aprender Inglés') }}
-                    </h3>
-                    <p class="text-slate-400 text-sm text-center max-w-[250px] relative z-10">
-                        {{ __('Domina el idioma inglés con nuestras lecciones interactivas y ejercicios prácticos.') }}
-                    </p>
-                    
-                    <div class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                    </div>
-                </a>
-
-                <!-- Spanish Card -->
-                <a href="#" class="group relative overflow-hidden rounded-[2.5rem] border border-blue-900/50 bg-[#061021]/80 aspect-square sm:aspect-auto sm:h-[400px] flex flex-col items-center justify-center p-8 hover:border-gold/50 transition-all duration-500 shadow-2xl hover:shadow-gold/20">
-                    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    
-                    <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2">
-                        <!-- Spain/LatAm Flag abstract representation or icon -->
-                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
-                            <img src="https://flagcdn.com/w160/es.png" srcset="https://flagcdn.com/w320/es.png 2x" alt="Español" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
-                        {{ __('Aprender Español') }}
-                    </h3>
-                    <p class="text-slate-400 text-sm text-center max-w-[250px] relative z-10">
-                        {{ __('Domina el idioma español con nuestras lecciones interactivas y ejercicios prácticos.') }}
-                    </p>
-                    
-                    <div class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                    </div>
-                </a>
+            <!-- LOBBY SCREEN -->
+            <div id="lobbyScreen" class="screen w-full flex flex-col items-center">
+                <div class="w-full max-w-5xl flex justify-between items-center mb-8 border-b border-blue-950 pb-4">
+                    <button class="back-btn" onclick="showScreen('welcomeScreen')">← {{ __('VOLVER') }}</button>
+                    <span class="text-gold font-bold font-outfit text-sm uppercase tracking-widest">{{ __('Categorías de Estudio') }}</span>
+                </div>
+                <div class="tabs-container" id="tabs"></div>
             </div>
+
+            <!-- CATEGORY MODAL -->
+            <div id="categoryModal" class="modal">
+                <div class="modal-header">
+                    <div class="modal-top-row">
+                        <div class="flex flex-col">
+                            <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl uppercase tracking-wide m-0">DICCIONARIO</h2>
+                            <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
+                            <button onclick="closeModal()" class="text-white hover:text-red-400 transition-colors text-3xl leading-none">&times;</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="modalBody" class="modal-body"></div>
+            </div>
+
         </main>
 
         <!-- Footer -->
@@ -216,5 +246,122 @@
             </div>
         </footer>
 
+        <!-- ARLINGO JAVASCRIPT -->
+        <script>
+            const data = {
+                "EL ABECEDARIO 🔤": [
+                    { es: "A", en: "A", pro: "ei" }, { es: "B", en: "B", pro: "bi" }, { es: "C", en: "C", pro: "si" },
+                    { es: "D", en: "D", pro: "di" }, { es: "E", en: "E", pro: "i" }, { es: "F", en: "F", pro: "ef" },
+                    { es: "G", en: "G", pro: "yi" }, { es: "H", en: "H", pro: "eich" }, { es: "I", en: "I", pro: "ai" }
+                ],
+                "VOCALES MÁGICAS ⚡": [
+                    { es: "Pastel (A larga)", en: "Cake", pro: "keik" },
+                    { es: "Manzana (A corta)", en: "Apple", pro: "a-pol" },
+                    { es: "Dormir (Doble E)", en: "Sleep", pro: "sliip" },
+                    { es: "Bicicleta (I larga)", en: "Bike", pro: "baik" }
+                ],
+                "CERRAJERÍA 🔑": [
+                    { es: "Ganzúa", en: "Lock pick", pro: "lok pik" },
+                    { es: "Llave maestra", en: "Master key", pro: "mas-ter ki" }
+                ]
+            };
+
+            let isPlayingCategory = false;
+            let currentCategoryItems = [];
+
+            function showScreen(id) {
+                document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+                document.getElementById(id).classList.add('active-screen');
+                if (id === 'lobbyScreen') initLobby();
+            }
+
+            function initLobby() {
+                const container = document.getElementById('tabs');
+                container.innerHTML = '';
+                Object.keys(data).forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'tab-btn';
+                    btn.innerHTML = cat;
+                    btn.onclick = () => openCategory(cat);
+                    container.appendChild(btn);
+                });
+            }
+
+            function openCategory(cat) {
+                const modal = document.getElementById('categoryModal');
+                const body = document.getElementById('modalBody');
+                document.getElementById('modalTitle').innerText = cat;
+                currentCategoryItems = data[cat];
+                document.getElementById('itemCount').innerText = `${currentCategoryItems.length} palabras`;
+                
+                body.innerHTML = '';
+                currentCategoryItems.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'card-word';
+                    div.id = `card-${index}`;
+                    div.innerHTML = `
+                        <div class="flex flex-col text-left">
+                            <div class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">${item.es}</div>
+                            <strong class="text-white text-xl font-outfit uppercase tracking-wide">${item.en}</strong>
+                            <div class="text-gold text-sm mt-1">🗣️ ${item.pro}</div>
+                        </div>
+                        <button class="play-btn" onclick="speak('${item.en}', 'en-US')">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                    `;
+                    body.appendChild(div);
+                });
+                
+                isPlayingCategory = false;
+                document.getElementById('btnPlayCategory').innerHTML = "▶ {{ __('REPRODUCIR TODO') }}";
+                modal.style.display = 'flex';
+            }
+
+            async function playFullCategory() {
+                if (isPlayingCategory) {
+                    window.speechSynthesis.cancel();
+                    isPlayingCategory = false;
+                    document.getElementById('btnPlayCategory').innerHTML = "▶ {{ __('REPRODUCIR TODO') }}";
+                    document.querySelectorAll('.card-word').forEach(c => c.classList.remove('playing-card'));
+                    return;
+                }
+
+                isPlayingCategory = true;
+                document.getElementById('btnPlayCategory').innerHTML = "⏹ {{ __('DETENER') }}";
+
+                for (let i = 0; i < currentCategoryItems.length; i++) {
+                    if (!isPlayingCategory) break;
+                    const item = currentCategoryItems[i];
+                    const card = document.getElementById(`card-${i}`);
+                    
+                    document.querySelectorAll('.card-word').forEach(c => c.classList.remove('playing-card'));
+                    card.classList.add('playing-card');
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    await new Promise(resolve => speak(item.es, 'es-ES', resolve));
+                    await new Promise(resolve => setTimeout(resolve, 600));
+                    await new Promise(resolve => speak(item.en, 'en-US', resolve));
+                    await new Promise(resolve => setTimeout(resolve, 1200));
+                }
+
+                isPlayingCategory = false;
+                document.getElementById('btnPlayCategory').innerHTML = "▶ {{ __('REPRODUCIR TODO') }}";
+            }
+
+            function speak(text, lang, callback) {
+                window.speechSynthesis.cancel();
+                const msg = new SpeechSynthesisUtterance(text.replace(/\|/g, '...'));
+                msg.lang = lang;
+                msg.rate = 0.9;
+                if(callback) msg.onend = callback;
+                window.speechSynthesis.speak(msg);
+            }
+
+            function closeModal() {
+                isPlayingCategory = false;
+                window.speechSynthesis.cancel();
+                document.getElementById('categoryModal').style.display = 'none';
+            }
+        </script>
     </body>
 </html>
