@@ -1,7 +1,6 @@
 <div id="aki-chatbot" class="fixed bottom-6 right-6 z-50 font-outfit">
     <!-- Chat Window -->
-    <div id="aki-chat-window" class="hidden flex-col bg-[#0a1831]/95 backdrop-blur-md border border-blue-950 w-80 sm:w-96 h-[30rem] max-h-[80vh] rounded-2xl shadow-2xl overflow-hidden mb-4 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right">
-        <!-- Header -->
+    <div id="aki-chat-window" class="hidden flex flex-col bg-[#0a1831]/95 backdrop-blur-md border border-blue-950 w-80 sm:w-96 h-[30rem] max-h-[80vh] rounded-2xl shadow-2xl overflow-hidden mb-4 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right">
         <div class="bg-gradient-to-r from-blue-950 to-navy p-4 flex items-center justify-between border-b border-white/10 shadow-md">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full border-2 border-gold overflow-hidden bg-navy-dark shadow-inner">
