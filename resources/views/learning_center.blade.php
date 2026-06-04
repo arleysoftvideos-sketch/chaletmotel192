@@ -238,26 +238,28 @@
                 <div class="tabs-container" id="tabs"></div>
             </div>
 
-            <!-- CATEGORY MODAL -->
-            <div id="categoryModal" class="modal">
-                <div class="modal-header">
-                    <div class="w-full max-w-5xl mx-auto flex justify-start items-center mb-4">
-                        <button class="back-btn" onclick="closeModal()">← {{ __('VOLVER') }}</button>
-                    </div>
-                    <div class="modal-top-row">
-                        <div class="flex flex-col">
-                            <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl uppercase tracking-wide m-0">DICCIONARIO</h2>
-                            <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
-                        </div>
-                        <div class="flex items-center gap-2 sm:gap-4">
-                            <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
-                        </div>
-                    </div>
-                </div>
-                <div id="modalBody" class="modal-body"></div>
-            </div>
+
 
         </main>
+
+        <!-- CATEGORY MODAL -->
+        <div id="categoryModal" class="modal">
+            <div class="modal-header">
+                <div class="w-full max-w-5xl mx-auto flex justify-start items-center mb-4">
+                    <button class="back-btn" onclick="closeModal()">← {{ __('VOLVER') }}</button>
+                </div>
+                <div class="modal-top-row">
+                    <div class="flex flex-col">
+                        <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl uppercase tracking-wide m-0">DICCIONARIO</h2>
+                        <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
+                    </div>
+                    <div class="flex items-center gap-2 sm:gap-4">
+                        <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
+                    </div>
+                </div>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+        </div>
 
         <!-- Footer -->
         <footer class="w-full relative z-10 bg-[#0a1831] mt-12 border-t-2 border-gold/40 shadow-2xl">
