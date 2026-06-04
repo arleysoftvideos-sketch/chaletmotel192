@@ -83,6 +83,8 @@
                 collect_phone: "Mucho gusto, <b>{name}</b>! ¿A qué <b>número de teléfono</b> te llamamos?",
                 collect_message: "Perfecto! ¿Cuál es tu <b>consulta o pregunta</b> para nuestro equipo?",
                 success_msg: "✅ ¡Listo, <b>{name}</b>! Hemos recibido tu solicitud. Nuestro equipo te llamará al <b>{phone}</b> muy pronto. ¡Gracias por contactarnos! 🌴",
+                aki_personal: "😎 ¡Con mucho gusto te cuento! Soy <b>Aki</b>, el asistente virtual de <b>Chalet Motel 192</b>. Fui creado para ayudarte con todo lo que necesites sobre el motel: habitaciones, ubicación, contacto y más. No tengo vida personal fuera de aquí, ¡pero estoy 100% dedicado a ti! 😄",
+                off_topic: "🙂 ¡Gracias por tu mensaje! Soy Aki, el asistente oficial de <b>Chalet Motel 192</b>, y mi especialidad es todo lo relacionado con el motel. Para otros temas, ¡hay mejores recursos disponibles! ¿Puedo ayudarte con algo del motel?",
                 placeholder: "Escribe un mensaje...",
                 online: "En línea"
             },
@@ -108,6 +110,8 @@
                 collect_phone: "Nice to meet you, <b>{name}</b>! What <b>phone number</b> should we call you on?",
                 collect_message: "Perfect! What is your <b>question or inquiry</b> for our team?",
                 success_msg: "✅ Done, <b>{name}</b>! We have received your request. Our team will call you at <b>{phone}</b> very soon. Thank you for reaching out! 🌴",
+                aki_personal: "😎 Happy to introduce myself! I'm <b>Aki</b>, the virtual assistant for <b>Chalet Motel 192</b>. I was created to help you with everything about the motel: rooms, location, contact and more. I don't have a personal life outside of here, but I'm 100% dedicated to you! 😄",
+                off_topic: "🙂 Thanks for your message! I'm Aki, the official assistant of <b>Chalet Motel 192</b>, and my specialty is everything related to the motel. For other topics, there are better resources available! Can I help you with something about the motel?",
                 placeholder: "Type a message...",
                 online: "Online"
             }
@@ -233,6 +237,8 @@
                     case 'ubicacion': responseHtml = dict[botLang].location_res; break;
                     case 'nosotros': responseHtml = dict[botLang].about_res; break;
                     case 'redes': responseHtml = dict[botLang].social_res; break;
+                    case 'aki_personal': responseHtml = dict[botLang].aki_personal; break;
+                    case 'off_topic': responseHtml = dict[botLang].off_topic; break;
                     default:
                         appendBotMessage(dict[botLang].default_res);
                         // Show 3 action buttons
@@ -348,7 +354,17 @@
 
             // --- Normal intent detection ---
             let intent = 'unknown';
-            if(val.includes('cuarto') || val.includes('habitacion') || val.includes('cama') || val.includes('precio') || val.includes('reserva') || val.includes('dormir') || val.includes('room') || val.includes('bed') || val.includes('price') || val.includes('book')) {
+
+            // --- Aki personal profile (highest priority) ---
+            if(val.includes('como te llamas') || val.includes('tu nombre') || val.includes('quien eres') || val.includes('qué eres') || val.includes('que eres') || val.includes('eres un bot') || val.includes('eres humano') || val.includes('eres robot') || val.includes('eres real') || val.includes('cuantos años') || val.includes('your name') || val.includes('who are you') || val.includes('what are you') || val.includes('are you a bot') || val.includes('are you human') || val.includes('are you real') || val.includes('how old are you')) {
+                intent = 'aki_personal';
+
+            // --- Off-topic deflection ---
+            } else if(val.includes('politica') || val.includes('deporte') || val.includes('futbol') || val.includes('fútbol') || val.includes('clima') || val.includes('chiste') || val.includes('broma') || val.includes('cuento') || val.includes('receta') || val.includes('cocina') || val.includes('noticias') || val.includes('politics') || val.includes('sports') || val.includes('weather') || val.includes('joke') || val.includes('recipe') || val.includes('news') || val.includes('movie') || val.includes('pelicula') || val.includes('película')) {
+                intent = 'off_topic';
+
+            // --- Normal intents ---
+            } else if(val.includes('cuarto') || val.includes('habitacion') || val.includes('cama') || val.includes('precio') || val.includes('reserva') || val.includes('dormir') || val.includes('room') || val.includes('bed') || val.includes('price') || val.includes('book')) {
                 intent = 'habitaciones';
             } else if(val.includes('contacto') || val.includes('telefono') || val.includes('llamar') || val.includes('whatsapp') || val.includes('numero') || val.includes('contact') || val.includes('phone') || val.includes('call') || val.includes('number')) {
                 intent = 'contacto';
