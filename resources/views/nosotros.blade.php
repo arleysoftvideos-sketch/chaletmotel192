@@ -343,5 +343,6 @@
             </div>
         </footer>
 
+        <x-chatbot />
     </body>
 </html>

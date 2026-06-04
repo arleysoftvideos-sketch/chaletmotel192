@@ -3413,5 +3413,6 @@
                 document.getElementById('categoryModal').style.display = 'none';
             }
         </script>
+        <x-chatbot />
     </body>
 </html>
