@@ -114,18 +114,61 @@
 
         <!-- Main Content Area -->
         <main class="w-full max-w-7xl mx-auto px-6 py-12 flex-grow flex flex-col gap-12 relative z-10">
-            <div class="bg-[#0a1831]/90 p-8 sm:p-16 rounded-[2rem] border border-blue-950 shadow-2xl text-center space-y-6">
-                <h2 class="text-3xl font-black font-outfit text-white uppercase tracking-wide">
-                    {{ __('Próximamente') }}
+            <div class="text-center space-y-4 mb-8">
+                <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
+                    {{ __('Elige tu idioma') }} / <span class="text-gold">Choose your language</span>
                 </h2>
-                <p class="text-slate-300 text-base max-w-2xl mx-auto">
-                    {{ __('Estamos preparando esta sección para brindarte la mejor información y recursos.') }}
+                <p class="text-slate-400 text-sm max-w-2xl mx-auto uppercase tracking-wider">
+                    {{ __('Selecciona el idioma que deseas aprender hoy.') }}
                 </p>
-                <div class="pt-8">
-                    <a href="/" class="px-8 py-3 bg-gold hover:bg-gold-hover text-[#0a1831] font-black font-outfit rounded-xl transition-all duration-300 text-sm uppercase tracking-wider shadow-lg">
-                        {{ __('Volver al Inicio') }}
-                    </a>
-                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto w-full">
+                <!-- English Card -->
+                <a href="#" class="group relative overflow-hidden rounded-[2.5rem] border border-blue-900/50 bg-[#061021]/80 aspect-square sm:aspect-auto sm:h-[400px] flex flex-col items-center justify-center p-8 hover:border-gold/50 transition-all duration-500 shadow-2xl hover:shadow-gold/20">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+                        <!-- US/UK Flag abstract representation or icon -->
+                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
+                            <span class="text-6xl">🇺🇸</span>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
+                        Learn English
+                    </h3>
+                    <p class="text-slate-400 text-sm text-center max-w-[250px] relative z-10">
+                        Master the English language with our interactive lessons and practical exercises.
+                    </p>
+                    
+                    <div class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </div>
+                </a>
+
+                <!-- Spanish Card -->
+                <a href="#" class="group relative overflow-hidden rounded-[2.5rem] border border-blue-900/50 bg-[#061021]/80 aspect-square sm:aspect-auto sm:h-[400px] flex flex-col items-center justify-center p-8 hover:border-gold/50 transition-all duration-500 shadow-2xl hover:shadow-gold/20">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2">
+                        <!-- Spain/LatAm Flag abstract representation or icon -->
+                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
+                            <span class="text-6xl">🇪🇸</span>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
+                        Aprender Español
+                    </h3>
+                    <p class="text-slate-400 text-sm text-center max-w-[250px] relative z-10">
+                        Domina el idioma español con nuestras lecciones interactivas y ejercicios prácticos.
+                    </p>
+                    
+                    <div class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+                        <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </div>
+                </a>
             </div>
         </main>
 
