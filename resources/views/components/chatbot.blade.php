@@ -75,7 +75,7 @@
                 location_res: "📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 Ver en Google Maps</a>",
                 about_res: "🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!",
                 social_res: "¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
-                default_res: "No tengo respuesta para eso 🤔, pero nuestro equipo estará encantado de ayudarte. ¿Cómo prefieres que te contactemos?",
+                default_res: "😊 ¡Permíteme un momento! Me gustaría conectarte con uno de nuestros especialistas. Si deseas que te contactemos, solo ingresa tus datos y nos pondremos en contacto contigo muy pronto. ¿Empezamos?",
                 call_btn: "📞 Llamar ahora",
                 schedule_btn: "📅 Agendar llamada",
                 whatsapp_btn: "💬 WhatsApp",
@@ -103,7 +103,7 @@
                 location_res: "📍 We are located at:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 View on Google Maps</a>",
                 about_res: "🏨 We are <b>Chalet Motel 192</b>, your best option for rest in Kissimmee, Florida. Our commitment is to offer you comfortable rooms and a relaxing stay. We hope to see you soon!",
                 social_res: "Follow us on our social networks so you don't miss anything! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
-                default_res: "I don't have an answer for that 🤔, but our team will be happy to help you. How would you like us to contact you?",
+                default_res: "😊 One moment please! I'd love to connect you with one of our specialists. If you'd like us to contact you, just share your details and we'll reach out to you very soon. Shall we start?",
                 call_btn: "📞 Call now",
                 schedule_btn: "📅 Schedule a call",
                 whatsapp_btn: "💬 WhatsApp",
@@ -243,13 +243,16 @@
                     case 'off_topic': responseHtml = dict[botLang].off_topic; break;
                     default:
                         appendBotMessage(dict[botLang].default_res);
-                        // Show 3 action buttons
-                        quickReplies.innerHTML = `
-                            <button onclick="window.open('tel:+14077731461')" class="flex items-center gap-1.5 text-xs bg-blue-900/60 hover:bg-blue-800 text-white border border-blue-700 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].call_btn}</button>
-                            <button onclick="akiStartSchedule()" class="flex items-center gap-1.5 text-xs bg-gold/20 hover:bg-gold/30 text-gold border border-gold/40 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].schedule_btn}</button>
-                            <button onclick="window.open('https://wa.me/14077731461','_blank')" class="flex items-center gap-1.5 text-xs bg-green-900/40 hover:bg-green-800/50 text-green-400 border border-green-700 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].whatsapp_btn}</button>
-                        `;
-                        return; // don't fall through to appendBotMessage below
+                        // After a short delay, show options: collect data or call/whatsapp directly
+                        setTimeout(() => {
+                            quickReplies.innerHTML = `
+                                <button onclick="akiStartSchedule()" class="flex items-center gap-1.5 text-xs bg-gold/20 hover:bg-gold/30 text-gold border border-gold/40 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].schedule_btn}</button>
+                                <button onclick="window.open('tel:+14077731461')" class="flex items-center gap-1.5 text-xs bg-blue-900/60 hover:bg-blue-800 text-white border border-blue-700 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].call_btn}</button>
+                                <button onclick="window.open('https://wa.me/14077731461','_blank')" class="flex items-center gap-1.5 text-xs bg-green-900/40 hover:bg-green-800/50 text-green-400 border border-green-700 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].whatsapp_btn}</button>
+                            `;
+                            messagesArea.scrollTop = messagesArea.scrollHeight;
+                        }, 900);
+                        return;
                 }
 
                 appendBotMessage(responseHtml);
