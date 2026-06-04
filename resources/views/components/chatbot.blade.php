@@ -249,13 +249,14 @@
                                 <button onclick="akiStartSchedule()" class="flex items-center gap-2 text-xs bg-gold/20 hover:bg-gold/30 text-gold border border-gold/40 px-4 py-2 rounded-full transition-colors font-medium">
                                     📅 ${dict[botLang].schedule_btn.replace('📅 ','')}
                                 </button>
-                                <button onclick="window.open('https://wa.me/14077731461','_blank')" class="flex items-center gap-2 text-xs bg-green-900/40 hover:bg-green-800/50 text-green-400 border border-green-700 px-4 py-2 rounded-full transition-colors font-medium">
+                                <a href="https://wa.me/14077731461" target="_blank" rel="noopener" class="flex items-center gap-2 text-xs bg-green-900/40 hover:bg-green-800/50 text-green-400 border border-green-700 px-4 py-2 rounded-full transition-colors font-medium">
                                     💬 WhatsApp
-                                </button>
+                                </a>
                             `;
                             messagesArea.scrollTop = messagesArea.scrollHeight;
                         }, 900);
                         return;
+
                 }
 
                 appendBotMessage(responseHtml);
