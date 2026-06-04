@@ -1,6 +1,7 @@
 <div id="aki-chatbot" class="fixed bottom-6 right-6 z-50 font-outfit">
     <!-- Chat Window -->
     <div id="aki-chat-window" class="hidden flex flex-col bg-[#0a1831]/95 backdrop-blur-md border border-blue-950 w-80 sm:w-96 h-[30rem] max-h-[80vh] rounded-2xl shadow-2xl overflow-hidden mb-4 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right">
+        <!-- Header -->
         <div class="bg-gradient-to-r from-blue-950 to-navy p-4 flex items-center justify-between border-b border-white/10 shadow-md">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full border-2 border-gold overflow-hidden bg-navy-dark shadow-inner">
@@ -9,7 +10,7 @@
                 <div>
                     <h3 class="text-white font-bold tracking-wider leading-tight">Aki</h3>
                     <p class="text-gold/80 text-[10px] uppercase font-black tracking-widest flex items-center gap-1">
-                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> {{ __('En línea') }}
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> <span id="aki-status-text">Online</span>
                     </p>
                 </div>
             </div>
@@ -18,32 +19,16 @@
             </button>
         </div>
 
-        <!-- Messages Area (Added min-h-0 for proper scrolling inside flex-col) -->
-        <div id="aki-messages" class="flex-1 min-h-0 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-blue-900 scrollbar-track-transparent">
-            <!-- Initial Message -->
-            <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full border border-gold/50 overflow-hidden bg-navy shadow-sm flex-shrink-0">
-                    <img src="{{ asset('images/aki_avatar.png') }}" alt="Aki Avatar" class="w-full h-full object-cover">
-                </div>
-                <div class="bg-blue-900/50 text-white text-sm p-3 rounded-2xl rounded-tl-none border border-white/5 shadow-sm">
-                    {!! __('¡Hola! Soy <b>Aki</b>, tu asistente virtual en Chalet Motel 192 😎🌴. ¿En qué te puedo ayudar hoy?') !!}
-                </div>
-            </div>
-            
-            <!-- Quick Reply Buttons (Initial) -->
-            <div class="flex flex-wrap gap-2 pt-2" id="aki-quick-replies">
-                <button onclick="akiAsk('habitaciones')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">{{ __('Habitaciones') }} 🛏️</button>
-                <button onclick="akiAsk('contacto')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">{{ __('Contacto') }} 📞</button>
-                <button onclick="akiAsk('ubicacion')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">{{ __('Ubicación') }} 📍</button>
-                <button onclick="akiAsk('nosotros')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">{{ __('Nosotros') }} 🏨</button>
-                <button onclick="akiAsk('redes')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">{{ __('Redes Sociales') }} 📱</button>
-            </div>
+        <!-- Messages Area -->
+        <div id="aki-messages" class="flex-1 min-h-0 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-blue-900 scrollbar-track-transparent pb-16 relative">
+            <!-- Messages will be injected here -->
+            <div id="aki-quick-replies" class="flex flex-wrap gap-2 pt-2 transition-all"></div>
         </div>
 
         <!-- Input Area -->
         <div class="p-3 bg-navy/80 border-t border-white/10 backdrop-blur-md">
             <form id="aki-form" class="flex gap-2">
-                <input type="text" id="aki-input" placeholder="{{ __('Escribe un mensaje...') }}" class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" autocomplete="off">
+                <input type="text" id="aki-input" placeholder="Escribe un mensaje..." class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" autocomplete="off">
                 <button type="submit" class="bg-gold hover:bg-yellow-500 text-navy w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-md group">
                     <svg class="w-5 h-5 translate-x-[-1px] group-hover:translate-x-[1px] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
@@ -68,41 +53,94 @@
         const input = document.getElementById('aki-input');
         const messagesArea = document.getElementById('aki-messages');
         const quickReplies = document.getElementById('aki-quick-replies');
+        const statusText = document.getElementById('aki-status-text');
 
         let isChatOpen = false;
+        let chatState = 'ASK_LANG'; // ASK_LANG, READY
+        let botLang = 'es';
 
-        function toggleChat() {
-            isChatOpen = !isChatOpen;
-            if (isChatOpen) {
-                chatWindow.classList.remove('hidden');
-                // Allow a small delay for display:block to apply before animating opacity/transform
-                setTimeout(() => {
-                    chatWindow.classList.remove('scale-95', 'opacity-0');
-                    chatWindow.classList.add('scale-100', 'opacity-100');
-                    input.focus();
-                }, 10);
-                
-                // Hide notification dot
-                const notif = toggleBtn.querySelector('span.bg-red-500');
-                if(notif) notif.classList.add('hidden');
-            } else {
-                chatWindow.classList.remove('scale-100', 'opacity-100');
-                chatWindow.classList.add('scale-95', 'opacity-0');
-                setTimeout(() => {
-                    chatWindow.classList.add('hidden');
-                }, 300);
+        const dict = {
+            es: {
+                welcome_lang: "Para empezar, por favor elige tu idioma / To start, please choose your language:<br><br><b>1.</b> English 🇺🇸<br><b>2.</b> Español 🇪🇸",
+                greeting: "¡Hola! Soy <b>Aki</b>, tu asistente virtual en Chalet Motel 192 😎🌴. ¿En qué te puedo ayudar hoy?",
+                greeting_fallback: "¡Hola! ¿En qué te puedo ayudar hoy? Puedes usar los botones o escribirme lo que necesitas.",
+                rooms_btn: "Habitaciones 🛏️",
+                contact_btn: "Contacto 📞",
+                location_btn: "Ubicación 📍",
+                about_btn: "Nosotros 🏨",
+                social_btn: "Redes 📱",
+                rooms_res: "Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. ¡Pronto añadiremos más! Si deseas reservar o saber precios exactos, <a href='tel:+14077731461' class='text-gold underline font-bold'>llámanos al +1 407 773 1461</a>.",
+                contact_res: "Puedes comunicarte directamente con nosotros por teléfono o WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
+                location_res: "📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 Ver en Google Maps</a>",
+                about_res: "🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!",
+                social_res: "¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
+                default_res: "Mmm, no estoy seguro de la respuesta a eso 🤔. Pero no te preocupes, para otras consultas específicas, preguntas o reservas, <b>¡comunícate con nosotros directamente!</b><br><br>📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>Llamar al Motel</a> <br>💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>Chat por WhatsApp</a>",
+                placeholder: "Escribe un mensaje...",
+                online: "En línea"
+            },
+            en: {
+                welcome_lang: "To start, please choose your language: <br><br><b>1.</b> English 🇺🇸<br><b>2.</b> Español 🇪🇸",
+                greeting: "Hi! I'm <b>Aki</b>, your virtual assistant at Chalet Motel 192 😎🌴. How can I help you today?",
+                greeting_fallback: "Hi! How can I help you today? You can use the buttons or type what you need.",
+                rooms_btn: "Rooms 🛏️",
+                contact_btn: "Contact 📞",
+                location_btn: "Location 📍",
+                about_btn: "About Us 🏨",
+                social_btn: "Networks 📱",
+                rooms_res: "We have beautiful rooms like our <b>King Suite</b> or rooms with two beds. We'll be adding more soon! If you want to book or know exact prices, <a href='tel:+14077731461' class='text-gold underline font-bold'>call us at +1 407 773 1461</a>.",
+                contact_res: "You can contact us directly by phone or WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
+                location_res: "📍 We are located at:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 View on Google Maps</a>",
+                about_res: "🏨 We are <b>Chalet Motel 192</b>, your best option for rest in Kissimmee, Florida. Our commitment is to offer you comfortable rooms and a relaxing stay. We hope to see you soon!",
+                social_res: "Follow us on our social networks so you don't miss anything! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
+                default_res: "Mmm, I'm not sure about the answer to that 🤔. But don't worry, for other specific queries, questions or reservations, <b>contact us directly!</b><br><br>📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>Call the Motel</a> <br>💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp Chat</a>",
+                placeholder: "Type a message...",
+                online: "Online"
             }
-        }
+        };
 
-        toggleBtn.addEventListener('click', toggleChat);
-        closeBtn.addEventListener('click', toggleChat);
-
-        // Avatar Image Template for bot messages
         const botAvatarHtml = `
             <div class="w-8 h-8 rounded-full border border-gold/50 overflow-hidden bg-navy shadow-sm flex-shrink-0 mt-1">
                 <img src="{{ asset('images/aki_avatar.png') }}" alt="Aki" class="w-full h-full object-cover">
             </div>
         `;
+
+        function updateLangUI() {
+            input.placeholder = dict[botLang].placeholder;
+            statusText.innerText = dict[botLang].online;
+        }
+
+        function showLangSelection() {
+            appendBotMessage(dict.es.welcome_lang);
+            quickReplies.innerHTML = `
+                <button onclick="setLang('en')" class="text-xs bg-white/10 hover:bg-white/20 text-white border border-white/30 px-3 py-1.5 rounded-full transition-colors">1. English 🇺🇸</button>
+                <button onclick="setLang('es')" class="text-xs bg-white/10 hover:bg-white/20 text-white border border-white/30 px-3 py-1.5 rounded-full transition-colors">2. Español 🇪🇸</button>
+            `;
+        }
+
+        window.setLang = function(lang) {
+            botLang = lang;
+            chatState = 'READY';
+            updateLangUI();
+            appendUserMessage(lang === 'en' ? 'English' : 'Español');
+            quickReplies.innerHTML = '';
+            
+            const typingId = showTypingIndicator();
+            setTimeout(() => {
+                document.getElementById(typingId)?.remove();
+                appendBotMessage(dict[botLang].greeting);
+                showMainQuickReplies();
+            }, 600);
+        };
+
+        function showMainQuickReplies() {
+            quickReplies.innerHTML = `
+                <button onclick="akiAsk('habitaciones')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">${dict[botLang].rooms_btn}</button>
+                <button onclick="akiAsk('contacto')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">${dict[botLang].contact_btn}</button>
+                <button onclick="akiAsk('ubicacion')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">${dict[botLang].location_btn}</button>
+                <button onclick="akiAsk('nosotros')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">${dict[botLang].about_btn}</button>
+                <button onclick="akiAsk('redes')" class="text-xs bg-gold/10 hover:bg-gold/20 text-gold border border-gold/30 px-3 py-1.5 rounded-full transition-colors">${dict[botLang].social_btn}</button>
+            `;
+        }
 
         function appendUserMessage(text) {
             const msgDiv = document.createElement('div');
@@ -112,7 +150,6 @@
                     ${text}
                 </div>
             `;
-            // insert before quick replies
             messagesArea.insertBefore(msgDiv, quickReplies);
             messagesArea.scrollTop = messagesArea.scrollHeight;
         }
@@ -127,8 +164,6 @@
                 </div>
             `;
             messagesArea.insertBefore(msgDiv, quickReplies);
-            
-            // Trigger animation
             setTimeout(() => {
                 msgDiv.classList.remove('opacity-0', 'translate-y-2');
                 messagesArea.scrollTop = messagesArea.scrollHeight;
@@ -159,11 +194,11 @@
                 // Determine text based on intent if clicked from quick replies
                 let text = '';
                 switch(intent) {
-                    case 'habitaciones': text = `{{ __('Quiero ver habitaciones') }}`; break;
-                    case 'contacto': text = `{{ __('¿Cómo los contacto?') }}`; break;
-                    case 'ubicacion': text = `{{ __('¿Dónde están ubicados?') }}`; break;
-                    case 'nosotros': text = `{{ __('¿Quiénes son ustedes?') }}`; break;
-                    case 'redes': text = `{{ __('Redes sociales') }}`; break;
+                    case 'habitaciones': text = botLang === 'en' ? 'I want to see rooms' : 'Quiero ver habitaciones'; break;
+                    case 'contacto': text = botLang === 'en' ? 'How do I contact you?' : '¿Cómo los contacto?'; break;
+                    case 'ubicacion': text = botLang === 'en' ? 'Where are you located?' : '¿Dónde están ubicados?'; break;
+                    case 'nosotros': text = botLang === 'en' ? 'Who are you?' : '¿Quiénes son ustedes?'; break;
+                    case 'redes': text = botLang === 'en' ? 'Social networks' : 'Redes sociales'; break;
                     default: text = intent;
                 }
                 appendUserMessage(text);
@@ -176,33 +211,18 @@
                 if(indicator) indicator.remove();
 
                 let responseHtml = '';
-
                 switch(intent) {
-                    case 'saludo':
-                        responseHtml = `{!! __('¡Hola! ¿En qué te puedo ayudar hoy? Puedes usar los botones o escribirme lo que necesitas.') !!}`;
-                        break;
-                    case 'habitaciones':
-                        responseHtml = `{!! __('Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. ¡Pronto añadiremos más! Si deseas reservar o saber precios exactos, <a href="tel:+14077731461" class="text-gold underline font-bold">llámanos al +1 407 773 1461</a>.') !!}`;
-                        break;
-                    case 'contacto':
-                        responseHtml = `{!! __('Puedes comunicarte directamente con nosotros por teléfono o WhatsApp: <br><br> 📞 <a href="tel:+14077731461" class="text-gold underline font-bold">+1 407 773 1461</a> <br> 💬 <a href="https://wa.me/14077731461" target="_blank" class="text-[#25D366] underline font-bold">WhatsApp (+1 407 773 1461)</a>.') !!}`;
-                        break;
-                    case 'ubicacion':
-                        responseHtml = `{!! __('📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href="https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746" target="_blank" class="text-gold underline font-bold">👉 Ver en Google Maps</a>') !!}`;
-                        break;
-                    case 'nosotros':
-                        responseHtml = `{!! __('🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!') !!}`;
-                        break;
-                    case 'redes':
-                        responseHtml = `{!! __('¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href="https://www.facebook.com/profile.php?id=61590106737806" target="_blank" class="text-[#1877F2] underline font-bold">📘 Facebook</a> <br> <a href="https://www.instagram.com/kissmemotel192/" target="_blank" class="text-pink-400 underline font-bold">📸 Instagram</a>') !!}`;
-                        break;
-                    default:
-                        responseHtml = `{!! __('Mmm, no estoy seguro de la respuesta a eso 🤔. Pero no te preocupes, para otras consultas específicas, preguntas o reservas, <b>¡comunícate con nosotros directamente!</b><br><br>📞 <a href="tel:+14077731461" class="text-gold underline font-bold">Llamar al Motel</a> <br>💬 <a href="https://wa.me/14077731461" target="_blank" class="text-[#25D366] underline font-bold">Chat por WhatsApp</a>') !!}`;
-                        break;
+                    case 'saludo': responseHtml = dict[botLang].greeting_fallback; break;
+                    case 'habitaciones': responseHtml = dict[botLang].rooms_res; break;
+                    case 'contacto': responseHtml = dict[botLang].contact_res; break;
+                    case 'ubicacion': responseHtml = dict[botLang].location_res; break;
+                    case 'nosotros': responseHtml = dict[botLang].about_res; break;
+                    case 'redes': responseHtml = dict[botLang].social_res; break;
+                    default: responseHtml = dict[botLang].default_res; break;
                 }
 
                 appendBotMessage(responseHtml);
-            }, 800); // Simulate network delay
+            }, 800);
         };
 
         form.addEventListener('submit', function(e) {
@@ -213,7 +233,22 @@
             const originalText = input.value.trim();
             input.value = '';
 
-            // Simple intent detection (English / Spanish)
+            if (chatState === 'ASK_LANG') {
+                if (val === '1' || val.includes('english') || val.includes('inglés') || val.includes('ingles')) {
+                    setLang('en');
+                } else if (val === '2' || val.includes('español') || val.includes('spanish') || val.includes('espanol')) {
+                    setLang('es');
+                } else {
+                    appendUserMessage(originalText);
+                    const typingId = showTypingIndicator();
+                    setTimeout(() => {
+                        document.getElementById(typingId)?.remove();
+                        appendBotMessage("Please type 1 for English or 2 for Español. / Por favor, escribe 1 para Inglés o 2 para Español.");
+                    }, 500);
+                }
+                return;
+            }
+
             let intent = 'unknown';
             if(val.includes('cuarto') || val.includes('habitacion') || val.includes('cama') || val.includes('precio') || val.includes('reserva') || val.includes('dormir') || val.includes('room') || val.includes('bed') || val.includes('price') || val.includes('book')) {
                 intent = 'habitaciones';
@@ -231,5 +266,37 @@
 
             akiAsk(intent, originalText);
         });
+
+        // Initialize chat window UI state
+        let hasInitialized = false;
+
+        function toggleChat() {
+            isChatOpen = !isChatOpen;
+            if (isChatOpen) {
+                chatWindow.classList.remove('hidden');
+                setTimeout(() => {
+                    chatWindow.classList.remove('scale-95', 'opacity-0');
+                    chatWindow.classList.add('scale-100', 'opacity-100');
+                    input.focus();
+                }, 10);
+                
+                const notif = toggleBtn.querySelector('span.bg-red-500');
+                if(notif) notif.classList.add('hidden');
+
+                if (!hasInitialized) {
+                    hasInitialized = true;
+                    showLangSelection();
+                }
+            } else {
+                chatWindow.classList.remove('scale-100', 'opacity-100');
+                chatWindow.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    chatWindow.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        toggleBtn.addEventListener('click', toggleChat);
+        closeBtn.addEventListener('click', toggleChat);
     });
 </script>
