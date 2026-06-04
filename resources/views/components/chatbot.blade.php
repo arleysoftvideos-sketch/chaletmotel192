@@ -75,7 +75,7 @@
                 location_res: "📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 Ver en Google Maps</a>",
                 about_res: "🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!",
                 social_res: "¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
-                default_res: "😊 ¡Qué buena pregunta! Aunque no tengo esa información disponible en este momento, puedo ayudarte de dos maneras:<br><br>Puedo <b>agendar una llamada</b> para que uno de nuestros agentes te contacte personalmente, o si lo prefieres, puedo <b>comunicarte por WhatsApp</b> ahora mismo. ¿Qué prefieres?"
+                default_res: "😊 ¡Qué buena pregunta! Aunque no tengo esa información disponible en este momento, puedo ayudarte de dos maneras:<br><br>Puedo <b>agendar una llamada</b> para que uno de nuestros agentes te contacte personalmente, o si lo prefieres, puedo <b>comunicarte por WhatsApp</b> ahora mismo. ¿Qué prefieres?",
                 call_btn: "📞 Llamar ahora",
                 schedule_btn: "📅 Agendar llamada",
                 whatsapp_btn: "💬 WhatsApp",
@@ -103,7 +103,7 @@
                 location_res: "📍 We are located at:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 View on Google Maps</a>",
                 about_res: "🏨 We are <b>Chalet Motel 192</b>, your best option for rest in Kissimmee, Florida. Our commitment is to offer you comfortable rooms and a relaxing stay. We hope to see you soon!",
                 social_res: "Follow us on our social networks so you don't miss anything! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
-                default_res: "😊 Great question! Although I don't have that information right now, I can help you in two ways:<br><br>I can <b>schedule a call</b> so one of our agents contacts you personally, or if you prefer, I can <b>connect you via WhatsApp</b> right now. Which do you prefer?"
+                default_res: "😊 Great question! Although I don't have that information right now, I can help you in two ways:<br><br>I can <b>schedule a call</b> so one of our agents contacts you personally, or if you prefer, I can <b>connect you via WhatsApp</b> right now. Which do you prefer?",
                 call_btn: "📞 Call now",
                 schedule_btn: "📅 Schedule a call",
                 whatsapp_btn: "💬 WhatsApp",
