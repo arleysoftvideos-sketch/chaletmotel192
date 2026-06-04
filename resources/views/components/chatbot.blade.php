@@ -19,15 +19,15 @@
             </button>
         </div>
 
-        <!-- Messages Area -->
-        <div id="aki-messages" class="flex-1 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-blue-900 scrollbar-track-transparent">
+        <!-- Messages Area (Added min-h-0 for proper scrolling inside flex-col) -->
+        <div id="aki-messages" class="flex-1 min-h-0 p-4 overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-blue-900 scrollbar-track-transparent">
             <!-- Initial Message -->
             <div class="flex items-start gap-3">
                 <div class="w-8 h-8 rounded-full border border-gold/50 overflow-hidden bg-navy shadow-sm flex-shrink-0">
                     <img src="{{ asset('images/aki_avatar.png') }}" alt="Aki Avatar" class="w-full h-full object-cover">
                 </div>
                 <div class="bg-blue-900/50 text-white text-sm p-3 rounded-2xl rounded-tl-none border border-white/5 shadow-sm">
-                    ¡Hola! Soy <b>Aki</b>, tu asistente virtual en Chalet Motel 192 😎🌴. ¿En qué te puedo ayudar hoy?
+                    {!! __('¡Hola! Soy <b>Aki</b>, tu asistente virtual en Chalet Motel 192 😎🌴. ¿En qué te puedo ayudar hoy?') !!}
                 </div>
             </div>
             
@@ -160,11 +160,11 @@
                 // Determine text based on intent if clicked from quick replies
                 let text = '';
                 switch(intent) {
-                    case 'habitaciones': text = 'Quiero ver habitaciones'; break;
-                    case 'contacto': text = '¿Cómo los contacto?'; break;
-                    case 'ubicacion': text = '¿Dónde están ubicados?'; break;
-                    case 'nosotros': text = '¿Quiénes son ustedes?'; break;
-                    case 'redes': text = 'Redes sociales'; break;
+                    case 'habitaciones': text = `{{ __('Quiero ver habitaciones') }}`; break;
+                    case 'contacto': text = `{{ __('¿Cómo los contacto?') }}`; break;
+                    case 'ubicacion': text = `{{ __('¿Dónde están ubicados?') }}`; break;
+                    case 'nosotros': text = `{{ __('¿Quiénes son ustedes?') }}`; break;
+                    case 'redes': text = `{{ __('Redes sociales') }}`; break;
                     default: text = intent;
                 }
                 appendUserMessage(text);
@@ -180,22 +180,22 @@
 
                 switch(intent) {
                     case 'habitaciones':
-                        responseHtml = 'Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. ¡Pronto añadiremos más! Si deseas reservar o saber precios exactos, <a href="tel:+14077731461" class="text-gold underline font-bold">llámanos al +1 407 773 1461</a>.';
+                        responseHtml = `{!! __('Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. ¡Pronto añadiremos más! Si deseas reservar o saber precios exactos, <a href="tel:+14077731461" class="text-gold underline font-bold">llámanos al +1 407 773 1461</a>.') !!}`;
                         break;
                     case 'contacto':
-                        responseHtml = 'Puedes comunicarte directamente con nosotros por teléfono o WhatsApp: <br><br> 📞 <a href="tel:+14077731461" class="text-gold underline font-bold">+1 407 773 1461</a> <br> 💬 <a href="https://wa.me/14077731461" target="_blank" class="text-[#25D366] underline font-bold">WhatsApp (+1 407 773 1461)</a>.';
+                        responseHtml = `{!! __('Puedes comunicarte directamente con nosotros por teléfono o WhatsApp: <br><br> 📞 <a href="tel:+14077731461" class="text-gold underline font-bold">+1 407 773 1461</a> <br> 💬 <a href="https://wa.me/14077731461" target="_blank" class="text-[#25D366] underline font-bold">WhatsApp (+1 407 773 1461)</a>.') !!}`;
                         break;
                     case 'ubicacion':
-                        responseHtml = '📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href="https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746" target="_blank" class="text-gold underline font-bold">👉 Ver en Google Maps</a>';
+                        responseHtml = `{!! __('📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href="https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746" target="_blank" class="text-gold underline font-bold">👉 Ver en Google Maps</a>') !!}`;
                         break;
                     case 'nosotros':
-                        responseHtml = '🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!';
+                        responseHtml = `{!! __('🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!') !!}`;
                         break;
                     case 'redes':
-                        responseHtml = '¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href="https://www.facebook.com/profile.php?id=61590106737806" target="_blank" class="text-[#1877F2] underline font-bold">📘 Facebook</a> <br> <a href="https://www.instagram.com/kissmemotel192/" target="_blank" class="text-pink-400 underline font-bold">📸 Instagram</a>';
+                        responseHtml = `{!! __('¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href="https://www.facebook.com/profile.php?id=61590106737806" target="_blank" class="text-[#1877F2] underline font-bold">📘 Facebook</a> <br> <a href="https://www.instagram.com/kissmemotel192/" target="_blank" class="text-pink-400 underline font-bold">📸 Instagram</a>') !!}`;
                         break;
                     default:
-                        responseHtml = 'Mmm, no estoy seguro de la respuesta a eso 🤔. Pero no te preocupes, para otras consultas específicas, preguntas o reservas, <b>¡comunícate con nosotros directamente!</b><br><br>📞 <a href="tel:+14077731461" class="text-gold underline font-bold">Llamar al Motel</a> <br>💬 <a href="https://wa.me/14077731461" target="_blank" class="text-[#25D366] underline font-bold">Chat por WhatsApp</a>';
+                        responseHtml = `{!! __('Mmm, no estoy seguro de la respuesta a eso 🤔. Pero no te preocupes, para otras consultas específicas, preguntas o reservas, <b>¡comunícate con nosotros directamente!</b><br><br>📞 <a href="tel:+14077731461" class="text-gold underline font-bold">Llamar al Motel</a> <br>💬 <a href="https://wa.me/14077731461" target="_blank" class="text-[#25D366] underline font-bold">Chat por WhatsApp</a>') !!}`;
                         break;
                 }
 
@@ -211,17 +211,17 @@
             const originalText = input.value.trim();
             input.value = '';
 
-            // Simple intent detection
+            // Simple intent detection (English / Spanish)
             let intent = 'unknown';
-            if(val.includes('cuarto') || val.includes('habitacion') || val.includes('cama') || val.includes('precio') || val.includes('reserva') || val.includes('dormir')) {
+            if(val.includes('cuarto') || val.includes('habitacion') || val.includes('cama') || val.includes('precio') || val.includes('reserva') || val.includes('dormir') || val.includes('room') || val.includes('bed') || val.includes('price') || val.includes('book')) {
                 intent = 'habitaciones';
-            } else if(val.includes('contacto') || val.includes('telefono') || val.includes('llamar') || val.includes('whatsapp') || val.includes('numero')) {
+            } else if(val.includes('contacto') || val.includes('telefono') || val.includes('llamar') || val.includes('whatsapp') || val.includes('numero') || val.includes('contact') || val.includes('phone') || val.includes('call') || val.includes('number')) {
                 intent = 'contacto';
-            } else if(val.includes('donde') || val.includes('ubicacion') || val.includes('direccion') || val.includes('llegar') || val.includes('mapa')) {
+            } else if(val.includes('donde') || val.includes('ubicacion') || val.includes('direccion') || val.includes('llegar') || val.includes('mapa') || val.includes('where') || val.includes('location') || val.includes('address') || val.includes('map')) {
                 intent = 'ubicacion';
-            } else if(val.includes('nosotros') || val.includes('quienes') || val.includes('historia')) {
+            } else if(val.includes('nosotros') || val.includes('quienes') || val.includes('historia') || val.includes('about') || val.includes('who') || val.includes('story')) {
                 intent = 'nosotros';
-            } else if(val.includes('redes') || val.includes('facebook') || val.includes('instagram') || val.includes('social')) {
+            } else if(val.includes('redes') || val.includes('facebook') || val.includes('instagram') || val.includes('social') || val.includes('network')) {
                 intent = 'redes';
             }
 
