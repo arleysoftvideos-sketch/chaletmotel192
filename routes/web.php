@@ -39,6 +39,7 @@ Route::get('/api/load-all-rooms', [GoogleSheetController::class, 'loadAllRooms']
 // Rutas Públicas de Contacto
 Route::get('/contactar', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contactar', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/api/chat-contact', [ContactController::class, 'storeFromChatbot'])->name('contact.chatbot');
 
 // Ruta de Inventario
 Route::get('/inventario', function () {

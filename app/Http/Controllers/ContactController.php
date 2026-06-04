@@ -86,4 +86,41 @@ class ContactController extends Controller
 
         return redirect()->back()->with('success', 'Estamos tramitando su solicitud, en un momento nos pondremos en contacto.');
     }
+
+    public function storeFromChatbot(Request $request)
+    {
+        $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            'phone'   => 'required|string|max:25',
+            'message' => 'required|string|min:2',
+        ]);
+
+        $validated['name']    = strip_tags($validated['name']);
+        $validated['phone']   = strip_tags($validated['phone']);
+        $validated['message'] = strip_tags($validated['message']);
+        $validated['email']   = 'chatbot@chaletmotel192.com'; // placeholder required by schema
+
+        // Save to database
+        Contact::create($validated);
+
+        // Sync to Google Sheets
+        try {
+            $service = $this->getSheetsService();
+            $rowValues = [
+                $validated['name'],
+                $validated['email'],
+                $validated['phone'],
+                '[CHATBOT] ' . $validated['message'],
+            ];
+            $range = 'contact!A:D';
+            $body = new ValueRange(['values' => [$rowValues]]);
+            $service->spreadsheets_values->append($this->spreadsheetId, $range, $body, [
+                'valueInputOption' => 'USER_ENTERED'
+            ]);
+        } catch (\Exception $e) {
+            logger()->error('Error al guardar contacto del chatbot en Google Sheets: ' . $e->getMessage());
+        }
+
+        return response()->json(['status' => 'ok']);
+    }
 }

@@ -56,8 +56,9 @@
         const statusText = document.getElementById('aki-status-text');
 
         let isChatOpen = false;
-        let chatState = 'ASK_LANG'; // ASK_LANG, READY
+        let chatState = 'ASK_LANG'; // ASK_LANG, READY, COLLECT_NAME, COLLECT_PHONE, COLLECT_MESSAGE
         let botLang = 'es';
+        let contactData = { name: '', phone: '', message: '' };
 
         const dict = {
             es: {
@@ -74,7 +75,14 @@
                 location_res: "📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 Ver en Google Maps</a>",
                 about_res: "🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!",
                 social_res: "¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
-                default_res: "Mmm, no estoy seguro de la respuesta a eso 🤔. Pero no te preocupes, para otras consultas específicas, preguntas o reservas, <b>¡comunícate con nosotros directamente!</b><br><br>📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>Llamar al Motel</a> <br>💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>Chat por WhatsApp</a>",
+                default_res: "No tengo respuesta para eso 🤔, pero nuestro equipo estará encantado de ayudarte. ¿Cómo prefieres que te contactemos?",
+                call_btn: "📞 Llamar ahora",
+                schedule_btn: "📅 Agendar llamada",
+                whatsapp_btn: "💬 WhatsApp",
+                collect_name: "¡Genial! Para agendar tu llamada necesito algunos datos. 😊<br>¿Cuál es tu <b>nombre</b>?",
+                collect_phone: "Mucho gusto, <b>{name}</b>! ¿A qué <b>número de teléfono</b> te llamamos?",
+                collect_message: "Perfecto! ¿Cuál es tu <b>consulta o pregunta</b> para nuestro equipo?",
+                success_msg: "✅ ¡Listo, <b>{name}</b>! Hemos recibido tu solicitud. Nuestro equipo te llamará al <b>{phone}</b> muy pronto. ¡Gracias por contactarnos! 🌴",
                 placeholder: "Escribe un mensaje...",
                 online: "En línea"
             },
@@ -92,7 +100,14 @@
                 location_res: "📍 We are located at:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 View on Google Maps</a>",
                 about_res: "🏨 We are <b>Chalet Motel 192</b>, your best option for rest in Kissimmee, Florida. Our commitment is to offer you comfortable rooms and a relaxing stay. We hope to see you soon!",
                 social_res: "Follow us on our social networks so you don't miss anything! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
-                default_res: "Mmm, I'm not sure about the answer to that 🤔. But don't worry, for other specific queries, questions or reservations, <b>contact us directly!</b><br><br>📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>Call the Motel</a> <br>💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp Chat</a>",
+                default_res: "I don't have an answer for that 🤔, but our team will be happy to help you. How would you like us to contact you?",
+                call_btn: "📞 Call now",
+                schedule_btn: "📅 Schedule a call",
+                whatsapp_btn: "💬 WhatsApp",
+                collect_name: "Great! To schedule your call I need a few details. 😊<br>What is your <b>name</b>?",
+                collect_phone: "Nice to meet you, <b>{name}</b>! What <b>phone number</b> should we call you on?",
+                collect_message: "Perfect! What is your <b>question or inquiry</b> for our team?",
+                success_msg: "✅ Done, <b>{name}</b>! We have received your request. Our team will call you at <b>{phone}</b> very soon. Thank you for reaching out! 🌴",
                 placeholder: "Type a message...",
                 online: "Online"
             }
@@ -218,12 +233,48 @@
                     case 'ubicacion': responseHtml = dict[botLang].location_res; break;
                     case 'nosotros': responseHtml = dict[botLang].about_res; break;
                     case 'redes': responseHtml = dict[botLang].social_res; break;
-                    default: responseHtml = dict[botLang].default_res; break;
+                    default:
+                        appendBotMessage(dict[botLang].default_res);
+                        // Show 3 action buttons
+                        quickReplies.innerHTML = `
+                            <button onclick="window.open('tel:+14077731461')" class="flex items-center gap-1.5 text-xs bg-blue-900/60 hover:bg-blue-800 text-white border border-blue-700 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].call_btn}</button>
+                            <button onclick="akiStartSchedule()" class="flex items-center gap-1.5 text-xs bg-gold/20 hover:bg-gold/30 text-gold border border-gold/40 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].schedule_btn}</button>
+                            <button onclick="window.open('https://wa.me/14077731461','_blank')" class="flex items-center gap-1.5 text-xs bg-green-900/40 hover:bg-green-800/50 text-green-400 border border-green-700 px-3 py-2 rounded-full transition-colors font-medium">${dict[botLang].whatsapp_btn}</button>
+                        `;
+                        return; // don't fall through to appendBotMessage below
                 }
 
                 appendBotMessage(responseHtml);
             }, 800);
         };
+
+        // --- Schedule call flow ---
+        window.akiStartSchedule = function() {
+            chatState = 'COLLECT_NAME';
+            contactData = { name: '', phone: '', message: '' };
+            quickReplies.innerHTML = '';
+            const typingId = showTypingIndicator();
+            setTimeout(() => {
+                document.getElementById(typingId)?.remove();
+                appendBotMessage(dict[botLang].collect_name);
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            }, 600);
+        };
+
+        function sendContactToServer() {
+            fetch('/api/chat-contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                },
+                body: JSON.stringify({
+                    name: contactData.name,
+                    phone: contactData.phone,
+                    message: contactData.message
+                })
+            }).catch(() => { /* silent fail – record already saved on server */ });
+        }
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -233,6 +284,7 @@
             const originalText = input.value.trim();
             input.value = '';
 
+            // --- Language selection ---
             if (chatState === 'ASK_LANG') {
                 if (val === '1' || val.includes('english') || val.includes('inglés') || val.includes('ingles')) {
                     setLang('en');
@@ -249,6 +301,52 @@
                 return;
             }
 
+            // --- Contact collection states ---
+            if (chatState === 'COLLECT_NAME') {
+                appendUserMessage(originalText);
+                contactData.name = originalText;
+                chatState = 'COLLECT_PHONE';
+                const typingId = showTypingIndicator();
+                setTimeout(() => {
+                    document.getElementById(typingId)?.remove();
+                    appendBotMessage(dict[botLang].collect_phone.replace('{name}', contactData.name));
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }, 600);
+                return;
+            }
+
+            if (chatState === 'COLLECT_PHONE') {
+                appendUserMessage(originalText);
+                contactData.phone = originalText;
+                chatState = 'COLLECT_MESSAGE';
+                const typingId = showTypingIndicator();
+                setTimeout(() => {
+                    document.getElementById(typingId)?.remove();
+                    appendBotMessage(dict[botLang].collect_message);
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }, 600);
+                return;
+            }
+
+            if (chatState === 'COLLECT_MESSAGE') {
+                appendUserMessage(originalText);
+                contactData.message = originalText;
+                chatState = 'READY';
+                sendContactToServer();
+                const typingId = showTypingIndicator();
+                setTimeout(() => {
+                    document.getElementById(typingId)?.remove();
+                    const successMsg = dict[botLang].success_msg
+                        .replace('{name}', contactData.name)
+                        .replace('{phone}', contactData.phone);
+                    appendBotMessage(successMsg);
+                    showMainQuickReplies();
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }, 800);
+                return;
+            }
+
+            // --- Normal intent detection ---
             let intent = 'unknown';
             if(val.includes('cuarto') || val.includes('habitacion') || val.includes('cama') || val.includes('precio') || val.includes('reserva') || val.includes('dormir') || val.includes('room') || val.includes('bed') || val.includes('price') || val.includes('book')) {
                 intent = 'habitaciones';
