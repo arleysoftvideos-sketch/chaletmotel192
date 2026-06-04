@@ -2,7 +2,7 @@
     <!-- Chat Window -->
     <div id="aki-chat-window" class="hidden flex flex-col bg-[#0a1831]/95 backdrop-blur-md border border-blue-950 w-80 sm:w-96 h-[30rem] max-h-[80vh] rounded-2xl shadow-2xl overflow-hidden mb-4 transition-all duration-300 transform scale-95 opacity-0 origin-bottom-right">
         <!-- Header -->
-        <div class="bg-gradient-to-r from-blue-950 to-navy p-4 flex items-center justify-between border-b border-white/10 shadow-md">
+        <div class="bg-gradient-to-r from-blue-950 to-[#0a1831] p-4 flex items-center justify-between border-b border-white/10 shadow-md relative z-10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full border-2 border-gold overflow-hidden bg-navy-dark shadow-inner">
                     <img src="{{ asset('images/aki_avatar.png') }}" alt="Aki Avatar" class="w-full h-full object-cover">
@@ -26,7 +26,7 @@
         </div>
 
         <!-- Input Area -->
-        <div class="p-3 bg-navy/80 border-t border-white/10 backdrop-blur-md">
+        <div class="p-3 bg-[#0a1831] border-t border-white/10 relative z-10">
             <form id="aki-form" class="flex gap-2">
                 <input type="text" id="aki-input" placeholder="Escribe un mensaje..." class="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all" autocomplete="off">
                 <button type="submit" class="bg-gold hover:bg-yellow-500 text-navy w-10 h-10 rounded-full flex items-center justify-center transition-colors shadow-md group">
@@ -69,7 +69,7 @@
                 location_btn: "Ubicación 📍",
                 about_btn: "Nosotros 🏨",
                 social_btn: "Redes 📱",
-                rooms_res: "Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. ¡Pronto añadiremos más! Si deseas reservar o saber precios exactos, <a href='tel:+14077731461' class='text-gold underline font-bold'>llámanos al +1 407 773 1461</a>.",
+                rooms_res: "Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. <a href='tel:+14077731461' class='text-gold underline font-bold'>Llámanos al +1 407 773 1461</a>.",
                 contact_res: "Puedes comunicarte directamente con nosotros por teléfono o WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
                 location_res: "📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 Ver en Google Maps</a>",
                 about_res: "🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!",
@@ -87,7 +87,7 @@
                 location_btn: "Location 📍",
                 about_btn: "About Us 🏨",
                 social_btn: "Networks 📱",
-                rooms_res: "We have beautiful rooms like our <b>King Suite</b> or rooms with two beds. We'll be adding more soon! If you want to book or know exact prices, <a href='tel:+14077731461' class='text-gold underline font-bold'>call us at +1 407 773 1461</a>.",
+                rooms_res: "We have beautiful rooms like our <b>King Suite</b> or rooms with two beds. <a href='tel:+14077731461' class='text-gold underline font-bold'>Call us at +1 407 773 1461</a>.",
                 contact_res: "You can contact us directly by phone or WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
                 location_res: "📍 We are located at:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 View on Google Maps</a>",
                 about_res: "🏨 We are <b>Chalet Motel 192</b>, your best option for rest in Kissimmee, Florida. Our commitment is to offer you comfortable rooms and a relaxing stay. We hope to see you soon!",
