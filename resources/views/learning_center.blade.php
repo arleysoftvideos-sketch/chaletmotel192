@@ -302,21 +302,65 @@
         <!-- ARLINGO JAVASCRIPT -->
         <script>
             const data = {
-                "EL ABECEDARIO 🔤": [
-                    { es: "A", en: "A", pro: "ei" }, { es: "B", en: "B", pro: "bi" }, { es: "C", en: "C", pro: "si" },
-                    { es: "D", en: "D", pro: "di" }, { es: "E", en: "E", pro: "i" }, { es: "F", en: "F", pro: "ef" },
-                    { es: "G", en: "G", pro: "yi" }, { es: "H", en: "H", pro: "eich" }, { es: "I", en: "I", pro: "ai" }
+                "01. FRASES 🏆 MUNDIAL FIFA 2026": [
+                    { es: "La final será en New Jersey.", en: "The final will be in New Jersey.", pro: "de fai-nal guil bi in niu ier-si" },
+                    { es: "¡Gol de último minuto!", en: "Last-minute goal!", pro: "last mi-nit goul" }
                 ],
-                "VOCALES MÁGICAS ⚡": [
-                    { es: "Pastel (A larga)", en: "Cake", pro: "keik" },
-                    { es: "Manzana (A corta)", en: "Apple", pro: "a-pol" },
-                    { es: "Dormir (Doble E)", en: "Sleep", pro: "sliip" },
-                    { es: "Bicicleta (I larga)", en: "Bike", pro: "baik" }
+                "01. MUNDIAL FIFA 2026 🏆": [
+                    { es: "¿Cuál es el marcador?", en: "What is the score?", pro: "uat is de es-kor" },
+                    { es: "Estadio", en: "Stadium", pro: "estei-diom" }
                 ],
-                "CERRAJERÍA 🔑": [
-                    { es: "Ganzúa", en: "Lock pick", pro: "lok pik" },
-                    { es: "Llave maestra", en: "Master key", pro: "mas-ter ki" }
-                ]
+                "ABECEDARIO 🔤": [
+                    { es: "A", en: "A", pro: "ei" }, { es: "B", en: "B", pro: "bi" }
+                ],
+                "Adjetivos Comunes 💡": [],
+                "Alimentos y Bebidas 🍕": [],
+                "Animales y Naturaleza 🦁": [],
+                "Casa y el Hogar 🏠": [],
+                "Ciudad y Lugares 🏙️": [],
+                "Clima y Estaciones ☁️": [],
+                "Colores Básicos 🎨": [],
+                "Compras y Dinero 💰": [],
+                "Deportes ⚽": [],
+                "Días y Tiempo ⏰": [],
+                "Educación y Escuela 📚": [],
+                "El Cuerpo Humano 🧠": [],
+                "Emociones y Sentimientos 😊": [],
+                "FRASES: Agencia de Viajes": [
+                    { es: "Bienvenidos a Magic Travel.", en: "Welcome to Magic Travel.", pro: "guel-kam tu ma-yik tra-vel" }
+                ],
+                "FRASES: Cerrajería": [
+                    { es: "Necesito cambiar la cerradura.", en: "I need to change the lock.", pro: "ai niid tu cheinch de lok" }
+                ],
+                "FRASES: Delivery & Instacart": [
+                    { es: "Dejé el paquete en la puerta.", en: "I left the package at the door.", pro: "ai left de pa-kich at de door" }
+                ],
+                "FRASES: Publicidad & Ventas": [],
+                "FRASES: Royal Prestige": [],
+                "FRASES: Tienda de Ropa": [],
+                "FRASES: Transportes y Viajes": [],
+                "FRASES: Venta de Chorizos": [
+                    { es: "Tenemos chorizos artesanales listos.", en: "We have artisan chorizos ready.", pro: "gui jaf ar-ti-san cho-ri-sos re-di" }
+                ],
+                "FRASES: Warehouse (Bodega)": [
+                    { es: "Mueve este pallet al fondo.", en: "Move this pallet to the back.", pro: "muuv dis pa-let tu de bak" }
+                ],
+                "Familia y Relaciones 👨👩👧": [],
+                "Farmacia 💊": [],
+                "Horas y Tiempo ⏱️": [],
+                "Meses y Fechas 📅": [],
+                "Números Pro 🔥": [],
+                "Oficina y Tecnología 💻": [],
+                "Preguntas Básicas ❓": [],
+                "Preposiciones y Ubicación 😵💫🌀": [],
+                "Presentaciones Personales 👋": [],
+                "Profesiones y Oficios 👷": [],
+                "Ropa y Accesorios 🕶️": [],
+                "Salud y Medicina 🏥": [],
+                "Saludos y Despedidas ✨": [],
+                "Salón de Belleza ✨": [],
+                "Transportes y Viajes 🚀": [],
+                "Verbos de Acción 🏃": []
             };
 
             let isPlayingCategory = false;
