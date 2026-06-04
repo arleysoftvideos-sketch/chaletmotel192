@@ -245,12 +245,18 @@
                     <button class="back-btn" onclick="closeModal()">← {{ __('VOLVER') }}</button>
                 </div>
                 <div class="modal-top-row">
-                    <div class="flex flex-col">
-                        <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl uppercase tracking-wide m-0">DICCIONARIO</h2>
-                        <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
-                        <div id="modalTargetFlag" class="mt-1.5 flex items-center gap-2"></div>
+                    <div class="flex items-center gap-4 sm:gap-6">
+                        <div id="modalTargetFlag" class="shrink-0"></div>
+                        <div class="flex flex-col">
+                            <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl sm:text-2xl uppercase tracking-wide m-0">DICCIONARIO</h2>
+                            <div class="flex items-center gap-3 mt-1">
+                                <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
+                                <span class="text-slate-600 text-xs">|</span>
+                                <span id="learningLabel" class="tracking-wider uppercase text-[10px] font-bold text-slate-300"></span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2 sm:gap-4">
+                    <div class="flex items-center gap-2 sm:gap-4 mt-4 sm:mt-0">
                         <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
                     </div>
                 </div>
@@ -550,10 +556,13 @@
                 document.getElementById('itemCount').innerText = `${currentCategoryItems.length} palabras`;
                 
                 const flagDiv = document.getElementById('modalTargetFlag');
+                const labelDiv = document.getElementById('learningLabel');
                 if (targetLang === 'en') {
-                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w40/us.png" alt="English" class="w-6 h-4 rounded shadow-md border border-slate-700"> <span class="tracking-wider uppercase text-[10px] font-bold text-slate-300">{{ __('APRENDIENDO INGLÉS') }}</span>`;
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w80/us.png" alt="English" class="w-16 sm:w-20 rounded-lg shadow-xl border-2 border-slate-700/50">`;
+                    labelDiv.innerText = "{{ __('APRENDIENDO INGLÉS') }}";
                 } else {
-                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w40/es.png" alt="Spanish" class="w-6 h-4 rounded shadow-md border border-slate-700"> <span class="tracking-wider uppercase text-[10px] font-bold text-slate-300">{{ __('APRENDIENDO ESPAÑOL') }}</span>`;
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w80/es.png" alt="Spanish" class="w-16 sm:w-20 rounded-lg shadow-xl border-2 border-slate-700/50">`;
+                    labelDiv.innerText = "{{ __('APRENDIENDO ESPAÑOL') }}";
                 }
                 
                 body.innerHTML = '';
