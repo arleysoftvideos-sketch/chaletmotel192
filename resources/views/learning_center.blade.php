@@ -49,7 +49,7 @@
                 clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
             }
             .hero-about-banner {
-                background-image: linear-gradient(to right, rgba(6, 16, 33, 0.95) 0%, rgba(6, 16, 33, 0.85) 50%, rgba(6, 16, 33, 0.4) 100%), url('/images/motel_banner.png');
+                background-image: linear-gradient(to right, rgba(6, 16, 33, 0.95) 0%, rgba(6, 16, 33, 0.85) 50%, rgba(6, 16, 33, 0.4) 100%), url('/images/learning_banner.png');
                 background-size: cover;
                 background-position: center;
             }
@@ -106,7 +106,7 @@
                         {{ __('Learning') }} <span class="text-gold">{{ __('Center') }}</span>
                     </h1>
                     <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                        {{ __('Chalet Motel 192 ofrece un concepto único de alquileres a largo plazo en Kissimmee, Florida. Brindamos un espacio seguro, cómodo y accesible para estancias extendidas de 6 meses a 1 año.') }}
+                        {{ __('Bienvenido a nuestra plataforma exclusiva de aprendizaje. Un espacio diseñado para que nuestros residentes de Sri Lanka, Canadá y el mundo entero dominen nuevos idiomas con herramientas de alta calidad.') }}
                     </p>
                 </div>
             </div>
@@ -116,7 +116,7 @@
         <main class="w-full max-w-7xl mx-auto px-6 py-12 flex-grow flex flex-col gap-12 relative z-10">
             <div class="text-center space-y-4 mb-8">
                 <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
-                    {{ __('Elige tu idioma') }} / <span class="text-gold">Choose your language</span>
+                    {{ app()->getLocale() == 'en' ? 'Choose your language / Elige tu idioma' : 'Elige tu idioma / Choose your language' }}
                 </h2>
                 <p class="text-slate-400 text-sm max-w-2xl mx-auto uppercase tracking-wider">
                     {{ __('Selecciona el idioma que deseas aprender hoy.') }}
