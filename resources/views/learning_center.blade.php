@@ -366,8 +366,13 @@
 
             let isPlayingCategory = false;
             let currentCategoryItems = [];
+            
+            let targetLang = localStorage.getItem('arlingo_targetLang') || "{{ app()->getLocale() }}";
+            let currentScreen = localStorage.getItem('arlingo_currentScreen') || 'languageScreen';
 
-            let targetLang = "{{ app()->getLocale() }}";
+            document.addEventListener('DOMContentLoaded', () => {
+                showScreen(currentScreen, false);
+            });
 
             const categoryTranslations = {
                 "01. FRASES 🏆 MUNDIAL FIFA 2026": "{{ __('01. FRASES 🏆 MUNDIAL FIFA 2026') }}",
@@ -415,10 +420,12 @@
 
             function chooseLanguage(lang) {
                 targetLang = lang;
+                localStorage.setItem('arlingo_targetLang', lang);
                 showScreen('welcomeScreen');
             }
 
-            function showScreen(id) {
+            function showScreen(id, save = true) {
+                if (save) localStorage.setItem('arlingo_currentScreen', id);
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
                 document.getElementById(id).classList.add('active-screen');
                 if (id === 'lobbyScreen') initLobby();
