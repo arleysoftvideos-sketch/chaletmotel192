@@ -29,7 +29,7 @@ Route::get('/nosotros', function () {
 
 Route::get('/learning-center', function () {
     return view('learning_center');
-})->name('learning_center');
+})->middleware(['auth', 'verified'])->name('learning_center');
 
 Route::post('/api/sync-room', [GoogleSheetController::class, 'syncRoom'])->name('api.sync-room');
 Route::get('/api/load-room/{room}', [GoogleSheetController::class, 'loadRoom'])->name('api.load-room');

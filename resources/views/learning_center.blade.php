@@ -116,7 +116,7 @@
         <main class="w-full max-w-7xl mx-auto px-6 py-12 flex-grow flex flex-col gap-12 relative z-10">
             <div class="text-center space-y-4 mb-8">
                 <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
-                    {{ app()->getLocale() == 'en' ? 'Choose your language / Elige tu idioma' : 'Elige tu idioma / Choose your language' }}
+                    {{ __('Elige tu idioma') }}
                 </h2>
                 <p class="text-slate-400 text-sm max-w-2xl mx-auto uppercase tracking-wider">
                     {{ __('Selecciona el idioma que deseas aprender hoy.') }}
@@ -136,10 +136,10 @@
                     </div>
                     
                     <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
-                        Learn English
+                        {{ __('Aprender Inglés') }}
                     </h3>
                     <p class="text-slate-400 text-sm text-center max-w-[250px] relative z-10">
-                        Master the English language with our interactive lessons and practical exercises.
+                        {{ __('Domina el idioma inglés con nuestras lecciones interactivas y ejercicios prácticos.') }}
                     </p>
                     
                     <div class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
@@ -159,10 +159,10 @@
                     </div>
                     
                     <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
-                        Aprender Español
+                        {{ __('Aprender Español') }}
                     </h3>
                     <p class="text-slate-400 text-sm text-center max-w-[250px] relative z-10">
-                        Domina el idioma español con nuestras lecciones interactivas y ejercicios prácticos.
+                        {{ __('Domina el idioma español con nuestras lecciones interactivas y ejercicios prácticos.') }}
                     </p>
                     
                     <div class="absolute bottom-8 right-8 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
