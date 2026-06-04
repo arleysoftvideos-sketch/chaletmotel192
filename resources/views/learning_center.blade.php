@@ -79,9 +79,13 @@
                             </a>
                         @endauth
                     </nav>
-                    <div class="flex items-center gap-2 border-l border-blue-950 pl-4">
-                        <a href="?lang=es" class="text-lg hover:scale-110 transition-transform" title="Español">🇪🇸</a>
-                        <a href="?lang=en" class="text-lg hover:scale-110 transition-transform" title="English">🇺🇸</a>
+                    <div class="flex items-center gap-3 border-l border-blue-950 pl-4">
+                        <a href="?lang=es" class="hover:scale-110 transition-transform" title="Español">
+                            <img src="https://flagcdn.com/w20/es.png" srcset="https://flagcdn.com/w40/es.png 2x" width="20" alt="Español" class="rounded-[2px] shadow-sm">
+                        </a>
+                        <a href="?lang=en" class="hover:scale-110 transition-transform" title="English">
+                            <img src="https://flagcdn.com/w20/us.png" srcset="https://flagcdn.com/w40/us.png 2x" width="20" alt="English" class="rounded-[2px] shadow-sm">
+                        </a>
                     </div>
                 </div>
             </div>
@@ -127,8 +131,8 @@
                     
                     <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2">
                         <!-- US/UK Flag abstract representation or icon -->
-                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
-                            <span class="text-6xl">🇺🇸</span>
+                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
+                            <img src="https://flagcdn.com/w160/us.png" srcset="https://flagcdn.com/w320/us.png 2x" alt="English" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
                         </div>
                     </div>
                     
@@ -150,8 +154,8 @@
                     
                     <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2">
                         <!-- Spain/LatAm Flag abstract representation or icon -->
-                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
-                            <span class="text-6xl">🇪🇸</span>
+                        <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
+                            <img src="https://flagcdn.com/w160/es.png" srcset="https://flagcdn.com/w320/es.png 2x" alt="Español" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
                         </div>
                     </div>
                     

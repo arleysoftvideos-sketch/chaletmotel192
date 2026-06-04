@@ -79,9 +79,13 @@
                             </a>
                         @endauth
                     </nav>
-                    <div class="flex items-center gap-2 border-l border-blue-950 pl-4">
-                        <a href="?lang=es" class="text-lg hover:scale-110 transition-transform" title="Español">🇪🇸</a>
-                        <a href="?lang=en" class="text-lg hover:scale-110 transition-transform" title="English">🇺🇸</a>
+                    <div class="flex items-center gap-3 border-l border-blue-950 pl-4">
+                        <a href="?lang=es" class="hover:scale-110 transition-transform" title="Español">
+                            <img src="https://flagcdn.com/w20/es.png" srcset="https://flagcdn.com/w40/es.png 2x" width="20" alt="Español" class="rounded-[2px] shadow-sm">
+                        </a>
+                        <a href="?lang=en" class="hover:scale-110 transition-transform" title="English">
+                            <img src="https://flagcdn.com/w20/us.png" srcset="https://flagcdn.com/w40/us.png 2x" width="20" alt="English" class="rounded-[2px] shadow-sm">
+                        </a>
                     </div>
                 </div>
             </div>
