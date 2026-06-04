@@ -198,7 +198,8 @@
                 <div class="w-full max-w-5xl flex justify-start items-center mb-4">
                     <button class="back-btn" onclick="showScreen('languageScreen')">← {{ __('VOLVER') }}</button>
                 </div>
-                <div class="text-center space-y-4 mb-8">
+                <div class="text-center space-y-4 mb-8 flex flex-col items-center">
+                    <img src="{{ asset('images/arlingo-logo.png') }}" alt="Arlingo Mascot" class="w-24 h-24 mb-2 drop-shadow-[0_0_20px_rgba(57,255,20,0.4)] rounded-2xl">
                     <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
                         {{ __('ARLINGO') }} <span class="text-gold">{{ __('Interactive Guide') }}</span>
                     </h2>
@@ -368,6 +369,50 @@
 
             let targetLang = "{{ app()->getLocale() }}";
 
+            const categoryTranslations = {
+                "01. FRASES 🏆 MUNDIAL FIFA 2026": "{{ __('01. FRASES 🏆 MUNDIAL FIFA 2026') }}",
+                "01. MUNDIAL FIFA 2026 🏆": "{{ __('01. MUNDIAL FIFA 2026 🏆') }}",
+                "ABECEDARIO 🔤": "{{ __('ABECEDARIO 🔤') }}",
+                "Adjetivos Comunes 💡": "{{ __('Adjetivos Comunes 💡') }}",
+                "Alimentos y Bebidas 🍕": "{{ __('Alimentos y Bebidas 🍕') }}",
+                "Animales y Naturaleza 🦁": "{{ __('Animales y Naturaleza 🦁') }}",
+                "Casa y el Hogar 🏠": "{{ __('Casa y el Hogar 🏠') }}",
+                "Ciudad y Lugares 🏙️": "{{ __('Ciudad y Lugares 🏙️') }}",
+                "Clima y Estaciones ☁️": "{{ __('Clima y Estaciones ☁️') }}",
+                "Colores Básicos 🎨": "{{ __('Colores Básicos 🎨') }}",
+                "Compras y Dinero 💰": "{{ __('Compras y Dinero 💰') }}",
+                "Deportes ⚽": "{{ __('Deportes ⚽') }}",
+                "Días y Tiempo ⏰": "{{ __('Días y Tiempo ⏰') }}",
+                "Educación y Escuela 📚": "{{ __('Educación y Escuela 📚') }}",
+                "El Cuerpo Humano 🧠": "{{ __('El Cuerpo Humano 🧠') }}",
+                "Emociones y Sentimientos 😊": "{{ __('Emociones y Sentimientos 😊') }}",
+                "FRASES: Agencia de Viajes": "{{ __('FRASES: Agencia de Viajes') }}",
+                "FRASES: Cerrajería": "{{ __('FRASES: Cerrajería') }}",
+                "FRASES: Delivery & Instacart": "{{ __('FRASES: Delivery & Instacart') }}",
+                "FRASES: Publicidad & Ventas": "{{ __('FRASES: Publicidad & Ventas') }}",
+                "FRASES: Royal Prestige": "{{ __('FRASES: Royal Prestige') }}",
+                "FRASES: Tienda de Ropa": "{{ __('FRASES: Tienda de Ropa') }}",
+                "FRASES: Transportes y Viajes": "{{ __('FRASES: Transportes y Viajes') }}",
+                "FRASES: Venta de Chorizos": "{{ __('FRASES: Venta de Chorizos') }}",
+                "FRASES: Warehouse (Bodega)": "{{ __('FRASES: Warehouse (Bodega)') }}",
+                "Familia y Relaciones 👨👩👧": "{{ __('Familia y Relaciones 👨👩👧') }}",
+                "Farmacia 💊": "{{ __('Farmacia 💊') }}",
+                "Horas y Tiempo ⏱️": "{{ __('Horas y Tiempo ⏱️') }}",
+                "Meses y Fechas 📅": "{{ __('Meses y Fechas 📅') }}",
+                "Números Pro 🔥": "{{ __('Números Pro 🔥') }}",
+                "Oficina y Tecnología 💻": "{{ __('Oficina y Tecnología 💻') }}",
+                "Preguntas Básicas ❓": "{{ __('Preguntas Básicas ❓') }}",
+                "Preposiciones y Ubicación 😵💫🌀": "{{ __('Preposiciones y Ubicación 😵💫🌀') }}",
+                "Presentaciones Personales 👋": "{{ __('Presentaciones Personales 👋') }}",
+                "Profesiones y Oficios 👷": "{{ __('Profesiones y Oficios 👷') }}",
+                "Ropa y Accesorios 🕶️": "{{ __('Ropa y Accesorios 🕶️') }}",
+                "Salud y Medicina 🏥": "{{ __('Salud y Medicina 🏥') }}",
+                "Saludos y Despedidas ✨": "{{ __('Saludos y Despedidas ✨') }}",
+                "Salón de Belleza ✨": "{{ __('Salón de Belleza ✨') }}",
+                "Transportes y Viajes 🚀": "{{ __('Transportes y Viajes 🚀') }}",
+                "Verbos de Acción 🏃": "{{ __('Verbos de Acción 🏃') }}"
+            };
+
             function chooseLanguage(lang) {
                 // Change the entire UI language and enter Arlingo mode
                 window.location.href = '?lang=' + lang + '&app=arlingo';
@@ -399,7 +444,7 @@
                 Object.keys(data).forEach(cat => {
                     const btn = document.createElement('button');
                     btn.className = 'tab-btn';
-                    btn.innerHTML = cat;
+                    btn.innerHTML = categoryTranslations[cat] || cat;
                     btn.onclick = () => openCategory(cat);
                     container.appendChild(btn);
                 });
@@ -408,7 +453,7 @@
             function openCategory(cat) {
                 const modal = document.getElementById('categoryModal');
                 const body = document.getElementById('modalBody');
-                document.getElementById('modalTitle').innerText = cat;
+                document.getElementById('modalTitle').innerText = categoryTranslations[cat] || cat;
                 currentCategoryItems = data[cat];
                 document.getElementById('itemCount').innerText = `${currentCategoryItems.length} palabras`;
                 
