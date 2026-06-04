@@ -143,8 +143,61 @@
         <!-- Main Content Area / Interactive App -->
         <main class="w-full max-w-7xl mx-auto px-6 py-12 flex-grow flex flex-col items-center relative z-10">
             
+            <!-- LANGUAGE SCREEN -->
+            <div id="languageScreen" class="screen active-screen w-full flex flex-col items-center">
+                <div class="text-center space-y-4 mb-8">
+                    <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
+                        {{ __('Elige tu idioma') }}
+                    </h2>
+                    <p class="text-slate-400 text-sm max-w-2xl mx-auto uppercase tracking-wider">
+                        {{ __('Selecciona el idioma que deseas aprender hoy.') }}
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto w-full">
+                    <!-- English Card -->
+                    <button onclick="chooseLanguage('en')" class="group relative overflow-hidden rounded-[2.5rem] border border-blue-900/50 bg-[#061021]/80 aspect-square sm:aspect-auto sm:h-[400px] flex flex-col items-center justify-center p-8 hover:border-gold/50 transition-all duration-500 shadow-2xl hover:shadow-gold/20 w-full text-center">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2 mx-auto">
+                            <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
+                                <img src="https://flagcdn.com/w160/us.png" srcset="https://flagcdn.com/w320/us.png 2x" alt="English" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
+                            {{ __('Aprender Inglés') }}
+                        </h3>
+                        <p class="text-slate-400 text-sm max-w-[250px] mx-auto relative z-10">
+                            {{ __('Domina el idioma inglés con nuestras lecciones interactivas y ejercicios prácticos.') }}
+                        </p>
+                    </button>
+
+                    <!-- Spanish Card -->
+                    <button onclick="chooseLanguage('es')" class="group relative overflow-hidden rounded-[2.5rem] border border-blue-900/50 bg-[#061021]/80 aspect-square sm:aspect-auto sm:h-[400px] flex flex-col items-center justify-center p-8 hover:border-gold/50 transition-all duration-500 shadow-2xl hover:shadow-gold/20 w-full text-center">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <div class="w-32 h-32 mb-8 relative z-10 transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-2 mx-auto">
+                            <div class="w-full h-full bg-[#0a1831] border-2 border-gold/30 rounded-full flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(255,183,3,0.15)] group-hover:shadow-[0_0_50px_rgba(255,183,3,0.3)] transition-all">
+                                <img src="https://flagcdn.com/w160/es.png" srcset="https://flagcdn.com/w320/es.png 2x" alt="Español" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-3xl font-black font-outfit text-white tracking-widest uppercase mb-3 relative z-10 group-hover:text-gold transition-colors">
+                            {{ __('Aprender Español') }}
+                        </h3>
+                        <p class="text-slate-400 text-sm max-w-[250px] mx-auto relative z-10">
+                            {{ __('Domina el idioma español con nuestras lecciones interactivas y ejercicios prácticos.') }}
+                        </p>
+                    </button>
+                </div>
+            </div>
+
             <!-- WELCOME SCREEN -->
-            <div id="welcomeScreen" class="screen active-screen w-full flex flex-col items-center">
+            <div id="welcomeScreen" class="screen w-full flex flex-col items-center">
+                <div class="w-full max-w-5xl flex justify-start items-center mb-4">
+                    <button class="back-btn" onclick="showScreen('languageScreen')">← {{ __('VOLVER') }}</button>
+                </div>
                 <div class="text-center space-y-4 mb-8">
                     <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
                         {{ __('ARLINGO') }} <span class="text-gold">{{ __('Interactive Guide') }}</span>
@@ -269,6 +322,13 @@
             let isPlayingCategory = false;
             let currentCategoryItems = [];
 
+            let targetLang = 'en';
+
+            function chooseLanguage(lang) {
+                targetLang = lang;
+                showScreen('welcomeScreen');
+            }
+
             function showScreen(id) {
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
                 document.getElementById(id).classList.add('active-screen');
@@ -299,13 +359,27 @@
                     const div = document.createElement('div');
                     div.className = 'card-word';
                     div.id = `card-${index}`;
+                    
+                    let smallText, bigText, proText, playLang;
+                    if (targetLang === 'en') {
+                        smallText = item.es;
+                        bigText = item.en;
+                        proText = `<div class="text-gold text-sm mt-1">🗣️ ${item.pro}</div>`;
+                        playLang = 'en-US';
+                    } else {
+                        smallText = item.en;
+                        bigText = item.es;
+                        proText = ''; // Spanish doesn't have phonetics in data
+                        playLang = 'es-ES';
+                    }
+
                     div.innerHTML = `
                         <div class="flex flex-col text-left">
-                            <div class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">${item.es}</div>
-                            <strong class="text-white text-xl font-outfit uppercase tracking-wide">${item.en}</strong>
-                            <div class="text-gold text-sm mt-1">🗣️ ${item.pro}</div>
+                            <div class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">${smallText}</div>
+                            <strong class="text-white text-xl font-outfit uppercase tracking-wide">${bigText}</strong>
+                            ${proText}
                         </div>
-                        <button class="play-btn" onclick="speak('${item.en}', 'en-US')">
+                        <button class="play-btn" onclick="speak('${bigText}', '${playLang}')">
                             <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                         </button>
                     `;
@@ -338,9 +412,17 @@
                     card.classList.add('playing-card');
                     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-                    await new Promise(resolve => speak(item.es, 'es-ES', resolve));
-                    await new Promise(resolve => setTimeout(resolve, 600));
-                    await new Promise(resolve => speak(item.en, 'en-US', resolve));
+                    if (targetLang === 'en') {
+                        // English learner: Spanish -> English
+                        await new Promise(resolve => speak(item.es, 'es-ES', resolve));
+                        await new Promise(resolve => setTimeout(resolve, 600));
+                        await new Promise(resolve => speak(item.en, 'en-US', resolve));
+                    } else {
+                        // Spanish learner: English -> Spanish
+                        await new Promise(resolve => speak(item.en, 'en-US', resolve));
+                        await new Promise(resolve => setTimeout(resolve, 600));
+                        await new Promise(resolve => speak(item.es, 'es-ES', resolve));
+                    }
                     await new Promise(resolve => setTimeout(resolve, 1200));
                 }
 
