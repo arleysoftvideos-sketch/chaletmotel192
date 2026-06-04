@@ -244,21 +244,21 @@
                 <div class="w-full max-w-5xl mx-auto flex justify-start items-center mb-4">
                     <button class="back-btn" onclick="closeModal()">← {{ __('VOLVER') }}</button>
                 </div>
-                <div class="modal-top-row flex-col sm:flex-row items-start sm:items-center">
-                    <div class="flex flex-col w-full sm:w-auto">
-                        <h2 id="modalTitle" class="text-gold font-black font-outfit text-2xl sm:text-3xl uppercase tracking-wide m-0 drop-shadow-md">DICCIONARIO</h2>
-                        <div class="flex items-center gap-3 mt-2">
-                            <span id="itemCount" class="text-slate-400 text-sm font-bold tracking-widest">0 palabras</span>
-                            <span class="text-slate-600 text-sm">|</span>
-                            <span id="learningLabel" class="tracking-wider uppercase text-xs font-bold text-slate-300"></span>
+                <div class="modal-top-row">
+                    <div class="flex items-center gap-4 sm:gap-6">
+                        <div id="modalTargetFlag" class="shrink-0"></div>
+                        <div class="flex flex-col">
+                            <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl sm:text-2xl uppercase tracking-wide m-0">DICCIONARIO</h2>
+                            <div class="flex items-center gap-3 mt-1">
+                                <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
+                                <span class="text-slate-600 text-xs">|</span>
+                                <span id="learningLabel" class="tracking-wider uppercase text-[10px] font-bold text-slate-300"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-4 sm:mt-0">
-                        <button id="btnPlayCategory" class="play-all-btn font-outfit text-sm px-6 py-3" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
+                    <div class="flex items-center gap-2 sm:gap-4 mt-4 sm:mt-0">
+                        <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
                     </div>
-                </div>
-                <div class="w-full max-w-[800px] mx-auto mt-6 flex justify-center">
-                    <div id="modalTargetFlag" class="w-full max-w-md overflow-hidden rounded-2xl shadow-2xl border-2 border-blue-900/50 opacity-80"></div>
                 </div>
             </div>
             <div id="modalBody" class="modal-body"></div>
@@ -310,7 +310,7 @@
         <!-- ARLINGO JAVASCRIPT -->
         <script>
             const data = {
-                "01. FRASES 🏆 MUNDIAL FIFA 2026": [
+                "01. MUNDIAL FIFA 2026 🏆": [
                     { es: "La final será en New Jersey.", en: "The final will be in New Jersey.", pro: "de fai-nal guil bi in niu ier-si" },
                     { es: "¡Gol de último minuto!", en: "Last-minute goal!", pro: "last mi-nit goul" },
                     { es: "¿Dónde puedo comprar entradas?", en: "Where can I buy tickets?", pro: "guer can ai bai ti-kets" },
@@ -411,10 +411,6 @@
                     { es: "El legado de este mundial será enorme.", en: "The legacy of this World Cup will be huge.", pro: "de le-ga-si of dis uerld cap guil bi jiuuch" },
                     { es: "Ya tengo mi código de barras listo.", en: "I have my barcode ready.", pro: "ai jaf mai bar-coud re-di" },
                     { es: "¡Nos vemos en el próximo partido!", en: "See you at the next game!", pro: "sii iu at de nekst gueim" }
-                ],
-                "01. MUNDIAL FIFA 2026 🏆": [
-                    { es: "¿Cuál es el marcador?", en: "What is the score?", pro: "uat is de es-kor" },
-                    { es: "Estadio", en: "Stadium", pro: "estei-diom" }
                 ],
                 "ABECEDARIO 🔤": [
                     { es: "A (como en Apple)", en: "A /ei/", pro: "ei" },
@@ -2888,7 +2884,6 @@
             });
 
             const categoryTranslations = {
-                "01. FRASES 🏆 MUNDIAL FIFA 2026": "{{ __('01. FRASES 🏆 MUNDIAL FIFA 2026') }}",
                 "01. MUNDIAL FIFA 2026 🏆": "{{ __('01. MUNDIAL FIFA 2026 🏆') }}",
                 "ABECEDARIO 🔤": "{{ __('ABECEDARIO 🔤') }}",
                 "Adjetivos Comunes 💡": "{{ __('Adjetivos Comunes 💡') }}",
@@ -2966,10 +2961,10 @@
                 const flagDiv = document.getElementById('modalTargetFlag');
                 const labelDiv = document.getElementById('learningLabel');
                 if (targetLang === 'en') {
-                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w320/us.png" alt="English" class="w-full h-auto object-cover">`;
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w80/us.png" alt="English" class="w-16 sm:w-20 rounded-lg shadow-xl border-2 border-slate-700/50">`;
                     labelDiv.innerText = "{{ __('APRENDIENDO INGLÉS') }}";
                 } else {
-                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w320/es.png" alt="Spanish" class="w-full h-auto object-cover">`;
+                    flagDiv.innerHTML = `<img src="https://flagcdn.com/w80/es.png" alt="Spanish" class="w-16 sm:w-20 rounded-lg shadow-xl border-2 border-slate-700/50">`;
                     labelDiv.innerText = "{{ __('APRENDIENDO ESPAÑOL') }}";
                 }
                 
