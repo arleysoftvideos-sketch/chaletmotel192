@@ -27,6 +27,10 @@ Route::get('/nosotros', function () {
     return view('nosotros');
 })->name('nosotros');
 
+Route::get('/learning-center', function () {
+    return view('learning_center');
+})->name('learning_center');
+
 Route::post('/api/sync-room', [GoogleSheetController::class, 'syncRoom'])->name('api.sync-room');
 Route::get('/api/load-room/{room}', [GoogleSheetController::class, 'loadRoom'])->name('api.load-room');
 Route::get('/api/load-all-rooms', [GoogleSheetController::class, 'loadAllRooms'])->name('api.load-all-rooms');
