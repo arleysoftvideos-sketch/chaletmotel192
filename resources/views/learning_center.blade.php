@@ -414,25 +414,11 @@
             };
 
             function chooseLanguage(lang) {
-                // Change the entire UI language and enter Arlingo mode
-                window.location.href = '?lang=' + lang + '&app=arlingo';
+                targetLang = lang;
+                showScreen('welcomeScreen');
             }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('app') === 'arlingo') {
-                    // Set targetLang to the current Laravel locale which was just changed
-                    targetLang = "{{ app()->getLocale() }}";
-                    showScreen('welcomeScreen');
-                }
-            });
-
             function showScreen(id) {
-                if (id === 'languageScreen') {
-                    const url = new URL(window.location);
-                    url.searchParams.delete('app');
-                    window.history.pushState({}, '', url);
-                }
                 document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
                 document.getElementById(id).classList.add('active-screen');
                 if (id === 'lobbyScreen') initLobby();
