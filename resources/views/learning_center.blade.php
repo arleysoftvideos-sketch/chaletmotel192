@@ -223,10 +223,6 @@
                         <p class="text-slate-400 text-xs mt-1">{{ __('Escucha lecciones continuas mientras duermes.') }}</p>
                     </div>
                 </button>
-
-                <button class="dict-main-btn flex items-center justify-center gap-3 font-outfit uppercase tracking-widest" onclick="showScreen('lobbyScreen')">
-                    <span class="text-2xl">📖</span> {{ __('Diccionario Master (A-Z)') }}
-                </button>
             </div>
 
             <!-- LOBBY SCREEN -->
