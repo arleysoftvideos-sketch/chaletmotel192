@@ -241,14 +241,16 @@
             <!-- CATEGORY MODAL -->
             <div id="categoryModal" class="modal">
                 <div class="modal-header">
+                    <div class="w-full max-w-5xl mx-auto flex justify-start items-center mb-4">
+                        <button class="back-btn" onclick="closeModal()">← {{ __('VOLVER') }}</button>
+                    </div>
                     <div class="modal-top-row">
                         <div class="flex flex-col">
                             <h2 id="modalTitle" class="text-gold font-black font-outfit text-xl uppercase tracking-wide m-0">DICCIONARIO</h2>
                             <span id="itemCount" class="text-slate-400 text-xs font-bold tracking-widest">0 palabras</span>
                         </div>
-                        <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2 sm:gap-4">
                             <button id="btnPlayCategory" class="play-all-btn font-outfit" onclick="playFullCategory()">▶ {{ __('REPRODUCIR TODO') }}</button>
-                            <button onclick="closeModal()" class="text-white hover:text-red-400 transition-colors text-3xl leading-none">&times;</button>
                         </div>
                     </div>
                 </div>
