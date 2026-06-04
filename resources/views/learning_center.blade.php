@@ -199,7 +199,7 @@
                     <button class="back-btn" onclick="showScreen('languageScreen')">← {{ __('VOLVER') }}</button>
                 </div>
                 <div class="text-center space-y-4 mb-8 flex flex-col items-center">
-                    <img src="{{ asset('images/arlingo-logo.png') }}" alt="Arlingo Mascot" class="w-24 h-24 mb-2 drop-shadow-[0_0_20px_rgba(57,255,20,0.4)] rounded-2xl">
+                    <img src="{{ asset('images/arlingo-logo.png') }}?v={{ time() }}" alt="Arlingo Mascot" class="w-24 h-24 mb-2 drop-shadow-[0_0_20px_rgba(57,255,20,0.4)] rounded-2xl">
                     <h2 class="text-3xl sm:text-4xl font-black font-outfit text-white uppercase tracking-wide">
                         {{ __('ARLINGO') }} <span class="text-gold">{{ __('Interactive Guide') }}</span>
                     </h2>
