@@ -468,7 +468,7 @@
                             <strong class="text-white text-xl font-outfit uppercase tracking-wide">${bigText}</strong>
                             ${proText}
                         </div>
-                        <button class="play-btn" onclick="speak('${bigText}', '${playLang}')">
+                        <button class="play-btn" onclick="speakBoth('${item.es}', '${item.en}', '${targetLang}')">
                             <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                         </button>
                     `;
@@ -478,6 +478,19 @@
                 isPlayingCategory = false;
                 document.getElementById('btnPlayCategory').innerHTML = "▶ {{ __('REPRODUCIR TODO') }}";
                 modal.style.display = 'flex';
+            }
+
+            async function speakBoth(esText, enText, langMode) {
+                window.speechSynthesis.cancel();
+                if (langMode === 'en') {
+                    await new Promise(resolve => speak(esText, 'es-ES', resolve));
+                    await new Promise(resolve => setTimeout(resolve, 600));
+                    speak(enText, 'en-US');
+                } else {
+                    await new Promise(resolve => speak(enText, 'en-US', resolve));
+                    await new Promise(resolve => setTimeout(resolve, 600));
+                    speak(esText, 'es-ES');
+                }
             }
 
             async function playFullCategory() {
