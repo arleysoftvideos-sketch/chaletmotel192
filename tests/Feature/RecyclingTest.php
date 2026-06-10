@@ -14,7 +14,7 @@ class RecyclingTest extends TestCase
         $response = $this->get('/recycling');
 
         $response->assertStatus(200);
-        $response->assertSee('Directorio de 100 Tiendas');
+        $response->assertSee('Ameritex Diversion Inc.');
     }
 
     /**
@@ -25,7 +25,7 @@ class RecyclingTest extends TestCase
         $response = $this->get('/recycling?lang=en');
 
         $response->assertStatus(200);
-        $response->assertSee('Directorio de 100 Tiendas');
+        $response->assertSee('Directory of 100 Stores');
     }
 
     /**

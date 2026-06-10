@@ -286,12 +286,12 @@
                     <span class="text-3xl">♻️</span>
                     <div>
                         <h1 class="text-lg font-black font-outfit text-brand tracking-tight">Ameritex Diversion Inc.</h1>
-                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Textile Recycling Portal</p>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{{ __('Portal de Reciclaje Textil') }}</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
                     <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
-                        Directorio Logístico - Jovancito
+                        {{ __('Directorio Logístico - Jovancito') }}
                     </span>
                 </div>
             </div>
@@ -312,41 +312,41 @@
             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
                 <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
                     <div>
-                        <h3 class="text-lg font-black font-outfit text-slate-900 tracking-tight">Agregar Nueva Tienda al Directorio</h3>
-                        <p class="text-xs text-slate-500">Crea una nueva ubicación de reciclaje en la base de datos de Google Sheets.</p>
+                        <h3 class="text-lg font-black font-outfit text-slate-900 tracking-tight">{{ __('Agregar Nueva Tienda al Directorio') }}</h3>
+                        <p class="text-xs text-slate-500">{{ __('Crea una nueva ubicación de reciclaje en la base de datos de Google Sheets.') }}</p>
                     </div>
-                    <span class="text-xs bg-brand/10 text-brand px-3 py-1 rounded-full font-bold uppercase tracking-wider">Formulario de Registro</span>
+                    <span class="text-xs bg-brand/10 text-brand px-3 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Formulario de Registro') }}</span>
                 </div>
                 
                 <form action="{{ route('recycling.save') }}" method="POST" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4">
                     @csrf
                     <!-- Nombre (3 cols) -->
                     <div class="md:col-span-3 flex flex-col space-y-1">
-                        <label for="nombre" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Nombre de la Tienda</label>
-                        <input type="text" name="nombre" id="nombre" required placeholder="Ej. Exxon DeLand" value="{{ old('nombre') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                        <label for="nombre" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">{{ __('Nombre de la Tienda') }}</label>
+                        <input type="text" name="nombre" id="nombre" required placeholder="{{ __('Ej. Exxon DeLand') }}" value="{{ old('nombre') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
                     </div>
 
                     <!-- Teléfono (2 cols) -->
                     <div class="md:col-span-2 flex flex-col space-y-1">
-                        <label for="telefono" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Teléfono</label>
-                        <input type="text" name="telefono" id="telefono" required placeholder="Ej. (386) 555-0192" value="{{ old('telefono') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                        <label for="telefono" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">{{ __('Teléfono') }}</label>
+                        <input type="text" name="telefono" id="telefono" required placeholder="{{ __('Ej. (386) 555-0192') }}" value="{{ old('telefono') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
                     </div>
 
                     <!-- Web / Enlace (3 cols) -->
                     <div class="md:col-span-3 flex flex-col space-y-1">
-                        <label for="web" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Sitio Web (Enlace)</label>
-                        <input type="text" name="web" id="web" required placeholder="Ej. https://exxon.com o #" value="{{ old('web', '#') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                        <label for="web" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">{{ __('Sitio Web (Enlace)') }}</label>
+                        <input type="text" name="web" id="web" required placeholder="{{ __('Ej. https://exxon.com o #') }}" value="{{ old('web', '#') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
                     </div>
 
                     <!-- Empresa (2 cols) -->
                     <div class="md:col-span-2 flex flex-col space-y-1">
-                        <label for="empresa" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Empresa / Tipo</label>
-                        <input type="text" name="empresa" id="empresa" required placeholder="Ej. Gasolineras" value="{{ old('empresa') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                        <label for="empresa" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">{{ __('Empresa / Tipo') }}</label>
+                        <input type="text" name="empresa" id="empresa" required placeholder="{{ __('Ej. Gasolineras') }}" value="{{ old('empresa') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
                     </div>
 
                     <!-- Ruta (1 col) -->
                     <div class="md:col-span-1 flex flex-col space-y-1">
-                        <label for="ruta" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Ruta</label>
+                        <label for="ruta" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">{{ __('Ruta') }}</label>
                         <select name="ruta" id="ruta" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
                             <option value="Volusia" {{ old('ruta') == 'Volusia' ? 'selected' : '' }}>Volusia</option>
                             <option value="Orlando" {{ old('ruta') == 'Orlando' ? 'selected' : '' }}>Orlando</option>
@@ -359,17 +359,17 @@
 
                     <!-- Alerta (1 col) -->
                     <div class="md:col-span-1 flex flex-col space-y-1">
-                        <label for="alerta" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Alerta</label>
+                        <label for="alerta" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">{{ __('Alerta') }}</label>
                         <select name="alerta" id="alerta" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
-                            <option value="No" {{ old('alerta') == 'No' ? 'selected' : '' }}>No</option>
-                            <option value="Sí" {{ old('alerta') == 'Sí' ? 'selected' : '' }}>Sí</option>
+                            <option value="No" {{ old('alerta') == 'No' ? 'selected' : '' }}>{{ __('No') }}</option>
+                            <option value="Sí" {{ old('alerta') == 'Sí' ? 'selected' : '' }}>{{ __('Sí') }}</option>
                         </select>
                     </div>
 
                     <!-- Submit Button (12 cols) -->
                     <div class="md:col-span-12 flex justify-end">
                         <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-brand hover:bg-brand-hover text-white font-bold font-outfit rounded-xl text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-brand/10 hover:shadow-brand/20">
-                            Guardar Tienda
+                            {{ __('Guardar Tienda') }}
                         </button>
                     </div>
                 </form>
@@ -378,14 +378,14 @@
             <!-- Welcome Card & Global Controls -->
             <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div class="space-y-1">
-                    <h2 class="text-2xl font-black font-outfit text-slate-900 tracking-tight">Directorio de 100 Tiendas</h2>
-                    <p class="text-sm text-slate-500">Busca tiendas por ruta o empresa y registra las bolsas de reciclaje recolectadas directamente en Google Sheets.</p>
+                    <h2 class="text-2xl font-black font-outfit text-slate-900 tracking-tight">{{ __('Directorio de 100 Tiendas') }}</h2>
+                    <p class="text-sm text-slate-500">{{ __('Busca tiendas por ruta o empresa y registra las bolsas de reciclaje recolectadas directamente en Google Sheets.') }}</p>
                 </div>
                 
                 <div class="flex flex-col sm:flex-row gap-3">
                     <!-- Manual Entry Button -->
                     <button onclick="openLogModal(null)" class="px-5 py-3 bg-brand hover:bg-brand-hover text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-brand/10 hover:shadow-brand/20 flex items-center justify-center gap-2">
-                        <span>➕</span> <span>Registro Manual</span>
+                        <span>➕</span> <span>{{ __('Registro Manual') }}</span>
                     </button>
                 </div>
             </div>
@@ -395,10 +395,10 @@
                 <!-- View Toggle -->
                 <div class="flex bg-slate-100 p-1 rounded-xl w-full md:w-auto">
                     <button id="toggle-ruta" onclick="cambiarVista('ruta')" class="flex-1 md:flex-none px-6 py-2.5 bg-white text-slate-900 font-bold font-outfit rounded-lg text-xs uppercase tracking-wider transition-all duration-300 shadow-sm">
-                        Por Ruta
+                        {{ __('Por Ruta') }}
                     </button>
                     <button id="toggle-empresa" onclick="cambiarVista('empresa')" class="flex-1 md:flex-none px-6 py-2.5 text-slate-500 hover:text-slate-900 font-bold font-outfit rounded-lg text-xs uppercase tracking-wider transition-all duration-300">
-                        Por Empresa
+                        {{ __('Por Empresa') }}
                     </button>
                 </div>
 
@@ -407,7 +407,7 @@
                     <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         🔍
                     </span>
-                    <input type="text" id="search-input" oninput="filterDirectory()" placeholder="Buscar por nombre, teléfono, ruta o empresa..." class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand transition-all">
+                    <input type="text" id="search-input" oninput="filterDirectory()" placeholder="{{ __('Buscar por nombre, teléfono, ruta o empresa...') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-brand transition-all">
                 </div>
             </div>
 
@@ -419,7 +419,7 @@
 
         <!-- Directory Footer -->
         <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
-            <p>&copy; {{ date('Y') }} Ameritex Diversion Inc. &bull; Directorio Logístico 100</p>
+            <p>&copy; {{ date('Y') }} Ameritex Diversion Inc. &bull; {{ __('Directorio Logístico 100') }}</p>
         </footer>
     </div>
 
@@ -431,30 +431,30 @@
             </button>
             
             <div class="space-y-1 text-slate-800">
-                <span class="text-xs font-bold text-brand uppercase tracking-widest">Ameritex Sheets Logger</span>
+                <span class="text-xs font-bold text-brand uppercase tracking-widest">{{ __('Ameritex Sheets Logger') }}</span>
                 <h3 class="text-xl font-black font-outfit text-slate-900 uppercase tracking-tight">
-                    Registrar Recolección
+                    {{ __('Registrar Recolección') }}
                 </h3>
-                <p class="text-xs text-slate-500">Ingresa la cantidad de bolsas recolectadas para esta ubicación.</p>
+                <p class="text-xs text-slate-500">{{ __('Ingresa la cantidad de bolsas recolectadas para esta ubicación.') }}</p>
             </div>
 
             <form id="recycling-log-form" onsubmit="submitRecyclingLog(event)" class="space-y-4">
                 <!-- Date Input -->
                 <div class="flex flex-col space-y-1.5 text-slate-800">
-                    <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">Fecha de Recolección</label>
+                    <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">{{ __('Fecha de Recolección') }}</label>
                     <input type="date" id="log-date" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
                 </div>
 
                 <!-- Store Input (Read-only if selected, editable if manual) -->
                 <div class="flex flex-col space-y-1.5 text-slate-800">
-                    <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">Tienda / Ubicación</label>
-                    <input type="text" id="log-store" required placeholder="Nombre de la tienda..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                    <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">{{ __('Tienda / Ubicación') }}</label>
+                    <input type="text" id="log-store" required placeholder="{{ __('Nombre de la tienda...') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 text-slate-800">
                     <!-- Big Bags -->
                     <div class="flex flex-col space-y-1.5">
-                        <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">Bolsas Grandes (BIG)</label>
+                        <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">{{ __('Bolsas Grandes (BIG)') }}</label>
                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
                             <button type="button" onclick="adjustCount('log-big', -1)" class="px-4 py-3 text-slate-500 hover:text-slate-800 hover:bg-slate-100 font-bold text-lg select-none transition-all">-</button>
                             <input type="number" id="log-big" required min="0" value="0" oninput="calculateTotal()" class="w-full bg-transparent border-none text-center text-sm font-bold text-slate-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
@@ -464,7 +464,7 @@
 
                     <!-- Small Bags -->
                     <div class="flex flex-col space-y-1.5">
-                        <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">Bolsas Pequeñas (SMALL)</label>
+                        <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">{{ __('Bolsas Pequeñas (SMALL)') }}</label>
                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded-xl overflow-hidden">
                             <button type="button" onclick="adjustCount('log-small', -1)" class="px-4 py-3 text-slate-500 hover:text-slate-800 hover:bg-slate-100 font-bold text-lg select-none transition-all">-</button>
                             <input type="number" id="log-small" required min="0" value="0" oninput="calculateTotal()" class="w-full bg-transparent border-none text-center text-sm font-bold text-slate-800 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
@@ -475,7 +475,7 @@
 
                 <!-- Total -->
                 <div class="flex flex-col space-y-1.5 text-slate-800">
-                    <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">Total de Bolsas</label>
+                    <label class="text-slate-500 font-bold text-xs uppercase tracking-wider">{{ __('Total de Bolsas') }}</label>
                     <input type="number" id="log-total" required min="0" value="0" class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none font-black">
                 </div>
 
@@ -483,7 +483,7 @@
                 <div class="pt-2">
                     <button type="submit" id="log-submit-btn" class="w-full py-3.5 bg-brand hover:bg-brand-hover text-white font-black font-outfit rounded-xl transition-all duration-300 text-xs uppercase tracking-wider shadow-lg shadow-brand/10 hover:shadow-brand/20 flex items-center justify-center gap-2">
                         <span id="submit-btn-spinner" class="hidden animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
-                        <span id="submit-btn-text">Enviar a Google Sheets</span>
+                        <span id="submit-btn-text">{{ __('Enviar a Google Sheets') }}</span>
                     </button>
                 </div>
             </form>
@@ -815,32 +815,45 @@
             const keys = Object.keys(grupos).sort();
             
             if (keys.length === 0) {
+                const langNoStores = currentLang === 'es' 
+                    ? 'No se encontraron tiendas que coincidan con la búsqueda.' 
+                    : 'No stores matching the search were found.';
                 document.getElementById("directorio").innerHTML = `
                     <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-400">
                         <span class="text-4xl block mb-2">🔍</span>
-                        No se encontraron tiendas que coincidan con la búsqueda.
+                        ${langNoStores}
                     </div>
                 `;
                 return;
             }
             
+            const langTienda = currentLang === 'es' ? 'Tienda' : 'Store';
+            const langTiendas = currentLang === 'es' ? 'Tiendas' : 'Stores';
+            const langNombre = currentLang === 'es' ? 'Nombre' : 'Name';
+            const langTelefono = currentLang === 'es' ? 'Teléfono' : 'Phone';
+            const langWeb = currentLang === 'es' ? 'Web' : 'Web';
+            const langAccion = currentLang === 'es' ? 'Acción' : 'Action';
+            const langVisitar = currentLang === 'es' ? 'Visitar ↗' : 'Visit ↗';
+            const langRegistrar = currentLang === 'es' ? 'Registrar' : 'Log';
+            
             keys.forEach(clave => {
+                const translatedClave = currentLang === 'es' ? clave : (clave === 'Volusia' ? 'Volusia' : (clave === 'Orlando' ? 'Orlando' : (clave === 'Kissimmee' ? 'Kissimmee' : (clave === 'Lakeland' ? 'Lakeland' : (clave === 'Miami' ? 'Miami' : (clave === 'Ft. Lauderdale' ? 'Ft. Lauderdale' : (clave === 'Gasolineras' ? 'Gas Stations' : (clave === 'Independiente' ? 'Independent' : clave))))))));
                 html += `
                     <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-6">
                         <div class="bg-slate-900 px-6 py-4 flex items-center justify-between">
-                            <span class="text-white font-black font-outfit text-sm uppercase tracking-wider">${clave}</span>
+                            <span class="text-white font-black font-outfit text-sm uppercase tracking-wider">${translatedClave}</span>
                             <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full font-medium">
-                                ${grupos[clave].length} ${grupos[clave].length === 1 ? 'Tienda' : 'Tiendas'}
+                                ${grupos[clave].length} ${grupos[clave].length === 1 ? langTienda : langTiendas}
                             </span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse text-xs">
                                 <thead>
                                     <tr class="bg-slate-50 border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
-                                        <th class="px-6 py-3.5 font-bold">Nombre</th>
-                                        <th class="px-6 py-3.5 font-bold">Teléfono</th>
-                                        <th class="px-6 py-3.5 font-bold">Web</th>
-                                        <th class="px-6 py-3.5 font-bold text-right">Acción</th>
+                                        <th class="px-6 py-3.5 font-bold">${langNombre}</th>
+                                        <th class="px-6 py-3.5 font-bold">${langTelefono}</th>
+                                        <th class="px-6 py-3.5 font-bold">${langWeb}</th>
+                                        <th class="px-6 py-3.5 font-bold text-right">${langAccion}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
@@ -856,11 +869,11 @@
                             </td>
                             <td class="px-6 py-4 text-slate-500 font-normal">${item.t}</td>
                             <td class="px-6 py-4">
-                                ${item.w !== '#' ? `<a href="${item.w}" target="_blank" class="text-brand hover:underline flex items-center gap-1 font-bold">Visitar ↗</a>` : '<span class="text-slate-400 font-normal">N/A</span>'}
+                                ${item.w !== '#' ? `<a href="${item.w}" target="_blank" class="text-brand hover:underline flex items-center gap-1 font-bold">${langVisitar}</a>` : '<span class="text-slate-400 font-normal">N/A</span>'}
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <button onclick="openLogModal('${cleanName.replace(/'/g, "\\'")}')" class="px-3.5 py-2 bg-brand/10 hover:bg-brand text-brand hover:text-white rounded-lg text-[10px] uppercase font-black tracking-wider transition-all duration-200">
-                                    📝 Registrar
+                                    📝 ${langRegistrar}
                                 </button>
                             </td>
                         </tr>
@@ -931,7 +944,7 @@
 
             submitBtn.disabled = true;
             spinner.classList.remove('hidden');
-            btnText.textContent = 'Enviando...';
+            btnText.textContent = currentLang === 'es' ? 'Enviando...' : 'Sending...';
 
             const logData = {
                 date: document.getElementById('log-date').value,
@@ -952,20 +965,20 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('¡Registro guardado con éxito!');
+                    alert(currentLang === 'es' ? '¡Registro guardado con éxito!' : 'Log saved successfully!');
                     closeLogModal();
                 } else {
-                    alert('Error: ' + data.message);
+                    alert((currentLang === 'es' ? 'Error: ' : 'Error: ') + data.message);
                 }
             })
             .catch(err => {
                 console.error("Error submitting log:", err);
-                alert('Error de conexión con el servidor.');
+                alert(currentLang === 'es' ? 'Error de conexión con el servidor.' : 'Server connection error.');
             })
             .finally(() => {
                 submitBtn.disabled = false;
                 spinner.classList.add('hidden');
-                btnText.textContent = 'Enviar a Google Sheets';
+                btnText.textContent = currentLang === 'es' ? 'Enviar a Google Sheets' : 'Send to Google Sheets';
             });
         }
 
