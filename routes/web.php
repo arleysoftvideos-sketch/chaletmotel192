@@ -6,6 +6,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GoogleSheetController;
+use App\Http\Controllers\RecyclingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,9 +48,8 @@ Route::get('/inventario', function () {
 })->name('inventario');
 
 // Ruta de Reciclaje
-Route::get('/recycling', function () {
-    return view('recycling');
-})->name('recycling');
+Route::get('/recycling', [RecyclingController::class, 'index'])->name('recycling');
+Route::post('/recycling/save', [RecyclingController::class, 'saveToSheets'])->name('recycling.save');
 
 Route::get('/api/recycling/stores', [GoogleSheetController::class, 'getRecyclingStores'])->name('api.recycling.stores');
 Route::post('/api/recycling/log', [GoogleSheetController::class, 'storeRecyclingLog'])->name('api.recycling.log');

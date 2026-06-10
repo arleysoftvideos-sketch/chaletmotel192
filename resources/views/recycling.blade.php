@@ -61,6 +61,85 @@
 
     <!-- Main Container -->
     <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 flex-grow space-y-8">
+
+        <!-- Session Status Messages -->
+        @if(session('success'))
+            <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-sm">
+                <span>✅</span> <span>{{ session('success') }}</span>
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-sm">
+                <span>❌</span> <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
+        <!-- Create Store Form Card -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-black font-outfit text-slate-900 tracking-tight">Agregar Nueva Tienda al Directorio</h3>
+                    <p class="text-xs text-slate-500">Crea una nueva ubicación de reciclaje en la base de datos de Google Sheets.</p>
+                </div>
+                <span class="text-xs bg-brand/10 text-brand px-3 py-1 rounded-full font-bold uppercase tracking-wider">Formulario de Registro</span>
+            </div>
+            
+            <form action="{{ route('recycling.save') }}" method="POST" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-4">
+                @csrf
+                <!-- Nombre (3 cols) -->
+                <div class="md:col-span-3 flex flex-col space-y-1">
+                    <label for="nombre" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Nombre de la Tienda</label>
+                    <input type="text" name="nombre" id="nombre" required placeholder="Ej. Exxon DeLand" value="{{ old('nombre') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                </div>
+
+                <!-- Teléfono (2 cols) -->
+                <div class="md:col-span-2 flex flex-col space-y-1">
+                    <label for="telefono" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Teléfono</label>
+                    <input type="text" name="telefono" id="telefono" required placeholder="Ej. (386) 555-0192" value="{{ old('telefono') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                </div>
+
+                <!-- Web / Enlace (3 cols) -->
+                <div class="md:col-span-3 flex flex-col space-y-1">
+                    <label for="web" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Sitio Web (Enlace)</label>
+                    <input type="text" name="web" id="web" required placeholder="Ej. https://exxon.com o #" value="{{ old('web', '#') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                </div>
+
+                <!-- Empresa (2 cols) -->
+                <div class="md:col-span-2 flex flex-col space-y-1">
+                    <label for="empresa" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Empresa / Tipo</label>
+                    <input type="text" name="empresa" id="empresa" required placeholder="Ej. Gasolineras" value="{{ old('empresa') }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                </div>
+
+                <!-- Ruta (1 col) -->
+                <div class="md:col-span-1 flex flex-col space-y-1">
+                    <label for="ruta" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Ruta</label>
+                    <select name="ruta" id="ruta" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                        <option value="Volusia" {{ old('ruta') == 'Volusia' ? 'selected' : '' }}>Volusia</option>
+                        <option value="Orlando" {{ old('ruta') == 'Orlando' ? 'selected' : '' }}>Orlando</option>
+                        <option value="Kissimmee" {{ old('ruta') == 'Kissimmee' ? 'selected' : '' }}>Kissimmee</option>
+                        <option value="Lakeland" {{ old('ruta') == 'Lakeland' ? 'selected' : '' }}>Lakeland</option>
+                        <option value="Miami" {{ old('ruta') == 'Miami' ? 'selected' : '' }}>Miami</option>
+                        <option value="Ft. Lauderdale" {{ old('ruta') == 'Ft. Lauderdale' ? 'selected' : '' }}>Ft. Lauderdale</option>
+                    </select>
+                </div>
+
+                <!-- Alerta (1 col) -->
+                <div class="md:col-span-1 flex flex-col space-y-1">
+                    <label for="alerta" class="text-slate-500 font-bold text-[10px] uppercase tracking-wider">Alerta</label>
+                    <select name="alerta" id="alerta" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-brand focus:bg-white transition-all">
+                        <option value="No" {{ old('alerta') == 'No' ? 'selected' : '' }}>No</option>
+                        <option value="Sí" {{ old('alerta') == 'Sí' ? 'selected' : '' }}>Sí</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button (12 cols) -->
+                <div class="md:col-span-12 flex justify-end">
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-brand hover:bg-brand-hover text-white font-bold font-outfit rounded-xl text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-brand/10 hover:shadow-brand/20">
+                        Guardar Tienda
+                    </button>
+                </div>
+            </form>
+        </div>
         
         <!-- Welcome Card & Global Controls -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -179,6 +258,7 @@
 
     <!-- JS Code -->
     <script>
+        const customStores = @json($customStores ?? []);
         const lista = [
             // RUTA: Volusia (Alertas)
             {n: "Epiphany Thrift Store ⚠️", t: "(386) 775-6800", w: "https://epiphanythrift.com", a: true, r: "Volusia", e: "Independiente"},
@@ -290,6 +370,9 @@
             {n: "Hope Thrift (Hollywood)", t: "(954) 989-0000", w: "https://hopethrift.org", a: false, r: "Ft. Lauderdale", e: "Independiente"},
             {n: "New Life Thrift (Rockledge)", t: "(321) 632-4416", w: "https://newlifethrift.com", a: false, r: "Ft. Lauderdale", e: "Independiente"}
         ];
+
+        // Append custom stores from Google Sheets
+        lista.push(...customStores);
 
         let vistaActual = 'ruta';
         let filtroTexto = '';

@@ -68,4 +68,51 @@ class RecyclingTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['date', 'store', 'big', 'small', 'total']);
     }
+
+    /**
+     * Test the saveToSheets action fails validation with empty inputs.
+     */
+    public function test_save_to_sheets_validation_fails_with_empty_inputs(): void
+    {
+        $response = $this->post('/recycling/save', []);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['nombre', 'telefono', 'web', 'ruta', 'empresa', 'alerta']);
+    }
+
+    /**
+     * Test the saveToSheets action fails validation with invalid route.
+     */
+    public function test_save_to_sheets_validation_fails_with_invalid_route(): void
+    {
+        $response = $this->post('/recycling/save', [
+            'nombre' => 'Test Store',
+            'telefono' => '1234567890',
+            'web' => 'https://test.com',
+            'ruta' => 'InvalidRoute',
+            'empresa' => 'Test Corp',
+            'alerta' => 'No'
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['ruta']);
+    }
+
+    /**
+     * Test the saveToSheets action fails validation with invalid alerta.
+     */
+    public function test_save_to_sheets_validation_fails_with_invalid_alerta(): void
+    {
+        $response = $this->post('/recycling/save', [
+            'nombre' => 'Test Store',
+            'telefono' => '1234567890',
+            'web' => 'https://test.com',
+            'ruta' => 'Volusia',
+            'empresa' => 'Test Corp',
+            'alerta' => 'Maybe'
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['alerta']);
+    }
 }
