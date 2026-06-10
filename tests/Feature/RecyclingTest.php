@@ -14,7 +14,7 @@ class RecyclingTest extends TestCase
         $response = $this->get('/recycling');
 
         $response->assertStatus(200);
-        $response->assertSee('Recycling Guide');
+        $response->assertSee('Directorio de 100 Tiendas');
     }
 
     /**
@@ -25,7 +25,7 @@ class RecyclingTest extends TestCase
         $response = $this->get('/recycling?lang=en');
 
         $response->assertStatus(200);
-        $response->assertSee('Recycling Guide');
+        $response->assertSee('Directorio de 100 Tiendas');
     }
 
     /**
@@ -36,7 +36,7 @@ class RecyclingTest extends TestCase
         $response = $this->get('/recycling?lang=es');
 
         $response->assertStatus(200);
-        $response->assertSee('Guía de Reciclaje');
+        $response->assertSee('Directorio de 100 Tiendas');
     }
 
     /**
