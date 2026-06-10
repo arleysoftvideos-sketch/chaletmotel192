@@ -55,9 +55,9 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .hero-recycling-banner {
-            background-image: linear-gradient(to right, rgba(4, 30, 23, 0.95) 0%, rgba(6, 16, 33, 0.85) 50%, rgba(6, 16, 33, 0.4) 100%), url('/images/recycling_banner.png');
+            background-image: linear-gradient(to right, rgba(6, 16, 33, 0.98) 25%, rgba(6, 16, 33, 0.7) 60%, rgba(6, 16, 33, 0.2) 100%), url('/images/recycling_banner.png');
             background-size: cover;
-            background-position: center;
+            background-position: right 25% center;
         }
         .category-tab {
             border-color: #1e293b;
@@ -110,7 +110,7 @@
     <div class="w-full bg-[#061021] border-b border-blue-950 py-3 z-45 relative">
         <div class="max-w-7xl mx-auto px-6 flex justify-center sm:justify-start gap-4">
             <button id="main-tab-recycling" onclick="switchMainTab('recycling')" class="px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
-                <span>♻️</span> <span>{{ __('Reciclaje (Motel)') }}</span>
+                <span>♻️</span> <span>{{ __('Reciclaje') }}</span>
             </button>
             <button id="main-tab-callcenter" onclick="switchMainTab('callcenter')" class="px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>📞</span> <span>{{ __('Marketing / Call Center') }}</span>
