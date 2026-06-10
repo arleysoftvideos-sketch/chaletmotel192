@@ -60,6 +60,7 @@ class SyncFromSheets extends Command
                 $valuesStores = $responseStores->getValues();
 
                 if (!empty($valuesStores)) {
+                    RecyclingStore::truncate();
                     $storeCount = 0;
                     foreach ($valuesStores as $row) {
                         if (!empty($row[0])) {
@@ -99,6 +100,7 @@ class SyncFromSheets extends Command
                 $valuesRecycling = $responseRecycling->getValues();
 
                 if (!empty($valuesRecycling)) {
+                    RecyclingLog::truncate();
                     $logCount = 0;
                     foreach ($valuesRecycling as $row) {
                         if (!empty($row[0]) && !empty($row[1])) {
@@ -114,17 +116,13 @@ class SyncFromSheets extends Command
                                 $formattedDate = $date;
                             }
 
-                            RecyclingLog::updateOrCreate(
-                                [
-                                    'date' => $formattedDate,
-                                    'store' => $store,
-                                ],
-                                [
-                                    'big' => $big,
-                                    'small' => $small,
-                                    'total' => $total,
-                                ]
-                            );
+                            RecyclingLog::create([
+                                'date' => $formattedDate,
+                                'store' => $store,
+                                'big' => $big,
+                                'small' => $small,
+                                'total' => $total,
+                            ]);
                             $logCount++;
                         }
                     }
