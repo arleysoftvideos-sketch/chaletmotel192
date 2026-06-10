@@ -470,34 +470,137 @@ class GoogleSheetController extends Controller
     public function getRecyclingStores()
     {
         $defaultStores = [
-            'Citgo',
-            'Ormond Beach',
-            'POP',
-            'Ormond',
-            'OUR LADY LOARDS',
-            'EPIPHANY THRIFT STORE',
-            'CARWASH',
+            'Angel Thrift',
+            'Apopka Thrift',
+            'Amvets Thrift Store',
+            'Bargain Box',
             'BP',
+            'Care & Share',
+            'CARWASH',
+            'Christian Sharing Center',
+            'Citgo',
+            'Citgo / Punto Conv.',
+            'Community Thrift',
+            'Community Thrift (Leesburg)',
+            'Discovery Shop',
+            'EPIPHANY THRIFT STORE',
+            'Epiphany Thrift Store',
+            'Faith Neighborhood',
+            'Faith Thrift',
+            'Founders Thrift (Lake Mary)',
+            'Goodwill',
+            'Goodwill (Clermont)',
+            'Goodwill (Hialeah)',
+            'Goodwill (Kissimmee)',
+            'Goodwill (Orange City)',
+            'Goodwill (Winter Park)',
+            'Goodwill (Miami Beach)',
+            'Goodwill (Ft Laud)',
+            'Goodwill South FL',
+            'Goodwill Xpress (Lake Mary)',
+            'Grace Thrift',
+            'Habitat ReStore',
+            'Habitat ReStore (DeLand)',
+            'Habitat ReStore (East)',
+            'Habitat ReStore (Homestead)',
+            'Habitat ReStore (Kissimmee)',
+            'Helping Hand (Eustis)',
+            'Helping Hearts',
+            'Helping Hands (Ft Laud)',
+            'Helping Hands (Hialeah)',
+            'Helping Hands (Miami Beach)',
+            'Hope & Help Thrift',
+            'Hope Thrift',
+            'Hope Thrift (Hollywood)',
+            'Hope Thrift (Kendall)',
+            'Hope Thrift (N Miami)',
+            'Jewish Family Services',
+            'Joy Thrift',
+            'Miami Rescue Mission',
+            'Mustard Seed',
+            'Neighborhood of West Volusia',
+            'New Life Thrift (Rockledge)',
+            'Offset Store',
+            'Ormond',
+            'Ormond Beach',
+            'OUR LADY LOARDS',
             'OUT FATHERS CLOSET',
+            'Out Father\'s Closet',
+            'Out of the Closet',
+            'POP',
+            'Pet Thrift Shop',
+            'Rescue Mission (Ft Laud)',
+            'Rescue Mission Thrift',
+            'Salvation Army (Deltona)',
+            'Salvation Army (Hialeah)',
+            'Salvation Army (Kissimmee)',
+            'Salvation Army (Lakeland)',
+            'Salvation Army (Sanford)',
+            'Salvation Army (Miami Beach)',
+            'Salvation Army (Ft Laud)',
+            'Salvation Army Thrift',
+            'Second Harvest',
             'SHELL',
-            'THE NEIGHBORHOOD OF WEST VOLUSIA'
+            'St. Vincent de Paul',
+            'St. Vincent de Paul (Apopka)',
+            'St. Vincent de Paul (Hialeah)',
+            'St. Vincent de Paul (Orlando)',
+            'St. Vincent de Paul (Sanford)',
+            'St. Vincent de Paul (Miami Beach)',
+            'St. Vincent de Paul (Ft Laud)',
+            'Sunshine Thrift',
+            'The HOPE Chest (Oviedo)',
+            'THE NEIGHBORHOOD OF WEST VOLUSIA',
+            'Thrift Boutique',
+            'Thrift Mart',
+            'Thrift Shop (Aventura)',
+            'Thrift Shop (Coral Gables)',
+            'Treasure Chest (Aventura)',
+            'Treasure Chest (Coral Gables)',
+            'Treasure Chest (Hollywood)',
+            'Treasure Chest (Winter Haven)',
+            'UCP Thrift Store',
+            'Unity Thrift',
+            'Victory Thrift',
+            'West Volusia Habitat'
         ];
 
         try {
             $service = $this->getSheetsService();
             $spreadsheetId = $this->spreadsheetId;
 
-            $range = 'recycling!B2:B';
-            $response = $service->spreadsheets_values->get($spreadsheetId, $range);
-            $values = $response->getValues();
-
             $stores = $defaultStores;
-            if (!empty($values)) {
-                foreach ($values as $row) {
-                    if (!empty($row[0])) {
-                        $stores[] = trim($row[0]);
+
+            // 1. Fetch from recycling!B2:B
+            try {
+                $rangeRecycling = 'recycling!B2:B';
+                $responseRecycling = $service->spreadsheets_values->get($spreadsheetId, $rangeRecycling);
+                $valuesRecycling = $responseRecycling->getValues();
+                if (!empty($valuesRecycling)) {
+                    foreach ($valuesRecycling as $row) {
+                        if (!empty($row[0])) {
+                            $stores[] = trim($row[0]);
+                        }
                     }
                 }
+            } catch (\Exception $ex) {
+                // Ignore if sheet doesn't exist
+            }
+
+            // 2. Fetch from stores!A2:A
+            try {
+                $rangeStores = 'stores!A2:A';
+                $responseStores = $service->spreadsheets_values->get($spreadsheetId, $rangeStores);
+                $valuesStores = $responseStores->getValues();
+                if (!empty($valuesStores)) {
+                    foreach ($valuesStores as $row) {
+                        if (!empty($row[0])) {
+                            $stores[] = trim($row[0]);
+                        }
+                    }
+                }
+            } catch (\Exception $ex) {
+                // Ignore if sheet doesn't exist
             }
 
             $stores = array_unique($stores);

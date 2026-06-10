@@ -306,5 +306,12 @@
     "Enviar a Google Sheets": "Send to Google Sheets",
     "Buscar tienda o escribir nueva...": "Search store or write a new one...",
     "Agregar como nueva tienda": "Add as new store",
-    "Guardar Registro": "Save Log"
+    "Guardar Registro": "Save Log",
+    "Registro de Recolección": "Collection Log",
+    "Ingresa los datos de recolección diaria de bolsas de reciclaje": "Enter the daily collection data of recycling bags",
+    "Fecha": "Date",
+    "Tienda / Origen": "Store / Origin",
+    "Total (BIG + SMALL)": "Total (BIG + SMALL)",
+    "Portal de Reciclaje Textil": "Textile Recycling Portal",
+    "Directorio Logístico - Jovancito": "Logistics Directory - Jovancito"
 }

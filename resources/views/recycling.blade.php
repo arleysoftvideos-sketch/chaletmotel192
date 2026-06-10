@@ -136,7 +136,11 @@
                         </span>
                     </div>
                     <h1 class="text-4xl sm:text-5.5xl font-black font-outfit text-white uppercase tracking-tight">
-                        {{ __('Guía de') }} <span class="text-emerald-400">{{ __('Reciclaje') }}</span>
+                        @if(app()->getLocale() == 'en')
+                            Recycling <span class="text-emerald-400">Guide</span>
+                        @else
+                            Guía de <span class="text-emerald-400">Reciclaje</span>
+                        @endif
                     </h1>
                     <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
                         {{ __('En Chalet Motel 192, estamos comprometidos con la sostenibilidad y la preservación de nuestra comunidad en Kissimmee. Ayúdanos a reciclar de manera correcta siguiendo esta guía interactiva.') }}
