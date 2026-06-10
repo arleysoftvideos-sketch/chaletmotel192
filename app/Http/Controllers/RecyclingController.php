@@ -32,35 +32,19 @@ class RecyclingController extends Controller
         $customStores = [];
 
         try {
-            $service = $this->getSheetsService();
-            $spreadsheetId = $this->spreadsheetId;
-
-            // Ensure sheet exists before reading
-            $this->ensureStoresSheetExists($service, $spreadsheetId);
-
-            // Fetch columns A to F from the "stores" sheet (starting at row 2)
-            $range = 'stores!A2:F';
-            $response = $service->spreadsheets_values->get($spreadsheetId, $range);
-            $values = $response->getValues();
-
-            if (!empty($values)) {
-                foreach ($values as $row) {
-                    if (!empty($row[0])) {
-                        $customStores[] = [
-                            'n' => trim($row[0]),
-                            't' => isset($row[1]) ? trim($row[1]) : 'N/A',
-                            'w' => (isset($row[2]) && trim($row[2]) !== '') ? trim($row[2]) : '#',
-                            'a' => (isset($row[5]) && trim($row[5]) === 'Sí') ? true : false,
-                            'r' => isset($row[3]) ? trim($row[3]) : 'Volusia',
-                            'e' => isset($row[4]) ? trim($row[4]) : 'Independiente'
-                        ];
-                    }
-                }
+            $stores = \App\Models\RecyclingStore::all();
+            foreach ($stores as $store) {
+                $customStores[] = [
+                    'n' => trim($store->nombre),
+                    't' => $store->telefono ?? 'N/A',
+                    'w' => ($store->web && trim($store->web) !== '') ? trim($store->web) : '#',
+                    'a' => $store->alerta === 'Sí' ? true : false,
+                    'r' => $store->ruta ?? 'Volusia',
+                    'e' => $store->empresa ?? 'Independiente'
+                ];
             }
-
         } catch (\Exception $e) {
-            // Log error or set a warning, but let the page load gracefully
-            logger()->error('Error loading custom stores: ' . $e->getMessage());
+            logger()->error('Error loading custom stores from database: ' . $e->getMessage());
         }
 
         return view('recycling', compact('customStores'));
@@ -78,35 +62,109 @@ class RecyclingController extends Controller
         ]);
 
         try {
-            $service = $this->getSheetsService();
-            $spreadsheetId = $this->spreadsheetId;
+            // Save to Local Database
+            \App\Models\RecyclingStore::updateOrCreate(
+                ['nombre' => $request->input('nombre')],
+                [
+                    'telefono' => $request->input('telefono'),
+                    'web' => $request->input('web'),
+                    'ruta' => $request->input('ruta'),
+                    'empresa' => $request->input('empresa'),
+                    'alerta' => $request->input('alerta'),
+                ]
+            );
 
-            // Ensure "stores" sheet exists
-            $this->ensureStoresSheetExists($service, $spreadsheetId);
+            // Sync with Google Sheets
+            try {
+                $service = $this->getSheetsService();
+                $spreadsheetId = $this->spreadsheetId;
 
-            $row = [
-                $request->input('nombre'),
-                $request->input('telefono'),
-                $request->input('web'),
-                $request->input('ruta'),
-                $request->input('empresa'),
-                $request->input('alerta'),
-                date('Y-m-d H:i:s')
-            ];
+                // Ensure "stores" sheet exists
+                $this->ensureStoresSheetExists($service, $spreadsheetId);
 
-            $range = 'stores!A:G';
-            $body = new ValueRange([
-                'values' => [$row]
-            ]);
+                $row = [
+                    $request->input('nombre'),
+                    $request->input('telefono'),
+                    $request->input('web'),
+                    $request->input('ruta'),
+                    $request->input('empresa'),
+                    $request->input('alerta'),
+                    date('Y-m-d H:i:s')
+                ];
 
-            $service->spreadsheets_values->append($spreadsheetId, $range, $body, [
-                'valueInputOption' => 'USER_ENTERED'
-            ]);
+                $range = 'stores!A:G';
+                $body = new ValueRange([
+                    'values' => [$row]
+                ]);
 
-            return redirect()->back()->with('success', '¡Tienda agregada con éxito a Google Sheets!');
+                $service->spreadsheets_values->append($spreadsheetId, $range, $body, [
+                    'valueInputOption' => 'USER_ENTERED'
+                ]);
+            } catch (\Exception $sheetEx) {
+                logger()->error('Failed to sync custom store to Google Sheets: ' . $sheetEx->getMessage());
+                return redirect()->back()->with('success', '¡Tienda guardada en base de datos local! (No se pudo sincronizar temporalmente con Google Sheets).');
+            }
+
+            return redirect()->back()->with('success', '¡Tienda agregada con éxito a la base de datos y Google Sheets!');
 
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al guardar en Google Sheets: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', 'Error al guardar: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    public function getStats(Request $request)
+    {
+        try {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+
+            $query = \App\Models\RecyclingLog::query();
+
+            if ($startDate) {
+                $query->where('date', '>=', $startDate);
+            }
+            if ($endDate) {
+                $query->where('date', '<=', $endDate);
+            }
+
+            $totalBig = (int)$query->sum('big');
+            $totalSmall = (int)$query->sum('small');
+            $totalBags = (int)$query->sum('total');
+            $logCount = (int)$query->count();
+
+            // Group by store and summarize
+            $topLocations = $query->select('store', 
+                \DB::raw('SUM(big) as big_sum'), 
+                \DB::raw('SUM(small) as small_sum'), 
+                \DB::raw('SUM(total) as total_sum')
+            )
+            ->groupBy('store')
+            ->orderBy('total_sum', 'desc')
+            ->get();
+
+            // Get recent logs
+            $recentLogs = $query->orderBy('date', 'desc')
+                ->orderBy('created_at', 'desc')
+                ->limit(20)
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'summary' => [
+                    'big' => $totalBig,
+                    'small' => $totalSmall,
+                    'total' => $totalBags,
+                    'count' => $logCount,
+                ],
+                'locations' => $topLocations,
+                'logs' => $recentLogs,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al calcular estadísticas: ' . $e->getMessage()
+            ], 500);
         }
     }
 

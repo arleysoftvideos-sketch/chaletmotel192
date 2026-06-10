@@ -566,41 +566,30 @@ class GoogleSheetController extends Controller
         ];
 
         try {
-            $service = $this->getSheetsService();
-            $spreadsheetId = $this->spreadsheetId;
-
             $stores = $defaultStores;
 
-            // 1. Fetch from recycling!B2:B
+            // 1. Fetch stores logged in local database logs
             try {
-                $rangeRecycling = 'recycling!B2:B';
-                $responseRecycling = $service->spreadsheets_values->get($spreadsheetId, $rangeRecycling);
-                $valuesRecycling = $responseRecycling->getValues();
-                if (!empty($valuesRecycling)) {
-                    foreach ($valuesRecycling as $row) {
-                        if (!empty($row[0])) {
-                            $stores[] = trim($row[0]);
-                        }
+                $loggedStores = \App\Models\RecyclingLog::pluck('store')->toArray();
+                foreach ($loggedStores as $s) {
+                    if (!empty($s)) {
+                        $stores[] = trim($s);
                     }
                 }
-            } catch (\Exception $ex) {
-                // Ignore if sheet doesn't exist
+            } catch (\Exception $dbEx1) {
+                logger()->error('Error plucking stores from local logs: ' . $dbEx1->getMessage());
             }
 
-            // 2. Fetch from stores!A2:A
+            // 2. Fetch stores registered in local database custom stores table
             try {
-                $rangeStores = 'stores!A2:A';
-                $responseStores = $service->spreadsheets_values->get($spreadsheetId, $rangeStores);
-                $valuesStores = $responseStores->getValues();
-                if (!empty($valuesStores)) {
-                    foreach ($valuesStores as $row) {
-                        if (!empty($row[0])) {
-                            $stores[] = trim($row[0]);
-                        }
+                $dbStores = \App\Models\RecyclingStore::pluck('nombre')->toArray();
+                foreach ($dbStores as $name) {
+                    if (!empty($name)) {
+                        $stores[] = trim($name);
                     }
                 }
-            } catch (\Exception $ex) {
-                // Ignore if sheet doesn't exist
+            } catch (\Exception $dbEx2) {
+                logger()->error('Error plucking custom stores from local DB: ' . $dbEx2->getMessage());
             }
 
             $stores = array_unique($stores);
@@ -616,7 +605,7 @@ class GoogleSheetController extends Controller
             return response()->json([
                 'success' => true,
                 'stores' => $defaultStores,
-                'warning' => 'Could not fetch from sheet: ' . $e->getMessage()
+                'warning' => 'Could not fetch stores from database: ' . $e->getMessage()
             ]);
         }
     }
@@ -632,29 +621,47 @@ class GoogleSheetController extends Controller
         ]);
 
         try {
-            $service = $this->getSheetsService();
-            $spreadsheetId = $this->spreadsheetId;
-
-            $row = [
-                $request->input('date'),
-                $request->input('store'),
-                $request->input('big'),
-                $request->input('small'),
-                $request->input('total')
-            ];
-
-            $range = 'recycling!A:E';
-            $body = new ValueRange([
-                'values' => [$row]
+            // Save to Local Database
+            \App\Models\RecyclingLog::create([
+                'date' => $request->input('date'),
+                'store' => $request->input('store'),
+                'big' => $request->input('big'),
+                'small' => $request->input('small'),
+                'total' => $request->input('total'),
             ]);
 
-            $service->spreadsheets_values->append($spreadsheetId, $range, $body, [
-                'valueInputOption' => 'USER_ENTERED'
-            ]);
+            // Sync with Google Sheets
+            try {
+                $service = $this->getSheetsService();
+                $spreadsheetId = $this->spreadsheetId;
+
+                $row = [
+                    $request->input('date'),
+                    $request->input('store'),
+                    $request->input('big'),
+                    $request->input('small'),
+                    $request->input('total')
+                ];
+
+                $range = 'recycling!A:E';
+                $body = new ValueRange([
+                    'values' => [$row]
+                ]);
+
+                $service->spreadsheets_values->append($spreadsheetId, $range, $body, [
+                    'valueInputOption' => 'USER_ENTERED'
+                ]);
+            } catch (\Exception $sheetEx) {
+                logger()->error('Failed to sync recycling log to Google Sheets: ' . $sheetEx->getMessage());
+                return response()->json([
+                    'success' => true,
+                    'message' => '¡Registro guardado en base de datos local! (No se pudo sincronizar con Google Sheets temporalmente).'
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Log added to Google Sheets successfully.'
+                'message' => 'Log added to local database and Google Sheets successfully.'
             ]);
 
         } catch (\Exception $e) {

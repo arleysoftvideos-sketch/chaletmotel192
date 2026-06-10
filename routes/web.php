@@ -53,6 +53,7 @@ Route::post('/recycling/save', [RecyclingController::class, 'saveToSheets'])->na
 
 Route::get('/api/recycling/stores', [GoogleSheetController::class, 'getRecyclingStores'])->name('api.recycling.stores');
 Route::post('/api/recycling/log', [GoogleSheetController::class, 'storeRecyclingLog'])->name('api.recycling.log');
+Route::get('/api/recycling/stats', [RecyclingController::class, 'getStats'])->name('api.recycling.stats');
 
 // Rutas Públicas de Habitaciones
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');

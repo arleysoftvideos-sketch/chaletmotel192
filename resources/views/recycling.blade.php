@@ -115,6 +115,9 @@
             <button id="main-tab-callcenter" onclick="switchMainTab('callcenter')" class="px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>📞</span> <span>{{ __('Marketing / Call Center') }}</span>
             </button>
+            <button id="main-tab-statistics" onclick="switchMainTab('statistics')" class="px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+                <span>📈</span> <span>{{ __('Estadísticas') }}</span>
+            </button>
         </div>
     </div>
 
@@ -427,6 +430,132 @@
         </footer>
     </div>
 
+    <!-- ========================================================= -->
+    <!-- SECTION 3: STATISTICS                                     -->
+    <!-- ========================================================= -->
+    <div id="section-statistics" class="flex-grow flex flex-col justify-between hidden">
+        <!-- Main Container -->
+        <main class="max-w-7xl w-full mx-auto px-6 py-8 flex-grow space-y-8 text-slate-100">
+            <!-- Header -->
+            <div class="border-b border-blue-950 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide">
+                        {{ __('Panel de Estadísticas') }}
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+                        {{ __('Visualiza los consolidados y detalles de reciclaje acumulados') }}
+                    </p>
+                </div>
+                
+                <!-- Date Filters Form -->
+                <div class="flex flex-wrap items-center gap-3 bg-[#061021]/80 border border-blue-950 p-2.5 rounded-2xl">
+                    <div class="flex items-center gap-2">
+                        <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{ __('Desde') }}</label>
+                        <input type="date" id="stats-start-date" onchange="loadStatistics()" class="bg-[#040a17] border border-blue-950 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-gold">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{ __('Hasta') }}</label>
+                        <input type="date" id="stats-end-date" onchange="loadStatistics()" class="bg-[#040a17] border border-blue-950 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-gold">
+                    </div>
+                    <button onclick="clearStatsDates()" class="text-xs font-bold text-slate-400 hover:text-white px-2 py-1 border border-blue-950 rounded-lg transition-colors">
+                        {{ __('Limpiar') }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Summary Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Total Bags -->
+                <div class="bg-gradient-to-br from-gold/20 to-gold/5 border border-gold/20 rounded-[2rem] p-6 shadow-xl relative overflow-hidden group">
+                    <div class="absolute right-4 top-4 text-3xl opacity-20 select-none group-hover:scale-110 transition-transform duration-300">📦</div>
+                    <span class="text-[10px] font-black text-gold uppercase tracking-widest">{{ __('Total Bolsas Recolectadas') }}</span>
+                    <h3 id="stat-card-total" class="text-4xl font-black font-outfit text-white mt-2">0</h3>
+                    <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ __('Bolsas Totales') }}</p>
+                </div>
+
+                <!-- Card 2: Big Bags -->
+                <div class="bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-950/40 rounded-[2rem] p-6 shadow-xl relative overflow-hidden group">
+                    <div class="absolute right-4 top-4 text-3xl opacity-20 select-none group-hover:scale-110 transition-transform duration-300">🟢</div>
+                    <span class="text-[10px] font-black text-emerald-400 uppercase tracking-widest">{{ __('Bolsas Grandes') }}</span>
+                    <h3 id="stat-card-big" class="text-4xl font-black font-outfit text-white mt-2">0</h3>
+                    <p id="stat-card-big-percent" class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">0% {{ __('del total') }}</p>
+                </div>
+
+                <!-- Card 3: Small Bags -->
+                <div class="bg-gradient-to-br from-blue-500/20 to-blue-500/5 border border-blue-950 rounded-[2rem] p-6 shadow-xl relative overflow-hidden group">
+                    <div class="absolute right-4 top-4 text-3xl opacity-20 select-none group-hover:scale-110 transition-transform duration-300">🔵</div>
+                    <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest">{{ __('Bolsas Pequeñas') }}</span>
+                    <h3 id="stat-card-small" class="text-4xl font-black font-outfit text-white mt-2">0</h3>
+                    <p id="stat-card-small-percent" class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">0% {{ __('del total') }}</p>
+                </div>
+
+                <!-- Card 4: Daily Logged Count -->
+                <div class="bg-gradient-to-br from-purple-500/20 to-purple-500/5 border border-purple-950 rounded-[2rem] p-6 shadow-xl relative overflow-hidden group">
+                    <div class="absolute right-4 top-4 text-3xl opacity-20 select-none group-hover:scale-110 transition-transform duration-300">📋</div>
+                    <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest">{{ __('Total Registros') }}</span>
+                    <h3 id="stat-card-count" class="text-4xl font-black font-outfit text-white mt-2">0</h3>
+                    <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ __('Días Registrados') }}</p>
+                </div>
+            </div>
+
+            <!-- Detail Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Top Locations -->
+                <div class="lg:col-span-7 bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Ubicaciones Destacadas') }}</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Total acumulado por tienda u origen') }}</p>
+                            </div>
+                            <span class="text-[10px] bg-gold/10 text-gold px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Ranking') }}</span>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-blue-950/20 border-b border-blue-950 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                        <th class="px-4 py-3 font-bold">{{ __('Tienda / Origen') }}</th>
+                                        <th class="px-4 py-3 font-bold text-center">{{ __('Grandes') }}</th>
+                                        <th class="px-4 py-3 font-bold text-center">{{ __('Pequeñas') }}</th>
+                                        <th class="px-4 py-3 font-bold text-right">{{ __('Total') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="stats-locations-table-body" class="divide-y divide-blue-950/40 text-slate-300 font-medium">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Logs Timeline -->
+                <div class="lg:col-span-5 bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Historial Reciente') }}</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Últimos 20 registros ingresados') }}</p>
+                            </div>
+                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Registro') }}</span>
+                        </div>
+                        
+                        <div id="stats-recent-logs-list" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+                            <!-- Dynamic logs -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Stats Footer -->
+        <footer class="w-full bg-[#0a1831] border-t-2 border-gold/40 shadow-2xl">
+            <div class="w-full bg-[#061021] py-4 text-center text-xs text-slate-500">
+                <p>&copy; {{ date('Y') }} Chalet Motel 192 &bull; {{ __('Consolidado de Estadísticas') }}</p>
+            </div>
+        </footer>
+    </div>
+
     <!-- Form Logger Modal (Directory Log Modal) -->
     <div id="log-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
         <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-6 shadow-2xl relative">
@@ -639,6 +768,7 @@
                     document.getElementById('guest-log-small').value = 0;
                     document.getElementById('guest-log-total').value = 0;
                     guestLoadStores();
+                    loadStatistics();
                 } else {
                     alert((currentLang === 'es' ? 'Error: ' : 'Error: ') + data.message);
                 }
@@ -971,6 +1101,7 @@
                 if (data.success) {
                     alert(currentLang === 'es' ? '¡Registro guardado con éxito!' : 'Log saved successfully!');
                     closeLogModal();
+                    loadStatistics();
                 } else {
                     alert((currentLang === 'es' ? 'Error: ' : 'Error: ') + data.message);
                 }
@@ -994,29 +1125,151 @@
             
             const secRecycling = document.getElementById('section-recycling');
             const secCallcenter = document.getElementById('section-callcenter');
+            const secStatistics = document.getElementById('section-statistics');
+            
             const tabBtnRecycling = document.getElementById('main-tab-recycling');
             const tabBtnCallcenter = document.getElementById('main-tab-callcenter');
+            const tabBtnStatistics = document.getElementById('main-tab-statistics');
             
+            // Hide all sections
+            secRecycling.classList.add('hidden');
+            secCallcenter.classList.add('hidden');
+            secStatistics.classList.add('hidden');
+            
+            // Reset active button classes
+            tabBtnRecycling.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
+            tabBtnCallcenter.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
+            tabBtnStatistics.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
+
             if (tab === 'recycling') {
                 secRecycling.classList.remove('hidden');
-                secCallcenter.classList.add('hidden');
-                
-                // Style Active Recycling Tab
                 tabBtnRecycling.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-emerald-500 text-[#061021] shadow-lg shadow-emerald-500/10";
-                tabBtnCallcenter.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
-                
-                // Set dark body styles
                 document.body.className = "bg-[#040a17] text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy";
-            } else {
-                secRecycling.classList.add('hidden');
+            } else if (tab === 'callcenter') {
                 secCallcenter.classList.remove('hidden');
-                
-                // Style Active Callcenter Tab
                 tabBtnCallcenter.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-brand text-white shadow-lg shadow-brand/10";
-                tabBtnRecycling.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
-                
-                // Set light body styles
                 document.body.className = "bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between";
+            } else if (tab === 'statistics') {
+                secStatistics.classList.remove('hidden');
+                tabBtnStatistics.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-gold text-[#061021] shadow-lg shadow-gold/10";
+                document.body.className = "bg-[#040a17] text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy";
+                loadStatistics();
+            }
+        }
+
+        // ----------------------------------------------------
+        // STATISTICS LOGIC
+        // ----------------------------------------------------
+        function loadStatistics() {
+            const startDate = document.getElementById('stats-start-date').value;
+            const endDate = document.getElementById('stats-end-date').value;
+
+            let url = '/api/recycling/stats';
+            const params = [];
+            if (startDate) params.push(`start_date=${startDate}`);
+            if (endDate) params.push(`end_date=${endDate}`);
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        renderStatistics(data);
+                    } else {
+                        console.error("Failed to load statistics:", data.message);
+                    }
+                })
+                .catch(err => console.error("Error loading statistics:", err));
+        }
+
+        function clearStatsDates() {
+            document.getElementById('stats-start-date').value = '';
+            document.getElementById('stats-end-date').value = '';
+            loadStatistics();
+        }
+
+        function renderStatistics(data) {
+            const summary = data.summary;
+            
+            // Set summary cards
+            document.getElementById('stat-card-total').textContent = summary.total.toLocaleString();
+            document.getElementById('stat-card-big').textContent = summary.big.toLocaleString();
+            document.getElementById('stat-card-small').textContent = summary.small.toLocaleString();
+            document.getElementById('stat-card-count').textContent = summary.count.toLocaleString();
+
+            const bigPercent = summary.total > 0 ? Math.round((summary.big / summary.total) * 100) : 0;
+            const smallPercent = summary.total > 0 ? Math.round((summary.small / summary.total) * 100) : 0;
+
+            document.getElementById('stat-card-big-percent').textContent = `${bigPercent}% ${currentLang === 'es' ? 'del total' : 'of total'}`;
+            document.getElementById('stat-card-small-percent').textContent = `${smallPercent}% ${currentLang === 'es' ? 'del total' : 'of total'}`;
+
+            // Render top locations table
+            const tableBody = document.getElementById('stats-locations-table-body');
+            tableBody.innerHTML = '';
+            
+            if (data.locations.length === 0) {
+                const emptyMsg = currentLang === 'es' ? 'No hay registros en este rango' : 'No logs in this range';
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-4 py-8 text-center text-slate-500 italic font-semibold">
+                            ${emptyMsg}
+                        </td>
+                    </tr>
+                `;
+            } else {
+                data.locations.forEach(loc => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-blue-950/20 transition-colors";
+                    tr.innerHTML = `
+                        <td class="px-4 py-3 font-semibold text-white">${loc.store}</td>
+                        <td class="px-4 py-3 text-center text-emerald-400 font-bold">${parseInt(loc.big_sum).toLocaleString()}</td>
+                        <td class="px-4 py-3 text-center text-blue-400 font-bold">${parseInt(loc.small_sum).toLocaleString()}</td>
+                        <td class="px-4 py-3 text-right text-gold font-black">${parseInt(loc.total_sum).toLocaleString()}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            }
+
+            // Render recent logs timeline
+            const logsList = document.getElementById('stats-recent-logs-list');
+            logsList.innerHTML = '';
+            
+            if (data.logs.length === 0) {
+                const emptyMsg = currentLang === 'es' ? 'No hay registros recientes' : 'No recent logs';
+                logsList.innerHTML = `
+                    <div class="text-center text-slate-500 italic py-8 font-semibold">
+                        ${emptyMsg}
+                    </div>
+                `;
+            } else {
+                data.logs.forEach(log => {
+                    const item = document.createElement('div');
+                    item.className = "bg-blue-950/20 border border-blue-950/60 p-3 rounded-xl flex items-center justify-between gap-4";
+                    
+                    const dateParts = log.date.split('-');
+                    const formattedDate = dateParts.length === 3 ? `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}` : log.date;
+
+                    item.innerHTML = `
+                        <div class="flex flex-col min-w-0">
+                            <span class="text-white font-bold text-xs truncate">${log.store}</span>
+                            <span class="text-[10px] text-slate-400 font-medium">${formattedDate}</span>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <span class="text-[10px] bg-emerald-950/60 text-emerald-400 border border-emerald-900/50 px-2 py-0.5 rounded font-black">
+                                B: ${log.big}
+                            </span>
+                            <span class="text-[10px] bg-blue-950/60 text-blue-400 border border-blue-900/50 px-2 py-0.5 rounded font-black">
+                                S: ${log.small}
+                            </span>
+                            <span class="text-xs bg-gold/10 text-gold px-2.5 py-0.5 rounded-full font-black border border-gold/25">
+                                ${log.total}
+                            </span>
+                        </div>
+                    `;
+                    logsList.appendChild(item);
+                });
             }
         }
 
