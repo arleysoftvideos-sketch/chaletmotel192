@@ -29,6 +29,7 @@ class RecyclingController extends Controller
 
     public function index()
     {
+        $this->autoSync();
         $customStores = [];
 
         try {
@@ -114,6 +115,7 @@ class RecyclingController extends Controller
 
     public function getStats(Request $request)
     {
+        $this->autoSync();
         try {
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
@@ -198,6 +200,31 @@ class RecyclingController extends Controller
             $service->spreadsheets_values->update($spreadsheetId, $range, $body, [
                 'valueInputOption' => 'USER_ENTERED'
             ]);
+        }
+    }
+
+    private function autoSync()
+    {
+        if (app()->environment('testing')) {
+            return;
+        }
+
+        try {
+            $lockKey = 'recycling_sync_lock';
+            $lastSyncKey = 'recycling_last_sync_time';
+            
+            $currentTime = time();
+            $lastSyncTime = \Illuminate\Support\Facades\Cache::get($lastSyncKey, 0);
+            
+            if (($currentTime - $lastSyncTime) > 60) {
+                if (\Illuminate\Support\Facades\Cache::add($lockKey, true, 30)) {
+                    \Illuminate\Support\Facades\Artisan::call('recycling:sync-from-sheets');
+                    \Illuminate\Support\Facades\Cache::put($lastSyncKey, $currentTime, 3600);
+                    \Illuminate\Support\Facades\Cache::forget($lockKey);
+                }
+            }
+        } catch (\Exception $syncEx) {
+            logger()->error('Auto-sync from Sheets failed: ' . $syncEx->getMessage());
         }
     }
 }
