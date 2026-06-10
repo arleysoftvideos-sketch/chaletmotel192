@@ -54,6 +54,22 @@ Route::post('/recycling/save', [RecyclingController::class, 'saveToSheets'])->na
 Route::get('/api/recycling/stores', [GoogleSheetController::class, 'getRecyclingStores'])->name('api.recycling.stores');
 Route::post('/api/recycling/log', [GoogleSheetController::class, 'storeRecyclingLog'])->name('api.recycling.log');
 Route::get('/api/recycling/stats', [RecyclingController::class, 'getStats'])->name('api.recycling.stats');
+Route::get('/sync-recycling-data', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('recycling:sync-from-sheets');
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        return response()->json([
+            'success' => true,
+            'message' => 'Sincronización exitosa con Google Sheets.',
+            'output' => $output
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al sincronizar: ' . $e->getMessage()
+        ], 500);
+    }
+});
 
 // Rutas Públicas de Habitaciones
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
