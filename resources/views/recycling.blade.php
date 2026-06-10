@@ -451,36 +451,17 @@
             <!-- Staff Logging Section -->
             <div class="bg-[#0a1831]/90 p-8 sm:p-10 rounded-[2rem] border border-blue-950 shadow-2xl relative mt-8">
                 <!-- Header -->
-                <div class="border-b border-blue-950 pb-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                        <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide">
-                            {{ __('Registro de Recolección (Staff)') }}
-                        </h2>
-                        <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">
-                            {{ __('Acceso exclusivo para el personal del Chalet Motel 192') }}
-                        </p>
-                    </div>
-                    <!-- Admin status / Unlock button -->
-                    <div id="admin-status-container">
-                        <button id="admin-toggle-btn" onclick="openAdminPinModal()" class="px-4 py-2 border border-emerald-500/35 text-emerald-400 hover:bg-emerald-500/10 font-bold font-outfit rounded-xl text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
-                            <span>🔒</span> <span>{{ __('Desbloquear Acceso') }}</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Locked Overlay State -->
-                <div id="logger-locked-view" class="flex flex-col items-center justify-center py-10 text-center space-y-4">
-                    <span class="text-5xl">🔒</span>
-                    <p class="text-slate-400 text-xs max-w-sm leading-relaxed">
-                        {{ __('Esta sección requiere un código PIN de seguridad para evitar registros no autorizados en la base de datos de Google Sheets.') }}
+                <div class="border-b border-blue-950 pb-4 mb-6">
+                    <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide">
+                        {{ __('Registro de Recolección') }}
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+                        {{ __('Ingresa los datos de recolección diaria de bolsas de reciclaje') }}
                     </p>
-                    <button onclick="openAdminPinModal()" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black font-outfit rounded-xl transition-all duration-300 text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/10">
-                        {{ __('Ingresar PIN') }}
-                    </button>
                 </div>
 
-                <!-- Unlocked Logging Form (Hidden initially) -->
-                <div id="logger-unlocked-view" class="hidden space-y-6">
+                <!-- Logging Form -->
+                <div id="logger-unlocked-view" class="space-y-6">
                     <form id="guest-recycling-log-form" onsubmit="guestSubmitRecyclingLog(event)" class="grid grid-cols-1 md:grid-cols-12 gap-6">
                         <!-- Date Input (4 cols) -->
                         <div class="md:col-span-4 flex flex-col space-y-2">
@@ -547,32 +528,7 @@
                 </div>
             </div>
 
-            <!-- PIN Unlock Modal -->
-            <div id="pin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                <div class="bg-[#0a1831] border border-blue-950 rounded-3xl p-6 sm:p-8 max-w-sm w-full space-y-6 shadow-2xl relative">
-                    <button onclick="closeAdminPinModal()" class="absolute right-4 top-4 text-slate-500 hover:text-slate-300">
-                        ✕
-                    </button>
-                    <div class="text-center space-y-2">
-                        <span class="text-4xl">🔑</span>
-                        <h3 class="text-lg font-black font-outfit text-white uppercase tracking-wide">
-                            {{ __('Acceso de Personal') }}
-                        </h3>
-                        <p class="text-[10px] text-slate-400">
-                            {{ __('Ingrese el PIN de seguridad para desbloquear el formulario.') }}
-                        </p>
-                    </div>
-                    <div class="space-y-4">
-                        <input type="password" id="pin-input" placeholder="••••" maxlength="6" class="w-full bg-[#061021] border border-blue-950 rounded-xl px-4 py-3 text-center text-xl tracking-[0.5em] font-black text-white focus:outline-none focus:border-emerald-500 transition-all">
-                        <p id="pin-error-msg" class="hidden text-center text-[10px] text-red-400 font-bold">
-                            {{ __('PIN Incorrecto. Intente de nuevo.') }}
-                        </p>
-                        <button onclick="verifyAdminPin()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black font-outfit rounded-xl transition-all duration-300 text-xs uppercase tracking-wider shadow-lg">
-                            {{ __('Verificar') }}
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <!-- PIN Unlock Modal Removed -->
 
         </main>
 
@@ -1160,63 +1116,6 @@
 
         // GUEST VIEW LOGGING SCRIPTS
         let guestStores = [];
-        const pinCorrect = "192";
-
-        function openAdminPinModal() {
-            document.getElementById('pin-modal').classList.remove('hidden');
-            document.getElementById('pin-input').focus();
-        }
-
-        function closeAdminPinModal() {
-            document.getElementById('pin-modal').classList.add('hidden');
-            document.getElementById('pin-input').value = '';
-            document.getElementById('pin-error-msg').classList.add('hidden');
-        }
-
-        function verifyAdminPin() {
-            const pin = document.getElementById('pin-input').value;
-            if (pin === pinCorrect) {
-                unlockLogger();
-                closeAdminPinModal();
-            } else {
-                document.getElementById('pin-error-msg').classList.remove('hidden');
-                document.getElementById('pin-input').value = '';
-            }
-        }
-
-        function unlockLogger() {
-            localStorage.setItem('recycling_admin_unlocked', 'true');
-            document.getElementById('logger-locked-view').classList.add('hidden');
-            document.getElementById('logger-unlocked-view').classList.remove('hidden');
-            
-            document.getElementById('admin-status-container').innerHTML = `
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider bg-emerald-950/60 border border-emerald-500/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        ${currentLang === 'es' ? 'Modo Admin Activo' : 'Admin Mode Active'}
-                    </span>
-                    <button onclick="lockLogger()" class="text-slate-400 hover:text-white text-xs underline font-bold ml-1">
-                        ${currentLang === 'es' ? 'Bloquear' : 'Lock'}
-                    </button>
-                </div>
-            `;
-
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('guest-log-date').value = today;
-            guestLoadStores();
-        }
-
-        function lockLogger() {
-            localStorage.removeItem('recycling_admin_unlocked');
-            document.getElementById('logger-locked-view').classList.remove('hidden');
-            document.getElementById('logger-unlocked-view').classList.add('hidden');
-            
-            document.getElementById('admin-status-container').innerHTML = `
-                <button id="admin-toggle-btn" onclick="openAdminPinModal()" class="px-4 py-2 border border-emerald-500/35 text-emerald-400 hover:bg-emerald-500/10 font-bold font-outfit rounded-xl text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
-                    <span>🔒</span> <span>${currentLang === 'es' ? 'Desbloquear Acceso' : 'Unlock Access'}</span>
-                </button>
-            `;
-        }
 
         function guestLoadStores() {
             fetch('/api/recycling/stores')
@@ -1721,10 +1620,13 @@
             // Check category tab default
             switchCategory('plastic');
             
-            // Auto unlock recycling admin if previously authenticated
-            if (localStorage.getItem('recycling_admin_unlocked') === 'true') {
-                unlockLogger();
+            // Initialize Guest Log Form Date and Load Stores
+            const guestLogDateInput = document.getElementById('guest-log-date');
+            if (guestLogDateInput) {
+                const today = new Date().toISOString().split('T')[0];
+                guestLogDateInput.value = today;
             }
+            guestLoadStores();
 
             // Determine initial view tab:
             // If there's an active Laravel validation/status message redirection, show the Call Center tab.
