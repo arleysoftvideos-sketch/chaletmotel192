@@ -71,9 +71,6 @@
                         <a href="/nosotros" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                             {{ __('Nosotros') }}
                         </a>
-                        <a href="/recycling" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                            {{ __('Reciclaje') }}
-                        </a>
                         <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                             {{ __('Contacto') }}
                         </a>

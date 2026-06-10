@@ -66,6 +66,13 @@
             border-color: #34d399;
             background-color: rgba(16, 185, 129, 0.1);
         }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-[#040a17] text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy">
@@ -81,9 +88,6 @@
                     </a>
                     <a href="/nosotros" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                         {{ __('Nosotros') }}
-                    </a>
-                    <a href="/recycling" class="px-4 py-2 text-gold font-semibold transition-all duration-300 text-sm">
-                        {{ __('Reciclaje') }}
                     </a>
                     <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                         {{ __('Contacto') }}
@@ -108,14 +112,14 @@
 
     <!-- Main Tab Switcher -->
     <div class="w-full bg-[#061021] border-b border-blue-950 py-3 z-45 relative">
-        <div class="max-w-7xl mx-auto px-6 flex justify-center sm:justify-start gap-4">
-            <button id="main-tab-recycling" onclick="switchMainTab('recycling')" class="px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-start gap-4 overflow-x-auto whitespace-nowrap no-scrollbar py-1">
+            <button id="main-tab-recycling" onclick="switchMainTab('recycling')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>♻️</span> <span>{{ __('Reciclaje') }}</span>
             </button>
-            <button id="main-tab-callcenter" onclick="switchMainTab('callcenter')" class="px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+            <button id="main-tab-callcenter" onclick="switchMainTab('callcenter')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>📞</span> <span>{{ __('Marketing / Call Center') }}</span>
             </button>
-            <button id="main-tab-statistics" onclick="switchMainTab('statistics')" class="px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+            <button id="main-tab-statistics" onclick="switchMainTab('statistics')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>📈</span> <span>{{ __('Estadísticas') }}</span>
             </button>
         </div>
@@ -239,41 +243,8 @@
 
         <!-- Guest View Footer -->
         <footer class="w-full relative z-10 bg-[#0a1831] border-t-2 border-gold/40 shadow-2xl">
-            <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                <!-- Phone Call Section -->
-                <div class="flex items-center gap-4 group">
-                    <a href="tel:+14077731461" class="w-12 h-12 bg-gold rounded-xl flex items-center justify-center text-navy shadow-lg shadow-gold/10 transition-transform group-hover:scale-105 duration-300">
-                        <svg class="w-6 h-6 fill-current" viewBox="0 0 20 20">
-                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                        </svg>
-                    </a>
-                    <div class="flex flex-col">
-                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('¿Preguntas? Llámanos') }}</span>
-                        <a href="tel:+14077731461" class="text-gold font-black font-outfit text-xl sm:text-2xl hover:underline leading-none">
-                            +1 407 773 1461
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Location Section -->
-                <div class="flex items-center gap-4 group">
-                    <div class="w-12 h-12 bg-white text-navy rounded-xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-105 duration-300">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest leading-none mb-1">{{ __('Ubicados en') }}</span>
-                        <a href="https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746" target="_blank" class="text-white hover:text-gold transition-colors font-extrabold font-outfit text-xs sm:text-sm leading-snug">
-                            4741 W Irlo Bronson Memorial Hwy, <br class="hidden sm:inline">Kissimmee, FL 34746
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Bottom Copyright Bar -->
-            <div class="w-full bg-[#061021] py-4 text-center text-xs text-slate-500 border-t border-blue-950">
+            <div class="w-full bg-[#061021] py-4 text-center text-xs text-slate-500">
                 <p>&copy; {{ date('Y') }} Chalet Motel 192. {{ __('Todos los derechos reservados.') }} Powered by Laravel v{{ Illuminate\Foundation\Application::VERSION }}</p>
             </div>
         </footer>
@@ -1138,21 +1109,21 @@
             secStatistics.classList.add('hidden');
             
             // Reset active button classes
-            tabBtnRecycling.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
-            tabBtnCallcenter.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
-            tabBtnStatistics.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
+            tabBtnRecycling.className = "flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
+            tabBtnCallcenter.className = "flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
+            tabBtnStatistics.className = "flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 border border-blue-900/60 text-slate-300 hover:text-white hover:bg-blue-950/40";
 
             if (tab === 'recycling') {
                 secRecycling.classList.remove('hidden');
-                tabBtnRecycling.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-emerald-500 text-[#061021] shadow-lg shadow-emerald-500/10";
+                tabBtnRecycling.className = "flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-emerald-500 text-[#061021] shadow-lg shadow-emerald-500/10";
                 document.body.className = "bg-[#040a17] text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy";
             } else if (tab === 'callcenter') {
                 secCallcenter.classList.remove('hidden');
-                tabBtnCallcenter.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-brand text-white shadow-lg shadow-brand/10";
+                tabBtnCallcenter.className = "flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-brand text-white shadow-lg shadow-brand/10";
                 document.body.className = "bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between";
             } else if (tab === 'statistics') {
                 secStatistics.classList.remove('hidden');
-                tabBtnStatistics.className = "px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-gold text-[#061021] shadow-lg shadow-gold/10";
+                tabBtnStatistics.className = "flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 bg-gold text-[#061021] shadow-lg shadow-gold/10";
                 document.body.className = "bg-[#040a17] text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy";
                 loadStatistics();
             }
