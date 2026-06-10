@@ -71,6 +71,23 @@ Route::get('/sync-recycling-data', function () {
     }
 });
 
+Route::get('/run-migrations', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        return response()->json([
+            'success' => true,
+            'message' => 'Migraciones ejecutadas exitosamente.',
+            'output' => $output
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error al ejecutar migraciones: ' . $e->getMessage()
+        ], 500);
+    }
+});
+
 // Rutas Públicas de Habitaciones
 Route::get('/rooms', [RoomController::class, 'index'])->name('rooms.index');
 Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
