@@ -630,6 +630,7 @@
     <script>
         // Localization Data for JS Components
         const currentLang = "{{ app()->getLocale() }}";
+        const apiBaseUrl = "{{ url('/') }}";
         
         // ----------------------------------------------------
         // GUEST VIEW SCRIPTS & TRANSLATIONS
@@ -639,7 +640,7 @@
         let guestStores = [];
 
         function guestLoadStores() {
-            fetch('/api/recycling/stores')
+            fetch(`${apiBaseUrl}/api/recycling/stores`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
@@ -751,7 +752,7 @@
                 total: parseInt(document.getElementById('guest-log-total').value) || 0,
             };
 
-            fetch('/api/recycling/log', {
+            fetch(`${apiBaseUrl}/api/recycling/log`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1088,7 +1089,7 @@
                 total: parseInt(document.getElementById('log-total').value) || 0,
             };
 
-            fetch('/api/recycling/log', {
+            fetch(`${apiBaseUrl}/api/recycling/log`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1164,7 +1165,7 @@
             const startDate = document.getElementById('stats-start-date').value;
             const endDate = document.getElementById('stats-end-date').value;
 
-            let url = '/api/recycling/stats';
+            let url = `${apiBaseUrl}/api/recycling/stats`;
             const params = [];
             if (startDate) params.push(`start_date=${startDate}`);
             if (endDate) params.push(`end_date=${endDate}`);
