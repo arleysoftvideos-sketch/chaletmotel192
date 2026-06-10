@@ -428,6 +428,132 @@
                 </div>
             </div>
 
+            <!-- Staff Logging Section -->
+            <div class="bg-[#0a1831]/90 p-8 sm:p-10 rounded-[2rem] border border-blue-950 shadow-2xl relative mt-8">
+                <!-- Header -->
+                <div class="border-b border-blue-950 pb-4 mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide">
+                            {{ __('Registro de Recolección (Staff)') }}
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider">
+                            {{ __('Acceso exclusivo para el personal del Chalet Motel 192') }}
+                        </p>
+                    </div>
+                    <!-- Admin status / Unlock button -->
+                    <div id="admin-status-container">
+                        <button id="admin-toggle-btn" onclick="openAdminPinModal()" class="px-4 py-2 border border-emerald-500/35 text-emerald-400 hover:bg-emerald-500/10 font-bold font-outfit rounded-xl text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+                            <span>🔒</span> <span>{{ __('Desbloquear Acceso') }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Locked Overlay State -->
+                <div id="logger-locked-view" class="flex flex-col items-center justify-center py-10 text-center space-y-4">
+                    <span class="text-5xl">🔐</span>
+                    <p class="text-slate-400 text-xs max-w-sm leading-relaxed">
+                        {{ __('Esta sección requiere un código PIN de seguridad para evitar registros no autorizados en la base de datos de Google Sheets.') }}
+                    </p>
+                    <button onclick="openAdminPinModal()" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black font-outfit rounded-xl transition-all duration-300 text-xs uppercase tracking-wider shadow-lg shadow-emerald-500/10">
+                        {{ __('Ingresar PIN') }}
+                    </button>
+                </div>
+
+                <!-- Unlocked Logging Form (Hidden initially) -->
+                <div id="logger-unlocked-view" class="hidden space-y-6">
+                    <form id="recycling-log-form" onsubmit="submitRecyclingLog(event)" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        <!-- Date Input (4 cols) -->
+                        <div class="md:col-span-4 flex flex-col space-y-2">
+                            <label class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Fecha') }}</label>
+                            <input type="date" id="log-date" required class="w-full bg-[#061021]/80 border border-blue-950 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition-all">
+                        </div>
+
+                        <!-- Store Autocomplete Search (8 cols) -->
+                        <div class="md:col-span-8 flex flex-col space-y-2 relative">
+                            <label class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Tienda / Origen') }}</label>
+                            <div class="relative">
+                                <input type="text" id="log-store" required autocomplete="off" placeholder="{{ __('Buscar tienda o escribir nueva...') }}" oninput="filterStores()" onfocus="showStoresDropdown()" onblur="hideStoresDropdown()" class="w-full bg-[#061021]/80 border border-blue-950 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all">
+                                <button type="button" onclick="toggleStoresDropdown(event)" class="absolute right-3 top-3 text-slate-500 hover:text-slate-300">
+                                    ▼
+                                </button>
+                            </div>
+                            <!-- Autocomplete Dropdown List -->
+                            <div id="stores-dropdown" class="hidden absolute left-0 right-0 top-[4.5rem] bg-[#061021] border border-blue-950 rounded-xl max-h-60 overflow-y-auto z-50 shadow-2xl py-2">
+                                <div id="stores-list-container" class="flex flex-col">
+                                    <!-- Dynamic Store list items -->
+                                </div>
+                                <div id="add-new-store-btn" class="hidden border-t border-blue-950/60 p-2">
+                                    <button type="button" onmousedown="addNewStore()" class="w-full text-left px-3 py-2 text-xs font-bold text-emerald-400 hover:bg-emerald-950/20 rounded-lg transition-all flex items-center gap-2">
+                                        <span>➕</span> <span>{{ __('Agregar como nueva tienda') }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Big Bags (4 cols) -->
+                        <div class="md:col-span-4 flex flex-col space-y-2">
+                            <label class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Bolsas Grandes (BIG)') }}</label>
+                            <div class="flex items-center bg-[#061021]/80 border border-blue-950 rounded-xl overflow-hidden">
+                                <button type="button" onclick="adjustCount('log-big', -1)" class="px-4 py-3 text-slate-400 hover:text-white hover:bg-blue-950/40 font-bold text-lg select-none transition-all">-</button>
+                                <input type="number" id="log-big" required min="0" value="0" oninput="calculateTotal()" class="w-full bg-transparent border-none text-center text-sm text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <button type="button" onclick="adjustCount('log-big', 1)" class="px-4 py-3 text-slate-400 hover:text-white hover:bg-blue-950/40 font-bold text-lg select-none transition-all">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Small Bags (4 cols) -->
+                        <div class="md:col-span-4 flex flex-col space-y-2">
+                            <label class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Bolsas Pequeñas (SMALL)') }}</label>
+                            <div class="flex items-center bg-[#061021]/80 border border-blue-950 rounded-xl overflow-hidden">
+                                <button type="button" onclick="adjustCount('log-small', -1)" class="px-4 py-3 text-slate-400 hover:text-white hover:bg-blue-950/40 font-bold text-lg select-none transition-all">-</button>
+                                <input type="number" id="log-small" required min="0" value="0" oninput="calculateTotal()" class="w-full bg-transparent border-none text-center text-sm text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <button type="button" onclick="adjustCount('log-small', 1)" class="px-4 py-3 text-slate-400 hover:text-white hover:bg-blue-950/40 font-bold text-lg select-none transition-all">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Total Bags (4 cols) -->
+                        <div class="md:col-span-4 flex flex-col space-y-2">
+                            <label class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Total (BIG + SMALL)') }}</label>
+                            <input type="number" id="log-total" required min="0" value="0" class="w-full bg-[#061021]/50 border border-blue-950 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500 transition-all font-black">
+                        </div>
+
+                        <!-- Submit Button (12 cols) -->
+                        <div class="md:col-span-12 flex justify-end pt-2">
+                            <button type="submit" id="log-submit-btn" class="w-full sm:w-auto px-8 py-3 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black font-outfit rounded-xl transition-all duration-300 text-sm uppercase tracking-wider shadow-lg shadow-emerald-500/10 flex items-center justify-center gap-2">
+                                <span id="submit-btn-spinner" class="hidden animate-spin h-4 w-4 border-2 border-[#061021] border-t-transparent rounded-full"></span>
+                                <span id="submit-btn-text">{{ __('Guardar Registro') }}</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- PIN Unlock Modal -->
+            <div id="pin-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                <div class="bg-[#0a1831] border border-blue-950 rounded-3xl p-6 sm:p-8 max-w-sm w-full space-y-6 shadow-2xl relative">
+                    <button onclick="closeAdminPinModal()" class="absolute right-4 top-4 text-slate-500 hover:text-slate-300">
+                        ✕
+                    </button>
+                    <div class="text-center space-y-2">
+                        <span class="text-4xl">🔑</span>
+                        <h3 class="text-lg font-black font-outfit text-white uppercase tracking-wide">
+                            {{ __('Acceso de Personal') }}
+                        </h3>
+                        <p class="text-[10px] text-slate-400">
+                            {{ __('Ingrese el PIN de seguridad para desbloquear el formulario.') }}
+                        </p>
+                    </div>
+                    <div class="space-y-4">
+                        <input type="password" id="pin-input" placeholder="••••" maxlength="6" class="w-full bg-[#061021] border border-blue-950 rounded-xl px-4 py-3 text-center text-xl tracking-[0.5em] font-black text-white focus:outline-none focus:border-emerald-500 transition-all">
+                        <p id="pin-error-msg" class="hidden text-center text-[10px] text-red-400 font-bold">
+                            {{ __('PIN Incorrecto. Intente de nuevo.') }}
+                        </p>
+                        <button onclick="verifyAdminPin()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black font-outfit rounded-xl transition-all duration-300 text-xs uppercase tracking-wider shadow-lg">
+                            {{ __('Verificar') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
         <!-- Footer -->
@@ -805,7 +931,229 @@
             // Initialize Page Elements
             window.addEventListener('DOMContentLoaded', () => {
                 switchCategory('plastic');
+                
+                // Auto unlock recycling admin if previously authenticated
+                if (localStorage.getItem('recycling_admin_unlocked') === 'true') {
+                    unlockLogger();
+                }
             });
+
+            // RECYCLING DATABASE LOGGER SYSTEM
+            let stores = [];
+            const pinCorrect = "192";
+
+            function openAdminPinModal() {
+                document.getElementById('pin-modal').classList.remove('hidden');
+                document.getElementById('pin-input').focus();
+            }
+
+            function closeAdminPinModal() {
+                document.getElementById('pin-modal').classList.add('hidden');
+                document.getElementById('pin-input').value = '';
+                document.getElementById('pin-error-msg').classList.add('hidden');
+            }
+
+            function verifyAdminPin() {
+                const pin = document.getElementById('pin-input').value;
+                if (pin === pinCorrect) {
+                    unlockLogger();
+                    closeAdminPinModal();
+                } else {
+                    document.getElementById('pin-error-msg').classList.remove('hidden');
+                    document.getElementById('pin-input').value = '';
+                }
+            }
+
+            function unlockLogger() {
+                localStorage.setItem('recycling_admin_unlocked', 'true');
+                document.getElementById('logger-locked-view').classList.add('hidden');
+                document.getElementById('logger-unlocked-view').classList.remove('hidden');
+                
+                // Update header status
+                document.getElementById('admin-status-container').innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider bg-emerald-950/60 border border-emerald-500/20 px-3 py-1.5 rounded-xl flex items-center gap-1.5 animate-fade-in">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            ${currentLang === 'es' ? 'Modo Admin Activo' : 'Admin Mode Active'}
+                        </span>
+                        <button onclick="lockLogger()" class="text-slate-400 hover:text-white text-xs underline font-bold ml-1">
+                            ${currentLang === 'es' ? 'Bloquear' : 'Lock'}
+                        </button>
+                    </div>
+                `;
+
+                // Set default date to today
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('log-date').value = today;
+
+                // Load stores
+                loadStores();
+            }
+
+            function lockLogger() {
+                localStorage.removeItem('recycling_admin_unlocked');
+                document.getElementById('logger-locked-view').classList.remove('hidden');
+                document.getElementById('logger-unlocked-view').classList.add('hidden');
+                
+                document.getElementById('admin-status-container').innerHTML = `
+                    <button id="admin-toggle-btn" onclick="openAdminPinModal()" class="px-4 py-2 border border-emerald-500/35 text-emerald-400 hover:bg-emerald-500/10 font-bold font-outfit rounded-xl text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+                        <span>🔒</span> <span>${currentLang === 'es' ? 'Desbloquear Acceso' : 'Unlock Access'}</span>
+                    </button>
+                `;
+            }
+
+            function loadStores() {
+                fetch('/api/recycling/stores')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            stores = data.stores;
+                            renderStoresList();
+                        }
+                    })
+                    .catch(err => console.error("Error loading stores:", err));
+            }
+
+            function renderStoresList(filterText = '') {
+                const listContainer = document.getElementById('stores-list-container');
+                listContainer.innerHTML = '';
+                
+                const filtered = stores.filter(store => 
+                    store.toLowerCase().includes(filterText.toLowerCase())
+                );
+
+                if (filtered.length === 0) {
+                    listContainer.innerHTML = `
+                        <div class="px-4 py-3 text-xs text-slate-500 italic">
+                            ${currentLang === 'es' ? 'No se encontraron tiendas' : 'No stores found'}
+                        </div>
+                    `;
+                    document.getElementById('add-new-store-btn').classList.remove('hidden');
+                } else {
+                    document.getElementById('add-new-store-btn').classList.add('hidden');
+                    filtered.forEach(store => {
+                        const item = document.createElement('button');
+                        item.type = 'button';
+                        item.className = "w-full text-left px-4 py-2.5 text-xs text-slate-300 hover:text-white hover:bg-blue-950/40 transition-colors";
+                        item.textContent = store;
+                        // Use onmousedown instead of onclick because onmousedown triggers before blur event
+                        item.onmousedown = () => selectStore(store);
+                        listContainer.appendChild(item);
+                    });
+                }
+            }
+
+            function showStoresDropdown() {
+                document.getElementById('stores-dropdown').classList.remove('hidden');
+                renderStoresList(document.getElementById('log-store').value);
+            }
+
+            function hideStoresDropdown() {
+                // Delay hiding dropdown so that clicks on items have time to register
+                setTimeout(() => {
+                    document.getElementById('stores-dropdown').classList.add('hidden');
+                }, 200);
+            }
+
+            function toggleStoresDropdown(event) {
+                event.stopPropagation();
+                const dropdown = document.getElementById('stores-dropdown');
+                if (dropdown.classList.contains('hidden')) {
+                    document.getElementById('log-store').focus();
+                } else {
+                    dropdown.classList.add('hidden');
+                }
+            }
+
+            function filterStores() {
+                const text = document.getElementById('log-store').value;
+                renderStoresList(text);
+            }
+
+            function selectStore(storeName) {
+                document.getElementById('log-store').value = storeName;
+                document.getElementById('stores-dropdown').classList.add('hidden');
+            }
+
+            function addNewStore() {
+                const newStore = document.getElementById('log-store').value.trim();
+                if (newStore && !stores.includes(newStore)) {
+                    stores.push(newStore);
+                    stores.sort((a, b) => a.localeCompare(b));
+                    selectStore(newStore);
+                }
+            }
+
+            function adjustCount(inputId, amount) {
+                const input = document.getElementById(inputId);
+                let current = parseInt(input.value) || 0;
+                current = Math.max(0, current + amount);
+                input.value = current;
+                calculateTotal();
+            }
+
+            function calculateTotal() {
+                const big = parseInt(document.getElementById('log-big').value) || 0;
+                const small = parseInt(document.getElementById('log-small').value) || 0;
+                document.getElementById('log-total').value = big + small;
+            }
+
+            function submitRecyclingLog(event) {
+                event.preventDefault();
+                
+                const submitBtn = document.getElementById('log-submit-btn');
+                const spinner = document.getElementById('submit-btn-spinner');
+                const btnText = document.getElementById('submit-btn-text');
+
+                // Loading state
+                submitBtn.disabled = true;
+                spinner.classList.remove('hidden');
+                btnText.textContent = currentLang === 'es' ? 'Guardando...' : 'Saving...';
+
+                const logData = {
+                    date: document.getElementById('log-date').value,
+                    store: document.getElementById('log-store').value,
+                    big: parseInt(document.getElementById('log-big').value) || 0,
+                    small: parseInt(document.getElementById('log-small').value) || 0,
+                    total: parseInt(document.getElementById('log-total').value) || 0,
+                };
+
+                fetch('/api/recycling/log', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(logData)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(currentLang === 'es' ? '¡Registro guardado con éxito!' : 'Log saved successfully!');
+                        
+                        // Reset Form fields (except Date)
+                        document.getElementById('log-store').value = '';
+                        document.getElementById('log-big').value = 0;
+                        document.getElementById('log-small').value = 0;
+                        document.getElementById('log-total').value = 0;
+                        
+                        // Reload stores list (which now contains the new store if added)
+                        loadStores();
+                    } else {
+                        alert((currentLang === 'es' ? 'Error: ' : 'Error: ') + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error("Error submitting log:", err);
+                    alert(currentLang === 'es' ? 'Error de conexión con el servidor.' : 'Server connection error.');
+                })
+                .finally(() => {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    spinner.classList.add('hidden');
+                    btnText.textContent = currentLang === 'es' ? 'Guardar Registro' : 'Save Log';
+                });
+            }
         </script>
 
         <x-chatbot />

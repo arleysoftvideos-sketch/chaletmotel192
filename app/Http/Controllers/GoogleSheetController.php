@@ -466,4 +466,99 @@ class GoogleSheetController extends Controller
             $service->spreadsheets_values->update($spreadsheetId, $historyRange, $body, ['valueInputOption' => 'USER_ENTERED']);
         }
     }
+
+    public function getRecyclingStores()
+    {
+        $defaultStores = [
+            'Citgo',
+            'Ormond Beach',
+            'POP',
+            'Ormond',
+            'OUR LADY LOARDS',
+            'EPIPHANY THRIFT STORE',
+            'CARWASH',
+            'BP',
+            'OUT FATHERS CLOSET',
+            'SHELL',
+            'THE NEIGHBORHOOD OF WEST VOLUSIA'
+        ];
+
+        try {
+            $service = $this->getSheetsService();
+            $spreadsheetId = $this->spreadsheetId;
+
+            $range = 'recycling!B2:B';
+            $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+            $values = $response->getValues();
+
+            $stores = $defaultStores;
+            if (!empty($values)) {
+                foreach ($values as $row) {
+                    if (!empty($row[0])) {
+                        $stores[] = trim($row[0]);
+                    }
+                }
+            }
+
+            $stores = array_unique($stores);
+            $stores = array_values(array_filter($stores));
+            usort($stores, 'strcasecmp');
+
+            return response()->json([
+                'success' => true,
+                'stores' => $stores
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => true,
+                'stores' => $defaultStores,
+                'warning' => 'Could not fetch from sheet: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    public function storeRecyclingLog(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date_format:Y-m-d',
+            'store' => 'required|string|max:255',
+            'big' => 'required|integer|min:0',
+            'small' => 'required|integer|min:0',
+            'total' => 'required|integer|min:0',
+        ]);
+
+        try {
+            $service = $this->getSheetsService();
+            $spreadsheetId = $this->spreadsheetId;
+
+            $row = [
+                $request->input('date'),
+                $request->input('store'),
+                $request->input('big'),
+                $request->input('small'),
+                $request->input('total')
+            ];
+
+            $range = 'recycling!A:E';
+            $body = new ValueRange([
+                'values' => [$row]
+            ]);
+
+            $service->spreadsheets_values->append($spreadsheetId, $range, $body, [
+                'valueInputOption' => 'USER_ENTERED'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Log added to Google Sheets successfully.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to log recycling data: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
