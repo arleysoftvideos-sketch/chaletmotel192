@@ -659,10 +659,31 @@
     function renderMonthly() {
         var container = document.getElementById('monthly-container');
         container.innerHTML = '';
+
+        // Determine range dynamically: from current month to the last booking's end date
+        var activeBookings = bookingsList.filter(function(b) {
+            return (b.estado||'').toUpperCase() !== 'CERRADO';
+        });
+
+        // Find the furthest end date across all bookings
+        var maxDate = null;
+        activeBookings.forEach(function(b) {
+            var e = parseDate(b.fecha_salida);
+            if (e && (!maxDate || e > maxDate)) maxDate = e;
+        });
+
+        // Build month array from current month to month of last booking
         var months = [];
-        for (var i = -1; i <= 4; i++) {
-            var d = new Date(); d.setDate(1); d.setMonth(d.getMonth() + i);
-            months.push({ year: d.getFullYear(), month: d.getMonth() });
+        var today = todayDate();
+        var startMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        var endMonth = maxDate
+            ? new Date(maxDate.getFullYear(), maxDate.getMonth(), 1)
+            : new Date(today.getFullYear(), today.getMonth() + 3, 1); // fallback: +3 months
+
+        var cursor = new Date(startMonth);
+        while (cursor <= endMonth) {
+            months.push({ year: cursor.getFullYear(), month: cursor.getMonth() });
+            cursor.setMonth(cursor.getMonth() + 1);
         }
         var anyFound = false;
         months.forEach(function(m) {
