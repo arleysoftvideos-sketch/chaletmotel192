@@ -184,6 +184,21 @@
         .rate-edit-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
         .rate-edit-item label { font-size: 10px; color: #64748b; display: block; margin-bottom: 3px; }
         .rate-edit-item input { padding: 5px 8px; font-size: 12px; }
+
+        /* ---- DASHBOARD WIDGETS ---- */
+        .widget-card { background: #081326; border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
+        .widget-title { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+        .widget-list { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
+        .widget-item { background: #0a1831; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; font-size: 13px; border-left: 3px solid var(--border); }
+        .widget-item:hover { border-color: var(--primary); transform: translateY(-1px); }
+        .widget-item-info { display: flex; flex-direction: column; gap: 2px; }
+        .widget-item-room { font-weight: bold; color: var(--primary); background: rgba(255, 183, 3, 0.1); padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-right: 6px; display: inline-block; }
+        .widget-item-name { color: #f8fafc; font-weight: 600; }
+        .widget-item-sub { font-size: 11px; color: #64748b; }
+        .widget-badge { font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; }
+        .widget-badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .widget-badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .widget-badge.success { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
     </style>
 </head>
 <body>
@@ -448,6 +463,11 @@
                 <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--success);margin-right:4px;"></span><span data-i18n="legendAvailable">Disponible</span></span>
                 <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--warning);margin-right:4px;"></span><span data-i18n="legendReserved">Con reserva futura</span></span>
                 <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--danger);margin-right:4px;"></span><span data-i18n="legendOccupied">Ocupada hoy</span></span>
+            </div>
+
+            <!-- Dashboard Widgets (Upcoming Departures & Unpaid Rents) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" style="margin-top: 24px;" id="dashboard-widgets">
+                <!-- Carga dinámica -->
             </div>
         </div>
 
@@ -1044,6 +1064,7 @@
             }
         }
         renderMonthly();
+        renderDashboardWidgets();
     }
 
     // ========== MODALS ==========
@@ -1340,6 +1361,130 @@
         }
     }
 
+    // ========== DASHBOARD WIDGETS ==========
+    function renderDashboardWidgets() {
+        var container = document.getElementById('dashboard-widgets');
+        if (!container) return;
+        container.innerHTML = '';
+
+        var activeBookings = bookingsList.filter(function(b) {
+            return (b.estado||'').toUpperCase() !== 'CERRADO';
+        });
+
+        // 1. Calculate Upcoming Departures (next 7 days)
+        var today = todayDate();
+        var limitDate = new Date(today);
+        limitDate.setDate(limitDate.getDate() + 7);
+
+        var departures = activeBookings.filter(function(b) {
+            var e = parseDate(b.fecha_salida);
+            return e && e >= today && e <= limitDate;
+        }).sort(function(a, b) {
+            return (parseDate(a.fecha_salida)||new Date(0)) - (parseDate(b.fecha_salida)||new Date(0));
+        });
+
+        // 2. Calculate Unpaid Rent Alerts (for contracts >= 6 months)
+        var unpaidAlerts = [];
+        activeBookings.forEach(function(b) {
+            if (!isOccupiedToday(b)) return; // only current active guests
+            var totalDays = Math.ceil((parseDate(b.fecha_salida) - parseDate(b.fecha_inicio)) / 86400000) + 1;
+            var months = Math.floor(totalDays / 30);
+            if (totalDays >= 28 && months >= 6) {
+                var paidMonths = parsePaymentStatus(b.notas);
+                var rM = Math.round((parseFloat(b.total_pagado) || 0) / (months - 1));
+                
+                // Days elapsed since check-in up to today
+                var daysSinceCheckIn = Math.ceil((today - parseDate(b.fecha_inicio)) / 86400000) + 1;
+                var currentProgressMonth = Math.min(months, Math.max(1, Math.ceil(daysSinceCheckIn / 30)));
+                
+                for (var i = 1; i <= currentProgressMonth; i++) {
+                    if (i === 5) continue; // Month 5 is free
+                    if (paidMonths.indexOf(i) === -1) {
+                        unpaidAlerts.push({
+                            booking: b,
+                            monthNum: i,
+                            amount: rM
+                        });
+                    }
+                }
+            }
+        });
+
+        // Column 1: Departures
+        var depCard = document.createElement('div');
+        depCard.className = 'widget-card';
+        var depHtml = '<div class="widget-title">📅 ' 
+            + (currentLang === 'es' ? 'Salidas Próximas (7 días)' : 'Upcoming Departures (7 days)') 
+            + '</div>';
+        
+        if (departures.length > 0) {
+            depHtml += '<div class="widget-list">';
+            departures.forEach(function(b) {
+                var diff = calcDaysRemaining(b.fecha_salida);
+                var badgeClass = 'success';
+                var badgeText = '';
+                if (diff === 0) {
+                    badgeClass = 'danger';
+                    badgeText = currentLang === 'es' ? 'Hoy' : 'Today';
+                } else if (diff === 1) {
+                    badgeClass = 'warning';
+                    badgeText = currentLang === 'es' ? 'Mañana' : 'Tomorrow';
+                } else {
+                    badgeClass = 'success';
+                    badgeText = currentLang === 'es' ? 'En ' + diff + ' días' : 'In ' + diff + ' days';
+                }
+
+                depHtml += '<div class="widget-item" onclick="selectRoom(' + b.room + ')">'
+                    + '  <div class="widget-item-info">'
+                    + '    <div><span class="widget-item-room">Hab. ' + b.room + '</span><span class="widget-item-name">' + (b.cliente || 'N/A') + '</span></div>'
+                    + '    <span class="widget-item-sub">' + fmtDate(b.fecha_salida) + '</span>'
+                    + '  </div>'
+                    + '  <span class="widget-badge ' + badgeClass + '">' + badgeText + '</span>'
+                    + '</div>';
+            });
+            depHtml += '</div>';
+        } else {
+            depHtml += '<p style="color:#64748b; font-size:13px; text-align:center; padding:15px; margin:0;">'
+                + (currentLang === 'es' ? 'Sin salidas programadas en los próximos 7 días.' : 'No departures scheduled in the next 7 days.')
+                + '</p>';
+        }
+        depCard.innerHTML = depHtml;
+        container.appendChild(depCard);
+
+        // Column 2: Unpaid Alerts
+        var unpaidCard = document.createElement('div');
+        unpaidCard.className = 'widget-card';
+        var unpaidHtml = '<div class="widget-title">⚠️ ' 
+            + (currentLang === 'es' ? 'Rentas Pendientes' : 'Unpaid Monthly Rent') 
+            + '</div>';
+        
+        if (unpaidAlerts.length > 0) {
+            unpaidHtml += '<div class="widget-list">';
+            unpaidAlerts.forEach(function(alertItem) {
+                var b = alertItem.booking;
+                var monthNum = alertItem.monthNum;
+                var amount = alertItem.amount;
+                var monthLabel = currentLang === 'es' ? 'Mes ' + monthNum : 'Month ' + monthNum;
+
+                unpaidHtml += '<div class="widget-item" onclick="selectRoom(' + b.room + ')">'
+                    + '  <div class="widget-item-info">'
+                    + '    <div><span class="widget-item-room">Hab. ' + b.room + '</span><span class="widget-item-name">' + (b.cliente || 'N/A') + '</span></div>'
+                    + '    <span class="widget-item-sub">' + monthLabel + '</span>'
+                    + '  </div>'
+                    + '  <span class="widget-badge danger">$' + amount.toLocaleString() + '</span>'
+                    + '</div>';
+            });
+            unpaidHtml += '</div>';
+        } else {
+            unpaidHtml += '<p style="color:#10b981; font-size:13px; text-align:center; padding:15px; margin:0; font-weight: 500;">'
+                + (currentLang === 'es' ? '✅ Todos los pagos están al día.' : '✅ All payments are up to date.')
+                + '</p>';
+        }
+        unpaidCard.innerHTML = unpaidHtml;
+        container.appendChild(unpaidCard);
+    }
+
+
     // ========== CHECK OVERLAP LIVE ==========
     function checkCheckinOverlap() {
         var room = document.getElementById('checkin-room').value;
@@ -1519,6 +1664,7 @@
                 updateStats();
                 if (currentRoom) showDetails(currentRoom);
                 renderMonthly();
+                renderDashboardWidgets();
                 hideLoading();
             });
     }
