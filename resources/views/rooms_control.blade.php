@@ -127,6 +127,21 @@
         .empty-state { text-align: center; padding: 20px 10px; }
         .empty-state-icon { font-size: 2.5rem; margin-bottom: 8px; }
         .overlap-warning { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px; color: #fca5a5; display: none; }
+
+        /* ---- RATE CALCULATOR ---- */
+        .calc-panel { background: #040d1a; border: 1px solid rgba(245,158,11,0.25); border-radius: 10px; padding: 14px; margin-bottom: 14px; display: none; }
+        .calc-title { font-size: 11px; font-weight: 700; color: var(--warning); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; margin-bottom: 10px; }
+        .calc-cell-label { font-size: 10px; color: #64748b; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .calc-cell-value { font-size: 15px; font-weight: 800; color: #f8fafc; }
+        .calc-cell-value.green { color: var(--success); font-size: 18px; }
+        .calc-cell-value.gold { color: var(--warning); }
+        .calc-breakdown { font-size: 11px; color: #64748b; text-align: center; margin-bottom: 10px; min-height: 14px; }
+        .calc-apply-btn { width: 100%; padding: 8px; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.35); border-radius: 6px; color: var(--warning); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+        .calc-apply-btn:hover { background: rgba(245,158,11,0.22); }
+        .rate-edit-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+        .rate-edit-item label { font-size: 10px; color: #64748b; display: block; margin-bottom: 3px; }
+        .rate-edit-item input { padding: 5px 8px; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -161,13 +176,65 @@
             <div class="grid grid-cols-2 gap-3">
                 <div class="form-group">
                     <label class="form-label">Fecha Entrada</label>
-                    <input type="date" id="checkin-start" required onchange="checkCheckinOverlap()">
+                    <input type="date" id="checkin-start" required onchange="checkCheckinOverlap(); runCalc();">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Fecha Salida</label>
-                    <input type="date" id="checkin-end" required onchange="checkCheckinOverlap()">
+                    <input type="date" id="checkin-end" required onchange="checkCheckinOverlap(); runCalc();">
                 </div>
             </div>
+
+            <!-- Bed Type + Calculator -->
+            <div class="form-group">
+                <label class="form-label">🛏️ Tipo de Cama</label>
+                <select id="checkin-bed-type" onchange="runCalc()">
+                    <option value="">-- Seleccionar tipo de cama --</option>
+                    <option value="Single">Single &nbsp;(1 cama individual)</option>
+                    <option value="Doble">Doble &nbsp;(2 camas)</option>
+                    <option value="Queen">Queen &nbsp;(1 cama queen)</option>
+                    <option value="King">King &nbsp;&nbsp;(1 cama king)</option>
+                </select>
+            </div>
+
+            <!-- Calculator Panel -->
+            <div class="calc-panel" id="calc-panel">
+                <div class="calc-title">🧮 Calculadora de Tarifa</div>
+                <div class="rate-edit-row">
+                    <div class="rate-edit-item">
+                        <label>💵 Tarifa Diaria</label>
+                        <input type="number" id="rate-daily" min="0" step="0.01" onchange="runCalc()">
+                    </div>
+                    <div class="rate-edit-item">
+                        <label>💵 Tarifa Semanal</label>
+                        <input type="number" id="rate-weekly" min="0" step="0.01" onchange="runCalc()">
+                    </div>
+                    <div class="rate-edit-item">
+                        <label>💵 Tarifa Mensual</label>
+                        <input type="number" id="rate-monthly" min="0" step="0.01" onchange="runCalc()">
+                    </div>
+                </div>
+                <div class="calc-grid">
+                    <div>
+                        <div class="calc-cell-label">Días</div>
+                        <div class="calc-cell-value" id="calc-days">-</div>
+                    </div>
+                    <div>
+                        <div class="calc-cell-label">Período</div>
+                        <div class="calc-cell-value" id="calc-period">-</div>
+                    </div>
+                    <div>
+                        <div class="calc-cell-label">Tarifa Base</div>
+                        <div class="calc-cell-value gold" id="calc-rate">-</div>
+                    </div>
+                    <div>
+                        <div class="calc-cell-label">TOTAL</div>
+                        <div class="calc-cell-value green" id="calc-total">-</div>
+                    </div>
+                </div>
+                <div class="calc-breakdown" id="calc-breakdown"></div>
+                <button type="button" class="calc-apply-btn" onclick="applyCalcToForm()">✅ Usar este total</button>
+            </div>
+
             <div class="grid grid-cols-3 gap-2">
                 <div class="form-group">
                     <label class="form-label">Tasa Aseo</label>
@@ -890,10 +957,107 @@
             });
     }
 
+    // ========== RATE CALCULATOR ==========
+    var ROOM_RATES = {
+        'Single': { daily: 45,  weekly: 300, monthly: 800,  label: 'Single (1 cama)' },
+        'Doble':  { daily: 60,  weekly: 400, monthly: 1200, label: 'Doble (2 camas)' },
+        'Queen':  { daily: 50,  weekly: 300, monthly: 800,  label: 'Queen (1 queen)' },
+        'King':   { daily: 55,  weekly: 350, monthly: 1000, label: 'King (1 king)' }
+    };
+
+    function runCalc() {
+        var bedType   = document.getElementById('checkin-bed-type').value;
+        var startStr  = document.getElementById('checkin-start').value;
+        var endStr    = document.getElementById('checkin-end').value;
+        var panel     = document.getElementById('calc-panel');
+
+        if (!bedType || !startStr || !endStr) { panel.style.display = 'none'; return; }
+
+        var start = parseDate(startStr), end = parseDate(endStr);
+        if (!start || !end || end < start) { panel.style.display = 'none'; return; }
+
+        panel.style.display = 'block';
+
+        var rates = ROOM_RATES[bedType];
+
+        // Fill rate fields if empty or just changed bed type
+        var dEl = document.getElementById('rate-daily');
+        var wEl = document.getElementById('rate-weekly');
+        var mEl = document.getElementById('rate-monthly');
+        if (!dEl._customized) { dEl.value = rates.daily; }
+        if (!wEl._customized) { wEl.value = rates.weekly; }
+        if (!mEl._customized) { mEl.value = rates.monthly; }
+
+        var rDaily   = parseFloat(dEl.value) || rates.daily;
+        var rWeekly  = parseFloat(wEl.value) || rates.weekly;
+        var rMonthly = parseFloat(mEl.value) || rates.monthly;
+
+        var totalDays = Math.ceil((end - start) / 86400000) + 1;
+        var months  = Math.floor(totalDays / 30);
+        var remDays = totalDays % 30;
+        var weeks   = Math.floor(remDays / 7);
+        var days    = remDays % 7;
+
+        var total = 0;
+        var parts = [];
+        var period = '';
+        var baseRate = '';
+
+        if (totalDays >= 28) {
+            total += months  * rMonthly;
+            total += weeks   * rWeekly;
+            total += days    * rDaily;
+            if (months > 0)  parts.push(months + ' mes' + (months > 1 ? 'es' : '') + ' × $' + rMonthly.toLocaleString());
+            if (weeks > 0)   parts.push(weeks  + ' sem × $' + rWeekly.toLocaleString());
+            if (days > 0)    parts.push(days   + ' día' + (days > 1 ? 's' : '') + ' × $' + rDaily.toLocaleString());
+            period   = months > 0 ? 'Mensual' : 'Semanal';
+            baseRate = '$' + rMonthly.toLocaleString() + '/mes';
+        } else if (totalDays >= 7) {
+            total += weeks * rWeekly;
+            total += days  * rDaily;
+            if (weeks > 0) parts.push(weeks + ' sem × $' + rWeekly.toLocaleString());
+            if (days > 0)  parts.push(days + ' día' + (days > 1 ? 's' : '') + ' × $' + rDaily.toLocaleString());
+            period   = 'Semanal';
+            baseRate = '$' + rWeekly.toLocaleString() + '/sem';
+        } else {
+            total = totalDays * rDaily;
+            parts.push(totalDays + ' día' + (totalDays > 1 ? 's' : '') + ' × $' + rDaily.toLocaleString());
+            period   = 'Diario';
+            baseRate = '$' + rDaily.toLocaleString() + '/día';
+        }
+
+        document.getElementById('calc-days').innerText      = totalDays;
+        document.getElementById('calc-period').innerText    = period;
+        document.getElementById('calc-rate').innerText      = baseRate;
+        document.getElementById('calc-total').innerText     = '$' + Math.round(total).toLocaleString();
+        document.getElementById('calc-breakdown').innerText = parts.join(' + ');
+    }
+
+    // Mark rate fields as customized when user types in them
+    ['rate-daily','rate-weekly','rate-monthly'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', function() { this._customized = true; runCalc(); });
+        }
+    });
+
+    function applyCalcToForm() {
+        var totalText = document.getElementById('calc-total').innerText.replace(/[$,]/g, '');
+        var total = parseFloat(totalText);
+        if (!isNaN(total)) {
+            document.getElementById('checkin-total-pagado').value = Math.round(total);
+        }
+    }
+
     // ========== INIT ==========
     window.onload = function() {
         initSelects();
         loadBookings();
+        // Mark rate inputs as not customized initially
+        ['rate-daily','rate-weekly','rate-monthly'].forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el._customized = false;
+        });
     };
 </script>
 </body>
