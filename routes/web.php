@@ -49,8 +49,16 @@ Route::get('/inventario', function () {
 
 // Ruta de Control de Habitaciones
 Route::get('/rooms-control', function () {
-    return view('inventario');
+    return view('rooms_control');
 })->name('rooms.control');
+
+// Rutas de API para Control de Habitaciones (Reservaciones en Google Sheets)
+Route::get('/api/rooms-control/bookings', [GoogleSheetController::class, 'getBookings'])->name('api.rooms-control.bookings');
+Route::post('/api/rooms-control/bookings', [GoogleSheetController::class, 'createBooking'])->name('api.rooms-control.create-booking');
+Route::put('/api/rooms-control/bookings/{row}', [GoogleSheetController::class, 'updateBooking'])->name('api.rooms-control.update-booking');
+Route::delete('/api/rooms-control/bookings/{row}', [GoogleSheetController::class, 'deleteBooking'])->name('api.rooms-control.delete-booking');
+Route::post('/api/rooms-control/bookings/{row}/checkout', [GoogleSheetController::class, 'checkoutBooking'])->name('api.rooms-control.checkout');
+
 
 // Ruta de Reciclaje
 Route::get('/recycling', [RecyclingController::class, 'index'])->name('recycling');

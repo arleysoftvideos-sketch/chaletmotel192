@@ -671,4 +671,233 @@ class GoogleSheetController extends Controller
             ], 500);
         }
     }
+
+    // --- MÉTODOS DE RESERVAS (rooms-control) ---
+
+    public function getBookings()
+    {
+        try {
+            $service = $this->getSheetsService();
+            $range = 'rooms!A2:K500';
+            $response = $service->spreadsheets_values->get($this->spreadsheetId, $range);
+            $values = $response->getValues();
+
+            $bookings = [];
+            if (!empty($values)) {
+                foreach ($values as $index => $row) {
+                    $rowNum = $index + 2; // La fila en Google Sheets (A2 es índice 0 + 2)
+                    $bookings[] = [
+                        'row' => $rowNum,
+                        'room' => $row[0] ?? '',
+                        'cliente' => $row[1] ?? '',
+                        'telefono' => $row[2] ?? '',
+                        'fecha_inicio' => $row[3] ?? '',
+                        'fecha_salida' => $row[4] ?? '',
+                        'tasa_aseo' => $row[5] ?? '',
+                        'deposito' => $row[6] ?? '',
+                        'mensualidad' => $row[7] ?? '',
+                        'estado' => $row[8] ?? '',
+                        'notas' => $row[9] ?? '',
+                        'fecha_registro' => $row[10] ?? '',
+                    ];
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => $bookings
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener reservas: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function createBooking(Request $request)
+    {
+        $request->validate([
+            'room' => 'required',
+            'cliente' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:50',
+            'fecha_inicio' => 'required|date_format:Y-m-d',
+            'fecha_salida' => 'required|date_format:Y-m-d',
+            'tasa_aseo' => 'nullable|numeric',
+            'deposito' => 'nullable|numeric',
+            'mensualidad' => 'nullable|numeric',
+            'estado' => 'required|string',
+            'notas' => 'nullable|string'
+        ]);
+
+        try {
+            $service = $this->getSheetsService();
+            $row = [
+                $request->input('room'),
+                $request->input('cliente'),
+                $request->input('telefono') ?? '',
+                $request->input('fecha_inicio'),
+                $request->input('fecha_salida'),
+                $request->input('tasa_aseo') ?? 0,
+                $request->input('deposito') ?? 0,
+                $request->input('mensualidad') ?? 0,
+                strtoupper($request->input('estado')),
+                $request->input('notas') ?? '',
+                date('Y-m-d H:i:s')
+            ];
+
+            $body = new ValueRange([
+                'values' => [$row]
+            ]);
+
+            $service->spreadsheets_values->append($this->spreadsheetId, 'rooms!A:K', $body, [
+                'valueInputOption' => 'USER_ENTERED'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Reserva creada con éxito en Google Sheets.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear reserva: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateBooking(Request $request, $row)
+    {
+        $request->validate([
+            'room' => 'required',
+            'cliente' => 'required|string|max:255',
+            'telefono' => 'nullable|string|max:50',
+            'fecha_inicio' => 'required|date_format:Y-m-d',
+            'fecha_salida' => 'required|date_format:Y-m-d',
+            'tasa_aseo' => 'nullable|numeric',
+            'deposito' => 'nullable|numeric',
+            'mensualidad' => 'nullable|numeric',
+            'estado' => 'required|string',
+            'notas' => 'nullable|string',
+            'fecha_registro' => 'nullable'
+        ]);
+
+        try {
+            $service = $this->getSheetsService();
+            $rowValues = [
+                $request->input('room'),
+                $request->input('cliente'),
+                $request->input('telefono') ?? '',
+                $request->input('fecha_inicio'),
+                $request->input('fecha_salida'),
+                $request->input('tasa_aseo') ?? 0,
+                $request->input('deposito') ?? 0,
+                $request->input('mensualidad') ?? 0,
+                strtoupper($request->input('estado')),
+                $request->input('notas') ?? '',
+                $request->input('fecha_registro') ?? date('Y-m-d H:i:s')
+            ];
+
+            $body = new ValueRange([
+                'values' => [$rowValues]
+            ]);
+
+            $service->spreadsheets_values->update($this->spreadsheetId, "rooms!A{$row}:K{$row}", $body, [
+                'valueInputOption' => 'USER_ENTERED'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Reserva actualizada con éxito en Google Sheets.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar reserva: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deleteBooking($row)
+    {
+        try {
+            $service = $this->getSheetsService();
+            $spreadsheet = $service->spreadsheets->get($this->spreadsheetId);
+            $sheetId = null;
+
+            foreach ($spreadsheet->getSheets() as $s) {
+                if ($s->getProperties()->getTitle() === 'rooms') {
+                    $sheetId = $s->getProperties()->getSheetId();
+                    break;
+                }
+            }
+
+            if ($sheetId === null) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró la pestaña rooms.'
+                ], 404);
+            }
+
+            $requests = [
+                new \Google\Service\Sheets\Request([
+                    'deleteDimension' => [
+                        'range' => [
+                            'sheetId' => $sheetId,
+                            'dimension' => 'ROWS',
+                            'startIndex' => $row - 1, // 0-indexed, so row 2 is index 1
+                            'endIndex' => $row
+                        ]
+                    ]
+                ])
+            ];
+
+            $batchUpdateRequest = new \Google\Service\Sheets\BatchUpdateSpreadsheetRequest([
+                'requests' => $requests
+            ]);
+
+            $service->spreadsheets->batchUpdate($this->spreadsheetId, $batchUpdateRequest);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Reserva eliminada y fila eliminada con éxito.'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar reserva: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function checkoutBooking($row)
+    {
+        try {
+            $service = $this->getSheetsService();
+            
+            $body = new ValueRange([
+                'values' => [['CERRADO']]
+            ]);
+
+            $service->spreadsheets_values->update($this->spreadsheetId, "rooms!I{$row}:I{$row}", $body, [
+                'valueInputOption' => 'USER_ENTERED'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Check-out registrado con éxito (estado cerrado).'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al realizar check-out: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
+
