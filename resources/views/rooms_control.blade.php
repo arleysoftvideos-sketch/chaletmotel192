@@ -26,7 +26,49 @@
         .lang-toggle { display: flex; gap: 6px; }
         .lang-btn { background: #14274c; border: 1px solid #1e293b; color: #94a3b8; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: all 0.2s ease; }
         .lang-btn.active { background: var(--primary); color: #0a1831; border-color: var(--primary-hover); }
-        h1.page-title { font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 2rem; text-transform: uppercase; letter-spacing: 1px; background: linear-gradient(to right, #ffffff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 25px; text-align: center; margin-top: 0; }
+        .hero-rooms-banner {
+            background-image: linear-gradient(to right, rgba(6, 16, 33, 0.95) 0%, rgba(6, 16, 33, 0.85) 40%, rgba(6, 16, 33, 0.3) 100%), url('/images/motel_banner.png');
+            background-size: cover;
+            background-position: center;
+            border-radius: 16px;
+            padding: 35px 40px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .hero-rooms-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(4, 10, 23, 0.15);
+            pointer-events: none;
+        }
+        .hero-rooms-banner-content {
+            position: relative;
+            z-index: 10;
+        }
+        .hero-rooms-banner-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .hero-rooms-banner-subtitle {
+            font-size: 13px;
+            color: var(--primary);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 25px; }
         .stat-card { background: #081326; border: 1px solid var(--border); border-radius: 12px; padding: 15px 20px; text-align: center; transition: transform 0.2s; }
         .stat-card:hover { transform: translateY(-2px); }
@@ -344,7 +386,13 @@
         </div>
     </div>
 
-    <h1 class="page-title" data-i18n="pageTitle">🏨 Control de Habitaciones y Reservas</h1>
+    <!-- Hero Banner with Hotel Photo -->
+    <div class="hero-rooms-banner">
+        <div class="hero-rooms-banner-content">
+            <h1 class="hero-rooms-banner-title" data-i18n="pageTitle">🏨 Control de Habitaciones y Reservas</h1>
+            <p class="hero-rooms-banner-subtitle" data-i18n="pageSubTitle">Panel de administración y control de disponibilidad en Kissimmee</p>
+        </div>
+    </div>
 
     <!-- Stats -->
     <div class="stats-grid">
@@ -692,6 +740,7 @@
     const translations = {
         es: {
             pageTitle: '🏨 Control de Habitaciones y Reservas',
+            pageSubTitle: 'Panel de administración y control de disponibilidad en Kissimmee',
             calcTitle: '🧮 Calculadora de Tarifa',
             bedTypeLabel: '🛏️ Tipo de Cama',
             rateDailyLabel: '💵 Tarifa Diaria',
@@ -758,6 +807,7 @@
         },
         en: {
             pageTitle: '🏨 Rooms and Bookings Control',
+            pageSubTitle: 'Administration panel and availability control in Kissimmee',
             calcTitle: '🧮 Rate Calculator',
             bedTypeLabel: '🛏️ Bed Type',
             rateDailyLabel: '💵 Daily Rate',
