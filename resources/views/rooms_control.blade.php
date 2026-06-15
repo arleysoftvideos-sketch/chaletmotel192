@@ -533,8 +533,8 @@
                     <input type="number" id="checkin-deposito" min="0" step="0.01" value="0">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" data-i18n="formMonthly">Mensualidad</label>
-                    <input type="number" id="checkin-mensualidad" min="0" step="0.01" value="0">
+                    <label class="form-label" data-i18n="formMonthly">Total Pagado</label>
+                    <input type="number" id="checkin-total-pagado" min="0" step="0.01" value="0">
                 </div>
             </div>
             <div class="form-group">
@@ -592,8 +592,8 @@
                     <input type="number" id="edit-deposito" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" data-i18n="formMonthly">Mensualidad</label>
-                    <input type="number" id="edit-mensualidad" min="0" step="0.01">
+                    <label class="form-label" data-i18n="formMonthly">Total Pagado</label>
+                    <input type="number" id="edit-total-pagado" min="0" step="0.01">
                 </div>
             </div>
             <div class="form-group">
@@ -677,14 +677,18 @@
                     <div class="info-value" id="detail-telefono">555-0199</div>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-4 my-4">
+                <div class="grid grid-cols-3 gap-2 my-4">
                     <div class="info-group">
                         <div class="info-label" data-i18n="detailStart">Fecha Entrada</div>
-                        <div class="info-value" id="detail-start">15/06/2026</div>
+                        <div class="info-value font-semibold text-slate-200" id="detail-start">15/06/2026</div>
                     </div>
                     <div class="info-group">
                         <div class="info-label" data-i18n="detailEnd">Fecha Salida</div>
-                        <div class="info-value" id="detail-end">18/06/2026</div>
+                        <div class="info-value font-semibold text-slate-200" id="detail-end">18/06/2026</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label" data-i18n="detailDaysRemaining">Días Faltantes</div>
+                        <div class="info-value font-bold text-amber-500" id="detail-days-remaining">-</div>
                     </div>
                 </div>
 
@@ -698,8 +702,8 @@
                         <div class="info-value text-gold" id="detail-deposito">$0</div>
                     </div>
                     <div class="info-group">
-                        <div class="info-label" data-i18n="detailMonthly">Mensual</div>
-                        <div class="info-value text-gold" id="detail-mensualidad">$0</div>
+                        <div class="info-label" data-i18n="detailMonthly">Total Pagado</div>
+                        <div class="info-value text-gold" id="detail-total-pagado">$0</div>
                     </div>
                 </div>
 
@@ -751,7 +755,8 @@
             detailEnd: "Fecha Salida",
             detailCleaning: "Aseo",
             detailDeposit: "Depósito",
-            detailMonthly: "Mensual",
+            detailMonthly: "Total Pagado",
+            detailDaysRemaining: "Días Faltantes",
             detailRegistered: "Registrado el",
             detailNotes: "Notas",
             btnCheckoutAction: "🚪 Realizar Check-Out (Cerrar)",
@@ -768,7 +773,7 @@
             formEndDate: "Fecha Salida",
             formCleaning: "Tasa de Aseo",
             formDeposit: "Depósito",
-            formMonthly: "Mensualidad",
+            formMonthly: "Total Pagado",
             formStatus: "Estado",
             formNotes: "Notas",
             btnSubmitCheckin: "Crear Reserva / Check-In",
@@ -806,7 +811,8 @@
             detailEnd: "End Date",
             detailCleaning: "Cleaning",
             detailDeposit: "Deposit",
-            detailMonthly: "Monthly",
+            detailMonthly: "Total Paid",
+            detailDaysRemaining: "Days Left",
             detailRegistered: "Registered On",
             detailNotes: "Notes",
             btnCheckoutAction: "🚪 Check-Out (Close State)",
@@ -823,7 +829,7 @@
             formEndDate: "End Date",
             formCleaning: "Cleaning Fee",
             formDeposit: "Security Deposit",
-            formMonthly: "Monthly Rate",
+            formMonthly: "Total Paid",
             formStatus: "Status",
             formNotes: "Notes",
             btnSubmitCheckin: "Save Check-In / Booking",
@@ -1008,11 +1014,7 @@
             }
         });
 
-        document.getElementById('lbl-room').innerText = room;
-        updateRoomDetails(room);
-    }
-
-    // Update Detail Panel content
+          // Update Detail Panel content
     function updateRoomDetails(room) {
         const activeBooking = getActiveBooking(room);
         const emptyDiv = document.getElementById('room-detail-empty');
@@ -1030,9 +1032,40 @@
             document.getElementById('detail-end').innerText = formatDateString(activeBooking.fecha_salida);
             document.getElementById('detail-aseo').innerText = '$' + (parseFloat(activeBooking.tasa_aseo) || 0);
             document.getElementById('detail-deposito').innerText = '$' + (parseFloat(activeBooking.deposito) || 0);
-            document.getElementById('detail-mensualidad').innerText = '$' + (parseFloat(activeBooking.mensualidad) || 0);
+            document.getElementById('detail-total-pagado').innerText = '$' + (parseFloat(activeBooking.total_pagado) || 0);
             document.getElementById('detail-registered').innerText = activeBooking.fecha_registro || 'N/A';
             document.getElementById('detail-notas').innerText = activeBooking.notas || 'Sin notas.';
+
+            // Calculate days remaining dynamically
+            const daysRemainingEl = document.getElementById('detail-days-remaining');
+            if (activeBooking.fecha_salida) {
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                
+                const parts = activeBooking.fecha_salida.split('-');
+                let daysDiff = 0;
+                if (parts.length === 3) {
+                    // split values are YYYY-MM-DD
+                    const endDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    endDate.setHours(0,0,0,0);
+                    const diffTime = endDate - today;
+                    daysDiff = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                }
+
+                if (daysDiff > 0) {
+                    daysRemainingEl.innerText = daysDiff + (currentLang === 'es' ? ' días' : ' days');
+                    daysRemainingEl.className = 'info-value font-bold text-amber-500';
+                } else if (daysDiff === 0) {
+                    daysRemainingEl.innerText = (currentLang === 'es' ? 'Hoy' : 'Today');
+                    daysRemainingEl.className = 'info-value font-bold text-emerald-500 animate-pulse';
+                } else {
+                    daysRemainingEl.innerText = (currentLang === 'es' ? 'Vencido hace ' : 'Overdue ') + Math.abs(daysDiff) + (currentLang === 'es' ? ' días' : ' days');
+                    daysRemainingEl.className = 'info-value font-bold text-red-500';
+                }
+            } else {
+                daysRemainingEl.innerText = 'N/A';
+                daysRemainingEl.className = 'info-value font-semibold text-slate-400';
+            }
 
             emptyDiv.style.display = 'none';
             infoDiv.style.display = 'block';
@@ -1072,7 +1105,7 @@
             fecha_salida: document.getElementById('checkin-end').value,
             tasa_aseo: document.getElementById('checkin-aseo').value || 0,
             deposito: document.getElementById('checkin-deposito').value || 0,
-            mensualidad: document.getElementById('checkin-mensualidad').value || 0,
+            total_pagado: document.getElementById('checkin-total-pagado').value || 0,
             estado: 'ABIERTO',
             notas: document.getElementById('checkin-notas').value
         };
@@ -1120,7 +1153,7 @@
         document.getElementById('edit-end').value = booking.fecha_salida;
         document.getElementById('edit-aseo').value = booking.tasa_aseo || 0;
         document.getElementById('edit-deposito').value = booking.deposito || 0;
-        document.getElementById('edit-mensualidad').value = booking.mensualidad || 0;
+        document.getElementById('edit-total-pagado').value = booking.total_pagado || 0;
         document.getElementById('edit-estado').value = booking.estado.toUpperCase();
         document.getElementById('edit-notas').value = booking.notas;
         document.getElementById('edit-fecha-registro').value = booking.fecha_registro || '';
@@ -1141,9 +1174,9 @@
             fecha_salida: document.getElementById('edit-end').value,
             tasa_aseo: document.getElementById('edit-aseo').value || 0,
             deposito: document.getElementById('edit-deposito').value || 0,
-            mensualidad: document.getElementById('edit-mensualidad').value || 0,
+            total_pagado: document.getElementById('edit-total-pagado').value || 0,
             estado: document.getElementById('edit-estado').value,
-            notas: document.getElementById('edit-notas').value,
+            notes: document.getElementById('edit-notas').value,
             fecha_registro: document.getElementById('edit-fecha-registro').value
         };
 

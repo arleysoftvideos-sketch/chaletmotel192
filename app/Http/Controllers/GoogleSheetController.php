@@ -695,7 +695,7 @@ class GoogleSheetController extends Controller
                         'fecha_salida' => $row[4] ?? '',
                         'tasa_aseo' => $row[5] ?? '',
                         'deposito' => $row[6] ?? '',
-                        'mensualidad' => $row[7] ?? '',
+                        'total_pagado' => $row[7] ?? '',
                         'estado' => $row[8] ?? '',
                         'notas' => $row[9] ?? '',
                         'fecha_registro' => $row[10] ?? '',
@@ -726,7 +726,7 @@ class GoogleSheetController extends Controller
             'fecha_salida' => 'required|date_format:Y-m-d',
             'tasa_aseo' => 'nullable|numeric',
             'deposito' => 'nullable|numeric',
-            'mensualidad' => 'nullable|numeric',
+            'total_pagado' => 'nullable|numeric',
             'estado' => 'required|string',
             'notas' => 'nullable|string'
         ]);
@@ -741,7 +741,7 @@ class GoogleSheetController extends Controller
                 $request->input('fecha_salida'),
                 $request->input('tasa_aseo') ?? 0,
                 $request->input('deposito') ?? 0,
-                $request->input('mensualidad') ?? 0,
+                $request->input('total_pagado') ?? 0,
                 strtoupper($request->input('estado')),
                 $request->input('notas') ?? '',
                 date('Y-m-d H:i:s')
@@ -778,7 +778,7 @@ class GoogleSheetController extends Controller
             'fecha_salida' => 'required|date_format:Y-m-d',
             'tasa_aseo' => 'nullable|numeric',
             'deposito' => 'nullable|numeric',
-            'mensualidad' => 'nullable|numeric',
+            'total_pagado' => 'nullable|numeric',
             'estado' => 'required|string',
             'notas' => 'nullable|string',
             'fecha_registro' => 'nullable'
@@ -794,7 +794,7 @@ class GoogleSheetController extends Controller
                 $request->input('fecha_salida'),
                 $request->input('tasa_aseo') ?? 0,
                 $request->input('deposito') ?? 0,
-                $request->input('mensualidad') ?? 0,
+                $request->input('total_pagado') ?? 0,
                 strtoupper($request->input('estado')),
                 $request->input('notas') ?? '',
                 $request->input('fecha_registro') ?? date('Y-m-d H:i:s')
