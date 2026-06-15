@@ -226,15 +226,14 @@
                 </div>
             </div>
 
-            <!-- Bed Type + Calculator -->
+            <!-- People Count + Calculator -->
             <div class="form-group">
-                <label class="form-label" for="checkin-bed-type" data-i18n="bedTypeLabel">🛏️ Tipo de Cama</label>
+                <label class="form-label" for="checkin-bed-type" data-i18n="bedTypeLabel">👥 Número de Personas</label>
                 <select id="checkin-bed-type" onchange="runCalc()">
-                    <option value="" data-i18n="bedSelectPrompt">-- Seleccionar tipo de cama --</option>
-                    <option value="Single" data-i18n="bedSingle">Single &nbsp;(1 cama individual)</option>
-                    <option value="Doble" data-i18n="bedDouble">Doble &nbsp;(2 camas)</option>
-                    <option value="Queen" data-i18n="bedQueen">Queen &nbsp;(1 cama queen)</option>
-                    <option value="King" data-i18n="bedKing">King &nbsp;&nbsp;(1 cama king)</option>
+                    <option value="" data-i18n="bedSelectPrompt">-- Seleccionar número de personas --</option>
+                    <option value="Single" data-i18n="bedSingle">1 Persona &nbsp;($75/día)</option>
+                    <option value="Doble" data-i18n="bedDouble">2 Personas ($105/día)</option>
+                    <option value="Queen" data-i18n="bedQueen">3 Personas ($140/día)</option>
                 </select>
             </div>
 
@@ -742,7 +741,7 @@
             pageTitle: '🏨 Control de Habitaciones y Reservas',
             pageSubTitle: 'Panel de administración y control de disponibilidad en Kissimmee',
             calcTitle: '🧮 Calculadora de Tarifa',
-            bedTypeLabel: '🛏️ Tipo de Cama',
+            bedTypeLabel: '👥 Número de Personas',
             rateDailyLabel: '💵 Tarifa Diaria',
             rateWeeklyLabel: '💵 Tarifa Semanal',
             rateMonthlyLabel: '💵 Tarifa Mensual',
@@ -795,11 +794,11 @@
             btnDeleteCurrent: '🗑️ Eliminar Registro',
             lblHistory: '📋 Historial de Reservas',
             lblMonthlyOccupancy: '📅 Ocupación por Mes',
-            bedSelectPrompt: '-- Seleccionar tipo de cama --',
-            bedSingle: 'Single (1 cama individual)',
-            bedDouble: 'Doble (2 camas)',
-            bedQueen: 'Queen (1 cama queen)',
-            bedKing: 'King (1 cama king)',
+            bedSelectPrompt: '-- Seleccionar número de personas --',
+            bedSingle: '1 Persona ($75/día)',
+            bedDouble: '2 Personas ($105/día)',
+            bedQueen: '3 Personas ($140/día)',
+            bedKing: '4+ Personas',
             lblCalcDays: 'Días',
             lblCalcPeriod: 'Período',
             lblCalcBaseRate: 'Tarifa Base',
@@ -809,7 +808,7 @@
             pageTitle: '🏨 Rooms and Bookings Control',
             pageSubTitle: 'Administration panel and availability control in Kissimmee',
             calcTitle: '🧮 Rate Calculator',
-            bedTypeLabel: '🛏️ Bed Type',
+            bedTypeLabel: '👥 Number of People',
             rateDailyLabel: '💵 Daily Rate',
             rateWeeklyLabel: '💵 Weekly Rate',
             rateMonthlyLabel: '💵 Monthly Rate',
@@ -862,11 +861,11 @@
             btnDeleteCurrent: '🗑️ Delete Record',
             lblHistory: '📋 Booking History',
             lblMonthlyOccupancy: '📅 Monthly Occupancy',
-            bedSelectPrompt: '-- Select bed type --',
-            bedSingle: 'Single (1 single bed)',
-            bedDouble: 'Double (2 beds)',
-            bedQueen: 'Queen (1 queen bed)',
-            bedKing: 'King (1 king bed)',
+            bedSelectPrompt: '-- Select number of people --',
+            bedSingle: '1 Person ($75/day)',
+            bedDouble: '2 People ($105/day)',
+            bedQueen: '3 People ($140/day)',
+            bedKing: '4+ People',
             lblCalcDays: 'Days',
             lblCalcPeriod: 'Period',
             lblCalcBaseRate: 'Base Rate',
@@ -1322,10 +1321,10 @@
 
     // ========== RATE CALCULATOR ==========
     var ROOM_RATES = {
-        'Single': { daily: 45,  weekly: 300, monthly: 800,  label: 'Single (1 cama)' },
-        'Doble':  { daily: 60,  weekly: 400, monthly: 1200, label: 'Doble (2 camas)' },
-        'Queen':  { daily: 50,  weekly: 300, monthly: 800,  label: 'Queen (1 queen)' },
-        'King':   { daily: 55,  weekly: 350, monthly: 1000, label: 'King (1 king)' }
+        'Single': { daily: 75,  weekly: 500, monthly: 1300, label: '1 Persona' },
+        'Doble':  { daily: 105, weekly: 700, monthly: 1800, label: '2 Personas' },
+        'Queen':  { daily: 140, weekly: 900, monthly: 2400, label: '3 Personas' },
+        'King':   { daily: 140, weekly: 900, monthly: 2400, label: '3 Personas' }
     };
 
     function runCalc() {
