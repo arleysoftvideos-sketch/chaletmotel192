@@ -47,6 +47,11 @@ Route::get('/inventario', function () {
     return view('inventario');
 })->name('inventario');
 
+// Ruta de Control de Habitaciones
+Route::get('/rooms-control', function () {
+    return view('inventario');
+})->name('rooms.control');
+
 // Ruta de Reciclaje
 Route::get('/recycling', [RecyclingController::class, 'index'])->name('recycling');
 Route::post('/recycling/save', [RecyclingController::class, 'saveToSheets'])->name('recycling.save');
