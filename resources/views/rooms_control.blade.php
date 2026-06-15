@@ -606,6 +606,79 @@
         });
     }
 
+    // ========== PAYMENT UTILITIES ==========
+    function parsePaymentStatus(notas) {
+        if (!notas) return [];
+        var match = notas.match(/\[PAGOS:\s*([\d,]*)\s*\]/);
+        if (!match) return [];
+        var listStr = match[1].trim();
+        if (!listStr) return [];
+        return listStr.split(',').map(function(n) { return parseInt(n); }).filter(function(n) { return !isNaN(n); });
+    }
+
+    function cleanNotes(notas) {
+        if (!notas) return '';
+        return notas.replace(/\[PAGOS:\s*[\d,]*\s*\]/, '').trim();
+    }
+
+    function toggleMonthPayment(row, monthNum, isPaid) {
+        var b = bookingsList.find(function(x) { return parseInt(x.row) === parseInt(row); });
+        if (!b) return;
+
+        var paidMonths = parsePaymentStatus(b.notas);
+        var index = paidMonths.indexOf(monthNum);
+        if (isPaid) {
+            if (index === -1) paidMonths.push(monthNum);
+        } else {
+            if (index !== -1) paidMonths.splice(index, 1);
+        }
+
+        var baseNotes = cleanNotes(b.notas);
+        var tag = '[PAGOS: ' + paidMonths.sort(function(a,b){return a-b;}).join(',') + ']';
+        var newNotes = baseNotes ? baseNotes + '\n' + tag : tag;
+
+        var tok = document.querySelector('meta[name="csrf-token"]').content;
+        var p = {
+            room: b.room,
+            cliente: b.cliente,
+            telefono: b.telefono,
+            fecha_inicio: b.fecha_inicio,
+            fecha_salida: b.fecha_salida,
+            tasa_aseo: b.tasa_aseo || 0,
+            deposito: b.deposito || 0,
+            total_pagado: b.total_pagado || 0,
+            estado: b.estado,
+            notas: newNotes,
+            notes: newNotes,
+            fecha_registro: b.fecha_registro
+        };
+
+        showLoading(currentLang === 'es' ? 'Actualizando estado de pago...' : 'Updating payment status...');
+        fetch('/api/rooms-control/bookings/' + row, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': tok
+            },
+            body: JSON.stringify(p)
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+            if (res.success) {
+                loadBookings();
+            } else {
+                alert('Error: ' + res.message);
+                hideLoading();
+            }
+        })
+        .catch(function() {
+            alert(currentLang === 'es' ? 'Error al actualizar.' : 'Error updating.');
+            hideLoading();
+        });
+    }
+
+
     // ========== ROOM INFO MODAL ==========
     function handleRoomModalClick(e) {
         if (e.target === document.getElementById('room-modal')) closeModal('room-modal');
@@ -712,7 +785,8 @@
         h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Depósito' : 'Deposit') + '</div><div class="info-value" style="color:var(--primary);">$' + (parseFloat(b.deposito)||0).toLocaleString() + '</div></div>';
         h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Total Pagado' : 'Total Paid') + '</div><div class="info-value" style="color:var(--primary);">$' + (parseFloat(b.total_pagado)||0).toLocaleString() + '</div></div>';
         h += '</div>';
-        if (b.notas) h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Notas' : 'Notes') + '</div><div style="background:#0a1831;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:12px;max-height:60px;overflow-y:auto;">' + b.notas + '</div></div>';
+        var cleanN = cleanNotes(b.notas);
+        if (cleanN) h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Notas' : 'Notes') + '</div><div style="background:#0a1831;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:12px;max-height:60px;overflow-y:auto;white-space:pre-wrap;">' + cleanN + '</div></div>';
         
         // Dynamic month-by-month schedule list in modal
         var totalDays = Math.ceil((parseDate(b.fecha_salida) - parseDate(b.fecha_inicio)) / 86400000) + 1;
@@ -720,32 +794,45 @@
         if (totalDays >= 28 && months >= 6) {
             var rM = Math.round((parseFloat(b.total_pagado) || 0) / (months - 1));
             var depVal = parseFloat(b.deposito) || rM;
+            var paidMonths = parsePaymentStatus(b.notas);
             h += '<div class="section-divider" style="margin-top:14px; margin-bottom:8px;">' + (currentLang === 'es' ? '📅 Calendario de Pagos Mensuales' : '📅 Monthly Payment Schedule') + '</div>';
             h += '<div style="font-size:12px; display:grid; grid-template-columns: repeat(2, 1fr); gap:6px; color:#cbd5e1; margin-bottom:12px;">';
             for (var i = 1; i <= months; i++) {
                 var monthLabel = currentLang === 'es' ? 'Mes ' + i : 'Month ' + i;
+                var isChecked = paidMonths.indexOf(i) !== -1 ? 'checked' : '';
+                
                 if (i === 1) {
                     var rentPart = '$' + rM.toLocaleString();
                     var depPart = '$' + depVal.toLocaleString();
                     var totalPart = '$' + (rM + depVal).toLocaleString();
-                    h += '<div style="grid-column: 1 / -1; display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:6px; border:1px solid rgba(255,255,255,0.08);">';
-                    h += '<span>' + monthLabel + ' (+ ' + (currentLang === 'es' ? 'Depósito' : 'Deposit') + ')</span>';
-                    h += '<span class="font-bold">' + rentPart + ' + ' + depPart + ' = ' + totalPart + '</span>';
+                    h += '<div style="grid-column: 1 / -1; display:flex; align-items:center; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:6px; border:1px solid rgba(255,255,255,0.08); gap:8px;">';
+                    h += '  <div style="display:flex; align-items:center; gap:8px;">';
+                    h += '    <input type="checkbox" ' + isChecked + ' onchange="toggleMonthPayment(' + b.row + ', ' + i + ', this.checked)" style="width:14px; height:14px; accent-color:var(--primary); cursor:pointer;">';
+                    h += '    <span>' + monthLabel + ' (+ ' + (currentLang === 'es' ? 'Depósito' : 'Deposit') + ')</span>';
+                    h += '  </div>';
+                    h += '  <span class="font-bold">' + rentPart + ' + ' + depPart + ' = ' + totalPart + '</span>';
                     h += '</div>';
                 } else if (i === 5) {
-                    h += '<div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(16,185,129,0.15); border-radius:6px; border:1px solid var(--success);">';
-                    h += '<span>' + monthLabel + '</span>';
-                    h += '<span class="font-bold" style="color:var(--success);">' + (currentLang === 'es' ? '¡Gratis!' : 'Free!') + '</span>';
+                    h += '<div style="display:flex; align-items:center; justify-content:space-between; padding:4px 8px; background:rgba(16,185,129,0.15); border-radius:6px; border:1px solid var(--success); gap:8px;">';
+                    h += '  <div style="display:flex; align-items:center; gap:8px;">';
+                    h += '    <input type="checkbox" checked disabled style="width:14px; height:14px; accent-color:var(--success); cursor:not-allowed;">';
+                    h += '    <span>' + monthLabel + '</span>';
+                    h += '  </div>';
+                    h += '  <span class="font-bold" style="color:var(--success);">' + (currentLang === 'es' ? '¡Gratis!' : 'Free!') + '</span>';
                     h += '</div>';
                 } else {
-                    h += '<div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:6px; border:1px solid rgba(255,255,255,0.05);">';
-                    h += '<span>' + monthLabel + '</span>';
-                    h += '<span class="font-bold">$' + rM.toLocaleString() + '</span>';
+                    h += '<div style="display:flex; align-items:center; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:6px; border:1px solid rgba(255,255,255,0.05); gap:8px;">';
+                    h += '  <div style="display:flex; align-items:center; gap:8px;">';
+                    h += '    <input type="checkbox" ' + isChecked + ' onchange="toggleMonthPayment(' + b.row + ', ' + i + ', this.checked)" style="width:14px; height:14px; accent-color:var(--primary); cursor:pointer;">';
+                    h += '    <span>' + monthLabel + '</span>';
+                    h += '  </div>';
+                    h += '  <span class="font-bold">$' + rM.toLocaleString() + '</span>';
                     h += '</div>';
                 }
             }
             h += '</div>';
         }
+
         
         h += '<div class="actions-stack" style="margin-top:12px;">';
         h += '<button class="btn btn-success btn-sm" onclick="closeModal(\'room-modal\'); triggerCheckoutRow(' + b.row + ');">' + (currentLang === 'es' ? '🚪 Check-Out' : '🚪 Check-Out') + '</button>';
@@ -1079,7 +1166,7 @@
         document.getElementById('detail-deposito').innerText = '$' + (parseFloat(b.deposito)||0).toLocaleString();
         document.getElementById('detail-total-pagado').innerText = '$' + (parseFloat(b.total_pagado)||0).toLocaleString();
         document.getElementById('detail-registered').innerText = b.fecha_registro || 'N/A';
-        document.getElementById('detail-notas').innerText = b.notas || 'Sin notas.';
+        document.getElementById('detail-notas').innerText = cleanNotes(b.notas) || (currentLang === 'es' ? 'Sin notas.' : 'No notes.');
         var drEl = document.getElementById('detail-days-remaining');
         var diff = calcDaysRemaining(b.fecha_salida);
         if (diff !== null) {
@@ -1099,26 +1186,47 @@
             schedList.innerHTML = '';
             var rM = Math.round((parseFloat(b.total_pagado) || 0) / (months - 1));
             var depVal = parseFloat(b.deposito) || rM;
+            var paidMonths = parsePaymentStatus(b.notas);
             for (var i = 1; i <= months; i++) {
                 var monthLabel = currentLang === 'es' ? 'Mes ' + i : 'Month ' + i;
+                var isChecked = paidMonths.indexOf(i) !== -1 ? 'checked' : '';
                 var row = document.createElement('div');
                 row.style.display = 'flex';
+                row.style.alignItems = 'center';
                 row.style.justifyContent = 'space-between';
                 row.style.padding = '4px 8px';
                 row.style.borderRadius = '4px';
+                row.style.gap = '8px';
 
                 if (i === 1) {
                     row.style.background = 'rgba(255,255,255,0.03)';
                     row.style.border = '1px solid rgba(255,255,255,0.08)';
-                    row.innerHTML = '<span>' + monthLabel + ' (+ ' + (currentLang === 'es' ? 'Depósito' : 'Dep.') + ')</span><span class="font-bold">$' + rM.toLocaleString() + ' + $' + depVal.toLocaleString() + ' = $' + (rM + depVal).toLocaleString() + '</span>';
+                    
+                    var rentPart = '$' + rM.toLocaleString();
+                    var depPart = '$' + depVal.toLocaleString();
+                    var totalPart = '$' + (rM + depVal).toLocaleString();
+                    
+                    row.innerHTML = '<div style="display:flex; align-items:center; gap:8px;">'
+                        + '  <input type="checkbox" ' + isChecked + ' onchange="toggleMonthPayment(' + b.row + ', ' + i + ', this.checked)" style="width:14px; height:14px; accent-color:var(--primary); cursor:pointer;">'
+                        + '  <span>' + monthLabel + ' (+ ' + (currentLang === 'es' ? 'Depósito' : 'Dep.') + ')</span>'
+                        + '</div>'
+                        + '<span class="font-bold">' + totalPart + '</span>';
                 } else if (i === 5) {
                     row.style.background = 'rgba(16,185,129,0.15)';
                     row.style.border = '1px solid var(--success)';
-                    row.innerHTML = '<span>' + monthLabel + '</span><span class="font-bold" style="color:var(--success);">' + (currentLang === 'es' ? '¡Gratis!' : 'Free!') + '</span>';
+                    row.innerHTML = '<div style="display:flex; align-items:center; gap:8px;">'
+                        + '  <input type="checkbox" checked disabled style="width:14px; height:14px; accent-color:var(--success); cursor:not-allowed;">'
+                        + '  <span>' + monthLabel + '</span>'
+                        + '</div>'
+                        + '<span class="font-bold" style="color:var(--success);">' + (currentLang === 'es' ? '¡Gratis!' : 'Free!') + '</span>';
                 } else {
                     row.style.background = 'rgba(255,255,255,0.03)';
                     row.style.border = '1px solid rgba(255,255,255,0.05)';
-                    row.innerHTML = '<span>' + monthLabel + '</span><span class="font-bold">$' + rM.toLocaleString() + '</span>';
+                    row.innerHTML = '<div style="display:flex; align-items:center; gap:8px;">'
+                        + '  <input type="checkbox" ' + isChecked + ' onchange="toggleMonthPayment(' + b.row + ', ' + i + ', this.checked)" style="width:14px; height:14px; accent-color:var(--primary); cursor:pointer;">'
+                        + '  <span>' + monthLabel + '</span>'
+                        + '</div>'
+                        + '<span class="font-bold">$' + rM.toLocaleString() + '</span>';
                 }
                 schedList.appendChild(row);
             }
@@ -1314,7 +1422,7 @@
         document.getElementById('edit-deposito').value = b.deposito || 0;
         document.getElementById('edit-total-pagado').value = b.total_pagado || 0;
         document.getElementById('edit-estado').value = (b.estado || '').toUpperCase();
-        document.getElementById('edit-notas').value = b.notas;
+        document.getElementById('edit-notas').value = cleanNotes(b.notas);
         document.getElementById('edit-fecha-registro').value = b.fecha_registro || '';
         document.getElementById('edit-overlap-warning').style.display = 'none';
         openModal('edit-modal');
@@ -1340,6 +1448,15 @@
             return;
         }
         var tok = document.querySelector('meta[name="csrf-token"]').content;
+        var oldBooking = bookingsList.find(function(x) { return parseInt(x.row) === parseInt(row); });
+        var paidMonths = oldBooking ? parsePaymentStatus(oldBooking.notas) : [];
+        var tag = paidMonths.length > 0 ? '[PAGOS: ' + paidMonths.sort(function(a,b){return a-b;}).join(',') + ']' : '';
+        var rawNotes = document.getElementById('edit-notas').value || '';
+        var finalNotes = rawNotes.trim();
+        if (tag) {
+            finalNotes = finalNotes ? finalNotes + '\n' + tag : tag;
+        }
+
         var p = {
             room: room, cliente: document.getElementById('edit-cliente').value,
             telefono: document.getElementById('edit-telefono').value,
@@ -1348,8 +1465,8 @@
             deposito: document.getElementById('edit-deposito').value || 0,
             total_pagado: document.getElementById('edit-total-pagado').value || 0,
             estado: document.getElementById('edit-estado').value,
-            notes: document.getElementById('edit-notas').value,
-            notas: document.getElementById('edit-notas').value,
+            notes: finalNotes,
+            notas: finalNotes,
             fecha_registro: document.getElementById('edit-fecha-registro').value
         };
         closeModal('edit-modal'); 
