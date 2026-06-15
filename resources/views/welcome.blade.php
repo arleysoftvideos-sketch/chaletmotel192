@@ -134,7 +134,7 @@
                                 {{ __('Desde') }}
                             </span>
                             <span class="text-5xl sm:text-7xl font-black font-outfit text-gold leading-none">
-                                $1,000
+                                $800
                             </span>
                             <div class="flex items-center gap-2 mt-0.5">
                                 <div class="h-[1px] w-6 bg-white/40"></div>
@@ -147,9 +147,9 @@
                     </div>
 
                     <!-- Right Column (Floating Gold Badge on top right of the container) -->
-                    <div class="md:col-span-4 flex justify-center md:justify-end relative">
+                    <div class="md:col-span-4 flex flex-col items-center justify-center md:items-end relative">
                         <!-- Jagged Badge: FIRST MONTH FREE! -->
-                        <div class="w-28 h-28 sm:w-36 sm:h-36 bg-gold rounded-full flex flex-col items-center justify-center text-center text-navy p-3 shadow-2xl animate-bounce hover:scale-105 transition-transform duration-300">
+                        <div class="w-28 h-28 sm:w-36 sm:h-36 bg-gold rounded-full flex flex-col items-center justify-center text-center text-navy p-3 shadow-2xl animate-bounce hover:scale-105 transition-transform duration-300 relative">
                             <svg class="absolute w-full h-full text-gold-hover animate-spin" style="animation-duration: 25s;" viewBox="0 0 100 100" fill="none">
                                 <path d="M50 0 L58 35 L93 25 L65 50 L93 75 L58 65 L50 100 L42 65 L7 75 L35 50 L7 25 L42 35 Z" fill="currentColor"/>
                             </svg>
@@ -169,6 +169,9 @@
                                     <svg class="w-2 h-2 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                                 </div>
                             </div>
+                            <span class="block text-[10px] text-white/50 font-bold uppercase tracking-wider mt-2.5 bg-navy/60 border border-blue-900/40 rounded-lg px-2.5 py-1 text-center md:text-right">
+                                * {{ __('Solo para rentas mínimo de 6 meses') }}
+                            </span>
                         </div>
                     </div>
                 </div>

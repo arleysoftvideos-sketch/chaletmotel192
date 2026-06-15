@@ -172,7 +172,7 @@
                         <div class="flex items-center gap-4 p-4 bg-[#081326] border border-blue-900/40 rounded-xl">
                             <div class="text-3xl font-black font-outfit text-gold">
                                 <span class="block text-xs text-white/50 font-bold tracking-widest uppercase mb-0.5">{{ __('Desde') }}</span>
-                                $1,000
+                                $800
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-white font-bold text-xs uppercase tracking-wide">{{ __('Tarifa Fija Mensual') }}</span>
