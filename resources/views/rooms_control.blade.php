@@ -217,7 +217,15 @@
             border-bottom: 4px solid var(--success);
         }
         .room-btn.occupied {
-            border-bottom: 4px solid var(--danger);
+            background-color: #581c1c !important; /* Premium wine red background */
+            border: 1px solid #991b1b !important;
+            border-bottom: 4px solid var(--danger) !important;
+            color: #fca5a5 !important; /* Soft rose text color */
+        }
+        .room-btn.occupied:hover {
+            background-color: #7f1d1d !important;
+            border-color: var(--danger) !important;
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.25) !important;
         }
         .room-btn.active {
             background-color: var(--primary) !important;
@@ -225,6 +233,7 @@
             border-color: var(--primary-hover) !important;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 4px 12px rgba(255, 183, 3, 0.3) !important;
         }
+
 
         .room-status-dot {
             width: 8px;
