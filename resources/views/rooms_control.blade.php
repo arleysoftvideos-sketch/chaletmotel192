@@ -941,7 +941,6 @@
         }
     }
 
-    // Helper to get active booking for a room
     function getActiveBooking(room) {
         // Find the latest reservation with state ABIERTO or OCUPADA
         const roomReservations = bookingsList.filter(b => parseInt(b.room) === parseInt(room));
@@ -951,7 +950,8 @@
         roomReservations.sort((a, b) => b.row - a.row);
         
         const latest = roomReservations[0];
-        if (latest.estado.toUpperCase() === 'ABIERTO' || latest.estado.toUpperCase() === 'OCUPADA') {
+        const status = (latest.estado || '').toUpperCase();
+        if (status === 'ABIERTO' || status === 'OCUPADA') {
             return latest;
         }
         return null;
@@ -1154,7 +1154,7 @@
         document.getElementById('edit-aseo').value = booking.tasa_aseo || 0;
         document.getElementById('edit-deposito').value = booking.deposito || 0;
         document.getElementById('edit-total-pagado').value = booking.total_pagado || 0;
-        document.getElementById('edit-estado').value = booking.estado.toUpperCase();
+        document.getElementById('edit-estado').value = (booking.estado || '').toUpperCase();
         document.getElementById('edit-notas').value = booking.notas;
         document.getElementById('edit-fecha-registro').value = booking.fecha_registro || '';
 
