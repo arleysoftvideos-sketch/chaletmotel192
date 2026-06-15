@@ -182,7 +182,7 @@
 
                         <!-- Stat 2 -->
                         <div class="flex items-center gap-4 p-4 bg-[#081326] border border-blue-900/40 rounded-xl">
-                            <div class="text-3xl font-black font-outfit text-gold">1º Mes</div>
+                            <div class="text-3xl font-black font-outfit text-gold">1 Mes</div>
                             <div class="flex flex-col">
                                 <span class="text-white font-bold text-xs uppercase tracking-wide">{{ __('¡Completamente Gratis!') }}</span>
                                 <span class="text-slate-500 text-[10px]">{{ __('En contratos calificados') }}</span>

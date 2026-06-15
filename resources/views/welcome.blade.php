@@ -144,7 +144,7 @@
                                 <div class="h-[1px] w-6 bg-white/40"></div>
                             </div>
                             <span class="text-white/40 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest mt-3 block">
-                                * {{ __('First Month Free applies to minimum 6-month contracts') }}
+                                * {{ __('1 Month Free applies to minimum 6-month contracts') }}
                             </span>
                         </div>
                     </div>
