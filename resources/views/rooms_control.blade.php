@@ -156,104 +156,104 @@
 <div class="modal-overlay" id="checkin-modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">+ Nueva Reserva / Check-In</h3>
+            <h3 class="modal-title" data-i18n="checkinTitle">+ Nueva Reserva / Check-In</h3>
             <button class="modal-close-btn" onclick="closeModal('checkin-modal')">&times;</button>
         </div>
-        <div class="overlap-warning" id="checkin-overlap-warning">⚠️ Las fechas seleccionadas se solapan con una reserva existente.</div>
+        <div class="overlap-warning" id="checkin-overlap-warning" data-i18n="overlapWarningCheckIn">⚠️ Las fechas seleccionadas se solapan con una reserva existente.</div>
         <form id="checkin-form" onsubmit="handleCheckIn(event)">
             <div class="form-group">
-                <label class="form-label">Habitación</label>
+                <label class="form-label" data-i18n="roomLabel">Habitación</label>
                 <select id="checkin-room" required onchange="checkCheckinOverlap()"></select>
             </div>
             <div class="form-group">
-                <label class="form-label">Nombre del Cliente</label>
+                <label class="form-label" data-i18n="guestLabel">Nombre del Cliente</label>
                 <input type="text" id="checkin-cliente" required>
             </div>
             <div class="form-group">
-                <label class="form-label">Teléfono</label>
+                <label class="form-label" data-i18n="phoneLabel">Teléfono</label>
                 <input type="tel" id="checkin-telefono">
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div class="form-group">
-                    <label class="form-label">Fecha Entrada</label>
+                    <label class="form-label" data-i18n="startLabel">Fecha Entrada</label>
                     <input type="date" id="checkin-start" required onchange="checkCheckinOverlap(); runCalc();">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Fecha Salida</label>
+                    <label class="form-label" data-i18n="endLabel">Fecha Salida</label>
                     <input type="date" id="checkin-end" required onchange="checkCheckinOverlap(); runCalc();">
                 </div>
             </div>
 
             <!-- Bed Type + Calculator -->
             <div class="form-group">
-                <label class="form-label">🛏️ Tipo de Cama</label>
+                <label class="form-label" for="checkin-bed-type" data-i18n="bedTypeLabel">🛏️ Tipo de Cama</label>
                 <select id="checkin-bed-type" onchange="runCalc()">
-                    <option value="">-- Seleccionar tipo de cama --</option>
-                    <option value="Single">Single &nbsp;(1 cama individual)</option>
-                    <option value="Doble">Doble &nbsp;(2 camas)</option>
-                    <option value="Queen">Queen &nbsp;(1 cama queen)</option>
-                    <option value="King">King &nbsp;&nbsp;(1 cama king)</option>
+                    <option value="" data-i18n="bedSelectPrompt">-- Seleccionar tipo de cama --</option>
+                    <option value="Single" data-i18n="bedSingle">Single &nbsp;(1 cama individual)</option>
+                    <option value="Doble" data-i18n="bedDouble">Doble &nbsp;(2 camas)</option>
+                    <option value="Queen" data-i18n="bedQueen">Queen &nbsp;(1 cama queen)</option>
+                    <option value="King" data-i18n="bedKing">King &nbsp;&nbsp;(1 cama king)</option>
                 </select>
             </div>
 
             <!-- Calculator Panel -->
             <div class="calc-panel" id="calc-panel">
-                <div class="calc-title">🧮 Calculadora de Tarifa</div>
+                <div class="calc-title" id="calc-title" data-i18n="calcTitle">🧮 Calculadora de Tarifa</div>
                 <div class="rate-edit-row">
                     <div class="rate-edit-item">
-                        <label>💵 Tarifa Diaria</label>
+                        <label data-i18n="rateDailyLabel">💵 Tarifa Diaria</label>
                         <input type="number" id="rate-daily" min="0" step="0.01" onchange="runCalc()">
                     </div>
                     <div class="rate-edit-item">
-                        <label>💵 Tarifa Semanal</label>
+                        <label data-i18n="rateWeeklyLabel">💵 Tarifa Semanal</label>
                         <input type="number" id="rate-weekly" min="0" step="0.01" onchange="runCalc()">
                     </div>
                     <div class="rate-edit-item">
-                        <label>💵 Tarifa Mensual</label>
+                        <label data-i18n="rateMonthlyLabel">💵 Tarifa Mensual</label>
                         <input type="number" id="rate-monthly" min="0" step="0.01" onchange="runCalc()">
                     </div>
                 </div>
                 <div class="calc-grid">
                     <div>
-                        <div class="calc-cell-label">Días</div>
+                        <div class="calc-cell-label" data-i18n="lblCalcDays">Días</div>
                         <div class="calc-cell-value" id="calc-days">-</div>
                     </div>
                     <div>
-                        <div class="calc-cell-label">Período</div>
+                        <div class="calc-cell-label" data-i18n="lblCalcPeriod">Período</div>
                         <div class="calc-cell-value" id="calc-period">-</div>
                     </div>
                     <div>
-                        <div class="calc-cell-label">Tarifa Base</div>
+                        <div class="calc-cell-label" data-i18n="lblCalcBaseRate">Tarifa Base</div>
                         <div class="calc-cell-value gold" id="calc-rate">-</div>
                     </div>
                     <div>
-                        <div class="calc-cell-label">TOTAL</div>
+                        <div class="calc-cell-label" data-i18n="lblCalcTotal">TOTAL</div>
                         <div class="calc-cell-value green" id="calc-total">-</div>
                     </div>
                 </div>
                 <div class="calc-breakdown" id="calc-breakdown"></div>
-                <button type="button" class="calc-apply-btn" onclick="applyCalcToForm()">✅ Usar este total</button>
+                <button type="button" class="calc-apply-btn" onclick="applyCalcToForm()" data-i18n="applyBtn">✅ Usar este total</button>
             </div>
 
             <div class="grid grid-cols-3 gap-2">
                 <div class="form-group">
-                    <label class="form-label">Tasa Aseo</label>
+                    <label class="form-label" data-i18n="aseoLabel">Tasa Aseo</label>
                     <input type="number" id="checkin-aseo" min="0" step="0.01" value="0">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Depósito</label>
+                    <label class="form-label" data-i18n="depositoLabel">Depósito</label>
                     <input type="number" id="checkin-deposito" min="0" step="0.01" value="0">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Total Pagado</label>
+                    <label class="form-label" data-i18n="totalPaidLabel">Total Pagado</label>
                     <input type="number" id="checkin-total-pagado" min="0" step="0.01" value="0">
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Notas</label>
+                <label class="form-label" data-i18n="notesLabel">Notas</label>
                 <textarea id="checkin-notas" rows="2"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar Reserva</button>
+            <button type="submit" class="btn btn-primary" data-i18n="saveBookingBtn">Guardar Reserva</button>
         </form>
     </div>
 </div>
@@ -262,94 +262,107 @@
 <div class="modal-overlay" id="edit-modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">✏️ Editar Reserva</h3>
+            <h3 class="modal-title" data-i18n="editTitle">✏️ Editar Reserva</h3>
             <button class="modal-close-btn" onclick="closeModal('edit-modal')">&times;</button>
         </div>
-        <div class="overlap-warning" id="edit-overlap-warning">⚠️ Las fechas seleccionadas se solapan con otra reserva existente.</div>
+        <div class="overlap-warning" id="edit-overlap-warning" data-i18n="overlapWarningEdit">⚠️ Las fechas seleccionadas se solapan con otra reserva existente.</div>
         <form id="edit-form" onsubmit="handleEditSubmit(event)">
             <input type="hidden" id="edit-row">
             <input type="hidden" id="edit-fecha-registro">
             <div class="form-group">
-                <label class="form-label">Habitación</label>
+                <label class="form-label" data-i18n="roomLabel">Habitación</label>
                 <select id="edit-room" required></select>
             </div>
             <div class="form-group">
-                <label class="form-label">Nombre del Cliente</label>
+                <label class="form-label" data-i18n="guestLabel">Nombre del Cliente</label>
                 <input type="text" id="edit-cliente" required>
             </div>
             <div class="form-group">
-                <label class="form-label">Teléfono</label>
+                <label class="form-label" data-i18n="phoneLabel">Teléfono</label>
                 <input type="tel" id="edit-telefono">
             </div>
             <div class="grid grid-cols-2 gap-3">
                 <div class="form-group">
-                    <label class="form-label">Fecha Entrada</label>
+                    <label class="form-label" data-i18n="startLabel">Fecha Entrada</label>
                     <input type="date" id="edit-start" required onchange="checkEditOverlap()">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Fecha Salida</label>
+                    <label class="form-label" data-i18n="endLabel">Fecha Salida</label>
                     <input type="date" id="edit-end" required onchange="checkEditOverlap()">
                 </div>
             </div>
             <div class="grid grid-cols-3 gap-2">
                 <div class="form-group">
-                    <label class="form-label">Tasa Aseo</label>
+                    <label class="form-label" data-i18n="aseoLabel">Tasa Aseo</label>
                     <input type="number" id="edit-aseo" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Depósito</label>
+                    <label class="form-label" data-i18n="depositoLabel">Depósito</label>
                     <input type="number" id="edit-deposito" min="0" step="0.01">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Total Pagado</label>
+                    <label class="form-label" data-i18n="totalPaidLabel">Total Pagado</label>
                     <input type="number" id="edit-total-pagado" min="0" step="0.01">
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Estado</label>
+                <label class="form-label" data-i18n="statusLabel">Estado</label>
                 <select id="edit-estado" required>
-                    <option value="ABIERTO">ABIERTO</option>
-                    <option value="CERRADO">CERRADO</option>
+                    <option value="ABIERTO" data-i18n="statusOpen">ABIERTO</option>
+                    <option value="CERRADO" data-i18n="statusClosed">CERRADO</option>
                 </select>
             </div>
             <div class="form-group">
-                <label class="form-label">Notas</label>
+                <label class="form-label" data-i18n="notesLabel">Notas</label>
                 <textarea id="edit-notas" rows="2"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <button type="submit" class="btn btn-primary" data-i18n="saveChangesBtn">Guardar Cambios</button>
         </form>
     </div>
 </div>
 
+<!-- Room Info Popup Modal -->
+<div class="modal-overlay" id="room-modal" onclick="handleRoomModalClick(event)">
+    <div class="modal-content" style="max-width:500px; position:relative;" onclick="event.stopPropagation()">
+        <div class="modal-header" style="margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <h3 class="modal-title" id="rm-title" data-i18n="roomTitle">Habitación ---</h3>
+                <span class="status-badge" id="rm-badge" data-i18n="roomStatus">Libre</span>
+            </div>
+            <button class="modal-close-btn" onclick="closeModal('room-modal')">×</button>
+        </div>
+        <div id="rm-body"></div>
+    </div>
+</div>
 <!-- Contenido Principal -->
 <div class="container">
     <div class="header-nav">
-        <a href="/" class="back-link">← Volver a Inicio</a>
+        <a href="/" class="back-link" data-i18n="backLink">← Volver a Inicio</a>
         <div class="lang-toggle">
-            <button id="btn-es" class="lang-btn active" onclick="setLanguage('es')">🇪🇸 ES</button>
-            <button id="btn-en" class="lang-btn" onclick="setLanguage('en')">🇺🇸 EN</button>
+            <button id="btn-es" class="lang-btn active" data-lang="es" onclick="setLanguage('es')">🇪🇸 ES</button>
+            <button id="btn-en" class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
         </div>
     </div>
 
-    <h1 class="page-title">🏨 Control de Habitaciones y Reservas</h1>
+    <h1 class="page-title" data-i18n="pageTitle">🏨 Control de Habitaciones y Reservas</h1>
 
     <!-- Stats -->
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-number" style="color:var(--danger);" id="stat-occupied">0</div>
-            <div class="stat-label">Ocupadas Hoy</div>
+            <div class="stat-label" data-i18n="statOccupied">Ocupadas Hoy</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" style="color:var(--warning);" id="stat-reserved">0</div>
-            <div class="stat-label">Con Reserva</div>
+            <div class="stat-label" data-i18n="statReserved">Con Reserva</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" style="color:var(--success);" id="stat-available">28</div>
-            <div class="stat-label">Disponibles</div>
+            <div class="stat-label" data-i18n="statAvailable">Disponibles</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" style="color:#cbd5e1;">28</div>
-            <div class="stat-label">Total</div>
+            <div class="stat-label" data-i18n="statTotal">Total</div>
         </div>
     </div>
 
@@ -357,7 +370,7 @@
     <div class="main-layout">
         <!-- Room Buttons (rendered by Blade) -->
         <div>
-            <div class="room-nav-title">🏢 Piso 1 — Habitaciones 101 a 114</div>
+            <div class="room-nav-title" data-i18n="floor1">🏢 Piso 1 — Habitaciones 101 a 114</div>
             <div class="room-grid" id="nav-piso1">
                 @for ($i = 101; $i <= 114; $i++)
                 <button class="room-btn available" data-room="{{ $i }}" id="btn-room-{{ $i }}" onclick="selectRoom({{ $i }})">
@@ -367,7 +380,7 @@
                 @endfor
             </div>
 
-            <div class="room-nav-title">🏢 Piso 2 — Habitaciones 201 a 214</div>
+            <div class="room-nav-title" data-i18n="floor2">🏢 Piso 2 — Habitaciones 201 a 214</div>
             <div class="room-grid" id="nav-piso2">
                 @for ($i = 201; $i <= 214; $i++)
                 <button class="room-btn available" data-room="{{ $i }}" id="btn-room-{{ $i }}" onclick="selectRoom({{ $i }})">
@@ -379,23 +392,23 @@
 
             <!-- Legend -->
             <div style="display:flex; gap:15px; margin-top:15px; font-size:12px; color:#64748b;">
-                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--success);margin-right:4px;"></span>Disponible</span>
-                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--warning);margin-right:4px;"></span>Con reserva futura</span>
-                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--danger);margin-right:4px;"></span>Ocupada hoy</span>
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--success);margin-right:4px;"></span><span data-i18n="legendAvailable">Disponible</span></span>
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--warning);margin-right:4px;"></span><span data-i18n="legendReserved">Con reserva futura</span></span>
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--danger);margin-right:4px;"></span><span data-i18n="legendOccupied">Ocupada hoy</span></span>
             </div>
         </div>
 
         <!-- Detail Panel -->
         <div class="detail-panel" id="detail-panel">
             <div class="detail-header">
-                <span class="detail-title">Habitación <span id="lbl-room">---</span></span>
-                <span class="status-badge available" id="lbl-status">Libre</span>
+                <span class="detail-title"><span data-i18n="lblRoomHeader">Habitación</span> <span id="lbl-room">---</span></span>
+                <span class="status-badge available" id="lbl-status" data-i18n="statusFree">Libre</span>
             </div>
 
             <!-- No room selected -->
             <div id="state-no-room" class="empty-state">
                 <div class="empty-state-icon">👆</div>
-                <p style="color:#64748b; font-size:13px;">Selecciona una habitación para ver su detalle</p>
+                <p style="color:#64748b; font-size:13px;" data-i18n="selectRoomPrompt">Selecciona una habitación para ver su detalle</p>
             </div>
 
             <!-- Room selected - dynamic content -->
@@ -403,53 +416,53 @@
                 <!-- Current booking info (visible when occupied) -->
                 <div id="current-booking-section" style="display:none;">
                     <div class="info-group">
-                        <div class="info-label">Cliente Actual</div>
+                        <div class="info-label" data-i18n="lblCurrentGuest">Cliente Actual</div>
                         <div class="info-value" style="font-size:1rem; font-weight:800; color:#f8fafc;" id="detail-cliente"></div>
                     </div>
                     <div class="info-group">
-                        <div class="info-label">Teléfono</div>
+                        <div class="info-label" data-i18n="lblPhone">Teléfono</div>
                         <div class="info-value" id="detail-telefono"></div>
                     </div>
                     <div class="grid grid-cols-3 gap-2" style="margin:12px 0;">
                         <div class="info-group">
-                            <div class="info-label">Entrada</div>
+                            <div class="info-label" data-i18n="lblCheckIn">Entrada</div>
                             <div class="info-value" id="detail-start"></div>
                         </div>
                         <div class="info-group">
-                            <div class="info-label">Salida</div>
+                            <div class="info-label" data-i18n="lblCheckOut">Salida</div>
                             <div class="info-value" id="detail-end"></div>
                         </div>
                         <div class="info-group">
-                            <div class="info-label">Días restantes</div>
+                            <div class="info-label" data-i18n="lblDaysRemaining">Días restantes</div>
                             <div class="info-value font-bold" id="detail-days-remaining">-</div>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-2" style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:10px 0; margin:10px 0;">
                         <div class="info-group">
-                            <div class="info-label">Aseo</div>
+                            <div class="info-label" data-i18n="lblCleaning">Aseo</div>
                             <div class="info-value" style="color:var(--primary);" id="detail-aseo">$0</div>
                         </div>
                         <div class="info-group">
-                            <div class="info-label">Depósito</div>
+                            <div class="info-label" data-i18n="lblDeposit">Depósito</div>
                             <div class="info-value" style="color:var(--primary);" id="detail-deposito">$0</div>
                         </div>
                         <div class="info-group">
-                            <div class="info-label">Total Pagado</div>
+                            <div class="info-label" data-i18n="lblTotalPaid">Total Pagado</div>
                             <div class="info-value" style="color:var(--primary);" id="detail-total-pagado">$0</div>
                         </div>
                     </div>
                     <div class="info-group">
-                        <div class="info-label">Registrado el</div>
+                        <div class="info-label" data-i18n="lblRegisteredAt">Registrado el</div>
                         <div class="info-value" style="font-size:12px; color:#64748b;" id="detail-registered"></div>
                     </div>
                     <div class="info-group">
-                        <div class="info-label">Notas</div>
+                        <div class="info-label" data-i18n="lblNotes">Notas</div>
                         <div style="background:#0a1831; border:1px solid var(--border); border-radius:8px; padding:10px; font-size:12px; max-height:80px; overflow-y:auto; white-space:pre-wrap;" id="detail-notas"></div>
                     </div>
                     <div class="actions-stack">
-                        <button class="btn btn-success btn-sm" onclick="triggerCheckout()">🚪 Realizar Check-Out</button>
-                        <button class="btn btn-secondary btn-sm" onclick="openEditModalForCurrentRoom()">✏️ Editar Reserva Actual</button>
-                        <button class="btn btn-danger btn-sm" onclick="triggerDeleteCurrent()">🗑️ Eliminar Registro</button>
+                        <button class="btn btn-success btn-sm" onclick="triggerCheckout()" data-i18n="btnCheckout">🚪 Realizar Check-Out</button>
+                        <button class="btn btn-secondary btn-sm" onclick="openEditModalForCurrentRoom()" data-i18n="btnEditCurrent">✏️ Editar Reserva Actual</button>
+                        <button class="btn btn-danger btn-sm" onclick="triggerDeleteCurrent()" data-i18n="btnDeleteCurrent">🗑️ Eliminar Registro</button>
                     </div>
                 </div>
 
@@ -458,13 +471,13 @@
                     <div class="empty-state" style="padding:10px 0;">
                         <div class="empty-state-icon" id="avail-icon">🔑</div>
                         <p style="color:#94a3b8; font-size:13px; margin-bottom:12px;" id="avail-text">Habitación disponible</p>
-                        <button class="btn btn-primary btn-sm" onclick="openCheckInModal()">+ Nueva Reserva</button>
+                        <button class="btn btn-primary btn-sm" onclick="openCheckInModal()" data-i18n="newReservation">+ Nueva Reserva</button>
                     </div>
                 </div>
 
                 <!-- Booking History List -->
                 <div id="history-section" style="display:none;">
-                    <div class="section-divider">📋 Historial de Reservas</div>
+                    <div class="section-divider" data-i18n="lblHistory">📋 Historial de Reservas</div>
                     <div id="history-list"></div>
                 </div>
             </div>
@@ -472,8 +485,9 @@
     </div>
 
     <!-- Monthly Occupancy -->
+    <!-- Monthly Occupancy -->
     <div class="monthly-section">
-        <div class="monthly-section-title">📅 Ocupación por Mes</div>
+        <div class="monthly-section-title" data-i18n="lblMonthlyOccupancy">📅 Ocupación por Mes</div>
         <div class="months-grid" id="monthly-container">
             <p style="color:#64748b; font-size:13px;">Cargando datos...</p>
         </div>
@@ -534,7 +548,121 @@
         });
     }
 
-    // ========== ROOM STATUS ==========
+    // ========== ROOM INFO MODAL ==========
+    function handleRoomModalClick(e) {
+        if (e.target === document.getElementById('room-modal')) closeModal('room-modal');
+    }
+
+    function showRoomModal(room) {
+        currentRoom = room;
+        var booking  = getCurrentBooking(room);
+        var allBook  = getActiveBookingsForRoom(room);
+        var status   = getRoomStatus(room);
+
+        // Header
+        document.getElementById('rm-title').innerText = (currentLang === 'es' ? 'Habitación ' : 'Room ') + room;
+        var badge = document.getElementById('rm-badge');
+        if (status === 'occupied') {
+            badge.className = 'status-badge occupied'; badge.innerText = currentLang === 'es' ? 'Ocupada' : 'Occupied';
+        } else if (status === 'reserved') {
+            badge.className = 'status-badge reserved'; badge.innerText = currentLang === 'es' ? 'Con Reservas' : 'Has Bookings';
+        } else {
+            badge.className = 'status-badge available'; badge.innerText = currentLang === 'es' ? 'Disponible' : 'Available';
+        }
+
+        var html = '';
+
+        // Current booking section
+        if (status === 'occupied' && booking) {
+            html += buildCurrentBookingHTML(booking, room);
+        } else {
+            var icon = status === 'reserved' ? '📅' : '🔑';
+            var msg  = status === 'reserved'
+                ? (currentLang === 'es' ? 'Disponible ahora — tiene reservas futuras' : 'Available now — has future bookings')
+                : (currentLang === 'es' ? 'Sin reservas activas — habitación libre' : 'No active bookings — free room');
+            html += '<div style="text-align:center; padding:16px 0;">';
+            html += '<div style="font-size:2.5rem; margin-bottom:8px;">' + icon + '</div>';
+            html += '<p style="color:#94a3b8; font-size:13px; margin-bottom:14px;">' + msg + '</p>';
+            html += '<button class="btn btn-primary btn-sm" style="display:inline-flex;width:auto;padding:9px 20px;" onclick="closeModal(\'room-modal\'); openCheckInModal();">' + (currentLang === 'es' ? '+ Nueva Reserva para Hab. ' : '+ New Booking for Room ') + room + '</button>';
+            html += '</div>';
+        }
+
+        // History
+        if (allBook.length > 0) {
+            html += '<div class="section-divider" style="margin-top:16px;">' + (currentLang === 'es' ? '📋 Historial de Reservas' : '📋 Booking History') + '</div>';
+            allBook.forEach(function(b) {
+                var isCurr   = isOccupiedToday(b);
+                var isFut    = isFutureBooking(b);
+                var isClosed = (b.estado||'').toUpperCase() === 'CERRADO';
+                var tc   = isCurr ? 'is-current' : (isFut ? 'is-future' : 'is-past');
+                var txt  = isCurr 
+                    ? (currentLang === 'es' ? 'ACTIVO' : 'ACTIVE') 
+                    : (isFut 
+                        ? (currentLang === 'es' ? 'FUTURO' : 'FUTURE') 
+                        : (isClosed ? (currentLang === 'es' ? 'CERRADO' : 'CLOSED') : (currentLang === 'es' ? 'PASADO' : 'PAST')));
+                var diff = calcDaysRemaining(b.fecha_salida);
+                var dStr = '';
+                if (diff !== null && isCurr) {
+                    if (diff > 0) dStr = ' <span style="color:#f59e0b; font-size:11px;">(' + diff + (currentLang === 'es' ? ' días restantes)' : ' days remaining)') + '</span>';
+                    else if (diff === 0) dStr = ' <span style="color:#10b981; font-size:11px;">(' + (currentLang === 'es' ? '¡Hoy!)' : 'Today!)') + '</span>';
+                    else dStr = ' <span style="color:#ef4444; font-size:11px;">(' + (currentLang === 'es' ? 'Vencido)' : 'Overdue)') + '</span>';
+                }
+                html += '<div class="booking-card ' + tc + '">';
+                html += '<div class="booking-card-header"><span class="booking-card-name">' + (b.cliente||'N/A') + '</span><span class="booking-tag ' + tc + '">' + txt + '</span></div>';
+                html += '<div class="booking-card-dates">' + fmtDate(b.fecha_inicio) + ' → ' + fmtDate(b.fecha_salida) + dStr + '</div>';
+                html += '<div class="booking-card-meta">' + (b.telefono||'') + (b.total_pagado ? ' | $'+parseFloat(b.total_pagado).toLocaleString() : '') + '</div>';
+                if (!isClosed) {
+                    html += '<div class="booking-card-actions">';
+                    html += '<button class="mini-btn mini-btn-edit" onclick="closeModal(\'room-modal\'); openEditModalForRow(' + b.row + ');">' + (currentLang === 'es' ? '✏️ Editar' : '✏️ Edit') + '</button>';
+                    if (isCurr) html += '<button class="mini-btn mini-btn-del" onclick="closeModal(\'room-modal\'); triggerCheckoutRow(' + b.row + ');">' + (currentLang === 'es' ? '🚪 Checkout' : '🚪 Checkout') + '</button>';
+                    html += '<button class="mini-btn mini-btn-del" onclick="closeModal(\'room-modal\'); triggerDeleteRow(' + b.row + ');">' + (currentLang === 'es' ? '🗑️ Borrar' : '🗑️ Delete') + '</button>';
+                    html += '</div>';
+                }
+                html += '</div>';
+            });
+        } else {
+            html += '<p style="color:#64748b; text-align:center; padding:12px; font-size:12px;">' + (currentLang === 'es' ? 'Sin reservas registradas.' : 'No bookings registered.') + '</p>';
+        }
+
+        // Bottom action
+        html += '<div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">';
+        html += '<button class="btn btn-primary btn-sm" onclick="closeModal(\'room-modal\'); openCheckInModal();">' + (currentLang === 'es' ? '+ Nueva Reserva para Hab. ' : '+ New Booking for Room ') + room + '</button>';
+        html += '</div>';
+
+        document.getElementById('rm-body').innerHTML = html;
+        openModal('room-modal');
+    }
+
+    function buildCurrentBookingHTML(b, room) {
+        var diff = calcDaysRemaining(b.fecha_salida);
+        var dColor = '#f59e0b', dText = '-';
+        if (diff !== null) {
+            if (diff > 0)  { dText = diff + (currentLang === 'es' ? ' días' : ' days');           dColor = '#f59e0b'; }
+            else if (diff === 0) { dText = currentLang === 'es' ? '¡Hoy!' : 'Today!';            dColor = '#10b981'; }
+            else           { dText = (currentLang === 'es' ? 'Vencido ' : 'Overdue ') + Math.abs(diff)+'d'; dColor = '#ef4444'; }
+        }
+        var h = '';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Cliente Actual' : 'Current Guest') + '</div><div class="info-value" style="font-size:1rem;font-weight:800;color:#f8fafc;">' + (b.cliente||'N/A') + '</div></div>';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Teléfono' : 'Phone') + '</div><div class="info-value">' + (b.telefono||'N/A') + '</div></div>';
+        h += '<div class="grid grid-cols-3 gap-2" style="margin:10px 0;">';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Entrada' : 'Check-In') + '</div><div class="info-value">' + fmtDate(b.fecha_inicio) + '</div></div>';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Salida' : 'Check-Out') + '</div><div class="info-value">' + fmtDate(b.fecha_salida) + '</div></div>';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Días rest.' : 'Days remaining') + '</div><div class="info-value font-bold" style="color:' + dColor + ';">' + dText + '</div></div>';
+        h += '</div>';
+        h += '<div class="grid grid-cols-3 gap-2" style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:8px 0;margin:8px 0;">';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Aseo' : 'Cleaning') + '</div><div class="info-value" style="color:var(--primary);">$' + (parseFloat(b.tasa_aseo)||0).toLocaleString() + '</div></div>';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Depósito' : 'Deposit') + '</div><div class="info-value" style="color:var(--primary);">$' + (parseFloat(b.deposito)||0).toLocaleString() + '</div></div>';
+        h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Total Pagado' : 'Total Paid') + '</div><div class="info-value" style="color:var(--primary);">$' + (parseFloat(b.total_pagado)||0).toLocaleString() + '</div></div>';
+        h += '</div>';
+        if (b.notas) h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Notas' : 'Notes') + '</div><div style="background:#0a1831;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:12px;max-height:60px;overflow-y:auto;">' + b.notas + '</div></div>';
+        h += '<div class="actions-stack" style="margin-top:12px;">';
+        h += '<button class="btn btn-success btn-sm" onclick="closeModal(\'room-modal\'); triggerCheckoutRow(' + b.row + ');">' + (currentLang === 'es' ? '🚪 Check-Out' : '🚪 Check-Out') + '</button>';
+        h += '<button class="btn btn-secondary btn-sm" onclick="closeModal(\'room-modal\'); openEditModalForRow(' + b.row + ');">' + (currentLang === 'es' ? '✏️ Editar Reserva' : '✏️ Edit Booking') + '</button>';
+        h += '<button class="btn btn-danger btn-sm" onclick="closeModal(\'room-modal\'); triggerDeleteRow(' + b.row + ');">' + (currentLang === 'es' ? '🗑️ Eliminar Registro' : '🗑️ Delete Record') + '</button>';
+        h += '</div>';
+        return h;
+    }
+
     function getRoomStatus(room) {
         var bookings = bookingsList.filter(function(b) { return parseInt(b.room) === parseInt(room); });
         if (bookings.some(isOccupiedToday)) return 'occupied';
@@ -560,11 +688,177 @@
         return found;
     }
 
-    // ========== LANGUAGE ==========
+    // ========== LANGUAGE & TRANSLATIONS ==========
+    const translations = {
+        es: {
+            pageTitle: '🏨 Control de Habitaciones y Reservas',
+            calcTitle: '🧮 Calculadora de Tarifa',
+            bedTypeLabel: '🛏️ Tipo de Cama',
+            rateDailyLabel: '💵 Tarifa Diaria',
+            rateWeeklyLabel: '💵 Tarifa Semanal',
+            rateMonthlyLabel: '💵 Tarifa Mensual',
+            applyBtn: '✅ Usar este total',
+            newReservation: '+ Nueva Reserva',
+            editReservation: '✏️ Editar Reserva',
+            checkinTitle: '+ Nueva Reserva / Check-In',
+            overlapWarningCheckIn: '⚠️ Las fechas seleccionadas se solapan con una reserva existente.',
+            overlapWarningEdit: '⚠️ Las fechas seleccionadas se solapan con otra reserva existente.',
+            roomLabel: 'Habitación',
+            guestLabel: 'Nombre del Cliente',
+            phoneLabel: 'Teléfono',
+            startLabel: 'Fecha Entrada',
+            endLabel: 'Fecha Salida',
+            aseoLabel: 'Tasa Aseo',
+            depositoLabel: 'Depósito',
+            totalPaidLabel: 'Total Pagado',
+            notesLabel: 'Notas',
+            saveBookingBtn: 'Guardar Reserva',
+            editTitle: '✏️ Editar Reserva',
+            statusLabel: 'Estado',
+            statusOpen: 'ABIERTO',
+            statusClosed: 'CERRADO',
+            saveChangesBtn: 'Guardar Cambios',
+            backLink: '← Volver a Inicio',
+            statOccupied: 'Ocupadas Hoy',
+            statReserved: 'Con Reserva',
+            statAvailable: 'Disponibles',
+            statTotal: 'Total',
+            floor1: '🏢 Piso 1 — Habitaciones 101 a 114',
+            floor2: '🏢 Piso 2 — Habitaciones 201 a 214',
+            legendAvailable: 'Disponible',
+            legendReserved: 'Con reserva futura',
+            legendOccupied: 'Ocupada hoy',
+            lblRoomHeader: 'Habitación',
+            statusFree: 'Libre',
+            selectRoomPrompt: 'Selecciona una habitación para ver su detalle',
+            lblCurrentGuest: 'Cliente Actual',
+            lblPhone: 'Teléfono',
+            lblCheckIn: 'Entrada',
+            lblCheckOut: 'Salida',
+            lblDaysRemaining: 'Días restantes',
+            lblCleaning: 'Aseo',
+            lblDeposit: 'Depósito',
+            lblTotalPaid: 'Total Pagado',
+            lblRegisteredAt: 'Registrado el',
+            lblNotes: 'Notas',
+            btnCheckout: '🚪 Realizar Check-Out',
+            btnEditCurrent: '✏️ Editar Reserva Actual',
+            btnDeleteCurrent: '🗑️ Eliminar Registro',
+            lblHistory: '📋 Historial de Reservas',
+            lblMonthlyOccupancy: '📅 Ocupación por Mes',
+            bedSelectPrompt: '-- Seleccionar tipo de cama --',
+            bedSingle: 'Single (1 cama individual)',
+            bedDouble: 'Doble (2 camas)',
+            bedQueen: 'Queen (1 cama queen)',
+            bedKing: 'King (1 cama king)',
+            lblCalcDays: 'Días',
+            lblCalcPeriod: 'Período',
+            lblCalcBaseRate: 'Tarifa Base',
+            lblCalcTotal: 'TOTAL'
+        },
+        en: {
+            pageTitle: '🏨 Rooms and Bookings Control',
+            calcTitle: '🧮 Rate Calculator',
+            bedTypeLabel: '🛏️ Bed Type',
+            rateDailyLabel: '💵 Daily Rate',
+            rateWeeklyLabel: '💵 Weekly Rate',
+            rateMonthlyLabel: '💵 Monthly Rate',
+            applyBtn: '✅ Use this total',
+            newReservation: '+ New Booking',
+            editReservation: '✏️ Edit Booking',
+            checkinTitle: '+ New Booking / Check-In',
+            overlapWarningCheckIn: '⚠️ Selected dates overlap with an existing booking.',
+            overlapWarningEdit: '⚠️ Selected dates overlap with another existing booking.',
+            roomLabel: 'Room',
+            guestLabel: 'Guest Name',
+            phoneLabel: 'Phone',
+            startLabel: 'Check-In Date',
+            endLabel: 'Check-Out Date',
+            aseoLabel: 'Cleaning Fee',
+            depositoLabel: 'Deposit',
+            totalPaidLabel: 'Total Paid',
+            notesLabel: 'Notes',
+            saveBookingBtn: 'Save Booking',
+            editTitle: '✏️ Edit Booking',
+            statusLabel: 'Status',
+            statusOpen: 'OPEN',
+            statusClosed: 'CLOSED',
+            saveChangesBtn: 'Save Changes',
+            backLink: '← Back to Home',
+            statOccupied: 'Occupied Today',
+            statReserved: 'Reserved',
+            statAvailable: 'Available',
+            statTotal: 'Total',
+            floor1: '🏢 Floor 1 — Rooms 101 to 114',
+            floor2: '🏢 Floor 2 — Rooms 201 to 214',
+            legendAvailable: 'Available',
+            legendReserved: 'With future booking',
+            legendOccupied: 'Occupied today',
+            lblRoomHeader: 'Room',
+            statusFree: 'Free',
+            selectRoomPrompt: 'Select a room to view details',
+            lblCurrentGuest: 'Current Guest',
+            lblPhone: 'Phone',
+            lblCheckIn: 'Check-In',
+            lblCheckOut: 'Check-Out',
+            lblDaysRemaining: 'Days Remaining',
+            lblCleaning: 'Cleaning',
+            lblDeposit: 'Deposit',
+            lblTotalPaid: 'Total Paid',
+            lblRegisteredAt: 'Registered At',
+            lblNotes: 'Notes',
+            btnCheckout: '🚪 Check-Out',
+            btnEditCurrent: '✏️ Edit Current Booking',
+            btnDeleteCurrent: '🗑️ Delete Record',
+            lblHistory: '📋 Booking History',
+            lblMonthlyOccupancy: '📅 Monthly Occupancy',
+            bedSelectPrompt: '-- Select bed type --',
+            bedSingle: 'Single (1 single bed)',
+            bedDouble: 'Double (2 beds)',
+            bedQueen: 'Queen (1 queen bed)',
+            bedKing: 'King (1 king bed)',
+            lblCalcDays: 'Days',
+            lblCalcPeriod: 'Period',
+            lblCalcBaseRate: 'Base Rate',
+            lblCalcTotal: 'TOTAL'
+        }
+    };
+
+    function applyTranslations() {
+        const t = translations[currentLang] || translations['es'];
+        const elems = document.querySelectorAll('[data-i18n]');
+        elems.forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (!t[key]) return;
+            // Handle placeholders for inputs, textareas, selects
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName)) {
+                if (el.hasAttribute('placeholder')) {
+                    el.placeholder = t[key];
+                }
+                if (el.tagName === 'INPUT' && el.type === 'button') {
+                    el.value = t[key];
+                }
+            }
+            // Update visible text for common elements
+            if (['BUTTON', 'DIV', 'SPAN', 'H1', 'H3', 'P', 'LABEL', 'A', 'OPTION'].includes(el.tagName)) {
+                el.innerText = t[key];
+            }
+        });
+    }
+
     function setLanguage(lang) {
         currentLang = lang;
         document.getElementById('btn-es').classList.toggle('active', lang === 'es');
         document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+        applyTranslations();
+        if (currentRoom) {
+            showDetails(currentRoom);
+            var roomModal = document.getElementById('room-modal');
+            if (roomModal && roomModal.style.display === 'flex') {
+                showRoomModal(currentRoom);
+            }
+        }
+        renderMonthly();
     }
 
     // ========== MODALS ==========
@@ -613,7 +907,9 @@
     }
 
     // ========== SELECT ROOM ==========
+
     function selectRoom(room) {
+        console.log('selectRoom triggered for room', room);
         currentRoom = room;
         document.querySelectorAll('.room-btn').forEach(function(b) {
             b.classList.toggle('active', parseInt(b.getAttribute('data-room')) === parseInt(room));
@@ -621,8 +917,15 @@
         document.getElementById('lbl-room').innerText = room;
         document.getElementById('state-no-room').style.display = 'none';
         document.getElementById('state-room-selected').style.display = 'block';
-        showDetails(room);
+        // Optionally update side panel details
+        // showDetails(room);
+        // Open the room info popup modal
+        showRoomModal(room);
+        // Ensure modal is visible (fallback)
+        openModal('room-modal');
+        console.log('selectRoom completed');
     }
+
 
     // ========== SHOW ROOM DETAILS ==========
     function showDetails(room) {
@@ -696,7 +999,11 @@
             var isFut = isFutureBooking(b);
             var isClosed = (b.estado||'').toUpperCase() === 'CERRADO';
             var tagClass = isCurr ? 'is-current' : (isFut ? 'is-future' : 'is-past');
-            var tagText = isCurr ? 'ACTIVO' : (isFut ? 'FUTURO' : (isClosed ? 'CERRADO' : 'PASADO'));
+            var tagText = isCurr 
+                ? (currentLang === 'es' ? 'ACTIVO' : 'ACTIVE') 
+                : (isFut 
+                    ? (currentLang === 'es' ? 'FUTURO' : 'FUTURE') 
+                    : (isClosed ? (currentLang === 'es' ? 'CERRADO' : 'CLOSED') : (currentLang === 'es' ? 'PASADO' : 'PAST')));
 
             var card = document.createElement('div');
             card.className = 'booking-card ' + tagClass;
@@ -704,9 +1011,9 @@
             var actionsHtml = '';
             if (!isClosed) {
                 actionsHtml = '<div class="booking-card-actions">'
-                    + '<button class="mini-btn mini-btn-edit" onclick="openEditModalForRow(' + b.row + ')">✏️ Editar</button>'
-                    + (isCurr ? '<button class="mini-btn mini-btn-del" onclick="triggerCheckoutRow(' + b.row + ')">🚪 Checkout</button>' : '')
-                    + '<button class="mini-btn mini-btn-del" onclick="triggerDeleteRow(' + b.row + ')">🗑️ Borrar</button>'
+                    + '<button class="mini-btn mini-btn-edit" onclick="openEditModalForRow(' + b.row + ')">' + (currentLang === 'es' ? '✏️ Editar' : '✏️ Edit') + '</button>'
+                    + (isCurr ? '<button class="mini-btn mini-btn-del" onclick="triggerCheckoutRow(' + b.row + ')">' + (currentLang === 'es' ? '🚪 Checkout' : '🚪 Checkout') + '</button>' : '')
+                    + '<button class="mini-btn mini-btn-del" onclick="triggerDeleteRow(' + b.row + ')">' + (currentLang === 'es' ? '🗑️ Borrar' : '🗑️ Delete') + '</button>'
                     + '</div>';
             }
 
@@ -829,11 +1136,13 @@
         var startDate = document.getElementById('checkin-start').value;
         var endDate = document.getElementById('checkin-end').value;
         if (new Date(startDate) > new Date(endDate)) {
-            alert('La fecha de salida debe ser posterior a la de entrada.');
+            alert(currentLang === 'es' ? 'La fecha de salida debe ser posterior a la de entrada.' : 'Departure date must be after check-in date.');
             return;
         }
         if (hasOverlap(room, startDate, endDate, null)) {
-            alert('⚠️ Las fechas seleccionadas se solapan con una reserva existente para la habitación ' + room + '. Selecciona otras fechas.');
+            alert(currentLang === 'es' 
+                ? '⚠️ Las fechas seleccionadas se solapan con una reserva existente para la habitación ' + room + '. Selecciona otras fechas.'
+                : '⚠️ Selected dates overlap with an existing booking for room ' + room + '. Select other dates.');
             return;
         }
         var tok = document.querySelector('meta[name="csrf-token"]').content;
@@ -846,11 +1155,12 @@
             total_pagado: document.getElementById('checkin-total-pagado').value || 0,
             estado: 'ABIERTO', notas: document.getElementById('checkin-notas').value
         };
-        closeModal('checkin-modal'); showLoading('Guardando reserva...');
+        closeModal('checkin-modal'); 
+        showLoading(currentLang === 'es' ? 'Guardando reserva...' : 'Saving booking...');
         fetch('/api/rooms-control/bookings', { method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN':tok}, body:JSON.stringify(p) })
             .then(function(r){return r.json();})
             .then(function(res){ if (res.success) { loadBookings(); } else { alert('Error: ' + res.message); hideLoading(); } })
-            .catch(function() { alert('Error al guardar.'); hideLoading(); });
+            .catch(function() { alert(currentLang === 'es' ? 'Error al guardar.' : 'Error saving booking.'); hideLoading(); });
     }
 
     // ========== EDIT ==========
@@ -884,11 +1194,13 @@
         var startDate = document.getElementById('edit-start').value;
         var endDate = document.getElementById('edit-end').value;
         if (new Date(startDate) > new Date(endDate)) {
-            alert('La fecha de salida debe ser posterior a la de entrada.');
+            alert(currentLang === 'es' ? 'La fecha de salida debe ser posterior a la de entrada.' : 'Departure date must be after check-in date.');
             return;
         }
         if (hasOverlap(room, startDate, endDate, row)) {
-            alert('⚠️ Las fechas se solapan con otra reserva existente para la habitación ' + room + '.');
+            alert(currentLang === 'es' 
+                ? '⚠️ Las fechas se solapan con otra reserva existente para la habitación ' + room + '.'
+                : '⚠️ Selected dates overlap with another existing booking for room ' + room + '.');
             return;
         }
         var tok = document.querySelector('meta[name="csrf-token"]').content;
@@ -904,7 +1216,8 @@
             notas: document.getElementById('edit-notas').value,
             fecha_registro: document.getElementById('edit-fecha-registro').value
         };
-        closeModal('edit-modal'); showLoading('Guardando...');
+        closeModal('edit-modal'); 
+        showLoading(currentLang === 'es' ? 'Guardando...' : 'Saving...');
         fetch('/api/rooms-control/bookings/' + row, { method:'PUT', headers:{'Content-Type':'application/json','Accept':'application/json','X-CSRF-TOKEN':tok}, body:JSON.stringify(p) })
             .then(function(r){return r.json();})
             .then(function(res){ if (res.success) { loadBookings(); } else { alert('Error: ' + res.message); hideLoading(); } })
@@ -917,9 +1230,9 @@
         triggerCheckoutRow(b.row);
     }
     function triggerCheckoutRow(row) {
-        if (!confirm('¿Confirmar Check-Out? El estado pasará a CERRADO.')) return;
+        if (!confirm(currentLang === 'es' ? '¿Confirmar Check-Out? El estado pasará a CERRADO.' : 'Confirm Check-Out? Status will be set to CLOSED.')) return;
         var tok = document.querySelector('meta[name="csrf-token"]').content;
-        showLoading('Procesando check-out...');
+        showLoading(currentLang === 'es' ? 'Procesando check-out...' : 'Processing check-out...');
         fetch('/api/rooms-control/bookings/' + row + '/checkout', { method:'POST', headers:{'Accept':'application/json','X-CSRF-TOKEN':tok} })
             .then(function(r){return r.json();})
             .then(function(res){ if (res.success) { loadBookings(); } else { alert('Error: ' + res.message); hideLoading(); } })
@@ -932,13 +1245,13 @@
         triggerDeleteRow(b.row);
     }
     function triggerDeleteRow(row) {
-        if (!confirm('¿Eliminar permanentemente esta reserva? No se puede deshacer.')) return;
+        if (!confirm(currentLang === 'es' ? '¿Eliminar permanentemente esta reserva? No se puede deshacer.' : 'Delete this booking permanently? This action cannot be undone.')) return;
         var tok = document.querySelector('meta[name="csrf-token"]').content;
-        showLoading('Eliminando...');
+        showLoading(currentLang === 'es' ? 'Eliminando...' : 'Deleting...');
         fetch('/api/rooms-control/bookings/' + row, { method:'DELETE', headers:{'Accept':'application/json','X-CSRF-TOKEN':tok} })
             .then(function(r){return r.json();})
             .then(function(res){ if (res.success) { loadBookings(); } else { alert('Error: ' + res.message); hideLoading(); } })
-            .catch(function() { alert('Error.'); hideLoading(); });
+            .catch(function() { alert(currentLang === 'es' ? 'Error.' : 'Error.'); hideLoading(); });
     }
 
     // ========== LOAD FROM API ==========
