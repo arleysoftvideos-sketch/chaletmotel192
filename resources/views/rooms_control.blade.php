@@ -232,7 +232,8 @@
                 <select id="checkin-bed-type" onchange="runCalc()">
                     <option value="" data-i18n="bedSelectPrompt">-- Seleccionar número de personas --</option>
                     <option value="Single" data-i18n="bedSingle">1 Persona &nbsp;($75/día)</option>
-                    <option value="Doble" data-i18n="bedDouble">2 Personas ($105/día)</option>
+                    <option value="Doble" data-i18n="bedDouble">2 Personas - Cama Doble ($105/día)</option>
+                    <option value="Twin" data-i18n="bedTwin">2 Personas - 2 Camas ($105/día)</option>
                     <option value="Queen" data-i18n="bedQueen">3 Personas ($140/día)</option>
                 </select>
             </div>
@@ -796,7 +797,8 @@
             lblMonthlyOccupancy: '📅 Ocupación por Mes',
             bedSelectPrompt: '-- Seleccionar número de personas --',
             bedSingle: '1 Persona ($75/día)',
-            bedDouble: '2 Personas ($105/día)',
+            bedDouble: '2 Personas - Cama Doble ($105/día)',
+            bedTwin: '2 Personas - 2 Camas ($105/día)',
             bedQueen: '3 Personas ($140/día)',
             bedKing: '4+ Personas',
             lblCalcDays: 'Días',
@@ -863,7 +865,8 @@
             lblMonthlyOccupancy: '📅 Monthly Occupancy',
             bedSelectPrompt: '-- Select number of people --',
             bedSingle: '1 Person ($75/day)',
-            bedDouble: '2 People ($105/day)',
+            bedDouble: '2 People - Double Bed ($105/day)',
+            bedTwin: '2 People - 2 Beds ($105/day)',
             bedQueen: '3 People ($140/day)',
             bedKing: '4+ People',
             lblCalcDays: 'Days',
@@ -1321,8 +1324,9 @@
 
     // ========== RATE CALCULATOR ==========
     var ROOM_RATES = {
-        'Single': { daily: 75,  weekly: 500, monthly: 1300, label: '1 Persona' },
-        'Doble':  { daily: 105, weekly: 700, monthly: 1800, label: '2 Personas' },
+        'Single': { daily: 75,  weekly: 500, monthly: 800,  label: '1 Persona' },
+        'Doble':  { daily: 105, weekly: 700, monthly: 1000, label: '2 Personas (Cama Doble)' },
+        'Twin':   { daily: 105, weekly: 700, monthly: 1200, label: '2 Personas (2 Camas)' },
         'Queen':  { daily: 140, weekly: 900, monthly: 2400, label: '3 Personas' },
         'King':   { daily: 140, weekly: 900, monthly: 2400, label: '3 Personas' }
     };
