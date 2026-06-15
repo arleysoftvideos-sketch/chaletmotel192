@@ -274,6 +274,11 @@
                     </div>
                 </div>
                 <div class="calc-breakdown" id="calc-breakdown"></div>
+                <!-- Month-by-month schedule (visible for contracts >= 6 months) -->
+                <div id="calc-schedule-container" style="display:none; margin-top:12px; padding-top:12px; border-top:1px dashed rgba(245,158,11,0.3); text-align:left;">
+                    <div style="font-size:11px; font-weight:700; color:var(--warning); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;" data-i18n="lblPaymentSchedule">📅 Calendario de Pagos Mensuales</div>
+                    <div id="calc-schedule-list" style="font-size:12px; display:grid; grid-template-columns: repeat(2, 1fr); gap:6px; color:#cbd5e1; margin-bottom:10px;"></div>
+                </div>
                 <button type="button" class="calc-apply-btn" onclick="applyCalcToForm()" data-i18n="applyBtn">✅ Usar este total</button>
             </div>
 
@@ -507,6 +512,11 @@
                         <div class="info-label" data-i18n="lblNotes">Notas</div>
                         <div style="background:#0a1831; border:1px solid var(--border); border-radius:8px; padding:10px; font-size:12px; max-height:80px; overflow-y:auto; white-space:pre-wrap;" id="detail-notas"></div>
                     </div>
+                    <!-- Payment Schedule inside Detail Panel -->
+                    <div id="detail-schedule-container" style="display:none; margin-top:12px; padding-top:12px; border-top:1px dashed var(--border);">
+                        <div class="info-label" data-i18n="lblPaymentSchedule">📅 Calendario de Pagos Mensuales</div>
+                        <div id="detail-schedule-list" style="font-size:11px; display:grid; grid-template-columns: repeat(1, 1fr); gap:4px; color:#cbd5e1; margin-top:6px;"></div>
+                    </div>
                     <div class="actions-stack">
                         <button class="btn btn-success btn-sm" onclick="triggerCheckout()" data-i18n="btnCheckout">🚪 Realizar Check-Out</button>
                         <button class="btn btn-secondary btn-sm" onclick="openEditModalForCurrentRoom()" data-i18n="btnEditCurrent">✏️ Editar Reserva Actual</button>
@@ -703,6 +713,40 @@
         h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Total Pagado' : 'Total Paid') + '</div><div class="info-value" style="color:var(--primary);">$' + (parseFloat(b.total_pagado)||0).toLocaleString() + '</div></div>';
         h += '</div>';
         if (b.notas) h += '<div class="info-group"><div class="info-label">' + (currentLang === 'es' ? 'Notas' : 'Notes') + '</div><div style="background:#0a1831;border:1px solid var(--border);border-radius:8px;padding:8px;font-size:12px;max-height:60px;overflow-y:auto;">' + b.notas + '</div></div>';
+        
+        // Dynamic month-by-month schedule list in modal
+        var totalDays = Math.ceil((parseDate(b.fecha_salida) - parseDate(b.fecha_inicio)) / 86400000) + 1;
+        var months  = Math.floor(totalDays / 30);
+        if (totalDays >= 28 && months >= 6) {
+            var rM = Math.round((parseFloat(b.total_pagado) || 0) / (months - 1));
+            var depVal = parseFloat(b.deposito) || rM;
+            h += '<div class="section-divider" style="margin-top:14px; margin-bottom:8px;">' + (currentLang === 'es' ? '📅 Calendario de Pagos Mensuales' : '📅 Monthly Payment Schedule') + '</div>';
+            h += '<div style="font-size:12px; display:grid; grid-template-columns: repeat(2, 1fr); gap:6px; color:#cbd5e1; margin-bottom:12px;">';
+            for (var i = 1; i <= months; i++) {
+                var monthLabel = currentLang === 'es' ? 'Mes ' + i : 'Month ' + i;
+                if (i === 1) {
+                    var rentPart = '$' + rM.toLocaleString();
+                    var depPart = '$' + depVal.toLocaleString();
+                    var totalPart = '$' + (rM + depVal).toLocaleString();
+                    h += '<div style="grid-column: 1 / -1; display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:6px; border:1px solid rgba(255,255,255,0.08);">';
+                    h += '<span>' + monthLabel + ' (+ ' + (currentLang === 'es' ? 'Depósito' : 'Deposit') + ')</span>';
+                    h += '<span class="font-bold">' + rentPart + ' + ' + depPart + ' = ' + totalPart + '</span>';
+                    h += '</div>';
+                } else if (i === 5) {
+                    h += '<div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(16,185,129,0.15); border-radius:6px; border:1px solid var(--success);">';
+                    h += '<span>' + monthLabel + '</span>';
+                    h += '<span class="font-bold" style="color:var(--success);">' + (currentLang === 'es' ? '¡Gratis!' : 'Free!') + '</span>';
+                    h += '</div>';
+                } else {
+                    h += '<div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.03); border-radius:6px; border:1px solid rgba(255,255,255,0.05);">';
+                    h += '<span>' + monthLabel + '</span>';
+                    h += '<span class="font-bold">$' + rM.toLocaleString() + '</span>';
+                    h += '</div>';
+                }
+            }
+            h += '</div>';
+        }
+        
         h += '<div class="actions-stack" style="margin-top:12px;">';
         h += '<button class="btn btn-success btn-sm" onclick="closeModal(\'room-modal\'); triggerCheckoutRow(' + b.row + ');">' + (currentLang === 'es' ? '🚪 Check-Out' : '🚪 Check-Out') + '</button>';
         h += '<button class="btn btn-secondary btn-sm" onclick="closeModal(\'room-modal\'); openEditModalForRow(' + b.row + ');">' + (currentLang === 'es' ? '✏️ Editar Reserva' : '✏️ Edit Booking') + '</button>';
@@ -795,6 +839,7 @@
             btnDeleteCurrent: '🗑️ Eliminar Registro',
             lblHistory: '📋 Historial de Reservas',
             lblMonthlyOccupancy: '📅 Ocupación por Mes',
+            lblPaymentSchedule: '📅 Calendario de Pagos Mensuales',
             bedSelectPrompt: '-- Seleccionar número de personas --',
             bedSingle: '1 Persona ($75/día)',
             bedDouble: '2 Personas - Cama Doble ($105/día)',
@@ -863,6 +908,7 @@
             btnDeleteCurrent: '🗑️ Delete Record',
             lblHistory: '📋 Booking History',
             lblMonthlyOccupancy: '📅 Monthly Occupancy',
+            lblPaymentSchedule: '📅 Monthly Payment Schedule',
             bedSelectPrompt: '-- Select number of people --',
             bedSingle: '1 Person ($75/day)',
             bedDouble: '2 People - Double Bed ($105/day)',
@@ -1040,6 +1086,44 @@
             if (diff > 0) { drEl.innerText = diff + (currentLang==='es'?' días':' days'); drEl.style.color = '#f59e0b'; }
             else if (diff === 0) { drEl.innerText = '¡Hoy!'; drEl.style.color = '#10b981'; }
             else { drEl.innerText = (currentLang==='es'?'Vencido ':'Overdue ') + Math.abs(diff) + 'd'; drEl.style.color = '#ef4444'; }
+        }
+
+        // Populate payment schedule in detail panel
+        var totalDays = Math.ceil((parseDate(b.fecha_salida) - parseDate(b.fecha_inicio)) / 86400000) + 1;
+        var months  = Math.floor(totalDays / 30);
+        var schedContainer = document.getElementById('detail-schedule-container');
+        var schedList = document.getElementById('detail-schedule-list');
+
+        if (totalDays >= 28 && months >= 6) {
+            schedContainer.style.display = 'block';
+            schedList.innerHTML = '';
+            var rM = Math.round((parseFloat(b.total_pagado) || 0) / (months - 1));
+            var depVal = parseFloat(b.deposito) || rM;
+            for (var i = 1; i <= months; i++) {
+                var monthLabel = currentLang === 'es' ? 'Mes ' + i : 'Month ' + i;
+                var row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.justifyContent = 'space-between';
+                row.style.padding = '4px 8px';
+                row.style.borderRadius = '4px';
+
+                if (i === 1) {
+                    row.style.background = 'rgba(255,255,255,0.03)';
+                    row.style.border = '1px solid rgba(255,255,255,0.08)';
+                    row.innerHTML = '<span>' + monthLabel + ' (+ ' + (currentLang === 'es' ? 'Depósito' : 'Dep.') + ')</span><span class="font-bold">$' + rM.toLocaleString() + ' + $' + depVal.toLocaleString() + ' = $' + (rM + depVal).toLocaleString() + '</span>';
+                } else if (i === 5) {
+                    row.style.background = 'rgba(16,185,129,0.15)';
+                    row.style.border = '1px solid var(--success)';
+                    row.innerHTML = '<span>' + monthLabel + '</span><span class="font-bold" style="color:var(--success);">' + (currentLang === 'es' ? '¡Gratis!' : 'Free!') + '</span>';
+                } else {
+                    row.style.background = 'rgba(255,255,255,0.03)';
+                    row.style.border = '1px solid rgba(255,255,255,0.05)';
+                    row.innerHTML = '<span>' + monthLabel + '</span><span class="font-bold">$' + rM.toLocaleString() + '</span>';
+                }
+                schedList.appendChild(row);
+            }
+        } else {
+            schedContainer.style.display = 'none';
         }
     }
 
@@ -1369,15 +1453,22 @@
         var period = '';
         var baseRate = '';
 
+        var isSixMonthsOrMore = (totalDays >= 28 && months >= 6);
         if (totalDays >= 28) {
-            total += months  * rMonthly;
+            if (isSixMonthsOrMore) {
+                total += (months - 1) * rMonthly;
+                parts.push(months + (currentLang === 'es' ? ' meses × $' : ' months × $') + rMonthly.toLocaleString());
+                parts.push((currentLang === 'es' ? '🎁 Mes 5 Gratis × -$' : '🎁 Month 5 Free × -$') + rMonthly.toLocaleString());
+            } else {
+                total += months * rMonthly;
+                if (months > 0) parts.push(months + (currentLang === 'es' ? ' mes' : ' month') + (months > 1 ? (currentLang === 'es' ? 'es' : 's') : '') + ' × $' + rMonthly.toLocaleString());
+            }
             total += weeks   * rWeekly;
             total += days    * rDaily;
-            if (months > 0)  parts.push(months + ' mes' + (months > 1 ? 'es' : '') + ' × $' + rMonthly.toLocaleString());
             if (weeks > 0)   parts.push(weeks  + ' sem × $' + rWeekly.toLocaleString());
             if (days > 0)    parts.push(days   + ' día' + (days > 1 ? 's' : '') + ' × $' + rDaily.toLocaleString());
-            period   = months > 0 ? 'Mensual' : 'Semanal';
-            baseRate = '$' + rMonthly.toLocaleString() + '/mes';
+            period   = months > 0 ? (currentLang === 'es' ? 'Mensual' : 'Monthly') : (currentLang === 'es' ? 'Semanal' : 'Weekly');
+            baseRate = '$' + rMonthly.toLocaleString() + '/' + (currentLang === 'es' ? 'mes' : 'mo');
         } else if (totalDays >= 7) {
             total += weeks * rWeekly;
             total += days  * rDaily;
@@ -1397,6 +1488,69 @@
         document.getElementById('calc-rate').innerText      = baseRate;
         document.getElementById('calc-total').innerText     = '$' + Math.round(total).toLocaleString();
         document.getElementById('calc-breakdown').innerText = parts.join(' + ');
+
+        // Month-by-month payment list schedule + deposit auto-fill
+        var schedContainer = document.getElementById('calc-schedule-container');
+        var schedList = document.getElementById('calc-schedule-list');
+        var depInput = document.getElementById('checkin-deposito');
+
+        if (isSixMonthsOrMore) {
+            schedContainer.style.display = 'block';
+            schedList.innerHTML = '';
+            for (var i = 1; i <= months; i++) {
+                var monthLabel = currentLang === 'es' ? 'Mes ' + i : 'Month ' + i;
+                var row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.justifyContent = 'space-between';
+                row.style.padding = '4px 8px';
+                row.style.borderRadius = '6px';
+                
+                if (i === 1) {
+                    row.style.gridColumn = '1 / -1';
+                    row.style.background = 'rgba(255,255,255,0.03)';
+                    row.style.border = '1px solid rgba(255,255,255,0.08)';
+                    
+                    var rentPart = '$' + rMonthly.toLocaleString();
+                    var depPart = '$' + rMonthly.toLocaleString();
+                    var totalPart = '$' + (rMonthly * 2).toLocaleString();
+                    
+                    row.innerHTML = '<span>' + monthLabel + ' (+ ' + (currentLang === 'es' ? 'Depósito' : 'Deposit') + ')</span>'
+                        + '<span class="font-bold">' + rentPart + ' + ' + depPart + ' = ' + totalPart + '</span>';
+                } else if (i === 5) {
+                    row.style.background = 'rgba(16,185,129,0.15)';
+                    row.style.border = '1px solid var(--success)';
+                    row.innerHTML = '<span>' + monthLabel + '</span>'
+                        + '<span class="font-bold" style="color:var(--success);">' + (currentLang === 'es' ? '¡Gratis!' : 'Free!') + '</span>';
+                } else {
+                    row.style.background = 'rgba(255,255,255,0.03)';
+                    row.style.border = '1px solid rgba(255,255,255,0.05)';
+                    row.innerHTML = '<span>' + monthLabel + '</span>'
+                        + '<span class="font-bold">$' + rMonthly.toLocaleString() + '</span>';
+                }
+                schedList.appendChild(row);
+            }
+            // Add deposit row to schedule
+            var depRow = document.createElement('div');
+            depRow.style.display = 'flex';
+            depRow.style.justifyContent = 'space-between';
+            depRow.style.padding = '6px 10px';
+            depRow.style.background = 'rgba(245,158,11,0.1)';
+            depRow.style.borderRadius = '6px';
+            depRow.style.border = '1px dashed var(--warning)';
+            depRow.style.gridColumn = '1 / -1';
+            depRow.style.marginTop = '6px';
+            depRow.innerHTML = '<span>💼 ' + (currentLang === 'es' ? 'Depósito Requerido (1 Mes)' : 'Required Deposit (1 Month)') + '</span><span class="font-bold" style="color:var(--warning);">' + '$' + rMonthly.toLocaleString() + '</span>';
+            schedList.appendChild(depRow);
+
+            // Pre-fill deposit field in the main checkin form
+            if (depInput) depInput.value = rMonthly;
+        } else {
+            schedContainer.style.display = 'none';
+            // Only clear deposit if it is exactly equal to the previous monthly rate (meaning it was auto-filled)
+            if (depInput && (parseFloat(depInput.value) === rMonthly)) {
+                depInput.value = 0;
+            }
+        }
     }
 
     // Mark rate fields as customized when user types in them
