@@ -129,13 +129,18 @@ class RecyclingController extends Controller
                 $query->where('date', '<=', $endDate);
             }
 
-            $totalBig = (int)$query->sum('big');
-            $totalSmall = (int)$query->sum('small');
-            $totalBags = (int)$query->sum('total');
-            $logCount = (int)$query->count();
+            $summaryQuery = clone $query;
+            $locationsQuery = clone $query;
+            $trendQuery = clone $query;
+            $logsQuery = clone $query;
+
+            $totalBig = (int)$summaryQuery->sum('big');
+            $totalSmall = (int)$summaryQuery->sum('small');
+            $totalBags = (int)$summaryQuery->sum('total');
+            $logCount = (int)$summaryQuery->count();
 
             // Group by store and summarize
-            $topLocations = $query->select('store', 
+            $topLocations = $locationsQuery->select('store', 
                 \DB::raw('SUM(big) as big_sum'), 
                 \DB::raw('SUM(small) as small_sum'), 
                 \DB::raw('SUM(total) as total_sum')
@@ -144,8 +149,18 @@ class RecyclingController extends Controller
             ->orderBy('total_sum', 'desc')
             ->get();
 
+            // Group by date and summarize for temporal trend
+            $dailyTrend = $trendQuery->select('date',
+                \DB::raw('SUM(big) as big_sum'),
+                \DB::raw('SUM(small) as small_sum'),
+                \DB::raw('SUM(total) as total_sum')
+            )
+            ->groupBy('date')
+            ->orderBy('date', 'asc')
+            ->get();
+
             // Get recent logs
-            $recentLogs = $query->orderBy('date', 'desc')
+            $recentLogs = $logsQuery->orderBy('date', 'desc')
                 ->orderBy('created_at', 'desc')
                 ->limit(20)
                 ->get();
@@ -159,6 +174,7 @@ class RecyclingController extends Controller
                     'count' => $logCount,
                 ],
                 'locations' => $topLocations,
+                'trend' => $dailyTrend,
                 'logs' => $recentLogs,
             ]);
 

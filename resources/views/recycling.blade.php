@@ -48,6 +48,7 @@
             }
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {
@@ -420,6 +421,13 @@
                 
                 <!-- Date Filters Form -->
                 <div class="flex flex-wrap items-center gap-3 bg-[#061021]/80 border border-blue-950 p-2.5 rounded-2xl">
+                    <!-- Quick Filters -->
+                    <div class="flex items-center gap-1 border-r border-blue-950/60 pr-2">
+                        <button onclick="setStatsQuickRange(7)" class="text-[10px] font-bold text-slate-400 hover:text-white hover:bg-blue-950/50 px-2.5 py-1.5 rounded-lg transition-colors uppercase tracking-wider">{{ __('7 Días') }}</button>
+                        <button onclick="setStatsQuickRange(30)" class="text-[10px] font-bold text-slate-400 hover:text-white hover:bg-blue-950/50 px-2.5 py-1.5 rounded-lg transition-colors uppercase tracking-wider">{{ __('30 Días') }}</button>
+                        <button onclick="setStatsQuickRange('month')" class="text-[10px] font-bold text-slate-400 hover:text-white hover:bg-blue-950/50 px-2.5 py-1.5 rounded-lg transition-colors uppercase tracking-wider">{{ __('Mes') }}</button>
+                    </div>
+
                     <div class="flex items-center gap-2">
                         <label class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{ __('Desde') }}</label>
                         <input type="date" id="stats-start-date" onchange="loadStatistics()" class="bg-[#040a17] border border-blue-950 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-gold">
@@ -466,6 +474,49 @@
                     <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest">{{ __('Total Registros') }}</span>
                     <h3 id="stat-card-count" class="text-4xl font-black font-outfit text-white mt-2">0</h3>
                     <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ __('Días Registrados') }}</p>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Chart A: Temporal Trend -->
+                <div class="lg:col-span-7 bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Tendencia Temporal') }}</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Evolución histórica de recolección por fecha') }}</p>
+                            </div>
+                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Línea de Tiempo') }}</span>
+                        </div>
+                        <div class="w-full relative h-[300px]">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart B: Route/Company Distribution -->
+                <div class="lg:col-span-5 bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl flex flex-col justify-between">
+                    <div>
+                        <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Distribución de Bolsas') }}</h3>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Proporción acumulada por ruta o empresa') }}</p>
+                            </div>
+                            <!-- Distribution Toggle Button -->
+                            <div class="flex bg-blue-950/40 p-0.5 rounded-lg border border-blue-900/60 shrink-0">
+                                <button id="dist-toggle-ruta" onclick="switchDistributionChart('ruta')" class="px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200">
+                                    {{ __('Ruta') }}
+                                </button>
+                                <button id="dist-toggle-empresa" onclick="switchDistributionChart('empresa')" class="px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200">
+                                    {{ __('Empresa') }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-full relative h-[300px] flex items-center justify-center">
+                            <canvas id="distributionChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1132,6 +1183,75 @@
         // ----------------------------------------------------
         // STATISTICS LOGIC
         // ----------------------------------------------------
+        // ----------------------------------------------------
+        // STATISTICS LOGIC & CHARTING
+        // ----------------------------------------------------
+        let trendChartInstance = null;
+        let distributionChartInstance = null;
+        let activeDistributionMode = 'ruta';
+        let lastStatsData = null;
+
+        function setStatsQuickRange(range) {
+            const today = new Date();
+            let startDate = '';
+            const endDate = today.toISOString().split('T')[0];
+
+            if (range === 7) {
+                const pastDate = new Date();
+                pastDate.setDate(today.getDate() - 7);
+                startDate = pastDate.toISOString().split('T')[0];
+            } else if (range === 30) {
+                const pastDate = new Date();
+                pastDate.setDate(today.getDate() - 30);
+                startDate = pastDate.toISOString().split('T')[0];
+            } else if (range === 'month') {
+                startDate = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+            }
+
+            document.getElementById('stats-start-date').value = startDate;
+            document.getElementById('stats-end-date').value = endDate;
+            loadStatistics();
+        }
+
+        function normalizeStoreName(name) {
+            if (!name) return '';
+            const upper = name.toUpperCase().trim();
+            if (upper === 'OFC' || upper === 'OUT FATHERS CLOSET' || upper.startsWith("OUT FATHER'S CLOSET") || upper === 'OUT FATHERS CLOSET') {
+                return "Out Father's Closet";
+            }
+            if (upper === 'NHC' || upper === 'THE NEIGHBORHOOD OF WEST VOLUSIA' || upper.startsWith('NEIGHBORHOOD OF WEST VOLUSIA')) {
+                return "Neighborhood of West Volusia";
+            }
+            if (upper === 'EP' || upper === 'EPIPHANY THRIFT STORE') {
+                return "Epiphany Thrift Store";
+            }
+            if (upper === 'CITCO' || upper === 'CITGO') {
+                return "Citgo / Punto Conv.";
+            }
+            if (upper === 'ORMOND' || upper === 'ORMOND BEACH') {
+                return "Ormond Beach";
+            }
+            for (const item of lista) {
+                const cleanN = item.n.replace("⚠️", "").trim();
+                if (cleanN.toUpperCase() === upper) {
+                    return cleanN;
+                }
+            }
+            return name;
+        }
+
+        function getStoreRouteAndCompany(storeName) {
+            const normalized = normalizeStoreName(storeName);
+            const found = lista.find(item => {
+                const cleanN = item.n.replace("⚠️", "").trim();
+                return cleanN.toLowerCase() === normalized.toLowerCase();
+            });
+            if (found) {
+                return { r: found.r, e: found.e };
+            }
+            return { r: 'Volusia', e: 'Independiente' };
+        }
+
         function loadStatistics() {
             const startDate = document.getElementById('stats-start-date').value;
             const endDate = document.getElementById('stats-end-date').value;
@@ -1148,6 +1268,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
+                        lastStatsData = data;
                         renderStatistics(data);
                     } else {
                         console.error("Failed to load statistics:", data.message);
@@ -1160,6 +1281,25 @@
             document.getElementById('stats-start-date').value = '';
             document.getElementById('stats-end-date').value = '';
             loadStatistics();
+        }
+
+        function switchDistributionChart(mode) {
+            activeDistributionMode = mode;
+            
+            const btnRuta = document.getElementById('dist-toggle-ruta');
+            const btnEmpresa = document.getElementById('dist-toggle-empresa');
+
+            if (mode === 'ruta') {
+                btnRuta.className = "px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200 shadow-sm";
+                btnEmpresa.className = "px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200";
+            } else {
+                btnEmpresa.className = "px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200 shadow-sm";
+                btnRuta.className = "px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200";
+            }
+
+            if (lastStatsData) {
+                renderDistributionChart();
+            }
         }
 
         function renderStatistics(data) {
@@ -1177,11 +1317,30 @@
             document.getElementById('stat-card-big-percent').textContent = `${bigPercent}% ${currentLang === 'es' ? 'del total' : 'of total'}`;
             document.getElementById('stat-card-small-percent').textContent = `${smallPercent}% ${currentLang === 'es' ? 'del total' : 'of total'}`;
 
-            // Render top locations table
+            // Render top locations table (normalized/grouped)
             const tableBody = document.getElementById('stats-locations-table-body');
             tableBody.innerHTML = '';
             
-            if (data.locations.length === 0) {
+            // Let's normalize and group the locations list to avoid duplicate listings (e.g. OFC vs Out Father's Closet)
+            const groupedLocations = {};
+            data.locations.forEach(loc => {
+                const normName = normalizeStoreName(loc.store);
+                if (!groupedLocations[normName]) {
+                    groupedLocations[normName] = {
+                        store: normName,
+                        big_sum: 0,
+                        small_sum: 0,
+                        total_sum: 0
+                    };
+                }
+                groupedLocations[normName].big_sum += parseInt(loc.big_sum) || 0;
+                groupedLocations[normName].small_sum += parseInt(loc.small_sum) || 0;
+                groupedLocations[normName].total_sum += parseInt(loc.total_sum) || 0;
+            });
+
+            const sortedLocations = Object.values(groupedLocations).sort((a, b) => b.total_sum - a.total_sum);
+
+            if (sortedLocations.length === 0) {
                 const emptyMsg = currentLang === 'es' ? 'No hay registros en este rango' : 'No logs in this range';
                 tableBody.innerHTML = `
                     <tr>
@@ -1191,20 +1350,20 @@
                     </tr>
                 `;
             } else {
-                data.locations.forEach(loc => {
+                sortedLocations.forEach(loc => {
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-blue-950/20 transition-colors";
                     tr.innerHTML = `
                         <td class="px-4 py-3 font-semibold text-white">${loc.store}</td>
-                        <td class="px-4 py-3 text-center text-emerald-400 font-bold">${parseInt(loc.big_sum).toLocaleString()}</td>
-                        <td class="px-4 py-3 text-center text-blue-400 font-bold">${parseInt(loc.small_sum).toLocaleString()}</td>
-                        <td class="px-4 py-3 text-right text-gold font-black">${parseInt(loc.total_sum).toLocaleString()}</td>
+                        <td class="px-4 py-3 text-center text-emerald-400 font-bold">${loc.big_sum.toLocaleString()}</td>
+                        <td class="px-4 py-3 text-center text-blue-400 font-bold">${loc.small_sum.toLocaleString()}</td>
+                        <td class="px-4 py-3 text-right text-gold font-black">${loc.total_sum.toLocaleString()}</td>
                     `;
                     tableBody.appendChild(tr);
                 });
             }
 
-            // Render recent logs timeline
+            // Render recent logs timeline (normalized store names)
             const logsList = document.getElementById('stats-recent-logs-list');
             logsList.innerHTML = '';
             
@@ -1222,10 +1381,11 @@
                     
                     const dateParts = log.date.split('-');
                     const formattedDate = dateParts.length === 3 ? `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}` : log.date;
+                    const normStoreName = normalizeStoreName(log.store);
 
                     item.innerHTML = `
                         <div class="flex flex-col min-w-0">
-                            <span class="text-white font-bold text-xs truncate">${log.store}</span>
+                            <span class="text-white font-bold text-xs truncate">${normStoreName}</span>
                             <span class="text-[10px] text-slate-400 font-medium">${formattedDate}</span>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
@@ -1243,6 +1403,214 @@
                     logsList.appendChild(item);
                 });
             }
+
+            // Render Charts
+            renderTrendChart(data.trend || []);
+            renderDistributionChart();
+        }
+
+        function renderTrendChart(trendData) {
+            if (trendChartInstance) {
+                trendChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            
+            if (trendData.length === 0) {
+                trendChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: { labels: [], datasets: [] },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: currentLang === 'es' ? 'Sin datos en este rango' : 'No data in this range',
+                                color: '#94a3b8'
+                            }
+                        }
+                    }
+                });
+                return;
+            }
+
+            const labels = trendData.map(t => {
+                const dateParts = t.date.split('-');
+                return dateParts.length === 3 ? `${dateParts[1]}/${dateParts[2]}` : t.date;
+            });
+            const bigs = trendData.map(t => parseInt(t.big_sum) || 0);
+            const smalls = trendData.map(t => parseInt(t.small_sum) || 0);
+            const totals = trendData.map(t => parseInt(t.total_sum) || 0);
+
+            trendChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: currentLang === 'es' ? 'Total Bolsas' : 'Total Bags',
+                            data: totals,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#10b981',
+                            pointRadius: 4
+                        },
+                        {
+                            label: currentLang === 'es' ? 'Bolsas Grandes (B)' : 'Big Bags (B)',
+                            data: bigs,
+                            borderColor: '#ffb703',
+                            backgroundColor: 'transparent',
+                            tension: 0.3,
+                            borderWidth: 2,
+                            pointBackgroundColor: '#ffb703',
+                            pointRadius: 3
+                        },
+                        {
+                            label: currentLang === 'es' ? 'Bolsas Pequeñas (S)' : 'Small Bags (S)',
+                            data: smalls,
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'transparent',
+                            tension: 0.3,
+                            borderWidth: 2,
+                            pointBackgroundColor: '#3b82f6',
+                            pointRadius: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#cbd5e1',
+                                font: { family: 'Inter', size: 10, weight: 'bold' }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#0a1831',
+                            titleColor: '#fff',
+                            bodyColor: '#cbd5e1',
+                            borderColor: '#1e293b',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(30, 41, 59, 0.3)' },
+                            ticks: { color: '#94a3b8', font: { size: 9 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(30, 41, 59, 0.3)' },
+                            ticks: { color: '#94a3b8', font: { size: 9 } },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderDistributionChart() {
+            if (distributionChartInstance) {
+                distributionChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('distributionChart').getContext('2d');
+
+            if (!lastStatsData || !lastStatsData.locations || lastStatsData.locations.length === 0) {
+                distributionChartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: { labels: [], datasets: [] },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: currentLang === 'es' ? 'Sin datos' : 'No data',
+                                color: '#94a3b8'
+                            }
+                        }
+                    }
+                });
+                return;
+            }
+
+            const grouping = {};
+            lastStatsData.locations.forEach(loc => {
+                const info = getStoreRouteAndCompany(loc.store);
+                const key = activeDistributionMode === 'ruta' ? info.r : info.e;
+                grouping[key] = (grouping[key] || 0) + (parseInt(loc.total_sum) || 0);
+            });
+
+            const sortedItems = Object.entries(grouping).sort((a, b) => b[1] - a[1]);
+            const labels = sortedItems.map(item => {
+                const name = item[0];
+                return currentLang === 'es' ? name : (name === 'Volusia' ? 'Volusia' : (name === 'Orlando' ? 'Orlando' : (name === 'Kissimmee' ? 'Kissimmee' : (name === 'Lakeland' ? 'Lakeland' : (name === 'Miami' ? 'Miami' : (name === 'Ft. Lauderdale' ? 'Ft. Lauderdale' : (name === 'Gasolineras' ? 'Gas Stations' : (name === 'Independiente' ? 'Independent' : name))))))));
+            });
+            const values = sortedItems.map(item => item[1]);
+
+            const palette = [
+                '#10b981',
+                '#ffb703',
+                '#3b82f6',
+                '#8b5cf6',
+                '#ec4899',
+                '#14b8a6',
+                '#f43f5e',
+                '#6b7280'
+            ];
+
+            const colors = labels.map((_, i) => palette[i % palette.length]);
+
+            distributionChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: colors,
+                        borderColor: '#061021',
+                        borderWidth: 2,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#cbd5e1',
+                                boxWidth: 12,
+                                font: { family: 'Inter', size: 9, weight: 'bold' },
+                                padding: 10
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#0a1831',
+                            borderColor: '#1e293b',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const pct = Math.round((value / total) * 100);
+                                    return ` ${context.label}: ${value.toLocaleString()} (${pct}%)`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
         }
 
         // Initialize Page
