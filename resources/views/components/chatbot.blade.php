@@ -5,10 +5,10 @@
         <div class="bg-gradient-to-r from-blue-950 to-[#0a1831] p-4 flex items-center justify-between border-b border-white/10 shadow-md relative z-10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full border-2 border-gold overflow-hidden bg-navy-dark shadow-inner">
-                    <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Aki Avatar" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Adi Avatar" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h3 class="text-white font-bold tracking-wider leading-tight">Aki</h3>
+                    <h3 class="text-white font-bold tracking-wider leading-tight">Adi</h3>
                     <p class="text-gold/80 text-[10px] uppercase font-black tracking-widest flex items-center gap-1">
                         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> <span id="aki-status-text">Online</span>
                     </p>
@@ -38,7 +38,7 @@
 
     <!-- Floating Button -->
     <button id="aki-toggle-btn" class="w-16 h-16 bg-gradient-to-tr from-gold to-yellow-400 rounded-full shadow-[0_0_20px_rgba(255,215,0,0.4)] hover:shadow-[0_0_30px_rgba(255,215,0,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center ml-auto border-4 border-navy relative overflow-hidden group">
-        <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Aki" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Adi" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <!-- Notification Dot -->
         <span class="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-navy rounded-full animate-bounce"></span>
     </button>
@@ -63,14 +63,14 @@
         const dict = {
             es: {
                 welcome_lang: "Para empezar, por favor elige tu idioma / To start, please choose your language:<br><br><b>1.</b> English 🇺🇸<br><b>2.</b> Español 🇪🇸",
-                greeting: "¡Hola! Soy <b>Aki</b>, tu asistente virtual en Chalet Motel 192 😎🌴. ¿En qué te puedo ayudar hoy?",
+                greeting: "¡Hola! Soy <b>Adi</b>, tu asistente virtual en Chalet Motel 192 😎🌴. ¿En qué te puedo ayudar hoy?",
                 greeting_fallback: "¡Hola! ¿En qué te puedo ayudar hoy? Puedes usar los botones o escribirme lo que necesitas.",
                 rooms_btn: "Habitaciones 🛏️",
                 contact_btn: "Contacto 📞",
                 location_btn: "Ubicación 📍",
                 about_btn: "Nosotros 🏨",
                 social_btn: "Redes 📱",
-                rooms_res: "Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. <a href='tel:+14077731461' class='text-gold underline font-bold'>Llámanos al +1 407 773 1461</a>.",
+                rooms_res: "Contamos con hermosas habitaciones como nuestra <b>King Suite</b> o habitaciones de dos camas. Nuestras tarifas básicas son:<br><br><b>Tarifas Diarias:</b><br>• 1 Persona: $75/día<br>• 2 Personas (1 o 2 camas): $105/día<br>• 3 Personas: $140/día<br><br><b>Tarifas Mensuales:</b><br>• Desde $800 al mes<br><br>Si deseas reservar, <a href='tel:+14077731461' class='text-gold underline font-bold'>llámanos al +1 407 773 1461</a> o contáctanos por WhatsApp.",
                 contact_res: "Puedes comunicarte directamente con nosotros por teléfono o WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
                 location_res: "📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 Ver en Google Maps</a>",
                 about_res: "🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!",
@@ -84,21 +84,21 @@
                 collect_phone: "¡Anotado! ¿A qué <b>número de teléfono</b> te llamamos?",
                 collect_message: "Perfecto! ¿Cuál es tu <b>consulta o pregunta</b> para nuestro equipo?",
                 success_msg: "✅ ¡Listo, <b>{name}</b>! Hemos recibido tu solicitud. Nuestro equipo te llamará al <b>{phone}</b> muy pronto. ¡Gracias por contactarnos! 🌴",
-                aki_personal: "😎 ¡Con mucho gusto te cuento! Soy <b>Aki</b>, el asistente virtual de <b>Chalet Motel 192</b>. Fui creado para ayudarte con todo lo que necesites sobre el motel: habitaciones, ubicación, contacto y más. No tengo vida personal fuera de aquí, ¡pero estoy 100% dedicado a ti! 😄",
-                off_topic: "🙂 ¡Gracias por tu mensaje! Soy Aki, el asistente oficial de <b>Chalet Motel 192</b>, y mi especialidad es todo lo relacionado con el motel. Para otros temas, ¡hay mejores recursos disponibles! ¿Puedo ayudarte con algo del motel?",
+                adi_personal: "😎 ¡Con mucho gusto te cuento! Soy <b>Adi</b>, la asistente virtual de <b>Chalet Motel 192</b>. Fui creada para ayudarte con todo lo que necesites sobre el motel: habitaciones, tarifas, ubicación, contacto y más. No tengo vida personal fuera de aquí, ¡pero estoy 100% dedicada a ti! 😄",
+                off_topic: "🙂 ¡Gracias por tu mensaje! Soy Adi, la asistente oficial de <b>Chalet Motel 192</b>, y mi especialidad es todo lo relacionado con el motel. Para otros temas, ¡hay mejores recursos disponibles! ¿Puedo ayudarte con algo del motel?",
                 placeholder: "Escribe un mensaje...",
                 online: "En línea"
             },
             en: {
                 welcome_lang: "To start, please choose your language: <br><br><b>1.</b> English 🇺🇸<br><b>2.</b> Español 🇪🇸",
-                greeting: "Hi! I'm <b>Aki</b>, your virtual assistant at Chalet Motel 192 😎🌴. How can I help you today?",
+                greeting: "Hi! I'm <b>Adi</b>, your virtual assistant at Chalet Motel 192 😎🌴. How can I help you today?",
                 greeting_fallback: "Hi! How can I help you today? You can use the buttons or type what you need.",
                 rooms_btn: "Rooms 🛏️",
                 contact_btn: "Contact 📞",
                 location_btn: "Location 📍",
                 about_btn: "About Us 🏨",
                 social_btn: "Networks 📱",
-                rooms_res: "We have beautiful rooms like our <b>King Suite</b> or rooms with two beds. <a href='tel:+14077731461' class='text-gold underline font-bold'>Call us at +1 407 773 1461</a>.",
+                rooms_res: "We have beautiful rooms like our <b>King Suite</b> or rooms with two beds. Our basic rates are:<br><br><b>Daily Rates:</b><br>• 1 Guest: $75/day<br>• 2 Guests (1 or 2 beds): $105/day<br>• 3 Guests: $140/day<br><br><b>Monthly Rates:</b><br>• Starting from $800/month<br><br>If you want to book, <a href='tel:+14077731461' class='text-gold underline font-bold'>call us at +1 407 773 1461</a> or contact us via WhatsApp.",
                 contact_res: "You can contact us directly by phone or WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
                 location_res: "📍 We are located at:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 View on Google Maps</a>",
                 about_res: "🏨 We are <b>Chalet Motel 192</b>, your best option for rest in Kissimmee, Florida. Our commitment is to offer you comfortable rooms and a relaxing stay. We hope to see you soon!",
@@ -112,8 +112,8 @@
                 collect_phone: "Got it! What <b>phone number</b> should we call you on?",
                 collect_message: "Perfect! What is your <b>question or inquiry</b> for our team?",
                 success_msg: "✅ Done, <b>{name}</b>! We have received your request. Our team will call you at <b>{phone}</b> very soon. Thank you for reaching out! 🌴",
-                aki_personal: "😎 Happy to introduce myself! I'm <b>Aki</b>, the virtual assistant for <b>Chalet Motel 192</b>. I was created to help you with everything about the motel: rooms, location, contact and more. I don't have a personal life outside of here, but I'm 100% dedicated to you! 😄",
-                off_topic: "🙂 Thanks for your message! I'm Aki, the official assistant of <b>Chalet Motel 192</b>, and my specialty is everything related to the motel. For other topics, there are better resources available! Can I help you with something about the motel?",
+                adi_personal: "😎 Happy to introduce myself! I'm <b>Adi</b>, the virtual assistant for <b>Chalet Motel 192</b>. I was created to help you with everything about the motel: rooms, rates, location, contact and more. I don't have a personal life outside of here, but I'm 100% dedicated to you! 😄",
+                off_topic: "🙂 Thanks for your message! I'm Adi, the official assistant of <b>Chalet Motel 192</b>, and my specialty is everything related to the motel. For other topics, there are better resources available! Can I help you with something about the motel?",
                 placeholder: "Type a message...",
                 online: "Online"
             }
@@ -121,7 +121,7 @@
 
         const botAvatarHtml = `
             <div class="w-8 h-8 rounded-full border border-gold/50 overflow-hidden bg-navy shadow-sm flex-shrink-0 mt-1">
-                <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Aki" class="w-full h-full object-cover">
+                <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Adi" class="w-full h-full object-cover">
             </div>
         `;
 
@@ -239,7 +239,7 @@
                     case 'ubicacion': responseHtml = dict[botLang].location_res; break;
                     case 'nosotros': responseHtml = dict[botLang].about_res; break;
                     case 'redes': responseHtml = dict[botLang].social_res; break;
-                    case 'aki_personal': responseHtml = dict[botLang].aki_personal; break;
+                    case 'adi_personal': responseHtml = dict[botLang].adi_personal; break;
                     case 'off_topic': responseHtml = dict[botLang].off_topic; break;
                     default:
                         appendBotMessage(dict[botLang].default_res);
@@ -378,9 +378,9 @@
             // --- Normal intent detection ---
             let intent = 'unknown';
 
-            // --- Aki personal profile (highest priority) ---
+            // --- Adi personal profile (highest priority) ---
             if(val.includes('como te llamas') || val.includes('tu nombre') || val.includes('quien eres') || val.includes('qué eres') || val.includes('que eres') || val.includes('eres un bot') || val.includes('eres humano') || val.includes('eres robot') || val.includes('eres real') || val.includes('cuantos años') || val.includes('your name') || val.includes('who are you') || val.includes('what are you') || val.includes('are you a bot') || val.includes('are you human') || val.includes('are you real') || val.includes('how old are you')) {
-                intent = 'aki_personal';
+                intent = 'adi_personal';
 
             // --- Off-topic deflection ---
             } else if(val.includes('politica') || val.includes('deporte') || val.includes('futbol') || val.includes('fútbol') || val.includes('clima') || val.includes('chiste') || val.includes('broma') || val.includes('cuento') || val.includes('receta') || val.includes('cocina') || val.includes('noticias') || val.includes('politics') || val.includes('sports') || val.includes('weather') || val.includes('joke') || val.includes('recipe') || val.includes('news') || val.includes('movie') || val.includes('pelicula') || val.includes('película')) {
