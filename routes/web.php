@@ -36,6 +36,10 @@ Route::get('/social-networks', function () {
     return view('social_networks');
 })->name('social.networks');
 
+Route::get('/apuestas', function () {
+    return view('apuestas');
+})->name('apuestas');
+
 Route::post('/api/sync-room', [GoogleSheetController::class, 'syncRoom'])->name('api.sync-room');
 Route::get('/api/load-room/{room}', [GoogleSheetController::class, 'loadRoom'])->name('api.load-room');
 Route::get('/api/load-all-rooms', [GoogleSheetController::class, 'loadAllRooms'])->name('api.load-all-rooms');

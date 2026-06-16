@@ -16,4 +16,15 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    /**
+     * Test that the apuestas page loads successfully.
+     */
+    public function test_apuestas_page_loads_successfully(): void
+    {
+        $response = $this->get('/apuestas');
+
+        $response->assertStatus(200);
+        $response->assertSee('Apuestas');
+    }
 }
