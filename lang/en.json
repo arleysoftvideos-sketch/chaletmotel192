@@ -233,7 +233,6 @@
     "En Chalet Motel 192, estamos comprometidos con la sostenibilidad y la preservación de nuestra comunidad en Kissimmee. Ayúdanos a reciclar de manera correcta siguiendo esta guía interactiva.": "At Chalet Motel 192, we are committed to sustainability and the preservation of our community in Kissimmee. Help us recycle correctly by following this interactive guide.",
     "Estación de Reciclaje": "Recycling Station",
     "Para la comodidad de todos los residentes a largo plazo, Chalet Motel 192 cuenta con una estación ecológica centralizada. Todos los desechos deben ser clasificados antes de su depósito.": "For the comfort of all long-term residents, Chalet Motel 192 has a centralized eco-station. All waste must be sorted before disposal.",
-    "Ubicación": "Location",
     "Extremo norte del estacionamiento principal, adyacente a la salida.": "North end of the main parking lot, adjacent to the exit.",
     "Horarios": "Hours",
     "Disponible las 24 horas. Por favor, evite hacer ruidos excesivos de noche.": "Available 24 hours. Please avoid excessive noise at night.",
@@ -313,11 +312,9 @@
     "Tienda / Origen": "Store / Origin",
     "Total (BIG + SMALL)": "Total (BIG + SMALL)",
     "Portal de Reciclaje Textil": "Textile Recycling Portal",
-    "Directorio Logístico - Jovancito": "Logistics Directory - Jovancito",
     "Estadísticas": "Statistics",
     "Panel de Estadísticas": "Statistics Dashboard",
     "Visualiza los consolidados y detalles de reciclaje acumulados": "View consolidated and detailed recycling data",
-    "Desde": "From",
     "Hasta": "To",
     "Limpiar": "Clear",
     "Total Bolsas Recolectadas": "Total Bags Collected",
@@ -337,5 +334,6 @@
     "Últimos 20 registros ingresados": "Last 20 entries recorded",
     "Registro": "Log",
     "Consolidado de Estadísticas": "Statistics Consolidation",
-    "1 Month Free applies to minimum 6-month contracts": "1 Month Free applies to minimum 6-month contracts"
+    "1 Month Free applies to minimum 6-month contracts": "1 Month Free applies to minimum 6-month contracts",
+    "¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href=\"https://www.facebook.com/profile.php?id=61590106737806\" target=\"_blank\" class=\"text-[#1877F2] underline font-bold\">📘 Facebook</a> <br> <a href=\"https://www.instagram.com/kissmemotel192/\" target=\"_blank\" class=\"text-pink-400 underline font-bold\">📸 Instagram</a> <br> <a href=\"https://www.tiktok.com/@chalet.motel.192\" target=\"_blank\" class=\"text-white underline font-bold\">🎵 TikTok</a>": "Follow us on our social networks so you don't miss anything! <br><br> <a href=\"https://www.facebook.com/profile.php?id=61590106737806\" target=\"_blank\" class=\"text-[#1877F2] underline font-bold\">📘 Facebook</a> <br> <a href=\"https://www.instagram.com/kissmemotel192/\" target=\"_blank\" class=\"text-pink-400 underline font-bold\">📸 Instagram</a> <br> <a href=\"https://www.tiktok.com/@chalet.motel.192\" target=\"_blank\" class=\"text-white underline font-bold\">🎵 TikTok</a>"
 }

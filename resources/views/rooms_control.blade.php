@@ -1706,10 +1706,33 @@
         var rMonthly = parseFloat(mEl.value) || rates.monthly;
 
         var totalDays = Math.ceil((end - start) / 86400000) + 1;
-        var months  = Math.floor(totalDays / 30);
-        var remDays = totalDays % 30;
-        var weeks   = Math.floor(remDays / 7);
-        var days    = remDays % 7;
+
+        // Calculate Calendar Months and Extra Days
+        var yearsDiff = end.getFullYear() - start.getFullYear();
+        var monthsDiff = end.getMonth() - start.getMonth();
+        var months = yearsDiff * 12 + monthsDiff;
+
+        if (end.getDate() < start.getDate()) {
+            months--;
+        }
+
+        var temp = new Date(start);
+        temp.setMonth(temp.getMonth() + months);
+        var extraDays = Math.ceil((end - temp) / 86400000);
+        if (extraDays < 0) extraDays = 0;
+
+        var weeks = Math.floor(extraDays / 7);
+        var days  = extraDays % 7;
+
+        // Financial Optimization: If extra days cost more than 1 month, round it up
+        var extraCost = weeks * rWeekly + days * rDaily;
+        if (totalDays >= 28 && extraCost > rMonthly) {
+            months += 1;
+            extraDays = 0;
+            weeks = 0;
+            days = 0;
+            extraCost = 0;
+        }
 
         var total = 0;
         var parts = [];
@@ -1745,6 +1768,7 @@
             period   = 'Diario';
             baseRate = '$' + rDaily.toLocaleString() + '/día';
         }
+
 
         document.getElementById('calc-days').innerText      = totalDays;
         document.getElementById('calc-period').innerText    = period;

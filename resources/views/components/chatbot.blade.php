@@ -74,7 +74,7 @@
                 contact_res: "Puedes comunicarte directamente con nosotros por teléfono o WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
                 location_res: "📍 Estamos ubicados en:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 Ver en Google Maps</a>",
                 about_res: "🏨 Somos <b>Chalet Motel 192</b>, tu mejor opción de descanso en Kissimmee, Florida. Nuestro compromiso es ofrecerte habitaciones cómodas y una estancia relajante. ¡Esperamos verte pronto!",
-                social_res: "¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
+                social_res: "¡Síguenos en nuestras redes para no perderte de nada! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a> <br> <a href='https://www.tiktok.com/@chalet.motel.192' target='_blank' class='text-white underline font-bold'>🎵 TikTok</a>",
                 default_res: "😊 ¡Qué buena pregunta! Aunque no tengo esa información disponible en este momento, puedo ayudarte de dos maneras:<br><br>Puedo <b>agendar una llamada</b> para que uno de nuestros agentes te contacte personalmente, o si lo prefieres, puedo <b>comunicarte por WhatsApp</b> ahora mismo. ¿Qué prefieres?",
                 call_btn: "📞 Llamar ahora",
                 schedule_btn: "📅 Agendar llamada",
@@ -102,7 +102,7 @@
                 contact_res: "You can contact us directly by phone or WhatsApp: <br><br> 📞 <a href='tel:+14077731461' class='text-gold underline font-bold'>+1 407 773 1461</a> <br> 💬 <a href='https://wa.me/14077731461' target='_blank' class='text-[#25D366] underline font-bold'>WhatsApp (+1 407 773 1461)</a>.",
                 location_res: "📍 We are located at:<br><b>4741 W Irlo Bronson Memorial Hwy, Kissimmee, FL 34746</b>.<br><br><a href='https://maps.google.com/?q=4741+W+Irlo+Bronson+Memorial+Hwy,+Kissimmee,+FL+34746' target='_blank' class='text-gold underline font-bold'>👉 View on Google Maps</a>",
                 about_res: "🏨 We are <b>Chalet Motel 192</b>, your best option for rest in Kissimmee, Florida. Our commitment is to offer you comfortable rooms and a relaxing stay. We hope to see you soon!",
-                social_res: "Follow us on our social networks so you don't miss anything! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a>",
+                social_res: "Follow us on our social networks so you don't miss anything! <br><br> <a href='https://www.facebook.com/profile.php?id=61590106737806' target='_blank' class='text-[#1877F2] underline font-bold'>📘 Facebook</a> <br> <a href='https://www.instagram.com/kissmemotel192/' target='_blank' class='text-pink-400 underline font-bold'>📸 Instagram</a> <br> <a href='https://www.tiktok.com/@chalet.motel.192' target='_blank' class='text-white underline font-bold'>🎵 TikTok</a>",
                 default_res: "😊 Great question! Although I don't have that information right now, I can help you in two ways:<br><br>I can <b>schedule a call</b> so one of our agents contacts you personally, or if you prefer, I can <b>connect you via WhatsApp</b> right now. Which do you prefer?",
                 call_btn: "📞 Call now",
                 schedule_btn: "📅 Schedule a call",
@@ -395,7 +395,7 @@
                 intent = 'ubicacion';
             } else if(val.includes('nosotros') || val.includes('quienes') || val.includes('historia') || val.includes('about') || val.includes('who') || val.includes('story')) {
                 intent = 'nosotros';
-            } else if(val.includes('redes') || val.includes('facebook') || val.includes('instagram') || val.includes('social') || val.includes('network')) {
+            } else if(val.includes('redes') || val.includes('facebook') || val.includes('instagram') || val.includes('tiktok') || val.includes('social') || val.includes('network')) {
                 intent = 'redes';
             } else if(val.includes('hola') || val.includes('buenas') || val.includes('buenos') || val.includes('hi') || val.includes('hello') || val.includes('hey') || val.includes('saludos')) {
                 intent = 'saludo';
