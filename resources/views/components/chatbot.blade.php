@@ -5,7 +5,7 @@
         <div class="bg-gradient-to-r from-blue-950 to-[#0a1831] p-4 flex items-center justify-between border-b border-white/10 shadow-md relative z-10">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-full border-2 border-gold overflow-hidden bg-navy-dark shadow-inner">
-                    <img src="{{ asset('images/aki_avatar.png') }}" alt="Aki Avatar" class="w-full h-full object-cover">
+                    <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Aki Avatar" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h3 class="text-white font-bold tracking-wider leading-tight">Aki</h3>
@@ -38,7 +38,7 @@
 
     <!-- Floating Button -->
     <button id="aki-toggle-btn" class="w-16 h-16 bg-gradient-to-tr from-gold to-yellow-400 rounded-full shadow-[0_0_20px_rgba(255,215,0,0.4)] hover:shadow-[0_0_30px_rgba(255,215,0,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center ml-auto border-4 border-navy relative overflow-hidden group">
-        <img src="{{ asset('images/aki_avatar.png') }}" alt="Aki" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+        <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Aki" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
         <!-- Notification Dot -->
         <span class="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-navy rounded-full animate-bounce"></span>
     </button>
@@ -121,7 +121,7 @@
 
         const botAvatarHtml = `
             <div class="w-8 h-8 rounded-full border border-gold/50 overflow-hidden bg-navy shadow-sm flex-shrink-0 mt-1">
-                <img src="{{ asset('images/aki_avatar.png') }}" alt="Aki" class="w-full h-full object-cover">
+                <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Aki" class="w-full h-full object-cover">
             </div>
         `;
 

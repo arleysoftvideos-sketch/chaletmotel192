@@ -109,7 +109,7 @@
 
                 <!-- Avatar Profile -->
                 <div class="w-24 h-24 rounded-full border-4 border-gold p-1 bg-navy-dark shadow-xl mb-6 relative group overflow-hidden flex-shrink-0">
-                    <img src="{{ asset('images/aki_avatar.png') }}" alt="Chalet Motel 192 Logo" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500">
+                    <img src="{{ asset('images/aki_avatar.png') }}?v=2" alt="Chalet Motel 192 Logo" class="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500">
                 </div>
 
                 <!-- Title & Tagline -->
