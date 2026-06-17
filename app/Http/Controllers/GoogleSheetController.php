@@ -899,5 +899,123 @@ class GoogleSheetController extends Controller
             ], 500);
         }
     }
+
+    public function showApuestas()
+    {
+        $tournamentData = [
+            'realResults' => new \stdClass(),
+            'predictions' => new \stdClass()
+        ];
+
+        try {
+            $service = $this->getSheetsService();
+            $response = $service->spreadsheets_values->get($this->spreadsheetId, 'apuestas!A1:K45');
+            $values = $response->getValues();
+
+            if (!empty($values) && count($values) > 1) {
+                $realResults = [];
+                $predictions = [];
+                $participants = ['Pitufina', 'Tita', 'Chumilo', 'Precioso'];
+
+                // Skip header row
+                for ($i = 1; $i < count($values); $i++) {
+                    $row = $values[$i];
+                    $matchId = isset($row[0]) ? (int)$row[0] : null;
+                    if (!$matchId) continue;
+
+                    // Real Results
+                    $r1 = (isset($row[1]) && $row[1] !== '') ? (int)$row[1] : null;
+                    $r2 = (isset($row[2]) && $row[2] !== '') ? (int)$row[2] : null;
+                    if ($r1 !== null || $r2 !== null) {
+                        $realResults[$matchId] = [$r1, $r2];
+                    }
+
+                    // Predictions for each participant
+                    $matchPreds = [];
+                    foreach ($participants as $idx => $p) {
+                        $col1 = 3 + ($idx * 2);
+                        $col2 = 4 + ($idx * 2);
+                        $p1 = (isset($row[$col1]) && $row[$col1] !== '') ? (int)$row[$col1] : null;
+                        $p2 = (isset($row[$col2]) && $row[$col2] !== '') ? (int)$row[$col2] : null;
+                        if ($p1 !== null || $p2 !== null) {
+                            $matchPreds[$p] = [$p1, $p2];
+                        }
+                    }
+                    if (!empty($matchPreds)) {
+                        $predictions[$matchId] = $matchPreds;
+                    }
+                }
+
+                $tournamentData['realResults'] = (object)$realResults;
+                $tournamentData['predictions'] = (object)$predictions;
+            }
+        } catch (\Exception $e) {
+            logger()->error('Failed to load apuestas from Google Sheets: ' . $e->getMessage());
+        }
+
+        return view('apuestas', compact('tournamentData'));
+    }
+
+    public function saveApuestas(Request $request)
+    {
+        $realResults = $request->input('realResults', []);
+        $predictions = $request->input('predictions', []);
+        
+        $participants = ['Pitufina', 'Tita', 'Chumilo', 'Precioso'];
+        
+        $values = [];
+        // Header
+        $values[] = [
+            'Match ID',
+            'Real Team 1', 'Real Team 2',
+            'Pitufina Team 1', 'Pitufina Team 2',
+            'Tita Team 1', 'Tita Team 2',
+            'Chumilo Team 1', 'Chumilo Team 2',
+            'Precioso Team 1', 'Precioso Team 2'
+        ];
+
+        // 44 matches
+        for ($matchId = 1; $matchId <= 44; $matchId++) {
+            $row = [$matchId];
+            
+            // Real Result
+            $real = isset($realResults[$matchId]) ? $realResults[$matchId] : [null, null];
+            $row[] = ($real[0] !== null && $real[0] !== '') ? (int)$real[0] : '';
+            $row[] = ($real[1] !== null && $real[1] !== '') ? (int)$real[1] : '';
+
+            // Predictions
+            foreach ($participants as $p) {
+                $pred = (isset($predictions[$matchId]) && isset($predictions[$matchId][$p])) 
+                    ? $predictions[$matchId][$p] 
+                    : [null, null];
+                $row[] = ($pred[0] !== null && $pred[0] !== '') ? (int)$pred[0] : '';
+                $row[] = ($pred[1] !== null && $pred[1] !== '') ? (int)$pred[1] : '';
+            }
+
+            $values[] = $row;
+        }
+
+        try {
+            $service = $this->getSheetsService();
+            $body = new ValueRange([
+                'values' => $values
+            ]);
+            $range = 'apuestas!A1:K45';
+            
+            $service->spreadsheets_values->update($this->spreadsheetId, $range, $body, [
+                'valueInputOption' => 'USER_ENTERED'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => '¡Sincronizado con Google Sheets con éxito!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al guardar en Google Sheets: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
 

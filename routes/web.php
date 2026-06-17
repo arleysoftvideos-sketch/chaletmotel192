@@ -35,10 +35,8 @@ Route::get('/learning-center', function () {
 Route::get('/social-networks', function () {
     return view('social_networks');
 })->name('social.networks');
-
-Route::get('/apuestas', function () {
-    return view('apuestas');
-})->name('apuestas');
+Route::get('/apuestas', [GoogleSheetController::class, 'showApuestas'])->name('apuestas');
+Route::post('/api/apuestas/save', [GoogleSheetController::class, 'saveApuestas'])->name('api.apuestas.save');
 
 Route::post('/api/sync-room', [GoogleSheetController::class, 'syncRoom'])->name('api.sync-room');
 Route::get('/api/load-room/{room}', [GoogleSheetController::class, 'loadRoom'])->name('api.load-room');

@@ -123,14 +123,14 @@
                         </div>
                         <!-- Actions -->
                         <div class="flex items-center gap-3 shrink-0 font-outfit">
-                            <span class="text-[9px] sm:text-[10px] text-emerald-400 bg-emerald-950/40 border border-emerald-900/30 px-2.5 py-1.5 rounded-xl flex items-center gap-1 font-bold animate-pulse">
-                                🟢 <span>{{ __('Autoguardado activado') }}</span>
+                            <span class="text-[9px] sm:text-[10px] text-emerald-400 bg-emerald-950/40 border border-emerald-900/30 px-2.5 py-1.5 rounded-xl flex items-center gap-1 font-bold animate-pulse" title="Los cambios se guardan localmente. Presiona 'Guardar en la Nube' para publicarlos.">
+                                🟢 <span>{{ __('Autoguardado local') }}</span>
                             </span>
                             <button type="button" onclick="clearAllPredictions()" class="px-3 py-2 border border-blue-950 hover:border-red-955 text-slate-400 hover:text-red-400 font-bold rounded-xl text-[10px] uppercase tracking-wider transition-all duration-300">
                                 🗑️ {{ __('Borrar') }}
                             </button>
-                            <button type="button" onclick="saveAllPredictions()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black rounded-xl text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md shadow-emerald-500/10">
-                                💾 {{ __('Guardar') }}
+                            <button id="btn-save-sheets" type="button" onclick="syncToGoogleSheets()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black rounded-xl text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md shadow-emerald-500/10 flex items-center gap-1.5">
+                                💾 <span id="btn-save-text">{{ __('Guardar en la Nube') }}</span>
                             </button>
                         </div>
                     </div>
@@ -248,21 +248,32 @@
         ];
 
         let tournamentData = {
-            realResults: {},
-            predictions: {}
+            realResults: @json($tournamentData['realResults'] ?? (object)[]),
+            predictions: @json($tournamentData['predictions'] ?? (object)[])
         };
 
+        // Merge with local changes from localStorage (if any exist)
         try {
             const savedData = localStorage.getItem('wc_2026_tournament');
             if (savedData) {
                 const parsed = JSON.parse(savedData);
                 if (parsed && typeof parsed === 'object') {
-                    tournamentData.realResults = parsed.realResults || {};
-                    tournamentData.predictions = parsed.predictions || {};
+                    if (parsed.realResults) {
+                        Object.assign(tournamentData.realResults, parsed.realResults);
+                    }
+                    if (parsed.predictions) {
+                        // Deep merge predictions matches
+                        for (const matchId in parsed.predictions) {
+                            if (!tournamentData.predictions[matchId]) {
+                                tournamentData.predictions[matchId] = {};
+                            }
+                            Object.assign(tournamentData.predictions[matchId], parsed.predictions[matchId]);
+                        }
+                    }
                 }
             }
         } catch (e) {
-            console.error("Error loading tournament data from localStorage:", e);
+            console.error("Error merging with localStorage:", e);
         }
 
         let activeDateTab = '16 Jun';
@@ -544,11 +555,39 @@
             });
         }
 
-        function saveAllPredictions() {
-            localStorage.setItem('wc_2026_tournament', JSON.stringify(tournamentData));
-            renderPredictorMatches();
-            renderLeaderboard();
-            alert(currentLang === 'es' ? '¡Datos y pronósticos guardados con éxito!' : 'Data and predictions saved successfully!');
+        function syncToGoogleSheets() {
+            const btn = document.getElementById('btn-save-sheets');
+            const btnText = document.getElementById('btn-save-text');
+            const originalText = btnText.textContent;
+            
+            btn.disabled = true;
+            btnText.textContent = currentLang === 'es' ? 'Sincronizando...' : 'Syncing...';
+            
+            fetch('/api/apuestas/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(tournamentData)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(currentLang === 'es' ? '¡Marcadores y pronósticos guardados y sincronizados con Google Sheets con éxito!' : 'Scores and predictions saved and synced to Google Sheets successfully!');
+                    localStorage.setItem('wc_2026_tournament', JSON.stringify(tournamentData));
+                } else {
+                    alert((currentLang === 'es' ? 'Error al guardar: ' : 'Error saving: ') + data.message);
+                }
+            })
+            .catch(err => {
+                console.error("Error syncing to Sheets:", err);
+                alert(currentLang === 'es' ? 'Error de conexión al guardar.' : 'Connection error while saving.');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btnText.textContent = originalText;
+            });
         }
 
         function clearAllPredictions() {
