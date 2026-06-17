@@ -160,9 +160,14 @@ class RecyclingController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
-            // Group by year-month for monthly trend
+            // Group by year-month for monthly trend (DB-agnostic: MySQL vs SQLite)
+            $dbDriver = \DB::getDriverName();
+            $monthExpr = $dbDriver === 'sqlite'
+                ? \DB::raw("strftime('%Y-%m', date) as month")
+                : \DB::raw("DATE_FORMAT(date, '%Y-%m') as month");
+
             $monthlyTrend = $monthlyQuery->select(
-                \DB::raw("strftime('%Y-%m', date) as month"),
+                $monthExpr,
                 \DB::raw('SUM(big) as big_sum'),
                 \DB::raw('SUM(small) as small_sum'),
                 \DB::raw('SUM(total) as total_sum'),
