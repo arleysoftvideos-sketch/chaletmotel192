@@ -474,7 +474,7 @@
                     <div class="absolute right-4 top-4 text-3xl opacity-20 select-none group-hover:scale-110 transition-transform duration-300">📋</div>
                     <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest">{{ __('Total Registros') }}</span>
                     <h3 id="stat-card-count" class="text-4xl font-black font-outfit text-white mt-2">0</h3>
-                    <p id="stat-card-count-label" class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ __('Días Registrados') }}</p>
+                    <p id="stat-card-count-label" class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ __('Registros Totales') }}</p>
                 </div>
             </div>
 
