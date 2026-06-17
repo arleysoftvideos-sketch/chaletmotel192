@@ -502,20 +502,9 @@
                         <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
                             <div>
                                 <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Distribución de Bolsas') }}</h3>
-                                <p id="dist-subtitle" class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Proporción acumulada por ruta o empresa') }}</p>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Top 12 tiendas con más bolsas recolectadas') }}</p>
                             </div>
-                            <!-- Distribution Toggle Button -->
-                            <div class="flex bg-blue-950/40 p-0.5 rounded-lg border border-blue-900/60 shrink-0">
-                                <button id="dist-toggle-ruta" onclick="switchDistributionChart('ruta')" class="px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200">
-                                    {{ __('Ruta') }}
-                                </button>
-                                <button id="dist-toggle-empresa" onclick="switchDistributionChart('empresa')" class="px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200">
-                                    {{ __('Empresa') }}
-                                </button>
-                                <button id="dist-toggle-tienda" onclick="switchDistributionChart('tienda')" class="px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200">
-                                    {{ __('Tienda') }}
-                                </button>
-                            </div>
+                            <span class="text-[10px] bg-gold/10 text-gold px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🏪 {{ __('Tiendas') }}</span>
                         </div>
                         <div class="w-full relative h-[300px] flex items-center justify-center">
                             <canvas id="distributionChart"></canvas>
@@ -1193,7 +1182,7 @@
         // ----------------------------------------------------
         let trendChartInstance = null;
         let distributionChartInstance = null;
-        let activeDistributionMode = 'ruta';
+        let activeDistributionMode = 'tienda';
         let lastStatsData = null;
 
         // Register chartjs-plugin-datalabels globally
@@ -1292,31 +1281,7 @@
         }
 
         function switchDistributionChart(mode) {
-            activeDistributionMode = mode;
-            
-            const btnRuta = document.getElementById('dist-toggle-ruta');
-            const btnEmpresa = document.getElementById('dist-toggle-empresa');
-            const btnTienda = document.getElementById('dist-toggle-tienda');
-            const subtitle = document.getElementById('dist-subtitle');
-
-            const activeClass = "px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200 shadow-sm";
-            const inactiveClass = "px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200";
-
-            btnRuta.className = inactiveClass;
-            btnEmpresa.className = inactiveClass;
-            btnTienda.className = inactiveClass;
-
-            if (mode === 'ruta') {
-                btnRuta.className = activeClass;
-                if (subtitle) subtitle.textContent = currentLang === 'es' ? 'Proporción acumulada por ruta' : 'Accumulated proportion by route';
-            } else if (mode === 'empresa') {
-                btnEmpresa.className = activeClass;
-                if (subtitle) subtitle.textContent = currentLang === 'es' ? 'Proporción acumulada por empresa' : 'Accumulated proportion by company';
-            } else {
-                btnTienda.className = activeClass;
-                if (subtitle) subtitle.textContent = currentLang === 'es' ? 'Top 12 tiendas con más bolsas recolectadas' : 'Top 12 stores with most bags collected';
-            }
-
+            activeDistributionMode = 'tienda';
             if (lastStatsData) {
                 renderDistributionChart();
             }
