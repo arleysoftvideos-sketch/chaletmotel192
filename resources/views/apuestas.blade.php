@@ -122,7 +122,10 @@
                             </p>
                         </div>
                         <!-- Actions -->
-                        <div class="flex items-center gap-2 shrink-0 font-outfit">
+                        <div class="flex items-center gap-3 shrink-0 font-outfit">
+                            <span class="text-[9px] sm:text-[10px] text-emerald-400 bg-emerald-950/40 border border-emerald-900/30 px-2.5 py-1.5 rounded-xl flex items-center gap-1 font-bold animate-pulse">
+                                🟢 <span>{{ __('Autoguardado activado') }}</span>
+                            </span>
                             <button type="button" onclick="clearAllPredictions()" class="px-3 py-2 border border-blue-950 hover:border-red-955 text-slate-400 hover:text-red-400 font-bold rounded-xl text-[10px] uppercase tracking-wider transition-all duration-300">
                                 🗑️ {{ __('Borrar') }}
                             </button>
@@ -244,10 +247,23 @@
             { id: 44, date: "27 Jun", team1: "Panamá", code1: "pa", team2: "Inglaterra", code2: "gb-eng", group: "L" }
         ];
 
-        let tournamentData = JSON.parse(localStorage.getItem('wc_2026_tournament')) || {
+        let tournamentData = {
             realResults: {},
             predictions: {}
         };
+
+        try {
+            const savedData = localStorage.getItem('wc_2026_tournament');
+            if (savedData) {
+                const parsed = JSON.parse(savedData);
+                if (parsed && typeof parsed === 'object') {
+                    tournamentData.realResults = parsed.realResults || {};
+                    tournamentData.predictions = parsed.predictions || {};
+                }
+            }
+        } catch (e) {
+            console.error("Error loading tournament data from localStorage:", e);
+        }
 
         let activeDateTab = '16 Jun';
 
@@ -332,6 +348,8 @@
 
             filteredMatches.forEach(m => {
                 const real = tournamentData.realResults[m.id] || ['', ''];
+                const r1 = real[0] !== null && real[0] !== undefined ? real[0] : '';
+                const r2 = real[1] !== null && real[1] !== undefined ? real[1] : '';
                 
                 const card = document.createElement('div');
                 card.className = "bg-navy border border-blue-900/40 rounded-3xl p-5 flex flex-col justify-between space-y-4 hover:border-blue-800/60 transition-all duration-200";
@@ -339,6 +357,8 @@
                 let rowsHtml = '';
                 participants.forEach(p => {
                     const pred = (tournamentData.predictions[m.id] && tournamentData.predictions[m.id][p]) || ['', ''];
+                    const p1 = pred[0] !== null && pred[0] !== undefined ? pred[0] : '';
+                    const p2 = pred[1] !== null && pred[1] !== undefined ? pred[1] : '';
                     const res = calculatePoints(real, pred);
                     
                     let badgeClass = 'text-slate-400 bg-slate-900/60 border border-slate-900/60';
@@ -364,9 +384,9 @@
                         <div class="grid grid-cols-12 gap-1 items-center hover:bg-blue-950/20 rounded-xl p-1 text-center">
                             <div class="col-span-5 text-left font-bold text-slate-300 truncate">${pEmoji} ${p}</div>
                             <div class="col-span-5 flex items-center justify-center gap-1">
-                                <input type="number" min="0" placeholder="-" value="${pred[0]}" oninput="updatePredictionScore(${m.id}, '${p}', 0, this.value)" class="w-8 h-7 bg-[#040a17] border border-blue-950 rounded text-center font-bold text-white text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <input type="number" min="0" placeholder="-" value="${p1}" oninput="updatePredictionScore(${m.id}, '${p}', 0, this.value)" class="w-8 h-7 bg-[#040a17] border border-blue-950 rounded text-center font-bold text-white text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                                 <span class="text-slate-500 font-bold text-[10px]">-</span>
-                                <input type="number" min="0" placeholder="-" value="${pred[1]}" oninput="updatePredictionScore(${m.id}, '${p}', 1, this.value)" class="w-8 h-7 bg-[#040a17] border border-blue-950 rounded text-center font-bold text-white text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <input type="number" min="0" placeholder="-" value="${p2}" oninput="updatePredictionScore(${m.id}, '${p}', 1, this.value)" class="w-8 h-7 bg-[#040a17] border border-blue-950 rounded text-center font-bold text-white text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                             </div>
                             <div class="col-span-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${badgeClass}">${badgeText}</span></div>
                         </div>
@@ -408,9 +428,9 @@
                                 <span>⭐</span> <span class="truncate">${currentLang === 'es' ? 'Resultado Real' : 'Real Result'}</span>
                             </div>
                             <div class="col-span-5 flex items-center justify-center gap-1">
-                                <input type="number" min="0" placeholder="-" value="${real[0]}" oninput="updateRealScore(${m.id}, 0, this.value)" class="w-8 h-7 bg-[#040a17] border border-gold/45 rounded text-center font-black text-gold text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <input type="number" min="0" placeholder="-" value="${r1}" oninput="updateRealScore(${m.id}, 0, this.value)" class="w-8 h-7 bg-[#040a17] border border-gold/45 rounded text-center font-black text-gold text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                                 <span class="text-gold font-bold text-[10px]">-</span>
-                                <input type="number" min="0" placeholder="-" value="${real[1]}" oninput="updateRealScore(${m.id}, 1, this.value)" class="w-8 h-7 bg-[#040a17] border border-gold/45 rounded text-center font-black text-gold text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <input type="number" min="0" placeholder="-" value="${r2}" oninput="updateRealScore(${m.id}, 1, this.value)" class="w-8 h-7 bg-[#040a17] border border-gold/45 rounded text-center font-black text-gold text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                             </div>
                             <div class="col-span-2 font-black text-gold">-</div>
                         </div>
@@ -432,10 +452,15 @@
             } else {
                 tournamentData.realResults[matchId][scoreIndex] = parseInt(value);
             }
+            try {
+                localStorage.setItem('wc_2026_tournament', JSON.stringify(tournamentData));
+            } catch (e) {
+                console.error("Error auto-saving real score to localStorage:", e);
+            }
             renderLeaderboard();
         }
 
-        // Auto-save predictions in memory
+        // Auto-save predictions in memory and localStorage
         function updatePredictionScore(matchId, participant, scoreIndex, value) {
             if (!tournamentData.predictions[matchId]) {
                 tournamentData.predictions[matchId] = {};
@@ -447,6 +472,11 @@
                 tournamentData.predictions[matchId][participant][scoreIndex] = null;
             } else {
                 tournamentData.predictions[matchId][participant][scoreIndex] = parseInt(value);
+            }
+            try {
+                localStorage.setItem('wc_2026_tournament', JSON.stringify(tournamentData));
+            } catch (e) {
+                console.error("Error auto-saving prediction to localStorage:", e);
             }
             renderLeaderboard();
         }
