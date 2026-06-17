@@ -49,6 +49,7 @@
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {
@@ -1195,6 +1196,9 @@
         let activeDistributionMode = 'ruta';
         let lastStatsData = null;
 
+        // Register chartjs-plugin-datalabels globally
+        Chart.register(ChartDataLabels);
+
         function setStatsQuickRange(range) {
             const today = new Date();
             let startDate = '';
@@ -1516,6 +1520,7 @@
                                 font: { family: 'Inter', size: 10, weight: 'bold' }
                             }
                         },
+                        datalabels: { display: false },
                         tooltip: {
                             mode: 'index',
                             intersect: false,
@@ -1633,6 +1638,29 @@
                                 font: { family: 'Inter', size: activeDistributionMode === 'tienda' ? 8 : 9, weight: 'bold' },
                                 padding: activeDistributionMode === 'tienda' ? 6 : 10
                             }
+                        },
+                        datalabels: {
+                            display: function(context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const pct = (context.dataset.data[context.dataIndex] / total) * 100;
+                                return pct >= 4; // Only show label if slice >= 4%
+                            },
+                            formatter: function(value, context) {
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const pct = Math.round((value / total) * 100);
+                                return pct + '%';
+                            },
+                            color: '#ffffff',
+                            font: {
+                                family: 'Inter',
+                                size: activeDistributionMode === 'tienda' ? 9 : 11,
+                                weight: 'bold'
+                            },
+                            textShadowBlur: 4,
+                            textShadowColor: 'rgba(0,0,0,0.6)',
+                            anchor: 'center',
+                            align: 'center',
+                            offset: 0,
                         },
                         tooltip: {
                             backgroundColor: '#0a1831',
