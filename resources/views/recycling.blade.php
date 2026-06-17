@@ -495,13 +495,13 @@
                     </div>
                 </div>
 
-                <!-- Chart B: Route/Company Distribution -->
+                <!-- Chart B: Route/Company/Store Distribution -->
                 <div class="lg:col-span-5 bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl flex flex-col justify-between">
                     <div>
                         <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
                             <div>
                                 <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Distribución de Bolsas') }}</h3>
-                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Proporción acumulada por ruta o empresa') }}</p>
+                                <p id="dist-subtitle" class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Proporción acumulada por ruta o empresa') }}</p>
                             </div>
                             <!-- Distribution Toggle Button -->
                             <div class="flex bg-blue-950/40 p-0.5 rounded-lg border border-blue-900/60 shrink-0">
@@ -510,6 +510,9 @@
                                 </button>
                                 <button id="dist-toggle-empresa" onclick="switchDistributionChart('empresa')" class="px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200">
                                     {{ __('Empresa') }}
+                                </button>
+                                <button id="dist-toggle-tienda" onclick="switchDistributionChart('tienda')" class="px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200">
+                                    {{ __('Tienda') }}
                                 </button>
                             </div>
                         </div>
@@ -1289,13 +1292,25 @@
             
             const btnRuta = document.getElementById('dist-toggle-ruta');
             const btnEmpresa = document.getElementById('dist-toggle-empresa');
+            const btnTienda = document.getElementById('dist-toggle-tienda');
+            const subtitle = document.getElementById('dist-subtitle');
+
+            const activeClass = "px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200 shadow-sm";
+            const inactiveClass = "px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200";
+
+            btnRuta.className = inactiveClass;
+            btnEmpresa.className = inactiveClass;
+            btnTienda.className = inactiveClass;
 
             if (mode === 'ruta') {
-                btnRuta.className = "px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200 shadow-sm";
-                btnEmpresa.className = "px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200";
+                btnRuta.className = activeClass;
+                if (subtitle) subtitle.textContent = currentLang === 'es' ? 'Proporción acumulada por ruta' : 'Accumulated proportion by route';
+            } else if (mode === 'empresa') {
+                btnEmpresa.className = activeClass;
+                if (subtitle) subtitle.textContent = currentLang === 'es' ? 'Proporción acumulada por empresa' : 'Accumulated proportion by company';
             } else {
-                btnEmpresa.className = "px-2.5 py-1 bg-gold text-[#061021] font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200 shadow-sm";
-                btnRuta.className = "px-2.5 py-1 text-slate-400 hover:text-white font-bold rounded-md text-[9px] uppercase tracking-wider transition-all duration-200";
+                btnTienda.className = activeClass;
+                if (subtitle) subtitle.textContent = currentLang === 'es' ? 'Top 12 tiendas con más bolsas recolectadas' : 'Top 12 stores with most bags collected';
             }
 
             if (lastStatsData) {
@@ -1552,29 +1567,44 @@
                 return;
             }
 
-            const grouping = {};
-            lastStatsData.locations.forEach(loc => {
-                const info = getStoreRouteAndCompany(loc.store);
-                const key = activeDistributionMode === 'ruta' ? info.r : info.e;
-                grouping[key] = (grouping[key] || 0) + (parseInt(loc.total_sum) || 0);
-            });
+            let labels = [];
+            let values = [];
 
-            const sortedItems = Object.entries(grouping).sort((a, b) => b[1] - a[1]);
-            const labels = sortedItems.map(item => {
-                const name = item[0];
-                return currentLang === 'es' ? name : (name === 'Volusia' ? 'Volusia' : (name === 'Orlando' ? 'Orlando' : (name === 'Kissimmee' ? 'Kissimmee' : (name === 'Lakeland' ? 'Lakeland' : (name === 'Miami' ? 'Miami' : (name === 'Ft. Lauderdale' ? 'Ft. Lauderdale' : (name === 'Gasolineras' ? 'Gas Stations' : (name === 'Independiente' ? 'Independent' : name))))))));
-            });
-            const values = sortedItems.map(item => item[1]);
+            if (activeDistributionMode === 'tienda') {
+                // Group by individual store name, then take top 12
+                const storeGrouping = {};
+                lastStatsData.locations.forEach(loc => {
+                    const normName = normalizeStoreName(loc.store);
+                    storeGrouping[normName] = (storeGrouping[normName] || 0) + (parseInt(loc.total_sum) || 0);
+                });
+
+                const sortedStores = Object.entries(storeGrouping)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 12); // Top 12 stores for readability
+
+                labels = sortedStores.map(item => item[0]);
+                values = sortedStores.map(item => item[1]);
+            } else {
+                // Group by ruta or empresa
+                const grouping = {};
+                lastStatsData.locations.forEach(loc => {
+                    const info = getStoreRouteAndCompany(loc.store);
+                    const key = activeDistributionMode === 'ruta' ? info.r : info.e;
+                    grouping[key] = (grouping[key] || 0) + (parseInt(loc.total_sum) || 0);
+                });
+
+                const sortedItems = Object.entries(grouping).sort((a, b) => b[1] - a[1]);
+                labels = sortedItems.map(item => {
+                    const name = item[0];
+                    return currentLang === 'es' ? name : (name === 'Gasolineras' ? 'Gas Stations' : (name === 'Independiente' ? 'Independent' : name));
+                });
+                values = sortedItems.map(item => item[1]);
+            }
 
             const palette = [
-                '#10b981',
-                '#ffb703',
-                '#3b82f6',
-                '#8b5cf6',
-                '#ec4899',
-                '#14b8a6',
-                '#f43f5e',
-                '#6b7280'
+                '#10b981', '#ffb703', '#3b82f6', '#8b5cf6',
+                '#ec4899', '#14b8a6', '#f43f5e', '#6b7280',
+                '#f97316', '#84cc16', '#06b6d4', '#a78bfa'
             ];
 
             const colors = labels.map((_, i) => palette[i % palette.length]);
@@ -1600,8 +1630,8 @@
                             labels: {
                                 color: '#cbd5e1',
                                 boxWidth: 12,
-                                font: { family: 'Inter', size: 9, weight: 'bold' },
-                                padding: 10
+                                font: { family: 'Inter', size: activeDistributionMode === 'tienda' ? 8 : 9, weight: 'bold' },
+                                padding: activeDistributionMode === 'tienda' ? 6 : 10
                             }
                         },
                         tooltip: {
@@ -1613,12 +1643,13 @@
                                     const value = context.raw;
                                     const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                     const pct = Math.round((value / total) * 100);
-                                    return ` ${context.label}: ${value.toLocaleString()} (${pct}%)`;
+                                    const bagWord = currentLang === 'es' ? 'bolsas' : 'bags';
+                                    return ` ${context.label}: ${value.toLocaleString()} ${bagWord} (${pct}%)`;
                                 }
                             }
                         }
                     },
-                    cutout: '60%'
+                    cutout: '55%'
                 }
             });
         }
