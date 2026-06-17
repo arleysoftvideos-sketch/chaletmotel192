@@ -84,14 +84,12 @@
                     </a>
                 </nav>
             </div>
-        </div>
     </header>
-
     <!-- Main Container -->
     <main class="max-w-7xl w-full mx-auto px-6 py-8 flex-grow space-y-12 relative z-10">
         
         <!-- Hero Banner -->
-        <section class="hero-banner w-full rounded-[2.5rem] border border-blue-950 p-8 sm:p-12 min-h-[280px] flex items-center shadow-2xl relative overflow-hidden">
+        <section class="hero-banner w-full rounded-[2.5rem] border border-blue-950 p-8 sm:p-12 min-h-[260px] flex items-center shadow-2xl relative overflow-hidden">
             <div class="max-w-xl flex flex-col space-y-4 relative z-10">
                 <div class="flex items-center gap-2">
                     <span class="h-[1px] w-8 bg-gold"></span>
@@ -100,151 +98,87 @@
                     </span>
                 </div>
                 <h1 class="text-3xl sm:text-5xl font-black font-outfit text-white uppercase tracking-tight">
-                    {{ __('Apuestas') }} <span class="text-gold">{{ __('Deportivas') }}</span>
+                    {{ __('Polla') }} <span class="text-gold">{{ __('Mundialista 2026') }}</span>
                 </h1>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    {{ __('Consulta las mejores plataformas de apuestas deportivas de la región, calcula tus cuotas de forma instantánea y sigue tus partidos favoritos.') }}
+                    {{ __('Registra los marcadores reales de la Fase de Grupos y los pronósticos de Pitufina, Tita, Chumilo y Precioso. ¡El ranking se calculará automáticamente en tiempo real!') }}
                 </p>
             </div>
         </section>
 
-        <!-- World Cup 2026 Predictor Section -->
-        <section class="bg-[#061021]/60 border border-blue-950 rounded-[2.5rem] p-6 sm:p-8 shadow-xl space-y-6">
-            <div class="border-b border-blue-950 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-tight flex items-center gap-2">
-                        <span>⚽</span> <span>{{ __('Polla Mundialista 2026') }}</span>
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-1">
-                        {{ __('Fase de Grupos (16 - 27 de junio). Ingresa tus pronósticos de marcador de cada partido y guárdalos.') }}
-                    </p>
-                </div>
-                <!-- Actions -->
-                <div class="flex items-center gap-3">
-                    <button type="button" onclick="clearAllPredictions()" class="px-4 py-2 border border-blue-950 hover:border-red-950 text-slate-400 hover:text-red-400 font-bold rounded-xl text-xs uppercase tracking-wider transition-all duration-300">
-                        🗑️ {{ __('Borrar Todo') }}
-                    </button>
-                    <button type="button" onclick="saveAllPredictions()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black rounded-xl text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-emerald-500/10">
-                        💾 {{ __('Guardar Marcadores') }}
-                    </button>
-                </div>
-            </div>
-
-            <!-- Date Selector Tabs -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-blue-950/45 no-scrollbar">
-                <div id="predictor-tabs" class="flex gap-2"></div>
-            </div>
-
-            <!-- Matches Prediction Grid -->
-            <div id="predictor-matches" class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                <!-- Dynamic match cards go here -->
-            </div>
-        </section>
-
-        <!-- Dynamic Grid Layout -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Main Tournament Layout (Two Columns) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <!-- Left Side: Betting Portals & Matches (7 cols) -->
-            <div class="lg:col-span-7 space-y-8">
-                <!-- Recommended Bookmakers -->
-                <div class="bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl space-y-6">
-                    <div class="border-b border-blue-950 pb-3 flex items-center justify-between">
+            <!-- Left Column: Matches Predictor Grid (8 cols) -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="bg-[#061021]/60 border border-blue-950 rounded-[2.5rem] p-6 sm:p-8 shadow-xl space-y-6">
+                    <div class="border-b border-blue-950 pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                            <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Casas de Apuestas Recomendadas') }}</h3>
-                            <p class="text-xs text-slate-400">{{ __('Enlaces rápidos a las principales plataformas con mejores cuotas.') }}</p>
+                            <h2 class="text-xl font-black font-outfit text-white uppercase tracking-tight flex items-center gap-2">
+                                <span>⚽</span> <span>{{ __('Partidos de Fase de Grupos') }}</span>
+                            </h2>
+                            <p class="text-[10px] text-slate-400 mt-0.5">
+                                {{ __('16 - 27 de Junio. Selecciona un día o "Ver Todos".') }}
+                            </p>
                         </div>
-                        <span class="text-xs bg-gold/10 text-gold px-3 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Plataformas') }}</span>
+                        <!-- Actions -->
+                        <div class="flex items-center gap-2 shrink-0 font-outfit">
+                            <button type="button" onclick="clearAllPredictions()" class="px-3 py-2 border border-blue-950 hover:border-red-955 text-slate-400 hover:text-red-400 font-bold rounded-xl text-[10px] uppercase tracking-wider transition-all duration-300">
+                                🗑️ {{ __('Borrar') }}
+                            </button>
+                            <button type="button" onclick="saveAllPredictions()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black rounded-xl text-[10px] uppercase tracking-wider transition-all duration-300 shadow-md shadow-emerald-500/10">
+                                💾 {{ __('Guardar') }}
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Card 1: Wplay.co -->
-                        <a href="https://www.wplay.co" target="_blank" class="block bg-navy border border-blue-900/40 hover:border-gold/60 p-5 rounded-2xl transition-all duration-300 group hover:-translate-y-1">
-                            <div class="flex justify-between items-start">
-                                <span class="text-2xl group-hover:scale-110 transition-transform">⚽</span>
-                                <span class="text-xs font-bold text-gold bg-gold/15 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Top 1</span>
-                            </div>
-                            <h4 class="text-white font-black font-outfit mt-3 text-base">Wplay.co</h4>
-                            <p class="text-xs text-slate-400 mt-1">La primera casa de apuestas autorizada en Colombia. Amplia variedad de eventos deportivos.</p>
-                            <span class="inline-block text-xs font-bold text-gold mt-4 hover:underline">Ir a Wplay ↗</span>
-                        </a>
+                    <!-- Date Selector Tabs -->
+                    <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-blue-950/45 no-scrollbar">
+                        <div id="predictor-tabs" class="flex gap-2"></div>
+                    </div>
 
-                        <!-- Card 2: Betplay -->
-                        <a href="https://betplay.com.co" target="_blank" class="block bg-navy border border-blue-900/40 hover:border-gold/60 p-5 rounded-2xl transition-all duration-300 group hover:-translate-y-1">
-                            <div class="flex justify-between items-start">
-                                <span class="text-2xl group-hover:scale-110 transition-transform">🏀</span>
-                                <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Popular</span>
-                            </div>
-                            <h4 class="text-white font-black font-outfit mt-3 text-base">Betplay</h4>
-                            <p class="text-xs text-slate-400 mt-1">Líder nacional en patrocinio deportivo. Apuestas en vivo muy fluidas y seguras.</p>
-                            <span class="inline-block text-xs font-bold text-gold mt-4 hover:underline">Ir a Betplay ↗</span>
-                        </a>
-
-                        <!-- Card 3: Rushbet -->
-                        <a href="https://www.rushbet.co" target="_blank" class="block bg-navy border border-blue-900/40 hover:border-gold/60 p-5 rounded-2xl transition-all duration-300 group hover:-translate-y-1">
-                            <div class="flex justify-between items-start">
-                                <span class="text-2xl group-hover:scale-110 transition-transform">🥎</span>
-                                <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Rápido</span>
-                            </div>
-                            <h4 class="text-white font-black font-outfit mt-3 text-base">Rushbet</h4>
-                            <p class="text-xs text-slate-400 mt-1">Excelente programa de lealtad y retiros rápidos. Ideal para apuestas de fútbol internacional.</p>
-                            <span class="inline-block text-xs font-bold text-gold mt-4 hover:underline">Ir a Rushbet ↗</span>
-                        </a>
-
-                        <!-- Card 4: Codere -->
-                        <a href="https://www.codere.com.co" target="_blank" class="block bg-navy border border-blue-900/40 hover:border-gold/60 p-5 rounded-2xl transition-all duration-300 group hover:-translate-y-1">
-                            <div class="flex justify-between items-start">
-                                <span class="text-2xl group-hover:scale-110 transition-transform">🏎️</span>
-                                <span class="text-xs font-bold text-slate-400 bg-slate-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider">Internacional</span>
-                            </div>
-                            <h4 class="text-white font-black font-outfit mt-3 text-base">Codere</h4>
-                            <p class="text-xs text-slate-400 mt-1">Casa oficial de apuestas del Real Madrid. Excelente cobertura de ligas europeas.</p>
-                            <span class="inline-block text-xs font-bold text-gold mt-4 hover:underline">Ir a Codere ↗</span>
-                        </a>
+                    <!-- Matches Prediction Grid -->
+                    <div id="predictor-matches" class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                        <!-- Dynamic match cards go here -->
                     </div>
                 </div>
             </div>
 
-            <!-- Right Side: Odds Calculator (5 cols) -->
-            <div class="lg:col-span-5 space-y-8">
-                <!-- Odds Converter & Profit Calculator -->
-                <div class="bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl space-y-6">
+            <!-- Right Column: Standings / Leaderboard (4 cols) - Sticky -->
+            <div class="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+                <!-- Leaderboard Card -->
+                <div class="bg-[#061021]/60 border border-blue-950 rounded-[2.5rem] p-6 shadow-xl space-y-6">
                     <div class="border-b border-blue-950 pb-3 flex items-center justify-between">
                         <div>
-                            <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Calculadora de Apuestas') }}</h3>
-                            <p class="text-xs text-slate-400">{{ __('Calcula tus ganancias estimadas según la cuota y el monto.') }}</p>
+                            <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Tabla de Posiciones') }}</h3>
+                            <p class="text-xs text-slate-400">{{ __('Ranking oficial del grupo de predicciones') }}</p>
                         </div>
-                        <span class="text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Herramienta') }}</span>
+                        <span class="text-xs bg-gold/10 text-gold px-3 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Polla') }}</span>
                     </div>
 
-                    <div class="space-y-4">
-                        <!-- Odds Input -->
-                        <div class="flex flex-col space-y-2">
-                            <label class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Cuota (Decimal)') }}</label>
-                            <input type="number" id="calc-odds" step="0.01" min="1.01" value="1.85" oninput="calculateBets()" class="w-full bg-[#040a17] border border-blue-950 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition-all">
-                        </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-blue-950/20 border-b border-blue-950 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                    <th class="px-4 py-3 font-bold">{{ __('Participante') }}</th>
+                                    <th class="px-4 py-3 font-bold text-center" title="{{ __('Partidos Jugados (con resultado cargado)') }}">{{ __('PJ') }}</th>
+                                    <th class="px-4 py-3 font-bold text-center" title="{{ __('Marcadores Exactos Adivinados (3 pts)') }}">{{ __('EX') }}</th>
+                                    <th class="px-4 py-3 font-bold text-center" title="{{ __('Resultados Adivinados sin marcador exacto (1 pt)') }}">{{ __('RE') }}</th>
+                                    <th class="px-4 py-3 font-bold text-right">{{ __('Pts') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard-body" class="divide-y divide-blue-950/40 text-slate-300 font-medium">
+                                <!-- Dynamic leaderboard rows populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
 
-                        <!-- Stake Input -->
-                        <div class="flex flex-col space-y-2">
-                            <label class="text-slate-400 font-bold text-xs uppercase tracking-wider">{{ __('Monto a Apostar ($)') }}</label>
-                            <input type="number" id="calc-stake" step="1000" min="100" value="10000" oninput="calculateBets()" class="w-full bg-[#040a17] border border-blue-950 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-gold transition-all">
-                        </div>
-
-                        <!-- Results Card -->
-                        <div class="bg-navy border border-blue-950 rounded-2xl p-5 space-y-3">
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="text-slate-400 font-semibold uppercase tracking-wider">{{ __('Retorno Total') }}</span>
-                                <span id="bet-return" class="text-base font-black font-outfit text-white">$18.500</span>
-                            </div>
-                            <div class="flex justify-between items-center text-xs border-t border-blue-950/60 pt-3">
-                                <span class="text-slate-400 font-semibold uppercase tracking-wider">{{ __('Ganancia Neta') }}</span>
-                                <span id="bet-profit" class="text-lg font-black font-outfit text-emerald-400">$8.500</span>
-                            </div>
-                        </div>
-
-                        <!-- Info banner -->
-                        <div class="bg-blue-950/20 border border-blue-900/30 p-4 rounded-xl text-xs text-slate-300 leading-relaxed">
-                            💡 <strong>{{ __('Consejo:') }}</strong> {{ __('Apuesta de manera responsable. Compara siempre las cuotas en diferentes casas antes de colocar tu apuesta para maximizar tu retorno potencial.') }}
-                        </div>
+                    <!-- Points Rule Explainer -->
+                    <div class="bg-blue-950/20 border border-blue-900/30 p-4 rounded-xl text-[10px] text-slate-400 space-y-1.5 leading-relaxed">
+                        <span class="font-bold text-slate-200 uppercase tracking-wider block">📏 Reglas de Puntuación:</span>
+                        <p>🎯 <strong>3 Puntos (EX):</strong> Adivinar el marcador exacto (ej. pronóstico 2-1, resultado 2-1).</p>
+                        <p>🔮 <strong>1 Punto (RE):</strong> Adivinar el ganador o empate pero no el marcador exacto (ej. pronóstico 2-1, resultado 3-1).</p>
+                        <p>❌ <strong>0 Puntos:</strong> No acertar el resultado o falta de pronóstico.</p>
                     </div>
                 </div>
             </div>
@@ -258,25 +192,9 @@
         <p>&copy; {{ date('Y') }} Chalet Motel 192. {{ __('Todos los derechos reservados.') }}</p>
     </footer>
 
-    <!-- Interactive script for calculator & WC predictor -->
+    <!-- Interactive script for WC predictor -->
     <script>
         const currentLang = "{{ app()->getLocale() }}";
-
-        function calculateBets() {
-            const odds = parseFloat(document.getElementById('calc-odds').value) || 0;
-            const stake = parseFloat(document.getElementById('calc-stake').value) || 0;
-
-            let payout = 0;
-            let profit = 0;
-
-            if (odds > 0 && stake > 0) {
-                payout = stake * odds;
-                profit = payout - stake;
-            }
-
-            document.getElementById('bet-return').textContent = '$' + payout.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-            document.getElementById('bet-profit').textContent = '$' + profit.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-        }
 
         // --- WORLD CUP 2026 PREDICTOR LOGIC ---
         const matches = [
@@ -326,8 +244,49 @@
             { id: 44, date: "27 Jun", team1: "Panamá", flag1: "🇵🇦", team2: "Inglaterra", flag2: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", group: "L" }
         ];
 
-        let predictions = JSON.parse(localStorage.getItem('wc_2026_predictions')) || {};
+        let tournamentData = JSON.parse(localStorage.getItem('wc_2026_tournament')) || {
+            realResults: {},
+            predictions: {}
+        };
+
         let activeDateTab = '16 Jun';
+
+        function calculatePoints(real, pred) {
+            if (!real || real[0] === null || real[1] === null || real[0] === undefined || real[1] === undefined || real[0] === '' || real[1] === '') {
+                return { pts: 0, status: 'pending' };
+            }
+            const r1 = parseInt(real[0]);
+            const r2 = parseInt(real[1]);
+            
+            if (isNaN(r1) || isNaN(r2)) {
+                return { pts: 0, status: 'pending' };
+            }
+
+            if (!pred || pred[0] === null || pred[1] === null || pred[0] === undefined || pred[1] === undefined || pred[0] === '' || pred[1] === '') {
+                return { pts: 0, status: 'missing' };
+            }
+            const p1 = parseInt(pred[0]);
+            const p2 = parseInt(pred[1]);
+            
+            if (isNaN(p1) || isNaN(p2)) {
+                return { pts: 0, status: 'missing' };
+            }
+
+            // Guess exact score
+            if (r1 === p1 && r2 === p2) {
+                return { pts: 3, status: 'exact' };
+            }
+
+            // Guess correct outcome
+            const realWinner = r1 > r2 ? 1 : (r1 < r2 ? 2 : 0);
+            const predWinner = p1 > p2 ? 1 : (p1 < p2 ? 2 : 0);
+
+            if (realWinner === predWinner) {
+                return { pts: 1, status: 'outcome' };
+            }
+
+            return { pts: 0, status: 'wrong' };
+        }
 
         function renderPredictorTabs() {
             const tabsContainer = document.getElementById('predictor-tabs');
@@ -369,14 +328,50 @@
                 ? matches 
                 : matches.filter(m => m.date === activeDateTab);
 
-            filteredMatches.forEach(m => {
-                const predKey1 = `m_${m.id}_t1`;
-                const predKey2 = `m_${m.id}_t2`;
-                const val1 = predictions[predKey1] !== undefined ? predictions[predKey1] : '';
-                const val2 = predictions[predKey2] !== undefined ? predictions[predKey2] : '';
+            const participants = ['Pitufina', 'Tita', 'Chumilo', 'Precioso'];
 
+            filteredMatches.forEach(m => {
+                const real = tournamentData.realResults[m.id] || ['', ''];
+                
                 const card = document.createElement('div');
                 card.className = "bg-navy border border-blue-900/40 rounded-3xl p-5 flex flex-col justify-between space-y-4 hover:border-blue-800/60 transition-all duration-200";
+
+                let rowsHtml = '';
+                participants.forEach(p => {
+                    const pred = (tournamentData.predictions[m.id] && tournamentData.predictions[m.id][p]) || ['', ''];
+                    const res = calculatePoints(real, pred);
+                    
+                    let badgeClass = 'text-slate-400 bg-slate-900/60 border border-slate-900/60';
+                    let badgeText = '0';
+                    
+                    if (res.status === 'exact') {
+                        badgeClass = 'text-gold bg-gold/15 border border-gold/30 font-black';
+                        badgeText = '+3';
+                    } else if (res.status === 'outcome') {
+                        badgeClass = 'text-emerald-400 bg-emerald-950/40 border border-emerald-900/40 font-bold';
+                        badgeText = '+1';
+                    } else if (res.status === 'wrong') {
+                        badgeClass = 'text-red-400 bg-red-900/40 border border-red-900/40 font-bold';
+                        badgeText = '0';
+                    } else if (res.status === 'missing') {
+                        badgeClass = 'text-slate-500 bg-slate-900/20 font-normal border border-transparent';
+                        badgeText = '-';
+                    }
+
+                    const pEmoji = p === 'Pitufina' || p === 'Tita' ? '👩' : '👦';
+
+                    rowsHtml += `
+                        <div class="grid grid-cols-12 gap-1 items-center hover:bg-blue-950/20 rounded-xl p-1 text-center">
+                            <div class="col-span-5 text-left font-bold text-slate-300 truncate">${pEmoji} ${p}</div>
+                            <div class="col-span-5 flex items-center justify-center gap-1">
+                                <input type="number" min="0" placeholder="-" value="${pred[0]}" oninput="updatePredictionScore(${m.id}, '${p}', 0, this.value)" class="w-8 h-7 bg-[#040a17] border border-blue-950 rounded text-center font-bold text-white text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <span class="text-slate-500 font-bold text-[10px]">-</span>
+                                <input type="number" min="0" placeholder="-" value="${pred[1]}" oninput="updatePredictionScore(${m.id}, '${p}', 1, this.value)" class="w-8 h-7 bg-[#040a17] border border-blue-950 rounded text-center font-bold text-white text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            </div>
+                            <div class="col-span-2"><span class="px-1.5 py-0.5 rounded text-[10px] ${badgeClass}">${badgeText}</span></div>
+                        </div>
+                    `;
+                });
 
                 card.innerHTML = `
                     <div class="flex justify-between items-center text-[10px] text-slate-400 border-b border-blue-950/60 pb-2">
@@ -384,58 +379,162 @@
                         <span class="bg-blue-950/80 px-2 py-0.5 rounded font-black border border-blue-900/40">${currentLang === 'es' ? 'Grupo' : 'Group'} ${m.group}</span>
                     </div>
 
-                    <div class="flex items-center justify-between gap-4 py-2">
+                    <div class="flex items-center justify-between gap-4 py-1.5 border-b border-blue-950/40 pb-2.5">
                         <!-- Team 1 -->
-                        <div class="flex items-center gap-2 w-[40%] min-w-0">
+                        <div class="flex items-center gap-2 w-[45%] min-w-0">
                             <span class="text-2xl shrink-0">${m.flag1}</span>
-                            <span class="text-xs font-bold text-white tracking-wide truncate" title="${m.team1}">${m.team1}</span>
+                            <span class="text-xs font-black text-white tracking-wide truncate" title="${m.team1}">${m.team1}</span>
                         </div>
 
-                        <!-- Score Input Fields -->
-                        <div class="flex items-center gap-1.5 justify-center w-[20%] shrink-0">
-                            <input type="number" id="pred-${m.id}-1" min="0" value="${val1}" oninput="updateTempPrediction(${m.id}, 1, this.value)" class="w-8 h-8 bg-[#040a17] border border-blue-950 rounded-lg text-center font-black text-xs text-gold focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                            <span class="text-slate-500 font-bold text-xs">-</span>
-                            <input type="number" id="pred-${m.id}-2" min="0" value="${val2}" oninput="updateTempPrediction(${m.id}, 2, this.value)" class="w-8 h-8 bg-[#040a17] border border-blue-950 rounded-lg text-center font-black text-xs text-gold focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                        </div>
+                        <div class="text-slate-500 font-black text-xs shrink-0">VS</div>
 
                         <!-- Team 2 -->
-                        <div class="flex items-center gap-2 justify-end w-[40%] text-right min-w-0">
-                            <span class="text-xs font-bold text-white tracking-wide truncate" title="${m.team2}">${m.team2}</span>
+                        <div class="flex items-center gap-2 justify-end w-[45%] text-right min-w-0">
+                            <span class="text-xs font-black text-white tracking-wide truncate" title="${m.team2}">${m.team2}</span>
                             <span class="text-2xl shrink-0">${m.flag2}</span>
                         </div>
+                    </div>
+
+                    <div class="space-y-1.5 text-xs">
+                        <div class="grid grid-cols-12 gap-1 text-[9px] text-slate-500 font-black uppercase tracking-wider text-center">
+                            <div class="col-span-5 text-left">${currentLang === 'es' ? 'Participante' : 'Participant'}</div>
+                            <div class="col-span-5">${currentLang === 'es' ? 'Pronóstico' : 'Prediction'}</div>
+                            <div class="col-span-2">Pts</div>
+                        </div>
+
+                        <!-- Real Result Row -->
+                        <div class="grid grid-cols-12 gap-1 items-center bg-gold/10 border border-gold/25 rounded-xl p-1.5 text-center">
+                            <div class="col-span-5 text-left font-black text-gold flex items-center gap-1">
+                                <span>⭐</span> <span class="truncate">${currentLang === 'es' ? 'Resultado Real' : 'Real Result'}</span>
+                            </div>
+                            <div class="col-span-5 flex items-center justify-center gap-1">
+                                <input type="number" min="0" placeholder="-" value="${real[0]}" oninput="updateRealScore(${m.id}, 0, this.value)" class="w-8 h-7 bg-[#040a17] border border-gold/45 rounded text-center font-black text-gold text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <span class="text-gold font-bold text-[10px]">-</span>
+                                <input type="number" min="0" placeholder="-" value="${real[1]}" oninput="updateRealScore(${m.id}, 1, this.value)" class="w-8 h-7 bg-[#040a17] border border-gold/45 rounded text-center font-black text-gold text-xs focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            </div>
+                            <div class="col-span-2 font-black text-gold">-</div>
+                        </div>
+
+                        <!-- Participants rows -->
+                        ${rowsHtml}
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        function updateTempPrediction(matchId, teamIndex, value) {
-            const key = `m_${matchId}_t${teamIndex}`;
-            if (value === '') {
-                delete predictions[key];
-            } else {
-                predictions[key] = parseInt(value);
+        function updateRealScore(matchId, scoreIndex, value) {
+            if (!tournamentData.realResults[matchId]) {
+                tournamentData.realResults[matchId] = [null, null];
             }
+            if (value === '') {
+                tournamentData.realResults[matchId][scoreIndex] = null;
+            } else {
+                tournamentData.realResults[matchId][scoreIndex] = parseInt(value);
+            }
+            renderLeaderboard();
+        }
+
+        // Auto-save predictions in memory
+        function updatePredictionScore(matchId, participant, scoreIndex, value) {
+            if (!tournamentData.predictions[matchId]) {
+                tournamentData.predictions[matchId] = {};
+            }
+            if (!tournamentData.predictions[matchId][participant]) {
+                tournamentData.predictions[matchId][participant] = [null, null];
+            }
+            if (value === '') {
+                tournamentData.predictions[matchId][participant][scoreIndex] = null;
+            } else {
+                tournamentData.predictions[matchId][participant][scoreIndex] = parseInt(value);
+            }
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const participants = ['Pitufina', 'Tita', 'Chumilo', 'Precioso'];
+            const standings = participants.map(p => {
+                return {
+                    name: p,
+                    emoji: p === 'Pitufina' || p === 'Tita' ? '👩' : '👦',
+                    points: 0,
+                    exact: 0,
+                    outcome: 0,
+                    played: 0
+                };
+            });
+
+            matches.forEach(m => {
+                const real = tournamentData.realResults[m.id];
+                
+                participants.forEach(p => {
+                    const pred = tournamentData.predictions[m.id] ? tournamentData.predictions[m.id][p] : null;
+                    const res = calculatePoints(real, pred);
+                    
+                    const standObj = standings.find(s => s.name === p);
+                    if (res.status !== 'pending' && res.status !== 'missing') {
+                        standObj.points += res.pts;
+                        standObj.played++;
+                        if (res.pts === 3) standObj.exact++;
+                        else if (res.pts === 1) standObj.outcome++;
+                    }
+                });
+            });
+
+            standings.sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                if (b.exact !== a.exact) return b.exact - a.exact;
+                if (b.outcome !== a.outcome) return b.outcome - a.outcome;
+                return a.name.localeCompare(b.name);
+            });
+
+            const leaderboardBody = document.getElementById('leaderboard-body');
+            leaderboardBody.innerHTML = '';
+
+            standings.forEach((s, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-blue-950/20 transition-colors border-b border-blue-950/40 text-xs";
+                
+                let rankEmoji = '🔹';
+                if (idx === 0) rankEmoji = '🥇';
+                else if (idx === 1) rankEmoji = '🥈';
+                else if (idx === 2) rankEmoji = '🥉';
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-black text-slate-300 flex items-center gap-1.5">
+                        <span>${rankEmoji}</span>
+                        <span>${s.emoji} ${s.name}</span>
+                    </td>
+                    <td class="px-4 py-3 text-center text-slate-400 font-bold">${s.played}</td>
+                    <td class="px-4 py-3 text-center text-emerald-400 font-bold">${s.exact}</td>
+                    <td class="px-4 py-3 text-center text-blue-400 font-bold">${s.outcome}</td>
+                    <td class="px-4 py-3 text-right text-gold font-black text-sm">${s.points}</td>
+                `;
+                leaderboardBody.appendChild(tr);
+            });
         }
 
         function saveAllPredictions() {
-            localStorage.setItem('wc_2026_predictions', JSON.stringify(predictions));
-            alert(currentLang === 'es' ? '¡Predicciones guardadas con éxito!' : 'Predictions saved successfully!');
+            localStorage.setItem('wc_2026_tournament', JSON.stringify(tournamentData));
+            renderPredictorMatches();
+            renderLeaderboard();
+            alert(currentLang === 'es' ? '¡Datos y pronósticos guardados con éxito!' : 'Data and predictions saved successfully!');
         }
 
         function clearAllPredictions() {
-            if (confirm(currentLang === 'es' ? '¿Estás seguro de que deseas borrar todas tus predicciones?' : 'Are you sure you want to clear all your predictions?')) {
-                predictions = {};
-                localStorage.removeItem('wc_2026_predictions');
+            if (confirm(currentLang === 'es' ? '¿Estás seguro de que deseas borrar todos los marcadores y pronósticos?' : 'Are you sure you want to clear all scores and predictions?')) {
+                tournamentData = { realResults: {}, predictions: {} };
+                localStorage.removeItem('wc_2026_tournament');
                 renderPredictorMatches();
+                renderLeaderboard();
             }
         }
 
-        // Run calculations & predictor load once on load
+        // Initialize Page
         window.addEventListener('DOMContentLoaded', () => {
-            calculateBets();
             renderPredictorTabs();
             renderPredictorMatches();
+            renderLeaderboard();
         });
     </script>
 </body>
