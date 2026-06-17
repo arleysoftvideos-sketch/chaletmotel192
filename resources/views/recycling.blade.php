@@ -473,7 +473,7 @@
                     <div class="absolute right-4 top-4 text-3xl opacity-20 select-none group-hover:scale-110 transition-transform duration-300">📋</div>
                     <span class="text-[10px] font-black text-purple-400 uppercase tracking-widest">{{ __('Total Registros') }}</span>
                     <h3 id="stat-card-count" class="text-4xl font-black font-outfit text-white mt-2">0</h3>
-                    <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ __('Días Registrados') }}</p>
+                    <p id="stat-card-count-label" class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ __('Días Registrados') }}</p>
                 </div>
             </div>
 
@@ -528,15 +528,16 @@
                         <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
                             <div>
                                 <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Ubicaciones Destacadas') }}</h3>
-                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Total acumulado por tienda u origen') }}</p>
+                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Total acumulado por tienda u origen — mayor a menor') }}</p>
                             </div>
-                            <span class="text-[10px] bg-gold/10 text-gold px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Ranking') }}</span>
+                            <span class="text-[10px] bg-gold/10 text-gold px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🏆 {{ __('Ranking') }}</span>
                         </div>
                         
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse text-xs">
                                 <thead>
                                     <tr class="bg-blue-950/20 border-b border-blue-950 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                                        <th class="px-4 py-3 font-bold w-8">#</th>
                                         <th class="px-4 py-3 font-bold">{{ __('Tienda / Origen') }}</th>
                                         <th class="px-4 py-3 font-bold text-center">{{ __('Grandes') }}</th>
                                         <th class="px-4 py-3 font-bold text-center">{{ __('Pequeñas') }}</th>
@@ -559,7 +560,7 @@
                                 <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Historial Reciente') }}</h3>
                                 <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Últimos 20 registros ingresados') }}</p>
                             </div>
-                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Registro') }}</span>
+                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">📋 {{ __('Registro') }}</span>
                         </div>
                         
                         <div id="stats-recent-logs-list" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
@@ -1344,16 +1345,22 @@
                 const emptyMsg = currentLang === 'es' ? 'No hay registros en este rango' : 'No logs in this range';
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="px-4 py-8 text-center text-slate-500 italic font-semibold">
+                        <td colspan="5" class="px-4 py-8 text-center text-slate-500 italic font-semibold">
                             ${emptyMsg}
                         </td>
                     </tr>
                 `;
             } else {
-                sortedLocations.forEach(loc => {
+                sortedLocations.forEach((loc, idx) => {
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-blue-950/20 transition-colors";
+                    let rankBadge = '';
+                    if (idx === 0) rankBadge = '🥇';
+                    else if (idx === 1) rankBadge = '🥈';
+                    else if (idx === 2) rankBadge = '🥉';
+                    else rankBadge = `<span class="text-slate-500 font-bold">${idx + 1}</span>`;
                     tr.innerHTML = `
+                        <td class="px-4 py-3 text-center">${rankBadge}</td>
                         <td class="px-4 py-3 font-semibold text-white">${loc.store}</td>
                         <td class="px-4 py-3 text-center text-emerald-400 font-bold">${loc.big_sum.toLocaleString()}</td>
                         <td class="px-4 py-3 text-center text-blue-400 font-bold">${loc.small_sum.toLocaleString()}</td>
@@ -1383,17 +1390,20 @@
                     const formattedDate = dateParts.length === 3 ? `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}` : log.date;
                     const normStoreName = normalizeStoreName(log.store);
 
+                    const bigLabel = currentLang === 'es' ? 'G' : 'B';
+                    const smallLabel = currentLang === 'es' ? 'P' : 'S';
+                    const totalLabel = currentLang === 'es' ? 'Total' : 'Total';
                     item.innerHTML = `
                         <div class="flex flex-col min-w-0">
                             <span class="text-white font-bold text-xs truncate">${normStoreName}</span>
                             <span class="text-[10px] text-slate-400 font-medium">${formattedDate}</span>
                         </div>
                         <div class="flex items-center gap-2 shrink-0">
-                            <span class="text-[10px] bg-emerald-950/60 text-emerald-400 border border-emerald-900/50 px-2 py-0.5 rounded font-black">
-                                B: ${log.big}
+                            <span class="text-[10px] bg-emerald-950/60 text-emerald-400 border border-emerald-900/50 px-2 py-0.5 rounded font-black" title="${currentLang === 'es' ? 'Grandes' : 'Big'}">
+                                ${bigLabel}: ${log.big}
                             </span>
-                            <span class="text-[10px] bg-blue-950/60 text-blue-400 border border-blue-900/50 px-2 py-0.5 rounded font-black">
-                                S: ${log.small}
+                            <span class="text-[10px] bg-blue-950/60 text-blue-400 border border-blue-900/50 px-2 py-0.5 rounded font-black" title="${currentLang === 'es' ? 'Pequeñas' : 'Small'}">
+                                ${smallLabel}: ${log.small}
                             </span>
                             <span class="text-xs bg-gold/10 text-gold px-2.5 py-0.5 rounded-full font-black border border-gold/25">
                                 ${log.total}
