@@ -133,6 +133,7 @@ class RecyclingController extends Controller
             $locationsQuery = clone $query;
             $trendQuery = clone $query;
             $logsQuery = clone $query;
+            $monthlyQuery = clone $query;
 
             $totalBig = (int)$summaryQuery->sum('big');
             $totalSmall = (int)$summaryQuery->sum('small');
@@ -159,6 +160,18 @@ class RecyclingController extends Controller
             ->orderBy('date', 'asc')
             ->get();
 
+            // Group by year-month for monthly trend
+            $monthlyTrend = $monthlyQuery->select(
+                \DB::raw("strftime('%Y-%m', date) as month"),
+                \DB::raw('SUM(big) as big_sum'),
+                \DB::raw('SUM(small) as small_sum'),
+                \DB::raw('SUM(total) as total_sum'),
+                \DB::raw('COUNT(*) as log_count')
+            )
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get();
+
             // Get recent logs
             $recentLogs = $logsQuery->orderBy('date', 'desc')
                 ->orderBy('created_at', 'desc')
@@ -175,6 +188,7 @@ class RecyclingController extends Controller
                 ],
                 'locations' => $topLocations,
                 'trend' => $dailyTrend,
+                'monthly' => $monthlyTrend,
                 'logs' => $recentLogs,
             ]);
 

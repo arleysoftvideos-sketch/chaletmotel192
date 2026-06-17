@@ -564,6 +564,22 @@
             </div>
         </main>
 
+        <!-- Monthly Report Section -->
+        <section class="max-w-7xl w-full mx-auto px-6 pb-8">
+            <div class="bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl">
+                <div class="border-b border-blue-950 pb-3 mb-6 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Reporte por Mes') }}</h3>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Bolsas recolectadas acumuladas mes a mes') }}</p>
+                    </div>
+                    <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">📅 {{ __('Mensual') }}</span>
+                </div>
+                <div class="w-full relative h-[320px]">
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+            </div>
+        </section>
+
         <!-- Stats Footer -->
         <footer class="w-full bg-[#0a1831] border-t-2 border-gold/40 shadow-2xl">
             <div class="w-full bg-[#061021] py-4 text-center text-xs text-slate-500">
@@ -1182,6 +1198,7 @@
         // ----------------------------------------------------
         let trendChartInstance = null;
         let distributionChartInstance = null;
+        let monthlyChartInstance = null;
         let activeDistributionMode = 'tienda';
         let lastStatsData = null;
 
@@ -1400,6 +1417,7 @@
 
             // Render Charts
             renderTrendChart(data.trend || []);
+            renderMonthlyChart(data.monthly || []);
             renderDistributionChart();
         }
 
@@ -1505,6 +1523,149 @@
                             grid: { color: 'rgba(30, 41, 59, 0.3)' },
                             ticks: { color: '#94a3b8', font: { size: 9 } },
                             beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderMonthlyChart(monthlyData) {
+            if (monthlyChartInstance) {
+                monthlyChartInstance.destroy();
+            }
+
+            const ctx = document.getElementById('monthlyChart').getContext('2d');
+
+            const monthNamesEs = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+            const monthNamesEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+            if (monthlyData.length === 0) {
+                monthlyChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: [], datasets: [] },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            datalabels: { display: false },
+                            title: {
+                                display: true,
+                                text: currentLang === 'es' ? 'Sin datos en este rango' : 'No data in this range',
+                                color: '#94a3b8'
+                            }
+                        }
+                    }
+                });
+                return;
+            }
+
+            const labels = monthlyData.map(m => {
+                const parts = m.month.split('-');
+                const year = parts[0];
+                const monthIdx = parseInt(parts[1]) - 1;
+                const monthNames = currentLang === 'es' ? monthNamesEs : monthNamesEn;
+                return `${monthNames[monthIdx]} ${year}`;
+            });
+
+            const bigs   = monthlyData.map(m => parseInt(m.big_sum) || 0);
+            const smalls  = monthlyData.map(m => parseInt(m.small_sum) || 0);
+            const totals  = monthlyData.map(m => parseInt(m.total_sum) || 0);
+
+            monthlyChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: currentLang === 'es' ? 'Total Bolsas' : 'Total Bags',
+                            data: totals,
+                            backgroundColor: 'rgba(16, 185, 129, 0.75)',
+                            borderColor: '#10b981',
+                            borderWidth: 1.5,
+                            borderRadius: 6,
+                            order: 1
+                        },
+                        {
+                            label: currentLang === 'es' ? 'Grandes (B)' : 'Big Bags (B)',
+                            data: bigs,
+                            backgroundColor: 'rgba(255, 183, 3, 0.75)',
+                            borderColor: '#ffb703',
+                            borderWidth: 1.5,
+                            borderRadius: 6,
+                            order: 2
+                        },
+                        {
+                            label: currentLang === 'es' ? 'Pequeñas (S)' : 'Small Bags (S)',
+                            data: smalls,
+                            backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                            borderColor: '#3b82f6',
+                            borderWidth: 1.5,
+                            borderRadius: 6,
+                            order: 3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        datalabels: {
+                            display: function(context) {
+                                // Only show total value label on the first dataset (Total) if value > 0
+                                return context.datasetIndex === 0 && context.dataset.data[context.dataIndex] > 0;
+                            },
+                            formatter: function(value) {
+                                return value.toLocaleString();
+                            },
+                            color: '#ffffff',
+                            anchor: 'end',
+                            align: 'end',
+                            offset: 2,
+                            font: { family: 'Inter', size: 9, weight: 'bold' },
+                            textShadowBlur: 4,
+                            textShadowColor: 'rgba(0,0,0,0.8)'
+                        },
+                        legend: {
+                            labels: {
+                                color: '#cbd5e1',
+                                boxWidth: 12,
+                                font: { family: 'Inter', size: 10, weight: 'bold' },
+                                padding: 12
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#0a1831',
+                            titleColor: '#ffffff',
+                            bodyColor: '#cbd5e1',
+                            borderColor: '#1e293b',
+                            borderWidth: 1,
+                            callbacks: {
+                                afterBody: function(context) {
+                                    const idx = context[0].dataIndex;
+                                    const logs = monthlyData[idx]?.log_count || 0;
+                                    const logsLabel = currentLang === 'es' ? `📋 Registros: ${logs}` : `📋 Entries: ${logs}`;
+                                    return [logsLabel];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(30, 41, 59, 0.3)' },
+                            ticks: { color: '#94a3b8', font: { size: 10, weight: 'bold' } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(30, 41, 59, 0.3)' },
+                            ticks: { color: '#94a3b8', font: { size: 9 } },
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: currentLang === 'es' ? 'Bolsas' : 'Bags',
+                                color: '#64748b',
+                                font: { size: 10 }
+                            }
                         }
                     }
                 }
