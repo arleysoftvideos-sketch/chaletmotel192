@@ -108,6 +108,39 @@
             </div>
         </section>
 
+        <!-- World Cup 2026 Predictor Section -->
+        <section class="bg-[#061021]/60 border border-blue-950 rounded-[2.5rem] p-6 sm:p-8 shadow-xl space-y-6">
+            <div class="border-b border-blue-950 pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-tight flex items-center gap-2">
+                        <span>⚽</span> <span>{{ __('Polla Mundialista 2026') }}</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">
+                        {{ __('Fase de Grupos (16 - 27 de junio). Ingresa tus pronósticos de marcador de cada partido y guárdalos.') }}
+                    </p>
+                </div>
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button type="button" onclick="clearAllPredictions()" class="px-4 py-2 border border-blue-950 hover:border-red-950 text-slate-400 hover:text-red-400 font-bold rounded-xl text-xs uppercase tracking-wider transition-all duration-300">
+                        🗑️ {{ __('Borrar Todo') }}
+                    </button>
+                    <button type="button" onclick="saveAllPredictions()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-[#061021] font-black rounded-xl text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-emerald-500/10">
+                        💾 {{ __('Guardar Marcadores') }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Date Selector Tabs -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-blue-950/45 no-scrollbar">
+                <div id="predictor-tabs" class="flex gap-2"></div>
+            </div>
+
+            <!-- Matches Prediction Grid -->
+            <div id="predictor-matches" class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                <!-- Dynamic match cards go here -->
+            </div>
+        </section>
+
         <!-- Dynamic Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
@@ -225,8 +258,10 @@
         <p>&copy; {{ date('Y') }} Chalet Motel 192. {{ __('Todos los derechos reservados.') }}</p>
     </footer>
 
-    <!-- Interactive script for calculator -->
+    <!-- Interactive script for calculator & WC predictor -->
     <script>
+        const currentLang = "{{ app()->getLocale() }}";
+
         function calculateBets() {
             const odds = parseFloat(document.getElementById('calc-odds').value) || 0;
             const stake = parseFloat(document.getElementById('calc-stake').value) || 0;
@@ -243,8 +278,165 @@
             document.getElementById('bet-profit').textContent = '$' + profit.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
         }
 
-        // Run calculation once on load
-        window.addEventListener('DOMContentLoaded', calculateBets);
+        // --- WORLD CUP 2026 PREDICTOR LOGIC ---
+        const matches = [
+            { id: 1, date: "16 Jun", team1: "Argentina", flag1: "🇦🇷", team2: "Argelia", flag2: "🇩🇿", group: "J" },
+            { id: 2, date: "16 Jun", team1: "Austria", flag1: "🇦🇹", team2: "Jordania", flag2: "🇯🇴", group: "J" },
+            { id: 3, date: "17 Jun", team1: "Portugal", flag1: "🇵🇹", team2: "RD Congo", flag2: "🇨🇩", group: "K" },
+            { id: 4, date: "17 Jun", team1: "Inglaterra", flag1: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", team2: "Croacia", flag2: "🇭🇷", group: "L" },
+            { id: 5, date: "17 Jun", team1: "Ghana", flag1: "🇬🇭", team2: "Panamá", flag2: "🇵🇦", group: "L" },
+            { id: 6, date: "17 Jun", team1: "Uzbekistán", flag1: "🇺🇿", team2: "Colombia", flag2: "🇨🇴", group: "K" },
+            { id: 7, date: "18 Jun", team1: "Rep. Checa", flag1: "🇨🇿", team2: "Sudáfrica", flag2: "🇿🇦", group: "A" },
+            { id: 8, date: "18 Jun", team1: "Suiza", flag1: "🇨🇭", team2: "Bosnia", flag2: "🇧🇦", group: "B" },
+            { id: 9, date: "18 Jun", team1: "Canadá", flag1: "🇨🇦", team2: "Catar", flag2: "🇶🇦", group: "B" },
+            { id: 10, date: "18 Jun", team1: "México", flag1: "🇲🇽", team2: "Rep. de Corea", flag2: "🇰🇷", group: "A" },
+            { id: 11, date: "19 Jun", team1: "Escocia", flag1: "🏴\u200d󠁢󠁳󠁣󠁴󠁿", team2: "Nueva Zelanda", flag2: "🇳🇿", group: "C" },
+            { id: 12, date: "19 Jun", team1: "España", flag1: "🇪🇸", team2: "Japón", flag2: "🇯🇵", group: "D" },
+            { id: 13, date: "19 Jun", team1: "Chile", flag1: "🇨🇱", team2: "Camerún", flag2: "🇨🇲", group: "C" },
+            { id: 14, date: "19 Jun", team1: "EE. UU.", flag1: "🇺🇸", team2: "Marruecos", flag2: "🇲🇦", group: "D" },
+            { id: 15, date: "20 Jun", team1: "Italia", flag1: "🇮🇹", team2: "Nigeria", flag2: "🇳🇬", group: "E" },
+            { id: 16, date: "20 Jun", team1: "Dinamarca", flag1: "🇩🇰", team2: "Irán", flag2: "🇮🇷", group: "F" },
+            { id: 17, date: "20 Jun", team1: "Ecuador", flag1: "🇪🇨", team2: "Costa de Marfil", flag2: "🇨🇮", group: "E" },
+            { id: 18, date: "20 Jun", team1: "Bélgica", flag1: "🇧🇪", team2: "Paraguay", flag2: "🇵🇾", group: "F" },
+            { id: 19, date: "21 Jun", team1: "Países Bajos", flag1: "🇳🇱", team2: "Australia", flag2: "🇦🇺", group: "G" },
+            { id: 20, date: "21 Jun", team1: "Brasil", flag1: "🇧🇷", team2: "Arabia Saudita", flag2: "🇸🇦", group: "H" },
+            { id: 21, date: "21 Jun", team1: "Alemania", flag1: "🇩🇪", team2: "Honduras", flag2: "🇭🇳", group: "G" },
+            { id: 22, date: "21 Jun", team1: "Uruguay", flag1: "🇺🇾", team2: "EE. UU.", flag2: "🇺🇸", group: "H" },
+            { id: 23, date: "22 Jun", team1: "Sudáfrica", flag1: "🇿🇦", team2: "México", flag2: "🇲🇽", group: "A" },
+            { id: 24, date: "22 Jun", team1: "Rep. de Corea", flag1: "🇰🇷", team2: "Rep. Checa", flag2: "🇨🇿", group: "A" },
+            { id: 25, date: "22 Jun", team1: "Bosnia", flag1: "🇧🇦", team2: "Canadá", flag2: "🇨🇦", group: "B" },
+            { id: 26, date: "22 Jun", team1: "Catar", flag1: "🇶🇦", team2: "Suiza", flag2: "🇨🇭", group: "B" },
+            { id: 27, date: "23 Jun", team1: "Nueva Zelanda", flag1: "🇳🇿", team2: "Chile", flag2: "🇨🇱", group: "C" },
+            { id: 28, date: "23 Jun", team1: "Camerún", flag1: "🇨🇲", team2: "Escocia", flag2: "🏴\u200d󠁢󠁳󠁣󠁴󠁿", group: "C" },
+            { id: 29, date: "23 Jun", team1: "Japón", flag1: "🇯🇵", team2: "EE. UU.", flag2: "🇺🇸", group: "D" },
+            { id: 30, date: "23 Jun", team1: "Marruecos", flag1: "🇲🇦", team2: "España", flag2: "🇪🇸", group: "D" },
+            { id: 31, date: "24 Jun", team1: "Nigeria", flag1: "🇳🇬", team2: "Ecuador", flag2: "🇪🇨", group: "E" },
+            { id: 32, date: "24 Jun", team1: "Costa de Marfil", flag1: "🇨🇮", team2: "Italia", flag2: "🇮🇹", group: "E" },
+            { id: 33, date: "24 Jun", team1: "Irán", flag1: "🇮🇷", team2: "Bélgica", flag2: "🇧🇪", group: "F" },
+            { id: 34, date: "24 Jun", team1: "Paraguay", flag1: "🇵🇾", team2: "Dinamarca", flag2: "🇩🇰", group: "F" },
+            { id: 35, date: "25 Jun", team1: "Australia", flag1: "🇦🇺", team2: "Alemania", flag2: "🇩🇪", group: "G" },
+            { id: 36, date: "25 Jun", team1: "Honduras", flag1: "🇭🇳", team2: "Países Bajos", flag2: "🇳🇱", group: "G" },
+            { id: 37, date: "25 Jun", team1: "Arabia Saudita", flag1: "🇸🇦", team2: "Uruguay", flag2: "🇺🇾", group: "H" },
+            { id: 38, date: "25 Jun", team1: "EE. UU.", flag1: "🇺🇸", team2: "Brasil", flag2: "🇧🇷", group: "H" },
+            { id: 39, date: "26 Jun", team1: "Argelia", flag1: "🇩🇿", team2: "Austria", flag2: "🇦🇹", group: "J" },
+            { id: 40, date: "26 Jun", team1: "Jordania", flag1: "🇯🇴", team2: "Argentina", flag2: "🇦🇷", group: "J" },
+            { id: 41, date: "26 Jun", team1: "RD Congo", flag1: "🇨🇩", team2: "Uzbekistán", flag2: "🇺🇿", group: "K" },
+            { id: 42, date: "26 Jun", team1: "Colombia", flag1: "🇨🇴", team2: "Portugal", flag2: "🇵🇹", group: "K" },
+            { id: 43, date: "27 Jun", team1: "Croacia", flag1: "🇭🇷", team2: "Ghana", flag2: "🇬🇭", group: "L" },
+            { id: 44, date: "27 Jun", team1: "Panamá", flag1: "🇵🇦", team2: "Inglaterra", flag2: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", group: "L" }
+        ];
+
+        let predictions = JSON.parse(localStorage.getItem('wc_2026_predictions')) || {};
+        let activeDateTab = '16 Jun';
+
+        function renderPredictorTabs() {
+            const tabsContainer = document.getElementById('predictor-tabs');
+            tabsContainer.innerHTML = '';
+
+            const uniqueDates = [...new Set(matches.map(m => m.date))];
+            
+            // "Ver Todos" Tab
+            const allBtn = document.createElement('button');
+            allBtn.type = 'button';
+            allBtn.className = `px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200 shrink-0 ${activeDateTab === 'all' ? 'bg-gold text-[#061021]' : 'bg-navy border border-blue-900/40 text-slate-400 hover:text-white'}`;
+            allBtn.textContent = currentLang === 'es' ? 'Ver Todos' : 'Show All';
+            allBtn.onclick = () => {
+                activeDateTab = 'all';
+                renderPredictorTabs();
+                renderPredictorMatches();
+            };
+            tabsContainer.appendChild(allBtn);
+
+            uniqueDates.forEach(date => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `px-3.5 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200 shrink-0 ${activeDateTab === date ? 'bg-gold text-[#061021]' : 'bg-navy border border-blue-900/40 text-slate-400 hover:text-white'}`;
+                btn.textContent = date;
+                btn.onclick = () => {
+                    activeDateTab = date;
+                    renderPredictorTabs();
+                    renderPredictorMatches();
+                };
+                tabsContainer.appendChild(btn);
+            });
+        }
+
+        function renderPredictorMatches() {
+            const container = document.getElementById('predictor-matches');
+            container.innerHTML = '';
+
+            const filteredMatches = activeDateTab === 'all' 
+                ? matches 
+                : matches.filter(m => m.date === activeDateTab);
+
+            filteredMatches.forEach(m => {
+                const predKey1 = `m_${m.id}_t1`;
+                const predKey2 = `m_${m.id}_t2`;
+                const val1 = predictions[predKey1] !== undefined ? predictions[predKey1] : '';
+                const val2 = predictions[predKey2] !== undefined ? predictions[predKey2] : '';
+
+                const card = document.createElement('div');
+                card.className = "bg-navy border border-blue-900/40 rounded-3xl p-5 flex flex-col justify-between space-y-4 hover:border-blue-800/60 transition-all duration-200";
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-[10px] text-slate-400 border-b border-blue-950/60 pb-2">
+                        <span class="font-bold uppercase tracking-wider">🗓️ ${m.date}</span>
+                        <span class="bg-blue-950/80 px-2 py-0.5 rounded font-black border border-blue-900/40">${currentLang === 'es' ? 'Grupo' : 'Group'} ${m.group}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-4 py-2">
+                        <!-- Team 1 -->
+                        <div class="flex items-center gap-2 w-[40%] min-w-0">
+                            <span class="text-2xl shrink-0">${m.flag1}</span>
+                            <span class="text-xs font-bold text-white tracking-wide truncate" title="${m.team1}">${m.team1}</span>
+                        </div>
+
+                        <!-- Score Input Fields -->
+                        <div class="flex items-center gap-1.5 justify-center w-[20%] shrink-0">
+                            <input type="number" id="pred-${m.id}-1" min="0" value="${val1}" oninput="updateTempPrediction(${m.id}, 1, this.value)" class="w-8 h-8 bg-[#040a17] border border-blue-950 rounded-lg text-center font-black text-xs text-gold focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            <span class="text-slate-500 font-bold text-xs">-</span>
+                            <input type="number" id="pred-${m.id}-2" min="0" value="${val2}" oninput="updateTempPrediction(${m.id}, 2, this.value)" class="w-8 h-8 bg-[#040a17] border border-blue-950 rounded-lg text-center font-black text-xs text-gold focus:outline-none focus:border-gold transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                        </div>
+
+                        <!-- Team 2 -->
+                        <div class="flex items-center gap-2 justify-end w-[40%] text-right min-w-0">
+                            <span class="text-xs font-bold text-white tracking-wide truncate" title="${m.team2}">${m.team2}</span>
+                            <span class="text-2xl shrink-0">${m.flag2}</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateTempPrediction(matchId, teamIndex, value) {
+            const key = `m_${matchId}_t${teamIndex}`;
+            if (value === '') {
+                delete predictions[key];
+            } else {
+                predictions[key] = parseInt(value);
+            }
+        }
+
+        function saveAllPredictions() {
+            localStorage.setItem('wc_2026_predictions', JSON.stringify(predictions));
+            alert(currentLang === 'es' ? '¡Predicciones guardadas con éxito!' : 'Predictions saved successfully!');
+        }
+
+        function clearAllPredictions() {
+            if (confirm(currentLang === 'es' ? '¿Estás seguro de que deseas borrar todas tus predicciones?' : 'Are you sure you want to clear all your predictions?')) {
+                predictions = {};
+                localStorage.removeItem('wc_2026_predictions');
+                renderPredictorMatches();
+            }
+        }
+
+        // Run calculations & predictor load once on load
+        window.addEventListener('DOMContentLoaded', () => {
+            calculateBets();
+            renderPredictorTabs();
+            renderPredictorMatches();
+        });
     </script>
 </body>
 </html>
