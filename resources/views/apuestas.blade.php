@@ -198,50 +198,50 @@
 
         // --- WORLD CUP 2026 PREDICTOR LOGIC ---
         const matches = [
-            { id: 1, date: "16 Jun", team1: "Argentina", flag1: "🇦🇷", team2: "Argelia", flag2: "🇩🇿", group: "J" },
-            { id: 2, date: "16 Jun", team1: "Austria", flag1: "🇦🇹", team2: "Jordania", flag2: "🇯🇴", group: "J" },
-            { id: 3, date: "17 Jun", team1: "Portugal", flag1: "🇵🇹", team2: "RD Congo", flag2: "🇨🇩", group: "K" },
-            { id: 4, date: "17 Jun", team1: "Inglaterra", flag1: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", team2: "Croacia", flag2: "🇭🇷", group: "L" },
-            { id: 5, date: "17 Jun", team1: "Ghana", flag1: "🇬🇭", team2: "Panamá", flag2: "🇵🇦", group: "L" },
-            { id: 6, date: "17 Jun", team1: "Uzbekistán", flag1: "🇺🇿", team2: "Colombia", flag2: "🇨🇴", group: "K" },
-            { id: 7, date: "18 Jun", team1: "Rep. Checa", flag1: "🇨🇿", team2: "Sudáfrica", flag2: "🇿🇦", group: "A" },
-            { id: 8, date: "18 Jun", team1: "Suiza", flag1: "🇨🇭", team2: "Bosnia", flag2: "🇧🇦", group: "B" },
-            { id: 9, date: "18 Jun", team1: "Canadá", flag1: "🇨🇦", team2: "Catar", flag2: "🇶🇦", group: "B" },
-            { id: 10, date: "18 Jun", team1: "México", flag1: "🇲🇽", team2: "Rep. de Corea", flag2: "🇰🇷", group: "A" },
-            { id: 11, date: "19 Jun", team1: "Escocia", flag1: "🏴\u200d󠁢󠁳󠁣󠁴󠁿", team2: "Nueva Zelanda", flag2: "🇳🇿", group: "C" },
-            { id: 12, date: "19 Jun", team1: "España", flag1: "🇪🇸", team2: "Japón", flag2: "🇯🇵", group: "D" },
-            { id: 13, date: "19 Jun", team1: "Chile", flag1: "🇨🇱", team2: "Camerún", flag2: "🇨🇲", group: "C" },
-            { id: 14, date: "19 Jun", team1: "EE. UU.", flag1: "🇺🇸", team2: "Marruecos", flag2: "🇲🇦", group: "D" },
-            { id: 15, date: "20 Jun", team1: "Italia", flag1: "🇮🇹", team2: "Nigeria", flag2: "🇳🇬", group: "E" },
-            { id: 16, date: "20 Jun", team1: "Dinamarca", flag1: "🇩🇰", team2: "Irán", flag2: "🇮🇷", group: "F" },
-            { id: 17, date: "20 Jun", team1: "Ecuador", flag1: "🇪🇨", team2: "Costa de Marfil", flag2: "🇨🇮", group: "E" },
-            { id: 18, date: "20 Jun", team1: "Bélgica", flag1: "🇧🇪", team2: "Paraguay", flag2: "🇵🇾", group: "F" },
-            { id: 19, date: "21 Jun", team1: "Países Bajos", flag1: "🇳🇱", team2: "Australia", flag2: "🇦🇺", group: "G" },
-            { id: 20, date: "21 Jun", team1: "Brasil", flag1: "🇧🇷", team2: "Arabia Saudita", flag2: "🇸🇦", group: "H" },
-            { id: 21, date: "21 Jun", team1: "Alemania", flag1: "🇩🇪", team2: "Honduras", flag2: "🇭🇳", group: "G" },
-            { id: 22, date: "21 Jun", team1: "Uruguay", flag1: "🇺🇾", team2: "EE. UU.", flag2: "🇺🇸", group: "H" },
-            { id: 23, date: "22 Jun", team1: "Sudáfrica", flag1: "🇿🇦", team2: "México", flag2: "🇲🇽", group: "A" },
-            { id: 24, date: "22 Jun", team1: "Rep. de Corea", flag1: "🇰🇷", team2: "Rep. Checa", flag2: "🇨🇿", group: "A" },
-            { id: 25, date: "22 Jun", team1: "Bosnia", flag1: "🇧🇦", team2: "Canadá", flag2: "🇨🇦", group: "B" },
-            { id: 26, date: "22 Jun", team1: "Catar", flag1: "🇶🇦", team2: "Suiza", flag2: "🇨🇭", group: "B" },
-            { id: 27, date: "23 Jun", team1: "Nueva Zelanda", flag1: "🇳🇿", team2: "Chile", flag2: "🇨🇱", group: "C" },
-            { id: 28, date: "23 Jun", team1: "Camerún", flag1: "🇨🇲", team2: "Escocia", flag2: "🏴\u200d󠁢󠁳󠁣󠁴󠁿", group: "C" },
-            { id: 29, date: "23 Jun", team1: "Japón", flag1: "🇯🇵", team2: "EE. UU.", flag2: "🇺🇸", group: "D" },
-            { id: 30, date: "23 Jun", team1: "Marruecos", flag1: "🇲🇦", team2: "España", flag2: "🇪🇸", group: "D" },
-            { id: 31, date: "24 Jun", team1: "Nigeria", flag1: "🇳🇬", team2: "Ecuador", flag2: "🇪🇨", group: "E" },
-            { id: 32, date: "24 Jun", team1: "Costa de Marfil", flag1: "🇨🇮", team2: "Italia", flag2: "🇮🇹", group: "E" },
-            { id: 33, date: "24 Jun", team1: "Irán", flag1: "🇮🇷", team2: "Bélgica", flag2: "🇧🇪", group: "F" },
-            { id: 34, date: "24 Jun", team1: "Paraguay", flag1: "🇵🇾", team2: "Dinamarca", flag2: "🇩🇰", group: "F" },
-            { id: 35, date: "25 Jun", team1: "Australia", flag1: "🇦🇺", team2: "Alemania", flag2: "🇩🇪", group: "G" },
-            { id: 36, date: "25 Jun", team1: "Honduras", flag1: "🇭🇳", team2: "Países Bajos", flag2: "🇳🇱", group: "G" },
-            { id: 37, date: "25 Jun", team1: "Arabia Saudita", flag1: "🇸🇦", team2: "Uruguay", flag2: "🇺🇾", group: "H" },
-            { id: 38, date: "25 Jun", team1: "EE. UU.", flag1: "🇺🇸", team2: "Brasil", flag2: "🇧🇷", group: "H" },
-            { id: 39, date: "26 Jun", team1: "Argelia", flag1: "🇩🇿", team2: "Austria", flag2: "🇦🇹", group: "J" },
-            { id: 40, date: "26 Jun", team1: "Jordania", flag1: "🇯🇴", team2: "Argentina", flag2: "🇦🇷", group: "J" },
-            { id: 41, date: "26 Jun", team1: "RD Congo", flag1: "🇨🇩", team2: "Uzbekistán", flag2: "🇺🇿", group: "K" },
-            { id: 42, date: "26 Jun", team1: "Colombia", flag1: "🇨🇴", team2: "Portugal", flag2: "🇵🇹", group: "K" },
-            { id: 43, date: "27 Jun", team1: "Croacia", flag1: "🇭🇷", team2: "Ghana", flag2: "🇬🇭", group: "L" },
-            { id: 44, date: "27 Jun", team1: "Panamá", flag1: "🇵🇦", team2: "Inglaterra", flag2: "🏴\u200d󠁢󠁥󠁮󠁧󠁿", group: "L" }
+            { id: 1, date: "16 Jun", team1: "Argentina", code1: "ar", team2: "Argelia", code2: "dz", group: "J" },
+            { id: 2, date: "16 Jun", team1: "Austria", code1: "at", team2: "Jordania", code2: "jo", group: "J" },
+            { id: 3, date: "17 Jun", team1: "Portugal", code1: "pt", team2: "RD Congo", code2: "cd", group: "K" },
+            { id: 4, date: "17 Jun", team1: "Inglaterra", code1: "gb-eng", team2: "Croacia", code2: "hr", group: "L" },
+            { id: 5, date: "17 Jun", team1: "Ghana", code1: "gh", team2: "Panamá", code2: "pa", group: "L" },
+            { id: 6, date: "17 Jun", team1: "Uzbekistán", code1: "uz", team2: "Colombia", code2: "co", group: "K" },
+            { id: 7, date: "18 Jun", team1: "Rep. Checa", code1: "cz", team2: "Sudáfrica", code2: "za", group: "A" },
+            { id: 8, date: "18 Jun", team1: "Suiza", code1: "ch", team2: "Bosnia", code2: "ba", group: "B" },
+            { id: 9, date: "18 Jun", team1: "Canadá", code1: "ca", team2: "Catar", code2: "qa", group: "B" },
+            { id: 10, date: "18 Jun", team1: "México", code1: "mx", team2: "Rep. de Corea", code2: "kr", group: "A" },
+            { id: 11, date: "19 Jun", team1: "Escocia", code1: "gb-sct", team2: "Nueva Zelanda", code2: "nz", group: "C" },
+            { id: 12, date: "19 Jun", team1: "España", code1: "es", team2: "Japón", code2: "jp", group: "D" },
+            { id: 13, date: "19 Jun", team1: "Chile", code1: "cl", team2: "Camerún", code2: "cm", group: "C" },
+            { id: 14, date: "19 Jun", team1: "EE. UU.", code1: "us", team2: "Marruecos", code2: "ma", group: "D" },
+            { id: 15, date: "20 Jun", team1: "Italia", code1: "it", team2: "Nigeria", code2: "ng", group: "E" },
+            { id: 16, date: "20 Jun", team1: "Dinamarca", code1: "dk", team2: "Irán", code2: "ir", group: "F" },
+            { id: 17, date: "20 Jun", team1: "Ecuador", code1: "ec", team2: "Costa de Marfil", code2: "ci", group: "E" },
+            { id: 18, date: "20 Jun", team1: "Bélgica", code1: "be", team2: "Paraguay", code2: "py", group: "F" },
+            { id: 19, date: "21 Jun", team1: "Países Bajos", code1: "nl", team2: "Australia", code2: "au", group: "G" },
+            { id: 20, date: "21 Jun", team1: "Brasil", code1: "br", team2: "Arabia Saudita", code2: "sa", group: "H" },
+            { id: 21, date: "21 Jun", team1: "Alemania", code1: "de", team2: "Honduras", code2: "hn", group: "G" },
+            { id: 22, date: "21 Jun", team1: "Uruguay", code1: "uy", team2: "EE. UU.", code2: "us", group: "H" },
+            { id: 23, date: "22 Jun", team1: "Sudáfrica", code1: "za", team2: "México", code2: "mx", group: "A" },
+            { id: 24, date: "22 Jun", team1: "Rep. de Corea", code1: "kr", team2: "Rep. Checa", code2: "cz", group: "A" },
+            { id: 25, date: "22 Jun", team1: "Bosnia", code1: "ba", team2: "Canadá", code2: "ca", group: "B" },
+            { id: 26, date: "22 Jun", team1: "Catar", code1: "qa", team2: "Suiza", code2: "ch", group: "B" },
+            { id: 27, date: "23 Jun", team1: "Nueva Zelanda", code1: "nz", team2: "Chile", code2: "cl", group: "C" },
+            { id: 28, date: "23 Jun", team1: "Camerún", code1: "cm", team2: "Escocia", code2: "gb-sct", group: "C" },
+            { id: 29, date: "23 Jun", team1: "Japón", code1: "jp", team2: "EE. UU.", code2: "us", group: "D" },
+            { id: 30, date: "23 Jun", team1: "Marruecos", code1: "ma", team2: "España", code2: "es", group: "D" },
+            { id: 31, date: "24 Jun", team1: "Nigeria", code1: "ng", team2: "Ecuador", code2: "ec", group: "E" },
+            { id: 32, date: "24 Jun", team1: "Costa de Marfil", code1: "ci", team2: "Italia", code2: "it", group: "E" },
+            { id: 33, date: "24 Jun", team1: "Irán", code1: "ir", team2: "Bélgica", code2: "be", group: "F" },
+            { id: 34, date: "24 Jun", team1: "Paraguay", code1: "py", team2: "Dinamarca", code2: "dk", group: "F" },
+            { id: 35, date: "25 Jun", team1: "Australia", code1: "au", team2: "Alemania", code2: "de", group: "G" },
+            { id: 36, date: "25 Jun", team1: "Honduras", code1: "hn", team2: "Países Bajos", code2: "nl", group: "G" },
+            { id: 37, date: "25 Jun", team1: "Arabia Saudita", code1: "sa", team2: "Uruguay", code2: "uy", group: "H" },
+            { id: 38, date: "25 Jun", team1: "EE. UU.", code1: "us", team2: "Brasil", code2: "br", group: "H" },
+            { id: 39, date: "26 Jun", team1: "Argelia", code1: "dz", team2: "Austria", code2: "at", group: "J" },
+            { id: 40, date: "26 Jun", team1: "Jordania", code1: "jo", team2: "Argentina", code2: "ar", group: "J" },
+            { id: 41, date: "26 Jun", team1: "RD Congo", code1: "cd", team2: "Uzbekistán", code2: "uz", group: "K" },
+            { id: 42, date: "26 Jun", team1: "Colombia", code1: "co", team2: "Portugal", code2: "pt", group: "K" },
+            { id: 43, date: "27 Jun", team1: "Croacia", code1: "hr", team2: "Ghana", code2: "gh", group: "L" },
+            { id: 44, date: "27 Jun", team1: "Panamá", code1: "pa", team2: "Inglaterra", code2: "gb-eng", group: "L" }
         ];
 
         let tournamentData = JSON.parse(localStorage.getItem('wc_2026_tournament')) || {
@@ -382,7 +382,7 @@
                     <div class="flex items-center justify-between gap-4 py-1.5 border-b border-blue-950/40 pb-2.5">
                         <!-- Team 1 -->
                         <div class="flex items-center gap-2 w-[45%] min-w-0">
-                            <span class="text-2xl shrink-0">${m.flag1}</span>
+                            <img src="https://flagcdn.com/w40/${m.code1}.png" class="w-6 h-4 object-cover rounded border border-blue-950/40 shadow-sm shrink-0" alt="${m.team1}">
                             <span class="text-xs font-black text-white tracking-wide truncate" title="${m.team1}">${m.team1}</span>
                         </div>
 
@@ -391,7 +391,7 @@
                         <!-- Team 2 -->
                         <div class="flex items-center gap-2 justify-end w-[45%] text-right min-w-0">
                             <span class="text-xs font-black text-white tracking-wide truncate" title="${m.team2}">${m.team2}</span>
-                            <span class="text-2xl shrink-0">${m.flag2}</span>
+                            <img src="https://flagcdn.com/w40/${m.code2}.png" class="w-6 h-4 object-cover rounded border border-blue-950/40 shadow-sm shrink-0" alt="${m.team2}">
                         </div>
                     </div>
 
