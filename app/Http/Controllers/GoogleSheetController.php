@@ -104,7 +104,13 @@ class GoogleSheetController extends Controller
         }
 
         $camasRaw = isset($row[2]) ? $row[2] : '';
-        $camas = str_starts_with($camasRaw, '2') ? '2' : '1';
+        if (str_starts_with($camasRaw, '2') || str_contains($camasRaw, '2 Queen')) {
+            $camas = '2_queen';
+        } elseif (str_contains($camasRaw, 'King')) {
+            $camas = '1_king';
+        } else {
+            $camas = '1_queen';
+        }
         
         $bano = null;
         if (str_contains($camasRaw, 'Bañera')) {
@@ -313,7 +319,14 @@ class GoogleSheetController extends Controller
     private function formatRoomData($room, $data)
     {
         $estado = isset($data['estado']) ? strtoupper($data['estado']) : 'NO ESPECIFICADO';
-        $camas = isset($data['camas']) ? $data['camas'] . ' Cama(s)' : 'N/A';
+        $camasVal = isset($data['camas']) ? $data['camas'] : '1_queen';
+        if ($camasVal === '2_queen') {
+            $camas = '2 Queen';
+        } elseif ($camasVal === '1_king') {
+            $camas = '1 King';
+        } else {
+            $camas = '1 Queen';
+        }
         if (isset($data['bano'])) {
             if ($data['bano'] === 'banera') {
                 $camas .= ' / Bañera';
@@ -369,7 +382,7 @@ class GoogleSheetController extends Controller
         $missingItems = [];
         foreach ($requiredItems as $key => $name) {
             // Ignore table/chair if 2 beds (as per JS rules)
-            if (isset($data['camas']) && $data['camas'] === '2' && ($key === 'chk_mesa' || $key === 'chk_silla')) {
+            if (isset($data['camas']) && $data['camas'] === '2_queen' && ($key === 'chk_mesa' || $key === 'chk_silla')) {
                 continue;
             }
             if (empty($data[$key])) {

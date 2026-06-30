@@ -585,8 +585,9 @@
                     <h3 data-i18n="roomAreaTitle">🛏️ Área de la Habitación</h3>
                     <div class="radio-group">
                         <span data-i18n="bedSetup">Configuración:</span> 
-                        <label><input type="radio" name="camas" value="1" onchange="toggleMesaSilla()"> <span data-i18n="oneBed">1 Cama</span></label>
-                        <label><input type="radio" name="camas" value="2" onchange="toggleMesaSilla()"> <span data-i18n="twoBeds">2 Camas</span></label>
+                        <label><input type="radio" name="camas" value="1_king" onchange="toggleMesaSilla()"> <span data-i18n="bedKing">1 King</span></label>
+                        <label><input type="radio" name="camas" value="1_queen" onchange="toggleMesaSilla()"> <span data-i18n="bedQueen">1 Queen</span></label>
+                        <label><input type="radio" name="camas" value="2_queen" onchange="toggleMesaSilla()"> <span data-i18n="bed2Queen">2 Queen</span></label>
                     </div>
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_cortina"> <span data-i18n="chk_cortina">Cortina instalada y en buen estado</span></label></div>
                     
@@ -736,7 +737,7 @@
                             </g>
 
                             <!-- Group 1 Bed (Queen/King) -->
-                            <g id="group-1-cama" class="interactive-svg-item" data-target-radio="camas" data-target-value="2">
+                            <g id="group-1-cama" class="interactive-svg-item" data-target-radio="camas" data-target-value="2_queen">
                                 <rect x="25" y="85" width="105" height="110" rx="8" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
                                 <rect x="33" y="100" width="20" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" />
                                 <rect x="33" y="148" width="20" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" />
@@ -753,7 +754,7 @@
                             </g>
 
                             <!-- Group 2 Beds (Twin/Doble) -->
-                            <g id="group-2-camas" class="interactive-svg-item" data-target-radio="camas" data-target-value="1">
+                            <g id="group-2-camas" class="interactive-svg-item" data-target-radio="camas" data-target-value="1_queen">
                                 <!-- Bed 1 (Top) -->
                                 <rect x="25" y="32" width="95" height="78" rx="6" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
                                 <rect x="33" y="42" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" />
@@ -917,7 +918,7 @@
             selectedRoom: "Habitación Seleccionada:", status: "Estado:", clean: "Limpio", dirty: "Sucio",
             inspectedBy: "Inspeccionado por:", date: "Fecha:", roomAreaTitle: "🛏️ Área de la Habitación",
             backToHome: "Volver a Inicio",
-            bedSetup: "Configuración:", oneBed: "1 Cama", twoBeds: "2 Camas",
+            bedSetup: "Configuración:", bedKing: "1 King", bedQueen: "1 Queen", bed2Queen: "2 Queen",
             acTitle: "🔌 Electricidad, Climatización y Seguridad", acStatus: "Aire acondicionado (A/C):", works: "Sí trabaja", noworks: "No trabaja",
             doorTitle: "🚪 Puertas y Paredes", bathTitle: "🛁 Área del Baño", bathType: "Tipo de baño:", tub: "Bañera", showerOnly: "Ducha sola",
             maintTitle: "🛠️ Mantenimiento Pendiente", notesTitle: "➕ Notas Adicionales",
@@ -964,7 +965,7 @@
             selectedRoom: "Selected Room:", status: "Status:", clean: "Clean", dirty: "Dirty",
             inspectedBy: "Inspected by:", date: "Date:", roomAreaTitle: "🛏️ Room Area",
             backToHome: "Back to Home",
-            bedSetup: "Bed Setup:", oneBed: "1 Bed", twoBeds: "2 Beds",
+            bedSetup: "Bed Setup:", bedKing: "1 King", bedQueen: "1 Queen", bed2Queen: "2 Queen",
             acTitle: "🔌 Electricity, A/C & Security", acStatus: "Air Conditioning (A/C):", works: "Working", noworks: "Not working",
             doorTitle: "🚪 Doors & Walls", bathTitle: "🛁 Bathroom Area", bathType: "Bath Type:", tub: "Bathtub", showerOnly: "Shower Only",
             maintTitle: "🛠️ Pending Maintenance", notesTitle: "➕ Additional Notes",
@@ -1030,35 +1031,35 @@
 
     const roomConfigs = {
         // Piso 1
-        101: { camas: '1', type: 'Queen' },
-        102: { camas: '1', type: 'Queen' },
-        103: { camas: '1', type: 'King' },
-        104: { camas: '1', type: 'King' },
-        105: { camas: '1', type: 'King' },
-        106: { camas: '2', type: 'Queen' },
-        107: { camas: '1', type: 'King' },
-        108: { camas: '2', type: 'Queen' },
-        109: { camas: '1', type: 'Queen' },
-        110: { camas: '1', type: 'King' },
-        111: { camas: '1', type: 'King' },
-        112: { camas: '1', type: 'King' },
-        113: { camas: '1', type: 'Queen' },
-        114: { camas: '1', type: 'Queen' },
+        101: { camas: '1_queen', type: 'Queen' },
+        102: { camas: '1_queen', type: 'Queen' },
+        103: { camas: '1_king', type: 'King' },
+        104: { camas: '1_king', type: 'King' },
+        105: { camas: '1_king', type: 'King' },
+        106: { camas: '2_queen', type: 'Queen' },
+        107: { camas: '1_king', type: 'King' },
+        108: { camas: '2_queen', type: 'Queen' },
+        109: { camas: '1_queen', type: 'Queen' },
+        110: { camas: '1_king', type: 'King' },
+        111: { camas: '1_king', type: 'King' },
+        112: { camas: '1_king', type: 'King' },
+        113: { camas: '1_queen', type: 'Queen' },
+        114: { camas: '1_queen', type: 'Queen' },
         // Piso 2
-        201: { camas: '1', type: 'King' },
-        202: { camas: '1', type: 'King' },
-        203: { camas: '2', type: 'Queen' },
-        204: { camas: '2', type: 'Queen' },
-        205: { camas: '2', type: 'Queen' },
-        206: { camas: '2', type: 'Queen' },
-        207: { camas: '2', type: 'Queen' },
-        208: { camas: '2', type: 'Queen' },
-        209: { camas: '2', type: 'Queen' },
-        210: { camas: '2', type: 'Queen' },
-        211: { camas: '2', type: 'Queen' },
-        212: { camas: '2', type: 'Queen' },
-        213: { camas: '1', type: 'King' },
-        214: { camas: '1', type: 'King' }
+        201: { camas: '1_king', type: 'King' },
+        202: { camas: '1_king', type: 'King' },
+        203: { camas: '2_queen', type: 'Queen' },
+        204: { camas: '2_queen', type: 'Queen' },
+        205: { camas: '2_queen', type: 'Queen' },
+        206: { camas: '2_queen', type: 'Queen' },
+        207: { camas: '2_queen', type: 'Queen' },
+        208: { camas: '2_queen', type: 'Queen' },
+        209: { camas: '2_queen', type: 'Queen' },
+        210: { camas: '2_queen', type: 'Queen' },
+        211: { camas: '2_queen', type: 'Queen' },
+        212: { camas: '2_queen', type: 'Queen' },
+        213: { camas: '1_king', type: 'King' },
+        214: { camas: '1_king', type: 'King' }
     };
 
     const rooms1 = Array.from({length: 14}, (_, i) => 101 + i);
@@ -1101,7 +1102,7 @@
         for (let i = 0; i < requiredItems.length; i++) {
             let key = requiredItems[i];
             
-            if (data.camas === '2' && (key === 'chk_mesa' || key === 'chk_silla')) {
+            if (data.camas === '2_queen' && (key === 'chk_mesa' || key === 'chk_silla')) {
                 continue; 
             }
             
@@ -1146,7 +1147,7 @@
         const divMesa = document.getElementById('div_mesa');
         const divSilla = document.getElementById('div_silla');
         
-        if (camas === '2') {
+        if (camas === '2_queen') {
             divMesa.style.display = 'none';
             divSilla.style.display = 'none';
         } else {
@@ -1245,9 +1246,8 @@
             }
         }
         
-        // 5. Beds toggling (1 Cama vs 2 Camas)
-        const camasVal = data['camas'] || (roomConfigs[currentRoom] ? roomConfigs[currentRoom].camas : '1');
-        const config = roomConfigs[currentRoom] || { camas: '1', type: 'Queen' };
+        // 5. Beds toggling (1 King vs 1 Queen vs 2 Queen)
+        const camasVal = data['camas'] || (roomConfigs[currentRoom] ? roomConfigs[currentRoom].camas : '1_queen');
         
         const group1Cama = document.getElementById('group-1-cama');
         const group2Camas = document.getElementById('group-2-camas');
@@ -1255,13 +1255,13 @@
         const bedsLabel = document.getElementById('svg-beds-label');
         const groupMesaSilla = document.getElementById('group-mesa-silla');
         
-        if (camasVal === '2') {
+        if (camasVal === '2_queen') {
             if (group1Cama) group1Cama.style.display = 'none';
             if (groupMesaSilla) groupMesaSilla.style.display = 'none';
             if (group2Camas) {
                 group2Camas.style.display = 'block';
                 if (bedsLabel) {
-                    bedsLabel.textContent = config.type === 'Queen' ? '2 QUEEN BEDS' : '2 BEDS';
+                    bedsLabel.textContent = '2 QUEEN BEDS';
                 }
                 if (data['estado'] === 'limpio') {
                     group2Camas.classList.remove('status-error');
@@ -1277,7 +1277,7 @@
             if (group1Cama) {
                 group1Cama.style.display = 'block';
                 if (bedLabel) {
-                    bedLabel.textContent = config.type === 'King' ? 'KING BED' : 'QUEEN BED';
+                    bedLabel.textContent = camasVal === '1_king' ? 'KING BED' : 'QUEEN BED';
                 }
                 if (data['estado'] === 'limpio') {
                     group1Cama.classList.remove('status-error');
