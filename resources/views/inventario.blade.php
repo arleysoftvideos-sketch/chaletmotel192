@@ -1173,8 +1173,25 @@
     function loadRoomData(room) {
         const data = hotelData[room];
         form.reset();
+        
+        // Establecer valores por defecto si no están definidos
+        if (data.estado === undefined) data.estado = 'limpio';
+        if (data.ac === undefined) data.ac = 'si';
+        if (data.bano === undefined) data.bano = 'banera';
+        if (data.camas === undefined && roomConfigs[room]) data.camas = roomConfigs[room].camas;
+        
         Array.from(form.elements).forEach(el => {
-            if(el.type === 'checkbox') el.checked = data[el.id] || false;
+            if(el.type === 'checkbox') {
+                if (el.id && el.id.startsWith('chk_')) {
+                    if (el.id === 'chk_remiendo' || el.id === 'chk_pintura') {
+                        el.checked = data[el.id] === true;
+                    } else {
+                        el.checked = data[el.id] !== false;
+                    }
+                } else {
+                    el.checked = !!data[el.id];
+                }
+            }
             else if(el.type === 'radio') { if(data[el.name] === el.value) el.checked = true; }
             else if(el.id) el.value = data[el.id] || '';
         });
