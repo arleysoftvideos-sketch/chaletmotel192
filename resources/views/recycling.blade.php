@@ -118,6 +118,17 @@
             .grid {
                 gap: 1.25rem !important;
             }
+            /* Fondo blanco en canvas de Chart.js al imprimir */
+            canvas {
+                background-color: #ffffff !important;
+            }
+            /* Contenedores de gráficos en blanco */
+            [class*="bg-[#061021]"],
+            [class*="bg-[#0a1831]"] {
+                background-color: #ffffff !important;
+                background: #ffffff !important;
+                border-color: #e2e8f0 !important;
+            }
         }
     </style>
 </head>
@@ -1868,7 +1879,23 @@
             });
         }
 
+        // Plugin global para pintar el fondo del canvas en blanco al imprimir
+        const whiteBgPlugin = {
+            id: 'whiteBgPlugin',
+            beforeDraw(chart) {
+                if (!window._isPrinting) return;
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-over';
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, chart.width, chart.height);
+                ctx.restore();
+            }
+        };
+        Chart.register(whiteBgPlugin);
+
         function toggleChartsPrintTheme(isPrint) {
+            window._isPrinting = isPrint;
             const labelColor = isPrint ? '#0f172a' : '#cbd5e1';
             const tickColor = isPrint ? '#334155' : '#94a3b8';
             const gridColor = isPrint ? 'rgba(203, 213, 225, 0.6)' : 'rgba(30, 41, 59, 0.3)';

@@ -597,6 +597,8 @@
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_nevera"> <span data-i18n="chk_nevera">Nevera (Refrigerador)</span></label></div>
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_microondas"> <span data-i18n="chk_microondas">Microondas</span></label></div>
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_parrilla"> <span data-i18n="chk_parrilla">Parrilla para recoger (portaequipajes)</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_colchon"> <span data-i18n="chk_colchon">Colchón en buen estado</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_nochero"> <span data-i18n="chk_nochero">Mesa de noche (Nochero)</span></label></div>
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_lamparas_hab"> <span data-i18n="chk_lamparas_hab">Lámparas de la habitación</span></label></div>
                 </div>
 
@@ -946,6 +948,8 @@
             chk_silla: "Silla (con la mesa)", chk_nevera: "Nevera (Refrigerador)",
             chk_microondas: "Microondas",
             chk_parrilla: "Parrilla para recoger (portaequipajes)",
+            chk_colchon: "Colchón en buen estado",
+            chk_nochero: "Mesa de noche (Nochero)",
             chk_lamparas_hab: "Lámparas de la habitación", chk_outlet_ac: "Outlet (enchufe) del A/C en buen estado",
             chk_tv: "Televisor", chk_tapas_emergencia: "Tapas de emergencia blancas", chk_covers_outlets: "Covers de los outlets completos y sanos",
             chk_covers_luces: "Covers de las luces completos y sanos", chk_extractor: "Extractor de humo / Detector de humo",
@@ -959,7 +963,8 @@
             shortNames: {
                 chk_cortina: "Cortina", chk_mesa: "Mesa", chk_silla: "Silla", chk_nevera: "Nevera",
                 chk_microondas: "Microondas",
-                chk_parrilla: "Parrilla", chk_lamparas_hab: "Lámparas hab.", chk_outlet_ac: "Enchufe A/C",
+                chk_parrilla: "Parrilla", chk_colchon: "Colchón", chk_nochero: "Mesa de noche",
+                chk_lamparas_hab: "Lámparas hab.", chk_outlet_ac: "Enchufe A/C",
                 chk_tv: "Televisor", chk_tapas_emergencia: "Tapas emergencia", chk_covers_outlets: "Tapas enchufes",
                 chk_covers_luces: "Tapas luces", chk_extractor: "Extractor", chk_puerta: "Puerta",
                 chk_stop_door: "Tope puerta", chk_paredes: "Paredes", chk_griferia: "Grifería",
@@ -994,6 +999,8 @@
             chk_silla: "Chair (with the table)", chk_nevera: "Refrigerator",
             chk_microondas: "Microwave",
             chk_parrilla: "Luggage rack",
+            chk_colchon: "Mattress in good condition",
+            chk_nochero: "Nightstand",
             chk_lamparas_hab: "Room lamps", chk_outlet_ac: "A/C outlet in good condition",
             chk_tv: "Television", chk_tapas_emergencia: "White emergency power covers", chk_covers_outlets: "Outlet covers complete/intact",
             chk_covers_luces: "Light switch covers complete/intact", chk_extractor: "Smoke detector / Exhaust",
@@ -1006,7 +1013,8 @@
             shortNames: {
                 chk_cortina: "Curtain", chk_mesa: "Table", chk_silla: "Chair", chk_nevera: "Fridge",
                 chk_microondas: "Microwave",
-                chk_parrilla: "Luggage rack", chk_lamparas_hab: "Room lamps", chk_outlet_ac: "A/C outlet",
+                chk_parrilla: "Luggage rack", chk_colchon: "Mattress", chk_nochero: "Nightstand",
+                chk_lamparas_hab: "Room lamps", chk_outlet_ac: "A/C outlet",
                 chk_tv: "TV", chk_tapas_emergencia: "Emergency covers", chk_covers_outlets: "Outlet covers",
                 chk_covers_luces: "Light covers", chk_extractor: "Exhaust/Smoke", chk_puerta: "Door",
                 chk_stop_door: "Door stop", chk_paredes: "Walls", chk_griferia: "Fixtures",
@@ -1096,7 +1104,8 @@
     const form = document.getElementById('checklist-form');
     
     const requiredItems = [
-        "chk_cortina", "chk_mesa", "chk_silla", "chk_nevera", "chk_microondas", "chk_parrilla", "chk_lamparas_hab", "chk_outlet_ac", 
+        "chk_cortina", "chk_mesa", "chk_silla", "chk_nevera", "chk_microondas", "chk_parrilla",
+        "chk_colchon", "chk_nochero", "chk_lamparas_hab", "chk_outlet_ac", 
         "chk_tv", "chk_tapas_emergencia", "chk_covers_outlets", "chk_covers_luces", 
         "chk_extractor", "chk_puerta", "chk_stop_door", "chk_paredes", "chk_griferia", 
         "chk_lavamanos", "chk_espejo", "chk_toilet", "chk_coso_papel", "chk_lampara_bano", "chk_cover_extractor"
@@ -1180,13 +1189,24 @@
         if (data.bano === undefined) data.bano = 'banera';
         if (data.camas === undefined && roomConfigs[room]) data.camas = roomConfigs[room].camas;
         
+        // Si la habitación tiene datos guardados, los campos desconocidos (nuevos)
+        // deben aparecer sin marcar para que el personal los verifique.
+        // Solo si la hab. nunca tuvo datos, los items obligatorios aparecen en verde.
+        const hasExistingData = Object.keys(data).filter(k => k.startsWith('chk_')).length > 0;
+
         Array.from(form.elements).forEach(el => {
             if(el.type === 'checkbox') {
                 if (el.id && el.id.startsWith('chk_')) {
                     if (el.id === 'chk_remiendo' || el.id === 'chk_pintura') {
                         el.checked = data[el.id] === true;
                     } else {
-                        el.checked = data[el.id] !== false;
+                        if (data[el.id] === undefined) {
+                            // Campo nuevo: si hab. ya tenía data, aparece desmarcado para verificar.
+                            // Si la hab. es nueva (sin data), aparece marcado por defecto.
+                            el.checked = !hasExistingData;
+                        } else {
+                            el.checked = data[el.id] !== false;
+                        }
                     }
                 } else {
                     el.checked = !!data[el.id];
