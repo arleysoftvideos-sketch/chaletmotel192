@@ -491,7 +491,7 @@ class GoogleSheetController extends Controller
                 $loggedStores = \App\Models\RecyclingLog::pluck('store')->toArray();
                 foreach ($loggedStores as $s) {
                     if (!empty($s)) {
-                        $stores[] = trim($s);
+                        $stores[] = strtoupper(trim($s));
                     }
                 }
             } catch (\Exception $dbEx1) {
@@ -503,7 +503,7 @@ class GoogleSheetController extends Controller
                 $dbStores = \App\Models\RecyclingStore::pluck('nombre')->toArray();
                 foreach ($dbStores as $name) {
                     if (!empty($name)) {
-                        $stores[] = trim($name);
+                        $stores[] = strtoupper(trim($name));
                     }
                 }
             } catch (\Exception $dbEx2) {
@@ -512,7 +512,7 @@ class GoogleSheetController extends Controller
 
             $stores = array_unique($stores);
             $stores = array_values(array_filter($stores));
-            usort($stores, 'strcasecmp');
+            sort($stores);
 
             return response()->json([
                 'success' => true,
@@ -542,7 +542,7 @@ class GoogleSheetController extends Controller
             // Save to Local Database
             \App\Models\RecyclingLog::create([
                 'date' => $request->input('date'),
-                'store' => $request->input('store'),
+                'store' => strtoupper(trim($request->input('store'))),
                 'big' => $request->input('big'),
                 'small' => $request->input('small'),
                 'total' => $request->input('total'),
@@ -555,7 +555,7 @@ class GoogleSheetController extends Controller
 
                 $row = [
                     $request->input('date'),
-                    $request->input('store'),
+                    strtoupper(trim($request->input('store'))),
                     $request->input('big'),
                     $request->input('small'),
                     $request->input('total')

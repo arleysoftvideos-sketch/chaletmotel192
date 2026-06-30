@@ -36,7 +36,7 @@ class RecyclingController extends Controller
             $stores = \App\Models\RecyclingStore::all();
             foreach ($stores as $store) {
                 $customStores[] = [
-                    'n' => trim($store->nombre),
+                    'n' => strtoupper(trim($store->nombre)),
                     't' => $store->telefono ?? 'N/A',
                     'w' => ($store->web && trim($store->web) !== '') ? trim($store->web) : '#',
                     'a' => $store->alerta === 'Sí' ? true : false,
@@ -63,9 +63,11 @@ class RecyclingController extends Controller
         ]);
 
         try {
+            $uppercasedNombre = strtoupper(trim($request->input('nombre')));
+
             // Save to Local Database
             \App\Models\RecyclingStore::updateOrCreate(
-                ['nombre' => $request->input('nombre')],
+                ['nombre' => $uppercasedNombre],
                 [
                     'telefono' => $request->input('telefono'),
                     'web' => $request->input('web'),
@@ -84,7 +86,7 @@ class RecyclingController extends Controller
                 $this->ensureStoresSheetExists($service, $spreadsheetId);
 
                 $row = [
-                    $request->input('nombre'),
+                    $uppercasedNombre,
                     $request->input('telefono'),
                     $request->input('web'),
                     $request->input('ruta'),
@@ -182,6 +184,17 @@ class RecyclingController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->limit(20)
                 ->get();
+
+            // Map store names to uppercase
+            $topLocations = $topLocations->map(function ($loc) {
+                $loc->store = strtoupper($loc->store);
+                return $loc;
+            });
+
+            $recentLogs = $recentLogs->map(function ($log) {
+                $log->store = strtoupper($log->store);
+                return $log;
+            });
 
             return response()->json([
                 'success' => true,

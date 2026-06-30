@@ -73,7 +73,7 @@ class RecyclingTest extends TestCase
         $response->assertJsonFragment(['success' => true]);
         
         $stores = $response->json('stores');
-        $this->assertContains('Citgo', $stores);
+        $this->assertContains('CITGO', $stores);
         $this->assertContains('SHELL', $stores);
     }
 

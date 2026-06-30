@@ -33,7 +33,7 @@ class RecyclingDbTest extends TestCase
 
         // Assert store exists in local DB
         $this->assertDatabaseHas('recycling_stores', [
-            'nombre' => 'Test DB Store Extra',
+            'nombre' => 'TEST DB STORE EXTRA',
             'telefono' => '(386) 999-8888',
             'alerta' => 'Sí'
         ]);
@@ -41,7 +41,7 @@ class RecyclingDbTest extends TestCase
         // Assert it appears in get recycling stores list
         $responseStores = $this->getJson('/api/recycling/stores');
         $responseStores->assertStatus(200);
-        $this->assertContains('Test DB Store Extra', $responseStores->json('stores'));
+        $this->assertContains('TEST DB STORE EXTRA', $responseStores->json('stores'));
     }
 
     /**
@@ -91,9 +91,9 @@ class RecyclingDbTest extends TestCase
 
         // Verify top locations sorting
         $locations = $responseFiltered->json('locations');
-        $this->assertEquals('Test DB Store B', $locations[0]['store']);
+        $this->assertEquals('TEST DB STORE B', $locations[0]['store']);
         $this->assertEquals(30, $locations[0]['total_sum']);
-        $this->assertEquals('Test DB Store A', $locations[1]['store']);
+        $this->assertEquals('TEST DB STORE A', $locations[1]['store']);
         $this->assertEquals(15, $locations[1]['total_sum']);
     }
 }

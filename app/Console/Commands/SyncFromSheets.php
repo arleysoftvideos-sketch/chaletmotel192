@@ -64,7 +64,7 @@ class SyncFromSheets extends Command
                     $storeCount = 0;
                     foreach ($valuesStores as $row) {
                         if (!empty($row[0])) {
-                            $nombre = trim($row[0]);
+                            $nombre = strtoupper(trim($row[0]));
                             $telefono = isset($row[1]) ? trim($row[1]) : 'N/A';
                             $web = (isset($row[2]) && trim($row[2]) !== '') ? trim($row[2]) : '#';
                             $ruta = isset($row[3]) ? trim($row[3]) : 'Volusia';
@@ -105,7 +105,7 @@ class SyncFromSheets extends Command
                     foreach ($valuesRecycling as $row) {
                         if (!empty($row[0]) && !empty($row[1])) {
                             $date = trim($row[0]);
-                            $store = trim($row[1]);
+                            $store = strtoupper(trim($row[1]));
                             $big = isset($row[2]) ? (int)trim($row[2]) : 0;
                             $small = isset($row[3]) ? (int)trim($row[3]) : 0;
                             $total = isset($row[4]) ? (int)trim($row[4]) : ($big + $small);
