@@ -1867,6 +1867,16 @@
             var el = document.getElementById(id);
             if (el) el._customized = false;
         });
+
+        // Auto-sincronización cada 45 segundos desde Google Sheets
+        // Solo refresca si el usuario NO está activamente editando un campo
+        setInterval(function() {
+            var active = document.activeElement;
+            var isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
+            if (!isTyping) {
+                loadBookings();
+            }
+        }, 45000);
     };
 </script>
 </body>

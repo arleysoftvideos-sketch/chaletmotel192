@@ -1974,6 +1974,21 @@
             
             switchMainTab(initialTab);
             cambiarVista('ruta');
+
+            // Auto-sincronización cada 45 segundos desde Google Sheets
+            // Refresca tiendas y estadísticas si el usuario no está escribiendo
+            setInterval(() => {
+                const active = document.activeElement;
+                const isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+                if (!isTyping) {
+                    guestLoadStores();
+                    // Solo recarga stats si la pestaña de estadísticas está activa
+                    const statsSection = document.getElementById('section-statistics');
+                    if (statsSection && statsSection.style.display !== 'none') {
+                        loadStatistics();
+                    }
+                }
+            }, 45000);
         });
     </script>
 </body>

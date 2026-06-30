@@ -1623,8 +1623,18 @@
     renderNav();
     loadRoomData(currentRoom);
 
-    // Cargar todas las habitaciones al iniciar (solo 1 vez, sin setInterval)
+    // Cargar todas las habitaciones al iniciar
     syncAllRoomsFromGoogleSheets();
+
+    // Auto-sincronización cada 45 segundos desde Google Sheets
+    // Solo refresca si el usuario NO está escribiendo en un campo activo
+    setInterval(() => {
+        const active = document.activeElement;
+        const isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA');
+        if (!isTyping) {
+            syncAllRoomsFromGoogleSheets();
+        }
+    }, 45000);
 
 </script>
 </body>
