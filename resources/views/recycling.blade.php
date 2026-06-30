@@ -537,36 +537,38 @@
             </div>
 
             <!-- Charts Row -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Chart A: Temporal Trend -->
-                <div class="lg:col-span-7 bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl flex flex-col justify-between">
-                    <div>
-                        <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Tendencia Temporal') }}</h3>
-                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Evolución histórica de recolección por fecha') }}</p>
-                            </div>
-                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Línea de Tiempo') }}</span>
+            <div class="grid grid-cols-1 gap-8">
+                <!-- Chart A: Temporal Trend (full width) -->
+                <div class="bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl">
+                    <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Tendencia Temporal') }}</h3>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Evolución histórica de recolección por fecha') }}</p>
                         </div>
-                        <div class="w-full relative h-[300px]">
-                            <canvas id="trendChart"></canvas>
-                        </div>
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">{{ __('Línea de Tiempo') }}</span>
+                    </div>
+                    <div class="w-full relative h-[300px]">
+                        <canvas id="trendChart"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart B: Route/Company/Store Distribution -->
-                <div class="lg:col-span-5 bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl flex flex-col justify-between">
-                    <div>
-                        <div class="border-b border-blue-950 pb-3 mb-4 flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Distribución de Bolsas') }}</h3>
-                                <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Top 12 tiendas con más bolsas recolectadas') }}</p>
-                            </div>
-                            <span class="text-[10px] bg-gold/10 text-gold px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🏪 {{ __('Tiendas') }}</span>
+                <!-- Chart B: Distribution (full width, donut + custom legend) -->
+                <div class="bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-6 shadow-xl">
+                    <div class="border-b border-blue-950 pb-3 mb-6 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-black font-outfit text-white tracking-tight uppercase">{{ __('Distribución de Bolsas') }}</h3>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider">{{ __('Top 12 tiendas con más bolsas recolectadas') }}</p>
                         </div>
-                        <div class="w-full relative h-[300px] flex items-center justify-center">
+                        <span class="text-[10px] bg-gold/10 text-gold px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">🏪 {{ __('Tiendas') }}</span>
+                    </div>
+                    <!-- Donut + Custom Legend side by side -->
+                    <div class="flex flex-col lg:flex-row items-center gap-8">
+                        <!-- Donut canvas -->
+                        <div class="relative flex-shrink-0" style="width:320px; height:320px;">
                             <canvas id="distributionChart"></canvas>
                         </div>
+                        <!-- Custom Legend -->
+                        <div id="distribution-legend" class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2 w-full"></div>
                     </div>
                 </div>
             </div>
@@ -1810,6 +1812,26 @@
             ];
 
             const colors = labels.map((_, i) => palette[i % palette.length]);
+            const total = values.reduce((a, b) => a + b, 0);
+
+            // Populate custom HTML legend
+            const legendEl = document.getElementById('distribution-legend');
+            if (legendEl) {
+                legendEl.innerHTML = labels.map((label, i) => {
+                    const pct = total > 0 ? Math.round((values[i] / total) * 100) : 0;
+                    const bagWord = currentLang === 'es' ? 'bolsas' : 'bags';
+                    return `
+                        <div class="flex items-center gap-3 bg-[#0a1831]/80 border border-blue-950/60 rounded-xl px-3 py-2.5 hover:border-blue-800/80 transition-colors group">
+                            <span class="flex-shrink-0 w-3 h-3 rounded-full" style="background:${colors[i]}; box-shadow: 0 0 6px ${colors[i]}60;"></span>
+                            <span class="flex-1 text-xs font-semibold text-slate-200 truncate group-hover:text-white transition-colors" title="${label}">${label}</span>
+                            <div class="flex items-center gap-1.5 flex-shrink-0">
+                                <span class="text-[10px] font-black text-white">${values[i].toLocaleString()}</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full" style="background:${colors[i]}25; color:${colors[i]}">${pct}%</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
 
             distributionChartInstance = new Chart(ctx, {
                 type: 'doughnut',
@@ -1819,8 +1841,8 @@
                         data: values,
                         backgroundColor: colors,
                         borderColor: '#061021',
-                        borderWidth: 2,
-                        hoverOffset: 6
+                        borderWidth: 3,
+                        hoverOffset: 12
                     }]
                 },
                 options: {
@@ -1828,19 +1850,13 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: '#cbd5e1',
-                                boxWidth: 12,
-                                font: { family: 'Inter', size: activeDistributionMode === 'tienda' ? 8 : 9, weight: 'bold' },
-                                padding: activeDistributionMode === 'tienda' ? 6 : 10
-                            }
+                            display: false  // Using custom HTML legend
                         },
                         datalabels: {
                             display: function(context) {
                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
                                 const pct = (context.dataset.data[context.dataIndex] / total) * 100;
-                                return pct >= 4; // Only show label if slice >= 4%
+                                return pct >= 5;
                             },
                             formatter: function(value, context) {
                                 const total = context.dataset.data.reduce((a, b) => a + b, 0);
@@ -1850,11 +1866,11 @@
                             color: '#ffffff',
                             font: {
                                 family: 'Inter',
-                                size: activeDistributionMode === 'tienda' ? 9 : 11,
+                                size: 11,
                                 weight: 'bold'
                             },
-                            textShadowBlur: 4,
-                            textShadowColor: 'rgba(0,0,0,0.6)',
+                            textShadowBlur: 6,
+                            textShadowColor: 'rgba(0,0,0,0.8)',
                             anchor: 'center',
                             align: 'center',
                             offset: 0,
@@ -1874,7 +1890,7 @@
                             }
                         }
                     },
-                    cutout: '55%'
+                    cutout: '60%'
                 }
             });
         }
