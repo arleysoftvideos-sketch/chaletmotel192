@@ -595,6 +595,7 @@
                     <div class="checkbox-group" id="div_silla"><label><input type="checkbox" id="chk_silla"> <span data-i18n="chk_silla">Silla (con la mesa)</span></label></div>
                     
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_nevera"> <span data-i18n="chk_nevera">Nevera (Refrigerador)</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_microondas"> <span data-i18n="chk_microondas">Microondas</span></label></div>
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_parrilla"> <span data-i18n="chk_parrilla">Parrilla para recoger (portaequipajes)</span></label></div>
                     <div class="checkbox-group"><label><input type="checkbox" id="chk_lamparas_hab"> <span data-i18n="chk_lamparas_hab">Lámparas de la habitación</span></label></div>
                 </div>
@@ -813,6 +814,15 @@
                                 <text x="159" y="241" fill="currentColor" font-size="7.5" font-family="'Inter', sans-serif" text-anchor="middle" font-weight="bold">Refri</text>
                             </g>
 
+                            <!-- Microwave (Microondas) -->
+                            <g class="interactive-svg-item" data-target="chk_microondas" id="svg-microondas">
+                                <rect x="145" y="195" width="28" height="22" rx="2" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="1.5" />
+                                <rect x="148" y="199" width="16" height="14" fill="none" stroke="currentColor" stroke-width="1" />
+                                <line x1="168" y1="200" x2="170" y2="200" stroke="currentColor" stroke-width="1" />
+                                <line x1="168" y1="203" x2="170" y2="203" stroke="currentColor" stroke-width="1" />
+                                <text x="159" y="213" fill="currentColor" font-size="7" font-family="'Inter', sans-serif" text-anchor="middle" font-weight="bold">Micro</text>
+                            </g>
+
                             <!-- BATHROOM AREA -->
                             <!-- Bathroom Door Swing -->
                             <path d="M 260 110 A 35 35 0 0 0 295 145" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3,3" />
@@ -934,6 +944,7 @@
             // Textos largos para la pantalla principal
             chk_cortina: "Cortina instalada y en buen estado", chk_mesa: "Mesa", 
             chk_silla: "Silla (con la mesa)", chk_nevera: "Nevera (Refrigerador)",
+            chk_microondas: "Microondas",
             chk_parrilla: "Parrilla para recoger (portaequipajes)",
             chk_lamparas_hab: "Lámparas de la habitación", chk_outlet_ac: "Outlet (enchufe) del A/C en buen estado",
             chk_tv: "Televisor", chk_tapas_emergencia: "Tapas de emergencia blancas", chk_covers_outlets: "Covers de los outlets completos y sanos",
@@ -947,6 +958,7 @@
             // Textos CORTOS exclusivamente para el Resumen/Reporte final
             shortNames: {
                 chk_cortina: "Cortina", chk_mesa: "Mesa", chk_silla: "Silla", chk_nevera: "Nevera",
+                chk_microondas: "Microondas",
                 chk_parrilla: "Parrilla", chk_lamparas_hab: "Lámparas hab.", chk_outlet_ac: "Enchufe A/C",
                 chk_tv: "Televisor", chk_tapas_emergencia: "Tapas emergencia", chk_covers_outlets: "Tapas enchufes",
                 chk_covers_luces: "Tapas luces", chk_extractor: "Extractor", chk_puerta: "Puerta",
@@ -980,6 +992,7 @@
             
             chk_cortina: "Curtain installed and in good condition", chk_mesa: "Table", 
             chk_silla: "Chair (with the table)", chk_nevera: "Refrigerator",
+            chk_microondas: "Microwave",
             chk_parrilla: "Luggage rack",
             chk_lamparas_hab: "Room lamps", chk_outlet_ac: "A/C outlet in good condition",
             chk_tv: "Television", chk_tapas_emergencia: "White emergency power covers", chk_covers_outlets: "Outlet covers complete/intact",
@@ -992,6 +1005,7 @@
 
             shortNames: {
                 chk_cortina: "Curtain", chk_mesa: "Table", chk_silla: "Chair", chk_nevera: "Fridge",
+                chk_microondas: "Microwave",
                 chk_parrilla: "Luggage rack", chk_lamparas_hab: "Room lamps", chk_outlet_ac: "A/C outlet",
                 chk_tv: "TV", chk_tapas_emergencia: "Emergency covers", chk_covers_outlets: "Outlet covers",
                 chk_covers_luces: "Light covers", chk_extractor: "Exhaust/Smoke", chk_puerta: "Door",
@@ -1082,7 +1096,7 @@
     const form = document.getElementById('checklist-form');
     
     const requiredItems = [
-        "chk_cortina", "chk_mesa", "chk_silla", "chk_nevera", "chk_parrilla", "chk_lamparas_hab", "chk_outlet_ac", 
+        "chk_cortina", "chk_mesa", "chk_silla", "chk_nevera", "chk_microondas", "chk_parrilla", "chk_lamparas_hab", "chk_outlet_ac", 
         "chk_tv", "chk_tapas_emergencia", "chk_covers_outlets", "chk_covers_luces", 
         "chk_extractor", "chk_puerta", "chk_stop_door", "chk_paredes", "chk_griferia", 
         "chk_lavamanos", "chk_espejo", "chk_toilet", "chk_coso_papel", "chk_lampara_bano", "chk_cover_extractor"
