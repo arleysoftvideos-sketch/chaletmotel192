@@ -66,7 +66,7 @@
             color: var(--text-color);
         }
         .container {
-            max-width: 1000px; 
+            max-width: 1300px; 
             margin: 0 auto; 
             background: var(--box-bg); 
             padding: 30px; 
@@ -74,6 +74,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border: 1px solid var(--border);
             position: relative;
+            transition: max-width 0.3s;
         }
         
         /* Navigation and Back Link */
@@ -377,6 +378,119 @@
             .report-item { color: #555; }
             .report-item strong { color: #d32f2f; }
         }
+
+        /* Two column layout for Interactive Blueprint */
+        .main-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-top: 15px;
+        }
+        @media (min-width: 1024px) {
+            .main-layout-grid {
+                grid-template-columns: 1.15fr 0.85fr;
+            }
+        }
+        .blueprint-column {
+            position: relative;
+        }
+        .blueprint-panel {
+            background: #081326;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            position: sticky;
+            top: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .blueprint-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        .blueprint-svg-container {
+            width: 100%;
+            background: #040a17;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        
+        /* Interactive SVG styles */
+        .interactive-svg-item {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: #475569; /* Neutral slate color */
+        }
+        .interactive-svg-item:hover {
+            color: var(--primary-hover);
+            filter: drop-shadow(0 0 4px var(--primary));
+        }
+        .interactive-svg-item.status-ok {
+            color: #10b981 !important; /* Green */
+        }
+        .interactive-svg-item.status-ok:hover {
+            color: #34d399 !important;
+            filter: drop-shadow(0 0 5px #10b981);
+        }
+        .interactive-svg-item.status-error {
+            color: #ef4444 !important; /* Red */
+        }
+        .interactive-svg-item.status-error:hover {
+            color: #f87171 !important;
+            filter: drop-shadow(0 0 5px #ef4444);
+        }
+        
+        /* Walls specific */
+        #svg-walls {
+            stroke: var(--border);
+            fill: none;
+            transition: stroke 0.2s;
+        }
+        #svg-walls.status-ok {
+            stroke: #10b981;
+        }
+        #svg-walls.status-error {
+            stroke: #ef4444;
+        }
+        
+        /* Legends in blueprint */
+        .blueprint-legend {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            justify-content: center;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 1023px) {
+            .blueprint-panel {
+                position: relative;
+                top: 0;
+                margin-top: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -464,75 +578,326 @@
             <div><strong data-i18n="date">Fecha:</strong> <input type="date" id="fecha" class="inline-input"></div>
         </div>
 
-        <div class="section">
-            <h3 data-i18n="roomAreaTitle">🛏️ Área de la Habitación</h3>
-            <div class="radio-group">
-                <span data-i18n="bedSetup">Configuración:</span> 
-                <label><input type="radio" name="camas" value="1" onchange="toggleMesaSilla()"> <span data-i18n="oneBed">1 Cama</span></label>
-                <label><input type="radio" name="camas" value="2" onchange="toggleMesaSilla()"> <span data-i18n="twoBeds">2 Camas</span></label>
+        <div class="main-layout-grid">
+            <!-- Columna Izquierda: Secciones del Formulario -->
+            <div>
+                <div class="section">
+                    <h3 data-i18n="roomAreaTitle">🛏️ Área de la Habitación</h3>
+                    <div class="radio-group">
+                        <span data-i18n="bedSetup">Configuración:</span> 
+                        <label><input type="radio" name="camas" value="1" onchange="toggleMesaSilla()"> <span data-i18n="oneBed">1 Cama</span></label>
+                        <label><input type="radio" name="camas" value="2" onchange="toggleMesaSilla()"> <span data-i18n="twoBeds">2 Camas</span></label>
+                    </div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_cortina"> <span data-i18n="chk_cortina">Cortina instalada y en buen estado</span></label></div>
+                    
+                    <div class="checkbox-group" id="div_mesa"><label><input type="checkbox" id="chk_mesa"> <span data-i18n="chk_mesa">Mesa</span></label></div>
+                    <div class="checkbox-group" id="div_silla"><label><input type="checkbox" id="chk_silla"> <span data-i18n="chk_silla">Silla (con la mesa)</span></label></div>
+                    
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_nevera"> <span data-i18n="chk_nevera">Nevera (Refrigerador)</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_parrilla"> <span data-i18n="chk_parrilla">Parrilla para recoger (portaequipajes)</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_lamparas_hab"> <span data-i18n="chk_lamparas_hab">Lámparas de la habitación</span></label></div>
+                </div>
+
+                <div class="section">
+                    <h3 data-i18n="acTitle">🔌 Electricidad, Climatización y Seguridad</h3>
+                    <div class="radio-group">
+                        <span data-i18n="acStatus">Aire acondicionado (A/C):</span> 
+                        <label><input type="radio" name="ac" value="si"> <span data-i18n="works">Sí trabaja</span></label>
+                        <label><input type="radio" name="ac" value="no"> <span data-i18n="noworks">No trabaja</span></label>
+                    </div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_outlet_ac"> <span data-i18n="chk_outlet_ac">Outlet (enchufe) del A/C en buen estado</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_tv"> <span data-i18n="chk_tv">Televisor</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_tapas_emergencia"> <span data-i18n="chk_tapas_emergencia">Tapas de emergencia blancas (energía)</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_covers_outlets"> <span data-i18n="chk_covers_outlets">Covers de los outlets completos y sanos</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_covers_luces"> <span data-i18n="chk_covers_luces">Covers de las luces completos y sanos</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_extractor"> <span data-i18n="chk_extractor">Extractor de humo / Detector de humo</span></label></div>
+                </div>
+
+                <div class="section">
+                    <h3 data-i18n="doorTitle">🚪 Puertas y Paredes</h3>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_puerta"> <span data-i18n="chk_puerta">Puerta principal (Mecanismo bien)</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_stop_door"> <span data-i18n="chk_stop_door">Stop door instalado y funcionando</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_paredes"> <span data-i18n="chk_paredes">Paredes (Sin rayones graves ni daños)</span></label></div>
+                </div>
+
+                <div class="section">
+                    <h3 data-i18n="bathTitle">🛁 Área del Baño</h3>
+                    <div class="radio-group">
+                        <span data-i18n="bathType">Tipo de baño:</span> 
+                        <label><input type="radio" name="bano" value="banera"> <span data-i18n="tub">Bañera</span></label>
+                        <label><input type="radio" name="bano" value="ducha"> <span data-i18n="showerOnly">Ducha sola</span></label>
+                    </div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_griferia"> <span data-i18n="chk_griferia">Grifería de la ducha en buen estado</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_lavamanos"> <span data-i18n="chk_lavamanos">Lavamanos</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_espejo"> <span data-i18n="chk_espejo">Espejo (en el área del lavamanos)</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_toilet"> <span data-i18n="chk_toilet">Toilet (Inodoro)</span></label></div>
+                    
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_coso_papel"> <span data-i18n="chk_coso_papel">Set de baño</span></label></div>
+                    
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_lampara_bano"> <span data-i18n="chk_lampara_bano">Lámpara del baño</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_cover_extractor"> <span data-i18n="chk_cover_extractor">Cover del extractor de aire del baño</span></label></div>
+                </div>
+
+                <div class="section" style="border-color: #ffc107;">
+                    <h3 style="color: #d39e00;" data-i18n="maintTitle">🛠️ Mantenimiento Pendiente (Problemas)</h3>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_remiendo"> <span data-i18n="chk_remiendo">Falta algún remiendo o parche en la pared</span></label></div>
+                    <div class="checkbox-group"><label><input type="checkbox" id="chk_pintura"> <span data-i18n="chk_pintura">Requiere retoque de pintura</span></label></div>
+                    <textarea id="txt_mantenimiento" rows="2" placeholder="Describe los daños o pinturas necesarias..." data-i18n-ph="maintPh"></textarea>
+                </div>
+
+                <div class="section">
+                    <h3 data-i18n="notesTitle">➕ Notas Adicionales</h3>
+                    <textarea id="txt_notas" rows="2" placeholder="Observaciones extra, anexos..." data-i18n-ph="notesPh"></textarea>
+                </div>
             </div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_cortina"> <span data-i18n="chk_cortina">Cortina instalada y en buen estado</span></label></div>
-            
-            <div class="checkbox-group" id="div_mesa"><label><input type="checkbox" id="chk_mesa"> <span data-i18n="chk_mesa">Mesa</span></label></div>
-            <div class="checkbox-group" id="div_silla"><label><input type="checkbox" id="chk_silla"> <span data-i18n="chk_silla">Silla (con la mesa)</span></label></div>
-            
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_nevera"> <span data-i18n="chk_nevera">Nevera (Refrigerador)</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_parrilla"> <span data-i18n="chk_parrilla">Parrilla para recoger (portaequipajes)</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_lamparas_hab"> <span data-i18n="chk_lamparas_hab">Lámparas de la habitación</span></label></div>
-        </div>
 
-        <div class="section">
-            <h3 data-i18n="acTitle">🔌 Electricidad, Climatización y Seguridad</h3>
-            <div class="radio-group">
-                <span data-i18n="acStatus">Aire acondicionado (A/C):</span> 
-                <label><input type="radio" name="ac" value="si"> <span data-i18n="works">Sí trabaja</span></label>
-                <label><input type="radio" name="ac" value="no"> <span data-i18n="noworks">No trabaja</span></label>
+            <!-- Columna Derecha: Plano Interactivo -->
+            <div class="blueprint-column">
+                <div class="blueprint-panel">
+                    <h3 class="blueprint-title">
+                        <span>🗺️</span>
+                        <span data-i18n="blueprintTitle">Plano Interactivo - Habitación</span>
+                    </h3>
+                    
+                    <div class="blueprint-svg-container">
+                        <svg viewBox="0 0 400 300" width="100%" height="100%">
+                            <!-- Custom Styles inside SVG for animations -->
+                            <style>
+                                @keyframes pulse-warning {
+                                    0% { opacity: 0.4; }
+                                    50% { opacity: 1; }
+                                    100% { opacity: 0.4; }
+                                }
+                                .maint-pulse {
+                                    animation: pulse-warning 2s infinite ease-in-out;
+                                }
+                            </style>
+
+                            <!-- Background Room Floor -->
+                            <rect x="10" y="10" width="380" height="280" rx="8" ry="8" fill="#040d1a" />
+
+                            <!-- Cleanliness Indicator -->
+                            <g class="interactive-svg-item" data-target-radio="estado" data-target-value="sucio" id="svg-clean-indicator">
+                                <circle cx="45" cy="35" r="12" fill="currentColor" opacity="0.15" />
+                                <path d="M 40 35 L 43 38 L 49 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <text x="63" y="38" fill="currentColor" font-size="9" font-weight="bold" font-family="'Inter', sans-serif" id="svg-clean-text">LIMPIO</text>
+                            </g>
+
+                            <!-- General Maintenance Warning Triangle -->
+                            <g id="svg-maint-alert" class="interactive-svg-item maint-pulse" data-target="chk_remiendo" style="display:none;">
+                                <path d="M 200 20 L 212 40 L 188 40 Z" fill="rgba(245, 158, 11, 0.15)" stroke="currentColor" stroke-width="1.5" />
+                                <text x="200" y="36" fill="currentColor" font-size="12" font-weight="900" font-family="'Inter', sans-serif" text-anchor="middle">!</text>
+                                <text x="200" y="52" fill="currentColor" font-size="7" font-weight="bold" font-family="'Inter', sans-serif" text-anchor="middle">MAINT</text>
+                            </g>
+
+                            <!-- Window & Curtain -->
+                            <g class="interactive-svg-item" data-target="chk_cortina" id="svg-cortina">
+                                <!-- Window Frame on top wall -->
+                                <line x1="120" y1="10" x2="180" y2="10" stroke="#0284c7" stroke-width="4" />
+                                <!-- Curtain Rod & Folds -->
+                                <rect x="115" y="12" width="70" height="6" rx="2" fill="currentColor" />
+                                <path d="M 120 18 L 125 14 L 130 18 L 135 14 L 140 18 L 145 14 L 150 18 L 155 14 L 160 18 L 165 14 L 170 18 L 175 14 L 180 18" fill="none" stroke="currentColor" stroke-width="1" />
+                            </g>
+
+                            <!-- AC Unit & Outlet -->
+                            <g class="interactive-svg-item" data-target-radio="ac" data-target-value="no" id="svg-ac">
+                                <rect x="10" y="115" width="8" height="50" rx="2" fill="currentColor" stroke="currentColor" stroke-width="1" />
+                                <line x1="14" y1="123" x2="14" y2="157" stroke="#040a17" stroke-width="1.5" stroke-dasharray="2,2" />
+                                <text x="23" y="140" fill="currentColor" font-size="8" font-family="'Inter', sans-serif" transform="rotate(-90 23 140)" text-anchor="middle" font-weight="bold">A/C</text>
+                            </g>
+                            <g class="interactive-svg-item" data-target="chk_outlet_ac" id="svg-outlet-ac">
+                                <circle cx="28" cy="140" r="5" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <circle cx="26" cy="140" r="0.8" fill="currentColor" />
+                                <circle cx="30" cy="140" r="0.8" fill="currentColor" />
+                            </g>
+
+                            <!-- Main Bedroom Walls (Outer Frame) -->
+                            <rect x="10" y="10" width="380" height="280" rx="8" ry="8" fill="none" stroke="currentColor" stroke-width="5" id="svg-walls" class="interactive-svg-item" data-target="chk_paredes" />
+                            
+                            <!-- Bathroom Partition Wall -->
+                            <path d="M 260 10 L 260 110 M 260 145 L 260 170 L 390 170" fill="none" stroke="#14274c" stroke-width="5" />
+
+                            <!-- Main Entrance Door -->
+                            <g class="interactive-svg-item" data-target="chk_puerta" id="svg-puerta">
+                                <line x1="40" y1="290" x2="40" y2="250" stroke="currentColor" stroke-width="3.5" />
+                                <path d="M 40 250 A 40 40 0 0 1 80 290" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3,3" />
+                            </g>
+                            
+                            <!-- Door Stop -->
+                            <g class="interactive-svg-item" data-target="chk_stop_door" id="svg-stop-door">
+                                <circle cx="20" cy="265" r="4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <line x1="15" y1="265" x2="20" y2="265" stroke="currentColor" stroke-width="1.5" />
+                            </g>
+
+                            <!-- Smoke Detector / Extractor -->
+                            <g class="interactive-svg-item" data-target="chk_extractor" id="svg-extractor">
+                                <circle cx="205" cy="85" r="9" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <circle cx="205" cy="85" r="4" fill="currentColor" />
+                            </g>
+
+                            <!-- Group 1 Bed (Queen/King) -->
+                            <g id="group-1-cama" class="interactive-svg-item" data-target-radio="camas" data-target-value="2">
+                                <rect x="25" y="85" width="105" height="110" rx="8" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
+                                <rect x="33" y="100" width="20" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <rect x="33" y="148" width="20" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M 85 85 L 85 195" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2" />
+                                <text x="78" y="140" fill="currentColor" font-size="10" font-weight="900" font-family="'Outfit', sans-serif" text-anchor="middle">QUEEN BED</text>
+                                
+                                <!-- Nightstand & Lamp (linked to chk_lamparas_hab inside group) -->
+                                <g class="interactive-svg-item" data-target="chk_lamparas_hab" style="color: inherit;">
+                                    <rect x="25" y="47" width="28" height="28" rx="4" fill="#040d1a" stroke="currentColor" stroke-width="1.5" />
+                                    <!-- Lamp -->
+                                    <circle cx="39" cy="61" r="6" fill="currentColor" opacity="0.8" />
+                                    <circle cx="39" cy="61" r="2.5" fill="#040d1a" />
+                                </g>
+                            </g>
+
+                            <!-- Group 2 Beds (Twin/Doble) -->
+                            <g id="group-2-camas" class="interactive-svg-item" data-target-radio="camas" data-target-value="1">
+                                <!-- Bed 1 (Top) -->
+                                <rect x="25" y="32" width="95" height="78" rx="6" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
+                                <rect x="33" y="42" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <rect x="33" y="74" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M 80 32 L 80 110" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2" />
+                                
+                                <!-- Bed 2 (Bottom) -->
+                                <rect x="25" y="172" width="95" height="78" rx="6" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
+                                <rect x="33" y="182" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <rect x="33" y="214" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M 80 172 L 80 250" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2" />
+
+                                <text x="70" y="145" fill="currentColor" font-size="9" font-weight="900" font-family="'Outfit', sans-serif" text-anchor="middle">2 BEDS</text>
+                                
+                                <!-- Nightstand & Lamp in the middle -->
+                                <g class="interactive-svg-item" data-target="chk_lamparas_hab" style="color: inherit;">
+                                    <rect x="25" y="126" width="28" height="28" rx="4" fill="#040d1a" stroke="currentColor" stroke-width="1.5" />
+                                    <!-- Lamp -->
+                                    <circle cx="39" cy="140" r="6" fill="currentColor" opacity="0.8" />
+                                    <circle cx="39" cy="140" r="2.5" fill="#040d1a" />
+                                </g>
+                            </g>
+
+                            <!-- Wall Mounted TV -->
+                            <g class="interactive-svg-item" data-target="chk_tv" id="svg-tv">
+                                <line x1="257" y1="70" x2="257" y2="130" stroke="currentColor" stroke-width="3" />
+                                <rect x="252" y="75" width="4" height="40" rx="1" fill="currentColor" />
+                                <text x="245" y="98" fill="currentColor" font-size="8" font-family="'Inter', sans-serif" text-anchor="end" font-weight="bold">TV</text>
+                            </g>
+
+                            <!-- Table & Chair (Mesa y Silla) -->
+                            <g id="group-mesa-silla">
+                                <g class="interactive-svg-item" data-target="chk_mesa" id="svg-mesa">
+                                    <rect x="180" y="210" width="45" height="35" rx="5" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
+                                    <text x="202" y="231" fill="currentColor" font-size="8" font-family="'Inter', sans-serif" text-anchor="middle" font-weight="bold">Mesa</text>
+                                </g>
+                                <g class="interactive-svg-item" data-target="chk_silla" id="svg-silla">
+                                    <rect x="233" y="222" width="12" height="11" rx="2" fill="#040d1a" stroke="currentColor" stroke-width="1.5" />
+                                    <path d="M 235 220 L 243 220 M 235 220 L 235 233 L 243 233" fill="none" stroke="currentColor" stroke-width="1.5" />
+                                </g>
+                            </g>
+
+                            <!-- Luggage Rack (Parrilla) -->
+                            <g class="interactive-svg-item" data-target="chk_parrilla" id="svg-parrilla">
+                                <rect x="205" y="125" width="40" height="25" rx="3" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="1.5" />
+                                <line x1="210" y1="130" x2="240" y2="130" stroke="currentColor" stroke-width="1" />
+                                <line x1="210" y1="135" x2="240" y2="135" stroke="currentColor" stroke-width="1" />
+                                <line x1="210" y1="140" x2="240" y2="140" stroke="currentColor" stroke-width="1" />
+                                <text x="225" y="148" fill="currentColor" font-size="6.5" font-family="'Inter', sans-serif" text-anchor="middle">Parrilla</text>
+                            </g>
+
+                            <!-- Refrigerator (Nevera) -->
+                            <g class="interactive-svg-item" data-target="chk_nevera" id="svg-nevera">
+                                <rect x="145" y="225" width="28" height="28" rx="3" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
+                                <line x1="170" y1="228" x2="170" y2="238" stroke="currentColor" stroke-width="2" />
+                                <text x="159" y="241" fill="currentColor" font-size="7.5" font-family="'Inter', sans-serif" text-anchor="middle" font-weight="bold">Refri</text>
+                            </g>
+
+                            <!-- BATHROOM AREA -->
+                            <!-- Bathroom Door Swing -->
+                            <path d="M 260 110 A 35 35 0 0 0 295 145" fill="none" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3,3" />
+                            <line x1="260" y1="110" x2="295" y2="110" stroke="#14274c" stroke-width="3" />
+
+                            <!-- Bathroom Exhaust Cover -->
+                            <g class="interactive-svg-item" data-target="chk_cover_extractor" id="svg-cover-extractor">
+                                <circle cx="310" cy="95" r="7" fill="none" stroke="currentColor" stroke-width="1.2" />
+                                <line x1="310" y1="88" x2="310" y2="102" stroke="currentColor" stroke-width="1" />
+                                <line x1="303" y1="95" x2="317" y2="95" stroke="currentColor" stroke-width="1" />
+                            </g>
+
+                            <!-- Bathroom Lamp -->
+                            <g class="interactive-svg-item" data-target="chk_lampara_bano" id="svg-lampara-bano">
+                                <circle cx="342" cy="95" r="6" fill="none" stroke="currentColor" stroke-width="1.2" />
+                                <line x1="338" y1="91" x2="346" y2="99" stroke="currentColor" stroke-width="1" />
+                                <line x1="346" y1="91" x2="338" y2="99" stroke="currentColor" stroke-width="1" />
+                            </g>
+
+                            <!-- Toilet & paper holder -->
+                            <g class="interactive-svg-item" data-target="chk_toilet" id="svg-toilet">
+                                <rect x="270" y="20" width="28" height="12" rx="2" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="1.5" />
+                                <ellipse cx="284" cy="42" rx="10" ry="13" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="1.5" />
+                                <ellipse cx="284" cy="40" rx="7" ry="10" fill="none" stroke="currentColor" stroke-width="1" />
+                            </g>
+                            <g class="interactive-svg-item" data-target="chk_coso_papel" id="svg-coso-papel">
+                                <rect x="303" y="24" width="6" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="1" />
+                                <circle cx="306" cy="29" r="2.2" fill="currentColor" />
+                            </g>
+
+                            <!-- Bathtub -->
+                            <g id="group-banera" class="interactive-svg-item" data-target-radio="bano" data-target-value="ducha">
+                                <rect x="325" y="20" width="55" height="100" rx="8" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
+                                <rect x="331" y="26" width="43" height="88" rx="6" fill="none" stroke="currentColor" stroke-width="1.2" />
+                                <circle cx="352" cy="100" r="3.5" fill="none" stroke="currentColor" stroke-width="1" />
+                                <!-- Ducha griferia inside bathtub -->
+                                <g class="interactive-svg-item" data-target="chk_griferia" id="svg-griferia-banera" style="color: inherit;">
+                                    <circle cx="352" cy="38" r="4.5" fill="currentColor" />
+                                    <line x1="352" y1="33" x2="352" y2="38" stroke="currentColor" stroke-width="1.5" />
+                                </g>
+                            </g>
+
+                            <!-- Shower Cabin -->
+                            <g id="group-ducha" class="interactive-svg-item" data-target-radio="bano" data-target-value="banera" style="display:none;">
+                                <rect x="325" y="20" width="55" height="55" rx="5" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="2" />
+                                <line x1="325" y1="75" x2="380" y2="75" stroke="currentColor" stroke-width="1.5" />
+                                <circle cx="352" cy="47" r="3.5" fill="none" stroke="currentColor" stroke-width="1" />
+                                <!-- Ducha griferia inside shower cabin -->
+                                <g class="interactive-svg-item" data-target="chk_griferia" id="svg-griferia-ducha" style="color: inherit;">
+                                    <circle cx="352" cy="28" r="4.5" fill="currentColor" />
+                                    <line x1="352" y1="23" x2="352" y2="28" stroke="currentColor" stroke-width="1.5" />
+                                </g>
+                            </g>
+
+                            <!-- Vanity (Counter, Sink, Mirror) -->
+                            <g id="group-vanity">
+                                <rect x="270" y="125" width="85" height="35" rx="4" fill="none" stroke="#14274c" stroke-width="1.5" />
+                                <!-- Sink (Lavamanos) -->
+                                <g class="interactive-svg-item" data-target="chk_lavamanos" id="svg-lavamanos">
+                                    <ellipse cx="312" cy="142" rx="16" ry="11" fill="rgba(148, 163, 184, 0.03)" stroke="currentColor" stroke-width="1.5" />
+                                    <circle cx="312" cy="142" r="2" fill="currentColor" />
+                                    <path d="M 312 131 L 312 136" fill="none" stroke="currentColor" stroke-width="2" />
+                                    <line x1="309" y1="133" x2="315" y2="133" stroke="currentColor" stroke-width="1.5" />
+                                </g>
+                                <!-- Mirror (Espejo) -->
+                                <g class="interactive-svg-item" data-target="chk_espejo" id="svg-espejo">
+                                    <rect x="275" y="116" width="75" height="5" rx="1" fill="currentColor" />
+                                    <line x1="285" y1="118" x2="289" y2="118" stroke="#040a17" stroke-width="1" />
+                                    <line x1="320" y1="118" x2="324" y2="118" stroke="#040a17" stroke-width="1" />
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Legends -->
+                    <div class="blueprint-legend">
+                        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#10b981;margin-right:4px;"></span><span data-i18n="legendOk">Excelente</span></span>
+                        <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#ef4444;margin-right:4px;"></span><span data-i18n="legendMissing">Dañado / Faltante</span></span>
+                    </div>
+                    <div style="font-size:10px; color:#64748b; margin-top:8px; text-align:center;" data-i18n="legendInteractive">
+                        Haz clic en los objetos del plano para marcar/desmarcar.
+                    </div>
+                </div>
             </div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_outlet_ac"> <span data-i18n="chk_outlet_ac">Outlet (enchufe) del A/C en buen estado</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_tv"> <span data-i18n="chk_tv">Televisor</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_tapas_emergencia"> <span data-i18n="chk_tapas_emergencia">Tapas de emergencia blancas (energía)</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_covers_outlets"> <span data-i18n="chk_covers_outlets">Covers de los outlets completos y sanos</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_covers_luces"> <span data-i18n="chk_covers_luces">Covers de las luces completos y sanos</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_extractor"> <span data-i18n="chk_extractor">Extractor de humo / Detector de humo</span></label></div>
         </div>
 
-        <div class="section">
-            <h3 data-i18n="doorTitle">🚪 Puertas y Paredes</h3>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_puerta"> <span data-i18n="chk_puerta">Puerta principal (Mecanismo bien)</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_stop_door"> <span data-i18n="chk_stop_door">Stop door instalado y funcionando</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_paredes"> <span data-i18n="chk_paredes">Paredes (Sin rayones graves ni daños)</span></label></div>
-        </div>
-
-        <div class="section">
-            <h3 data-i18n="bathTitle">🛁 Área del Baño</h3>
-            <div class="radio-group">
-                <span data-i18n="bathType">Tipo de baño:</span> 
-                <label><input type="radio" name="bano" value="banera"> <span data-i18n="tub">Bañera</span></label>
-                <label><input type="radio" name="bano" value="ducha"> <span data-i18n="showerOnly">Ducha sola</span></label>
-            </div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_griferia"> <span data-i18n="chk_griferia">Grifería de la ducha en buen estado</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_lavamanos"> <span data-i18n="chk_lavamanos">Lavamanos</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_espejo"> <span data-i18n="chk_espejo">Espejo (en el área del lavamanos)</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_toilet"> <span data-i18n="chk_toilet">Toilet (Inodoro)</span></label></div>
-            
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_coso_papel"> <span data-i18n="chk_coso_papel">Set de baño</span></label></div>
-            
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_lampara_bano"> <span data-i18n="chk_lampara_bano">Lámpara del baño</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_cover_extractor"> <span data-i18n="chk_cover_extractor">Cover del extractor de aire del baño</span></label></div>
-        </div>
-
-        <div class="section" style="border-color: #ffc107;">
-            <h3 style="color: #d39e00;" data-i18n="maintTitle">🛠️ Mantenimiento Pendiente (Problemas)</h3>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_remiendo"> <span data-i18n="chk_remiendo">Falta algún remiendo o parche en la pared</span></label></div>
-            <div class="checkbox-group"><label><input type="checkbox" id="chk_pintura"> <span data-i18n="chk_pintura">Requiere retoque de pintura</span></label></div>
-            <textarea id="txt_mantenimiento" rows="2" placeholder="Describe los daños o pinturas necesarias..." data-i18n-ph="maintPh"></textarea>
-        </div>
-
-        <div class="section">
-            <h3 data-i18n="notesTitle">➕ Notas Adicionales</h3>
-            <textarea id="txt_notas" rows="2" placeholder="Observaciones extra, anexos..." data-i18n-ph="notesPh"></textarea>
-        </div>
-        
         <div class="actions">
             <button type="button" class="btn btn-summary" onclick="showSummaryModal()">📊 <span data-i18n="btnViewSummary">Ver Resumen en Pantalla</span></button>
             <button type="button" class="btn btn-print" onclick="printCurrentRoom()">🖨️ <span data-i18n="btnPrintRoom">Imprimir Hab. Actual</span></button>
@@ -561,6 +926,9 @@
             btnLoadSheets: "Cargar desde Google Sheets", btnLoadingSheets: "Cargando...",
             maintPh: "Describe los daños o pinturas necesarias...", notesPh: "Observaciones extra, anexos...",
             bannerTitle: "¡Zona en Construcción! 🛠️", bannerDesc: "Ponte el casco de seguridad. Estamos programando y martillando código para traer nuevas e increíbles funciones a esta sección de Inventario.", bannerBadge: "¡Pronto Novedades!",
+            blueprintTitle: "Plano Interactivo - Habitación",
+            legendOk: "Excelente / Presente", legendMissing: "Dañado / Faltante",
+            legendInteractive: "Haz clic en los objetos del plano para marcar/desmarcar.",
             
             // Textos largos para la pantalla principal
             chk_cortina: "Cortina instalada y en buen estado", chk_mesa: "Mesa", 
@@ -605,6 +973,9 @@
             btnLoadSheets: "Load from Google Sheets", btnLoadingSheets: "Loading...",
             maintPh: "Describe damages or paint needed...", notesPh: "Extra observations, attachments...",
             bannerTitle: "Under Construction! 🛠️", bannerDesc: "Put on your hard hat. We're coding and hammering away to bring amazing new features to this Inventory section.", bannerBadge: "Coming Soon!",
+            blueprintTitle: "Interactive Blueprint - Room",
+            legendOk: "Perfect / Present", legendMissing: "Missing / Damaged",
+            legendInteractive: "Click on blueprint objects to check/uncheck.",
             
             chk_cortina: "Curtain installed and in good condition", chk_mesa: "Table", 
             chk_silla: "Chair (with the table)", chk_nevera: "Refrigerator",
@@ -756,6 +1127,7 @@
         });
         
         toggleMesaSilla(); 
+        updateBlueprint();
     }
 
     function saveCurrentRoom() {
@@ -771,10 +1143,201 @@
         
         localStorage.setItem('hotelControlData', JSON.stringify(hotelData));
         renderNav(); 
+        updateBlueprint();
     }
 
     form.addEventListener('change', saveCurrentRoom);
     form.addEventListener('keyup', saveCurrentRoom);
+
+    // --- BLUEPRINT SYNCHRONIZATION AND INTERACTION ---
+    function updateBlueprint() {
+        const data = hotelData[currentRoom] || {};
+        
+        // 1. Checkboxes mapping
+        requiredItems.forEach(key => {
+            const svgEl = document.getElementById('svg-' + key.replace('chk_', '').replace(/_/g, '-'));
+            if (svgEl) {
+                const isChecked = !!data[key];
+                if (isChecked) {
+                    svgEl.classList.remove('status-error');
+                    svgEl.classList.add('status-ok');
+                } else {
+                    svgEl.classList.remove('status-ok');
+                    svgEl.classList.add('status-error');
+                }
+            }
+        });
+        
+        // 2. Door swing condition
+        const doorEl = document.getElementById('svg-puerta');
+        if (doorEl) {
+            if (data['chk_puerta']) {
+                doorEl.classList.remove('status-error');
+                doorEl.classList.add('status-ok');
+            } else {
+                doorEl.classList.remove('status-ok');
+                doorEl.classList.add('status-error');
+            }
+        }
+        
+        // 3. Walls condition
+        const wallsEl = document.getElementById('svg-walls');
+        if (wallsEl) {
+            if (data['chk_paredes']) {
+                wallsEl.classList.remove('status-error');
+                wallsEl.classList.add('status-ok');
+            } else {
+                wallsEl.classList.remove('status-ok');
+                wallsEl.classList.add('status-error');
+            }
+        }
+        
+        // 4. A/C unit condition
+        const acEl = document.getElementById('svg-ac');
+        if (acEl) {
+            const acVal = data['ac'] || 'no';
+            if (acVal === 'si') {
+                acEl.classList.remove('status-error');
+                acEl.classList.add('status-ok');
+                acEl.setAttribute('data-target-value', 'no');
+            } else {
+                acEl.classList.remove('status-ok');
+                acEl.classList.add('status-error');
+                acEl.setAttribute('data-target-value', 'si');
+            }
+        }
+        
+        // 5. Beds toggling (1 Cama vs 2 Camas)
+        const camasVal = data['camas'] || '1';
+        const group1Cama = document.getElementById('group-1-cama');
+        const group2Camas = document.getElementById('group-2-camas');
+        if (camasVal === '2') {
+            if (group1Cama) group1Cama.style.display = 'none';
+            if (group2Camas) {
+                group2Camas.style.display = 'block';
+                if (data['estado'] === 'limpio') {
+                    group2Camas.classList.remove('status-error');
+                    group2Camas.classList.add('status-ok');
+                } else {
+                    group2Camas.classList.remove('status-ok');
+                    group2Camas.classList.add('status-error');
+                }
+            }
+        } else {
+            if (group2Camas) group2Camas.style.display = 'none';
+            if (group1Cama) {
+                group1Cama.style.display = 'block';
+                if (data['estado'] === 'limpio') {
+                    group1Cama.classList.remove('status-error');
+                    group1Cama.classList.add('status-ok');
+                } else {
+                    group1Cama.classList.remove('status-ok');
+                    group1Cama.classList.add('status-error');
+                }
+            }
+        }
+        
+        // 6. Bath toggling (Bathtub vs Shower Only)
+        const banoVal = data['bano'] || 'banera';
+        const groupBanera = document.getElementById('group-banera');
+        const groupDucha = document.getElementById('group-ducha');
+        
+        const isGriferiaOk = !!data['chk_griferia'];
+        const svgGriferiaBanera = document.getElementById('svg-griferia-banera');
+        const svgGriferiaDucha = document.getElementById('svg-griferia-ducha');
+        
+        if (isGriferiaOk) {
+            if (svgGriferiaBanera) { svgGriferiaBanera.classList.remove('status-error'); svgGriferiaBanera.classList.add('status-ok'); }
+            if (svgGriferiaDucha) { svgGriferiaDucha.classList.remove('status-error'); svgGriferiaDucha.classList.add('status-ok'); }
+        } else {
+            if (svgGriferiaBanera) { svgGriferiaBanera.classList.remove('status-ok'); svgGriferiaBanera.classList.add('status-error'); }
+            if (svgGriferiaDucha) { svgGriferiaDucha.classList.remove('status-ok'); svgGriferiaDucha.classList.add('status-error'); }
+        }
+        
+        if (banoVal === 'ducha') {
+            if (groupBanera) groupBanera.style.display = 'none';
+            if (groupDucha) {
+                groupDucha.style.display = 'block';
+                if (isGriferiaOk) {
+                    groupDucha.classList.remove('status-error');
+                    groupDucha.classList.add('status-ok');
+                } else {
+                    groupDucha.classList.remove('status-ok');
+                    groupDucha.classList.add('status-error');
+                }
+            }
+        } else {
+            if (groupDucha) groupDucha.style.display = 'none';
+            if (groupBanera) {
+                groupBanera.style.display = 'block';
+                if (isGriferiaOk) {
+                    groupBanera.classList.remove('status-error');
+                    groupBanera.classList.add('status-ok');
+                } else {
+                    groupBanera.classList.remove('status-ok');
+                    groupBanera.classList.add('status-error');
+                }
+            }
+        }
+        
+        // 7. General Maintenance Alert (Warning Triangle)
+        const maintAlert = document.getElementById('svg-maint-alert');
+        if (maintAlert) {
+            const hasMaint = !!data['chk_remiendo'] || !!data['chk_pintura'] || (data['txt_mantenimiento'] && data['txt_mantenimiento'].trim() !== '');
+            if (hasMaint) {
+                maintAlert.style.display = 'block';
+                maintAlert.classList.add('status-error');
+                maintAlert.classList.remove('status-ok');
+            } else {
+                maintAlert.style.display = 'none';
+            }
+        }
+
+        // 8. Cleanliness status badge inside blueprint
+        const cleanIndicator = document.getElementById('svg-clean-indicator');
+        const cleanText = document.getElementById('svg-clean-text');
+        if (cleanIndicator && cleanText) {
+            const cleanVal = data['estado'] || 'sucio';
+            if (cleanVal === 'limpio') {
+                cleanIndicator.classList.remove('status-error');
+                cleanIndicator.classList.add('status-ok');
+                cleanIndicator.setAttribute('data-target-value', 'sucio');
+                cleanText.textContent = currentLang === 'es' ? 'LIMPIO' : 'CLEAN';
+            } else {
+                cleanIndicator.classList.remove('status-ok');
+                cleanIndicator.classList.add('status-error');
+                cleanIndicator.setAttribute('data-target-value', 'limpio');
+                cleanText.textContent = currentLang === 'es' ? 'SUCIO' : 'DIRTY';
+            }
+        }
+    }
+
+    // Interactive Blueprint Clicks Event Delegation
+    document.addEventListener('click', function(e) {
+        const item = e.target.closest('.interactive-svg-item');
+        if (!item) return;
+
+        // Toggles a checkbox
+        const targetId = item.getAttribute('data-target');
+        if (targetId) {
+            const checkbox = document.getElementById(targetId);
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+
+        // Toggles a radio group
+        const radioName = item.getAttribute('data-target-radio');
+        if (radioName) {
+            const value = item.getAttribute('data-target-value');
+            const radio = document.querySelector(`input[name="${radioName}"][value="${value}"]`);
+            if (radio) {
+                radio.checked = true;
+                radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+    });
 
     function generateReportHTML() {
         saveCurrentRoom();
