@@ -741,7 +741,7 @@
                                 <rect x="33" y="100" width="20" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" />
                                 <rect x="33" y="148" width="20" height="32" rx="3" fill="none" stroke="currentColor" stroke-width="1.5" />
                                 <path d="M 85 85 L 85 195" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2" />
-                                <text x="78" y="140" fill="currentColor" font-size="10" font-weight="900" font-family="'Outfit', sans-serif" text-anchor="middle">QUEEN BED</text>
+                                <text id="svg-bed-label" x="78" y="140" fill="currentColor" font-size="10" font-weight="900" font-family="'Outfit', sans-serif" text-anchor="middle">QUEEN BED</text>
                                 
                                 <!-- Nightstand & Lamp (linked to chk_lamparas_hab inside group) -->
                                 <g class="interactive-svg-item" data-target="chk_lamparas_hab" style="color: inherit;">
@@ -766,7 +766,7 @@
                                 <rect x="33" y="214" width="18" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="1.5" />
                                 <path d="M 80 172 L 80 250" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4,2" />
 
-                                <text x="70" y="145" fill="currentColor" font-size="9" font-weight="900" font-family="'Outfit', sans-serif" text-anchor="middle">2 BEDS</text>
+                                <text id="svg-beds-label" x="70" y="145" fill="currentColor" font-size="9" font-weight="900" font-family="'Outfit', sans-serif" text-anchor="middle">2 BEDS</text>
                                 
                                 <!-- Nightstand & Lamp in the middle -->
                                 <g class="interactive-svg-item" data-target="chk_lamparas_hab" style="color: inherit;">
@@ -1028,6 +1028,39 @@
         });
     }
 
+    const roomConfigs = {
+        // Piso 1
+        101: { camas: '1', type: 'Queen' },
+        102: { camas: '1', type: 'Queen' },
+        103: { camas: '1', type: 'King' },
+        104: { camas: '1', type: 'King' },
+        105: { camas: '1', type: 'King' },
+        106: { camas: '2', type: 'Queen' },
+        107: { camas: '1', type: 'King' },
+        108: { camas: '2', type: 'Queen' },
+        109: { camas: '1', type: 'Queen' },
+        110: { camas: '1', type: 'King' },
+        111: { camas: '1', type: 'King' },
+        112: { camas: '1', type: 'King' },
+        113: { camas: '1', type: 'Queen' },
+        114: { camas: '1', type: 'Queen' },
+        // Piso 2
+        201: { camas: '1', type: 'King' },
+        202: { camas: '1', type: 'King' },
+        203: { camas: '2', type: 'Queen' },
+        204: { camas: '2', type: 'Queen' },
+        205: { camas: '2', type: 'Queen' },
+        206: { camas: '2', type: 'Queen' },
+        207: { camas: '2', type: 'Queen' },
+        208: { camas: '2', type: 'Queen' },
+        209: { camas: '2', type: 'Queen' },
+        210: { camas: '2', type: 'Queen' },
+        211: { camas: '2', type: 'Queen' },
+        212: { camas: '2', type: 'Queen' },
+        213: { camas: '1', type: 'King' },
+        214: { camas: '1', type: 'King' }
+    };
+
     const rooms1 = Array.from({length: 14}, (_, i) => 101 + i);
     const rooms2 = Array.from({length: 14}, (_, i) => 201 + i);
     const allRooms = [...rooms1, ...rooms2];
@@ -1035,7 +1068,12 @@
     let hotelData = JSON.parse(localStorage.getItem('hotelControlData')) || {};
     let currentRoom = parseInt(localStorage.getItem('hotelControlCurrentRoom')) || 101;
 
-    allRooms.forEach(r => { if (!hotelData[r]) hotelData[r] = {}; });
+    allRooms.forEach(r => {
+        if (!hotelData[r]) hotelData[r] = {};
+        if (!hotelData[r].camas && roomConfigs[r]) {
+            hotelData[r].camas = roomConfigs[r].camas;
+        }
+    });
 
     const navPiso1 = document.getElementById('nav-piso1');
     const navPiso2 = document.getElementById('nav-piso2');
@@ -1208,13 +1246,23 @@
         }
         
         // 5. Beds toggling (1 Cama vs 2 Camas)
-        const camasVal = data['camas'] || '1';
+        const camasVal = data['camas'] || (roomConfigs[currentRoom] ? roomConfigs[currentRoom].camas : '1');
+        const config = roomConfigs[currentRoom] || { camas: '1', type: 'Queen' };
+        
         const group1Cama = document.getElementById('group-1-cama');
         const group2Camas = document.getElementById('group-2-camas');
+        const bedLabel = document.getElementById('svg-bed-label');
+        const bedsLabel = document.getElementById('svg-beds-label');
+        const groupMesaSilla = document.getElementById('group-mesa-silla');
+        
         if (camasVal === '2') {
             if (group1Cama) group1Cama.style.display = 'none';
+            if (groupMesaSilla) groupMesaSilla.style.display = 'none';
             if (group2Camas) {
                 group2Camas.style.display = 'block';
+                if (bedsLabel) {
+                    bedsLabel.textContent = config.type === 'Queen' ? '2 QUEEN BEDS' : '2 BEDS';
+                }
                 if (data['estado'] === 'limpio') {
                     group2Camas.classList.remove('status-error');
                     group2Camas.classList.add('status-ok');
@@ -1225,8 +1273,12 @@
             }
         } else {
             if (group2Camas) group2Camas.style.display = 'none';
+            if (groupMesaSilla) groupMesaSilla.style.display = 'block';
             if (group1Cama) {
                 group1Cama.style.display = 'block';
+                if (bedLabel) {
+                    bedLabel.textContent = config.type === 'King' ? 'KING BED' : 'QUEEN BED';
+                }
                 if (data['estado'] === 'limpio') {
                     group1Cama.classList.remove('status-error');
                     group1Cama.classList.add('status-ok');
