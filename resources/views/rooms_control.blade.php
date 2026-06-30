@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -573,7 +573,7 @@
 </div>
 
 <script>
-    var currentLang = 'es';
+    var currentLang = '{{ app()->getLocale() }}';
     var bookingsList = [];
     var currentRoom = null;
     var allRooms = [101,102,103,104,105,106,107,108,109,110,111,112,113,114,
@@ -1053,6 +1053,7 @@
 
     function setLanguage(lang) {
         currentLang = lang;
+        fetch('?lang=' + lang).catch(err => console.error(err));
         document.getElementById('btn-es').classList.toggle('active', lang === 'es');
         document.getElementById('btn-en').classList.toggle('active', lang === 'en');
         applyTranslations();
@@ -1858,6 +1859,7 @@
 
     // ========== INIT ==========
     window.onload = function() {
+        setLanguage(currentLang);
         initSelects();
         loadBookings();
         // Mark rate inputs as not customized initially

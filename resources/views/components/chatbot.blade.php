@@ -56,8 +56,8 @@
         const statusText = document.getElementById('aki-status-text');
 
         let isChatOpen = false;
-        let chatState = 'ASK_LANG'; // ASK_LANG, READY, COLLECT_NAME, COLLECT_EMAIL, COLLECT_PHONE, COLLECT_MESSAGE
-        let botLang = 'es';
+        let botLang = '{{ app()->getLocale() }}';
+        let chatState = (botLang === 'en' || botLang === 'es') ? 'READY' : 'ASK_LANG'; // ASK_LANG, READY, COLLECT_NAME, COLLECT_EMAIL, COLLECT_PHONE, COLLECT_MESSAGE
         let contactData = { name: '', email: '', phone: '', message: '' };
 
         const dict = {
@@ -422,7 +422,13 @@
 
                 if (!hasInitialized) {
                     hasInitialized = true;
-                    showLangSelection();
+                    if (chatState === 'READY') {
+                        updateLangUI();
+                        appendBotMessage(dict[botLang].greeting);
+                        showMainQuickReplies();
+                    } else {
+                        showLangSelection();
+                    }
                 }
             } else {
                 chatWindow.classList.remove('scale-100', 'opacity-100');

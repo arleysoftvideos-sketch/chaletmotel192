@@ -160,6 +160,7 @@ class GoogleSheetController extends Controller
             'chk_mesa' => 'Mesa',
             'chk_silla' => 'Silla',
             'chk_nevera' => 'Nevera',
+            'chk_microondas' => 'Microondas',
             'chk_parrilla' => 'Portaequipajes',
             'chk_lamparas_hab' => 'Lámparas hab.',
             'chk_outlet_ac' => 'Enchufe A/C',

@@ -1004,7 +1004,18 @@
             const langRegistrar = currentLang === 'es' ? 'Registrar' : 'Log';
             
             keys.forEach(clave => {
-                const translatedClave = currentLang === 'es' ? clave : (clave === 'Volusia' ? 'Volusia' : (clave === 'Orlando' ? 'Orlando' : (clave === 'Kissimmee' ? 'Kissimmee' : (clave === 'Lakeland' ? 'Lakeland' : (clave === 'Miami' ? 'Miami' : (clave === 'Ft. Lauderdale' ? 'Ft. Lauderdale' : (clave === 'Gasolineras' ? 'Gas Stations' : (clave === 'Independiente' ? 'Independent' : clave))))))));
+                const cleanClave = clave.trim().toUpperCase();
+                const translatedClave = currentLang === 'es' ? clave : (
+                    cleanClave === 'VOLUSIA' ? 'Volusia' :
+                    cleanClave === 'ORLANDO' ? 'Orlando' :
+                    cleanClave === 'KISSIMMEE' ? 'Kissimmee' :
+                    cleanClave === 'LAKELAND' ? 'Lakeland' :
+                    cleanClave === 'MIAMI' ? 'Miami' :
+                    cleanClave === 'FT. LAUDERDALE' ? 'Ft. Lauderdale' :
+                    cleanClave === 'GASOLINERAS' ? 'Gas Stations' :
+                    cleanClave === 'INDEPENDIENTE' ? 'Independent' :
+                    clave
+                );
                 html += `
                     <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-6">
                         <div class="bg-slate-900 px-6 py-4 flex items-center justify-between">
@@ -1727,7 +1738,9 @@
                 const sortedItems = Object.entries(grouping).sort((a, b) => b[1] - a[1]);
                 labels = sortedItems.map(item => {
                     const name = item[0];
-                    return currentLang === 'es' ? name : (name === 'Gasolineras' ? 'Gas Stations' : (name === 'Independiente' ? 'Independent' : name));
+                    if (currentLang === 'es') return name;
+                    const cleanName = name.trim().toUpperCase();
+                    return cleanName === 'GASOLINERAS' ? 'Gas Stations' : (cleanName === 'INDEPENDIENTE' ? 'Independent' : name);
                 });
                 values = sortedItems.map(item => item[1]);
             }
