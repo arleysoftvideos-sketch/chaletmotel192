@@ -75,12 +75,56 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                color: #0f172a !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print, header, footer, #aki-chatbot, #aki-chat-window, 
+            .lang-toggle, #main-tab-switcher, .tab-switcher-wrapper, 
+            #section-recycling, #section-callcenter {
+                display: none !important;
+            }
+            #section-statistics {
+                display: block !important;
+                background: transparent !important;
+                color: #0f172a !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .bg-gradient-to-br, .bg-[#061021]/80, .bg-[#0a1831]/95, .bg-blue-950/20 {
+                background: #f8fafc !important;
+                background-color: #f8fafc !important;
+                border-color: #cbd5e1 !important;
+                color: #0f172a !important;
+                box-shadow: none !important;
+            }
+            h2, h3, h4, span, p, td, th {
+                color: #0f172a !important;
+            }
+            .text-slate-400, .text-slate-500 {
+                color: #475569 !important;
+            }
+            .border-blue-950, .border-blue-950/60, .border-gold/20 {
+                border-color: #e2e8f0 !important;
+            }
+            table, tr, td, th {
+                border-color: #cbd5e1 !important;
+            }
+            .grid {
+                gap: 1.25rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-[#040a17] text-slate-100 antialiased min-h-screen flex flex-col justify-between selection:bg-gold selection:text-navy">
 
     <!-- Navigation Header -->
-    <header class="w-full bg-[#061021]/80 backdrop-blur-md sticky top-0 border-b border-blue-950 relative z-50">
+    <header class="w-full bg-[#061021]/80 backdrop-blur-md sticky top-0 border-b border-blue-950 relative z-50 no-print">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div></div>
             <div class="flex items-center gap-4">
@@ -113,7 +157,7 @@
     </header>
 
     <!-- Main Tab Switcher -->
-    <div class="w-full bg-[#061021] border-b border-blue-950 py-3 z-45 relative">
+    <div class="w-full bg-[#061021] border-b border-blue-950 py-3 z-45 relative no-print">
         <div class="max-w-7xl mx-auto px-6 flex items-center justify-start gap-4 overflow-x-auto whitespace-nowrap no-scrollbar py-1">
             <button id="main-tab-recycling" onclick="switchMainTab('recycling')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>♻️</span> <span>{{ __('Reciclaje') }}</span>
@@ -421,7 +465,7 @@
                 </div>
                 
                 <!-- Date Filters Form -->
-                <div class="flex flex-wrap items-center gap-3 bg-[#061021]/80 border border-blue-950 p-2.5 rounded-2xl">
+                <div class="flex flex-wrap items-center gap-3 bg-[#061021]/80 border border-blue-950 p-2.5 rounded-2xl no-print">
                     <!-- Quick Filters -->
                     <div class="flex items-center gap-1 border-r border-blue-950/60 pr-2">
                         <button onclick="setStatsQuickRange(7)" class="text-[10px] font-bold text-slate-400 hover:text-white hover:bg-blue-950/50 px-2.5 py-1.5 rounded-lg transition-colors uppercase tracking-wider">{{ __('7 Días') }}</button>
@@ -439,6 +483,9 @@
                     </div>
                     <button onclick="clearStatsDates()" class="text-xs font-bold text-slate-400 hover:text-white px-2 py-1 border border-blue-950 rounded-lg transition-colors">
                         {{ __('Limpiar') }}
+                    </button>
+                    <button onclick="window.print()" class="text-xs font-bold text-emerald-400 hover:text-white px-2.5 py-1 border border-emerald-950 rounded-lg hover:bg-emerald-950/30 transition-all flex items-center gap-1">
+                        🖨️ {{ __('Imprimir') }}
                     </button>
                 </div>
             </div>
@@ -1820,6 +1867,65 @@
                 }
             });
         }
+
+        function toggleChartsPrintTheme(isPrint) {
+            const labelColor = isPrint ? '#0f172a' : '#cbd5e1';
+            const tickColor = isPrint ? '#334155' : '#94a3b8';
+            const gridColor = isPrint ? 'rgba(203, 213, 225, 0.6)' : 'rgba(30, 41, 59, 0.3)';
+            const chartBorderColor = isPrint ? '#cbd5e1' : '#061021';
+
+            // 1. Trend Chart
+            if (trendChartInstance) {
+                trendChartInstance.options.plugins.legend.labels.color = labelColor;
+                if (trendChartInstance.options.scales && trendChartInstance.options.scales.x) {
+                    trendChartInstance.options.scales.x.ticks.color = tickColor;
+                    trendChartInstance.options.scales.x.grid.color = gridColor;
+                }
+                if (trendChartInstance.options.scales && trendChartInstance.options.scales.y) {
+                    trendChartInstance.options.scales.y.ticks.color = tickColor;
+                    trendChartInstance.options.scales.y.grid.color = gridColor;
+                }
+                trendChartInstance.update();
+            }
+
+            // 2. Monthly Chart
+            if (monthlyChartInstance) {
+                monthlyChartInstance.options.plugins.legend.labels.color = labelColor;
+                if (monthlyChartInstance.options.plugins.datalabels) {
+                    monthlyChartInstance.options.plugins.datalabels.color = isPrint ? '#0f172a' : '#ffffff';
+                    monthlyChartInstance.options.plugins.datalabels.textShadowColor = isPrint ? 'transparent' : 'rgba(0,0,0,0.8)';
+                }
+                if (monthlyChartInstance.options.scales && monthlyChartInstance.options.scales.x) {
+                    monthlyChartInstance.options.scales.x.ticks.color = tickColor;
+                    monthlyChartInstance.options.scales.x.grid.color = gridColor;
+                }
+                if (monthlyChartInstance.options.scales && monthlyChartInstance.options.scales.y) {
+                    monthlyChartInstance.options.scales.y.ticks.color = tickColor;
+                    monthlyChartInstance.options.scales.y.grid.color = gridColor;
+                }
+                monthlyChartInstance.update();
+            }
+
+            // 3. Distribution Chart
+            if (distributionChartInstance) {
+                distributionChartInstance.options.plugins.legend.labels.color = labelColor;
+                if (distributionChartInstance.options.plugins.datalabels) {
+                    distributionChartInstance.options.plugins.datalabels.color = isPrint ? '#0f172a' : '#ffffff';
+                    distributionChartInstance.options.plugins.datalabels.textShadowColor = isPrint ? 'transparent' : 'rgba(0,0,0,0.6)';
+                }
+                if (distributionChartInstance.options.datasets && distributionChartInstance.options.datasets[0]) {
+                    distributionChartInstance.options.datasets[0].borderColor = chartBorderColor;
+                }
+                distributionChartInstance.update();
+            }
+        }
+
+        window.addEventListener('beforeprint', () => {
+            toggleChartsPrintTheme(true);
+        });
+        window.addEventListener('afterprint', () => {
+            toggleChartsPrintTheme(false);
+        });
 
         // Initialize Page
         window.addEventListener('DOMContentLoaded', () => {
