@@ -1231,27 +1231,27 @@
             if (!name) return '';
             const upper = name.toUpperCase().trim();
             if (upper === 'OFC' || upper === 'OUT FATHERS CLOSET' || upper.startsWith("OUT FATHER'S CLOSET") || upper === 'OUT FATHERS CLOSET') {
-                return "Out Father's Closet";
+                return "OUT FATHER'S CLOSET";
             }
             if (upper === 'NHC' || upper === 'THE NEIGHBORHOOD OF WEST VOLUSIA' || upper.startsWith('NEIGHBORHOOD OF WEST VOLUSIA')) {
-                return "Neighborhood of West Volusia";
+                return "NEIGHBORHOOD OF WEST VOLUSIA";
             }
             if (upper === 'EP' || upper === 'EPIPHANY THRIFT STORE') {
-                return "Epiphany Thrift Store";
+                return "EPIPHANY THRIFT STORE";
             }
             if (upper === 'CITCO' || upper === 'CITGO') {
-                return "Citgo / Punto Conv.";
+                return "CITGO / PUNTO CONV.";
             }
             if (upper === 'ORMOND' || upper === 'ORMOND BEACH') {
-                return "Ormond Beach";
+                return "ORMOND BEACH";
             }
             for (const item of lista) {
                 const cleanN = item.n.replace("⚠️", "").trim();
                 if (cleanN.toUpperCase() === upper) {
-                    return cleanN;
+                    return cleanN.toUpperCase();
                 }
             }
-            return name;
+            return upper;
         }
 
         function getStoreRouteAndCompany(storeName) {
