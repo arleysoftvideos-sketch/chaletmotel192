@@ -1611,8 +1611,8 @@
                     plugins: {
                         datalabels: {
                             display: function(context) {
-                                // Only show total value label on the first dataset (Total) if value > 0
-                                return context.datasetIndex === 0 && context.dataset.data[context.dataIndex] > 0;
+                                // Show value label for all datasets if value > 0
+                                return context.dataset.data[context.dataIndex] > 0;
                             },
                             formatter: function(value) {
                                 return value.toLocaleString();

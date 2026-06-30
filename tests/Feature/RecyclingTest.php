@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RecyclingTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * Test the recycling route returns status 200.
      */
@@ -44,6 +46,23 @@ class RecyclingTest extends TestCase
      */
     public function test_get_recycling_stores_returns_stores_list(): void
     {
+        \App\Models\RecyclingStore::create([
+            'nombre' => 'Citgo',
+            'telefono' => '12345',
+            'web' => 'https://citgo.com',
+            'ruta' => 'Volusia',
+            'empresa' => 'Gasolineras',
+            'alerta' => 'No'
+        ]);
+        \App\Models\RecyclingStore::create([
+            'nombre' => 'SHELL',
+            'telefono' => '12345',
+            'web' => 'https://shell.com',
+            'ruta' => 'Volusia',
+            'empresa' => 'Gasolineras',
+            'alerta' => 'No'
+        ]);
+
         $response = $this->getJson('/api/recycling/stores');
 
         $response->assertStatus(200);
