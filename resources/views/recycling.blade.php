@@ -144,7 +144,7 @@
             </div>
             <div class="flex items-center gap-4">
                 <nav class="flex items-center gap-3">
-                    <a href="#about-recycling" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
+                    <a href="#about-recycling" onclick="scrollToAbout(event)" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
                         {{ __('Sobre el Reciclaje') }}
                     </a>
                     @auth
@@ -1258,6 +1258,17 @@
                 spinner.classList.add('hidden');
                 btnText.textContent = currentLang === 'es' ? 'Enviar a Google Sheets' : 'Send to Google Sheets';
             });
+        }
+
+        function scrollToAbout(event) {
+            if (event) event.preventDefault();
+            switchMainTab('recycling');
+            setTimeout(() => {
+                const el = document.getElementById('about-recycling');
+                if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 150);
         }
 
         // ----------------------------------------------------
