@@ -171,11 +171,11 @@
             <button id="main-tab-recycling" onclick="switchMainTab('recycling')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>♻️</span> <span>{{ __('Reciclaje') }}</span>
             </button>
-            <button id="main-tab-callcenter" onclick="switchMainTab('callcenter')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
-                <span>📞</span> <span>{{ __('Marketing / Call Center') }}</span>
-            </button>
             <button id="main-tab-statistics" onclick="switchMainTab('statistics')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
                 <span>📈</span> <span>{{ __('Estadísticas') }}</span>
+            </button>
+            <button id="main-tab-callcenter" onclick="switchMainTab('callcenter')" class="flex-shrink-0 px-5 py-2.5 rounded-xl font-black font-outfit text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2">
+                <span>📞</span> <span>{{ __('Marketing / Call Center') }}</span>
             </button>
         </div>
     </div>
