@@ -140,7 +140,7 @@
             <!-- App Logo & Branding -->
             <div class="flex items-center gap-2">
                 <img src="{{ asset('images/recycling_logo.png') }}?v={{ time() }}" alt="Recycling Logo" class="w-8 h-8 rounded-lg object-cover">
-                <span class="font-outfit font-black text-sm uppercase tracking-wider text-emerald-400">Reciclaje 192</span>
+                <span class="font-outfit font-black text-sm uppercase tracking-wider text-emerald-400">U.S. Recycling</span>
             </div>
             <div class="flex items-center gap-4">
                 <nav class="flex items-center gap-3">
