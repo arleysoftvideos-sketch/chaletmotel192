@@ -137,17 +137,15 @@
     <!-- Navigation Header -->
     <header class="w-full bg-[#061021]/80 backdrop-blur-md sticky top-0 border-b border-blue-950 relative z-50 no-print">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div></div>
+            <!-- App Logo & Branding -->
+            <div class="flex items-center gap-2">
+                <img src="{{ asset('images/recycling_logo.png') }}?v=2" alt="Recycling Logo" class="w-8 h-8 rounded-lg object-cover">
+                <span class="font-outfit font-black text-sm uppercase tracking-wider text-emerald-400">Reciclaje 192</span>
+            </div>
             <div class="flex items-center gap-4">
                 <nav class="flex items-center gap-3">
-                    <a href="/" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        {{ __('Inicio') }}
-                    </a>
-                    <a href="/nosotros" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        {{ __('Nosotros') }}
-                    </a>
-                    <a href="{{ route('contact.create') }}" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
-                        {{ __('Contacto') }}
+                    <a href="#about-recycling" class="px-4 py-2 text-slate-300 hover:text-white font-semibold transition-all duration-300 text-sm">
+                        {{ __('Sobre el Reciclaje') }}
                     </a>
                     @auth
                         <a href="{{ url('/dashboard') }}" class="px-5 py-2 bg-navy border border-blue-900/60 text-slate-200 hover:text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-950 flex items-center gap-2 text-sm">
@@ -291,6 +289,49 @@
                             </button>
                         </div>
                     </form>
+            </div>
+
+            <!-- About Recycling Section -->
+            <div id="about-recycling" class="bg-[#061021]/60 border border-blue-950 rounded-[2rem] p-8 shadow-xl space-y-6 scroll-mt-24">
+                <div class="border-b border-blue-950 pb-4 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-black font-outfit text-white uppercase tracking-wide">
+                            {{ __('Sobre el Reciclaje') }}
+                        </h2>
+                        <p class="text-xs text-emerald-400 mt-1 uppercase tracking-wider font-bold">
+                            {{ __('Nuestro Compromiso Ecológico y Sostenible') }}
+                        </p>
+                    </div>
+                    <span class="text-3xl">♻️</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <!-- Column 1 -->
+                    <div class="bg-navy/40 border border-blue-950 p-6 rounded-2xl space-y-3">
+                        <span class="text-2xl">🌎</span>
+                        <h3 class="font-black font-outfit text-white uppercase tracking-tight text-sm">{{ __('Preservación Local') }}</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            {{ __('En Chalet Motel 192 nos esforzamos por mantener a Kissimmee limpia y verde. Cada bolsa de reciclaje recolectada contribuye a reducir los desechos que terminan en los vertederos locales.') }}
+                        </p>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="bg-navy/40 border border-blue-950 p-6 rounded-2xl space-y-3">
+                        <span class="text-2xl">📦</span>
+                        <h3 class="font-black font-outfit text-white uppercase tracking-tight text-sm">{{ __('Clasificación de Residuos') }}</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            {{ __('Recogemos y clasificamos cartón, plásticos y materiales textiles en coordinación con nuestro equipo de mantenimiento, garantizando que el proceso de separación sea efectivo.') }}
+                        </p>
+                    </div>
+
+                    <!-- Column 3 -->
+                    <div class="bg-navy/40 border border-blue-950 p-6 rounded-2xl space-y-3">
+                        <span class="text-2xl">🤝</span>
+                        <h3 class="font-black font-outfit text-white uppercase tracking-tight text-sm">{{ __('Alianza Ameritex') }}</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            {{ __('Trabajamos junto a Ameritex Diversion Inc. para asegurar que todos los materiales textiles recolectados tengan una segunda vida a través de procesos de reutilización y reciclaje industrial.') }}
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -715,8 +756,6 @@
         </div>
     </div>
 
-    <!-- Chatbot widget helper -->
-    <x-chatbot />
 
     <!-- INTERACTIVE SCRIPTS -->
     <script>

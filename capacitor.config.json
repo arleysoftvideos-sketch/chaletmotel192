@@ -1,0 +1,9 @@
+{
+  "appId": "com.example.chaletmotel",
+  "appName": "chaletmotel",
+  "webDir": "www",
+  "server": {
+    "url": "https://chaletmotel192.com/recycling",
+    "cleartext": true
+  }
+}
