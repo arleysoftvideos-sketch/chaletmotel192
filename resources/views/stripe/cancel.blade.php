@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pago Cancelado - Tutorial TikTok Pro</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        tiktokPink: '#FE2C55',
+                        tiktokCyan: '#25F4EE',
+                        darkBg: '#090115',
+                        darkCard: '#120726',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #090115;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(254, 44, 85, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-tiktokPink selection:text-white antialiased">
+
+    <!-- Header Navigation -->
+    <header class="w-full py-6 px-6 max-w-7xl mx-auto flex justify-between items-center relative z-10">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl font-black font-outfit tracking-tighter bg-gradient-to-r from-tiktokCyan via-white to-tiktokPink bg-clip-text text-transparent">
+                TIKTOK VIRAL LAB
+            </span>
+        </div>
+    </header>
+
+    <!-- Cancel Content -->
+    <main class="max-w-md mx-auto px-6 py-12 sm:py-24 text-center space-y-8 relative z-10 flex-grow flex flex-col justify-center">
+        
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-yellow-500/10 border border-yellow-500/20 text-4xl text-yellow-400 mx-auto">
+            ⚡
+        </div>
+
+        <div class="space-y-3">
+            <h1 class="text-3xl font-black font-outfit text-white">Pago Cancelado</h1>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                El proceso de pago de Stripe fue interrumpido y no se realizó ningún cargo en tu tarjeta. 
+            </p>
+        </div>
+
+        <div class="bg-darkCard/50 p-5 rounded-2xl border border-purple-900/20 text-xs text-slate-400 leading-relaxed text-left">
+            📌 <strong>¿Sabías qué?</strong> El precio promocional de <strong>$27 USD</strong> es temporal. Si deseas acceder al videocurso, guías en PDF y plantillas de trabajo más tarde, puedes regresar a intentarlo cuando gustes.
+        </div>
+
+        <div class="flex flex-col gap-3 pt-2">
+            <a href="{{ route('tutorial.landing') }}" class="px-6 py-3.5 bg-gradient-to-r from-tiktokPink to-purple-600 rounded-xl text-white font-bold text-sm shadow-lg hover:shadow-tiktokPink/20 transition duration-300">
+                Volver a Intentar Pago
+            </a>
+            <a href="/" class="px-6 py-3 bg-darkCard/80 border border-purple-900/30 rounded-xl text-slate-300 hover:text-white font-semibold text-sm transition duration-300">
+                Regresar al Inicio del Sitio
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-8 border-t border-purple-950/60 bg-darkBg text-center text-xs text-slate-500 relative z-10">
+        <div class="max-w-6xl mx-auto px-6">
+            <p>© 2026 TikTok Viral Lab. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GoogleSheetController;
 use App\Http\Controllers\RecyclingController;
+use App\Http\Controllers\TikTokTutorialController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -133,5 +134,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('rooms', RoomController::class)->except(['index', 'show']);
     Route::post('/bookings/{booking}/status', [AdminController::class, 'updateBookingStatus'])->name('bookings.status');
 });
+
+// Rutas para la venta del tutorial de TikTok con Stripe
+Route::get('/tutorial-tiktok', [TikTokTutorialController::class, 'showLanding'])->name('tutorial.landing');
+Route::post('/tutorial-tiktok/checkout', [TikTokTutorialController::class, 'createCheckoutSession'])->name('tutorial.checkout');
+Route::get('/tutorial-tiktok/success', [TikTokTutorialController::class, 'success'])->name('tutorial.success');
+Route::get('/tutorial-tiktok/cancel', [TikTokTutorialController::class, 'cancel'])->name('tutorial.cancel');
 
 require __DIR__.'/auth.php';

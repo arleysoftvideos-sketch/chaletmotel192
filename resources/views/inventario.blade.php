@@ -1445,60 +1445,250 @@
     function generateReportHTML() {
         saveCurrentRoom();
         const t = dict[currentLang];
-        let html = `<h2 style="text-align: center; color: #dc3545; margin-top:0;">📊 ${t.repTitle}</h2>`;
-        html += `<p style="text-align: center; color: #555;">${t.repDate} ${new Date().toLocaleDateString()}</p><hr>`;
+        const now = new Date();
+        const dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        const isEn = currentLang === 'en';
 
-        let hasIssues = false;
+        // Labels bilingüe para secciones del reporte
+        const L = {
+            hotelName:   isEn ? 'Chalet Motel 192' : 'Chalet Motel 192',
+            reportTitle: isEn ? 'ROOM INSPECTION REPORT' : 'REPORTE DE INSPECCIÓN DE HABITACIÓN',
+            genDate:     isEn ? 'Generated:' : 'Generado:',
+            inspector:   isEn ? 'Inspector:' : 'Inspector:',
+            date:        isEn ? 'Inspection Date:' : 'Fecha de inspección:',
+            room:        isEn ? 'Room' : 'Habitación',
+            status:      isEn ? 'Status' : 'Estado',
+            clean:       isEn ? '✅ Clean' : '✅ Limpio',
+            dirty:       isEn ? '❌ Dirty' : '❌ Sucio',
+            bedSetup:    isEn ? 'Bed Setup' : 'Camas',
+            bathType:    isEn ? 'Bathroom' : 'Baño',
+            tub:         isEn ? 'Bathtub' : 'Bañera',
+            shower:      isEn ? 'Shower Only' : 'Ducha sola',
+            ac:          isEn ? 'Air Conditioning' : 'Aire Acondicionado',
+            acOk:        isEn ? '✅ Working' : '✅ Trabaja',
+            acBad:       isEn ? '❌ Not working' : '❌ No trabaja',
+            secRoom:     isEn ? '🛏️ Room Area' : '🛏️ Área de la Habitación',
+            secElec:     isEn ? '🔌 Electricity & Security' : '🔌 Electricidad y Seguridad',
+            secDoor:     isEn ? '🚪 Doors & Walls' : '🚪 Puertas y Paredes',
+            secBath:     isEn ? '🛁 Bathroom' : '🛁 Baño',
+            secMaint:    isEn ? '🛠️ Maintenance' : '🛠️ Mantenimiento',
+            secNotes:    isEn ? '📝 Notes' : '📝 Notas',
+            patch:       isEn ? 'Wall patch needed' : 'Falta remiendo/parche',
+            paint:       isEn ? 'Paint touch-up needed' : 'Requiere retoque de pintura',
+            none:        isEn ? 'None' : 'Ninguno',
+            noData:      isEn ? 'No data recorded' : 'Sin datos registrados',
+            summaryTitle:isEn ? '📊 INSPECTION SUMMARY — ALL ROOMS' : '📊 RESUMEN DE INSPECCIÓN — TODAS LAS HABITACIONES',
+            sumClean:    isEn ? 'Clean' : 'Limpias',
+            sumDirty:    isEn ? 'Dirty' : 'Sucias',
+            sumPerfect:  isEn ? 'Perfect ✅' : 'Perfectas ✅',
+            sumIssues:   isEn ? 'With Issues ⚠️' : 'Con Problemas ⚠️',
+            sumNoData:   isEn ? 'Not Inspected' : 'Sin Inspeccionar',
+            floor1:      isEn ? 'Floor 1' : 'Piso 1',
+            floor2:      isEn ? 'Floor 2' : 'Piso 2',
+        };
+
+        // Grouping of checklist items by section
+        const sections = [
+            { label: L.secRoom, keys: ['chk_cortina','chk_mesa','chk_silla','chk_nevera','chk_microondas','chk_parrilla','chk_colchon','chk_nochero','chk_lamparas_hab'] },
+            { label: L.secElec, keys: ['chk_outlet_ac','chk_tv','chk_tapas_emergencia','chk_covers_outlets','chk_covers_luces','chk_extractor'] },
+            { label: L.secDoor, keys: ['chk_puerta','chk_stop_door','chk_paredes'] },
+            { label: L.secBath, keys: ['chk_griferia','chk_lavamanos','chk_espejo','chk_toilet','chk_coso_papel','chk_lampara_bano','chk_cover_extractor'] },
+        ];
+
+        const bedLabel = (v) => {
+            if (v === '2_queen') return isEn ? '2 Queen Beds' : '2 Camas Queen';
+            if (v === '1_king')  return isEn ? '1 King Bed'   : '1 Cama King';
+            return isEn ? '1 Queen Bed' : '1 Cama Queen';
+        };
+
+        let pages = '';
+        let summaryRows = '';
+        let totalClean=0, totalDirty=0, totalPerfect=0, totalIssues=0, totalNoData=0;
 
         allRooms.forEach(room => {
-            const data = hotelData[room];
-            if(Object.keys(data).length === 0) return;
+            const data = hotelData[room] || {};
+            const isEmpty = Object.keys(data).length === 0;
 
-            let issues = [];
+            // Summary stats
+            if (isEmpty) { totalNoData++; }
+            else {
+                if (data.estado === 'limpio') totalClean++; else totalDirty++;
+                if (isRoomPerfect(data)) totalPerfect++; else totalIssues++;
+            }
 
-            if(data.estado === 'sucio') issues.push(`<strong>${t.repStatusDirty}</strong>`);
-            if(data.ac === 'no') issues.push(`<strong>${t.repAcBad}</strong>`);
-            
-            let missingItems = [];
-            requiredItems.forEach(key => {
-                if (data.camas === '2' && (key === 'chk_mesa' || key === 'chk_silla')) {
-                    return; 
-                }
-                
-                if(!data[key]) {
-                    missingItems.push(t.shortNames[key]);
-                }
+            const statusLabel = isEmpty ? '—' : (data.estado === 'limpio' ? L.clean : L.dirty);
+            const statusColor = data.estado === 'limpio' ? '#16a34a' : '#dc2626';
+            const isPerfect   = isRoomPerfect(data);
+            const floor       = room < 200 ? L.floor1 : L.floor2;
+
+            // Build checklist rows for each section
+            let checklistHTML = '';
+            sections.forEach(sec => {
+                const validKeys = sec.keys.filter(k => {
+                    if (data.camas === '2_queen' && (k === 'chk_mesa' || k === 'chk_silla')) return false;
+                    return true;
+                });
+                checklistHTML += `
+                    <div style="margin-bottom:10px;">
+                        <div style="font-size:9px;font-weight:900;color:#1e3a5f;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;background:#e8f0fe;border-radius:3px;margin-bottom:4px;">${sec.label}</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+                            ${validKeys.map(k => {
+                                const checked = data[k] !== false && data[k] !== undefined ? (data[k] === true || data[k] !== false) : false;
+                                const ok = data[k] !== false && data[k] !== undefined && data[k] !== false;
+                                return `<div style="display:flex;align-items:center;gap:5px;padding:3px 6px;background:${ok ? '#f0fdf4' : '#fef2f2'};border-radius:3px;border-left:3px solid ${ok ? '#22c55e' : '#ef4444'};">
+                                    <span style="font-size:12px;">${ok ? '✅' : '❌'}</span>
+                                    <span style="font-size:9px;color:#374151;">${t.shortNames[k] || k}</span>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    </div>`;
             });
-            
-            if(missingItems.length > 0) {
-                issues.push(`<strong>${t.repMissing}</strong> ${missingItems.join(', ')}`);
+
+            // Maintenance
+            let maintHTML = '';
+            if (data.chk_remiendo || data.chk_pintura || (data.txt_mantenimiento && data.txt_mantenimiento.trim())) {
+                const items = [];
+                if (data.chk_remiendo) items.push(`❌ ${L.patch}`);
+                if (data.chk_pintura)  items.push(`❌ ${L.paint}`);
+                if (data.txt_mantenimiento && data.txt_mantenimiento.trim())
+                    items.push(`📌 ${data.txt_mantenimiento}`);
+                maintHTML = `
+                    <div style="margin-bottom:10px;">
+                        <div style="font-size:9px;font-weight:900;color:#92400e;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;background:#fef3c7;border-radius:3px;margin-bottom:4px;">${L.secMaint}</div>
+                        ${items.map(i => `<div style="font-size:9px;color:#78350f;padding:3px 8px;">${i}</div>`).join('')}
+                    </div>`;
             }
 
-            if(data.chk_remiendo) issues.push(`<strong>${t.repPatch}</strong>`);
-            if(data.chk_pintura) issues.push(`<strong>${t.repPaint}</strong>`);
-            if(data.txt_mantenimiento && data.txt_mantenimiento.trim() !== "") {
-                issues.push(`<strong>${t.repMaintDetail}</strong> ${data.txt_mantenimiento}`);
-            }
-            if(data.txt_notas && data.txt_notas.trim() !== "") {
-                issues.push(`<strong>${t.repNotes}</strong> ${data.txt_notas}`);
+            // Notes
+            let notesHTML = '';
+            if (data.txt_notas && data.txt_notas.trim()) {
+                notesHTML = `
+                    <div style="margin-bottom:10px;">
+                        <div style="font-size:9px;font-weight:900;color:#1e3a5f;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;background:#eff6ff;border-radius:3px;margin-bottom:4px;">${L.secNotes}</div>
+                        <div style="font-size:9px;color:#374151;padding:4px 8px;background:#f8fafc;border-radius:3px;">${data.txt_notas}</div>
+                    </div>`;
             }
 
-            if(issues.length > 0) {
-                hasIssues = true;
-                html += `
-                    <div class="report-room-card">
-                        <h3>${t.repRoom} ${room}</h3>
-                        ${issues.map(iss => `<div class="report-item">- ${iss}</div>`).join('')}
+            summaryRows += `
+                <tr style="border-bottom:1px solid #e5e7eb;">
+                    <td style="padding:5px 8px;font-weight:700;font-size:11px;">${room}</td>
+                    <td style="padding:5px 8px;font-size:10px;">${floor}</td>
+                    <td style="padding:5px 8px;font-size:10px;color:${isEmpty ? '#9ca3af' : statusColor};font-weight:700;">${statusLabel}</td>
+                    <td style="padding:5px 8px;font-size:10px;">${isEmpty ? '—' : bedLabel(data.camas)}</td>
+                    <td style="padding:5px 8px;font-size:10px;text-align:center;">
+                        ${isEmpty ? '—' : (isPerfect
+                            ? '<span style="background:#dcfce7;color:#16a34a;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:900;">✅ OK</span>'
+                            : '<span style="background:#fee2e2;color:#dc2626;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:900;">⚠️ Issues</span>')}
+                    </td>
+                    <td style="padding:5px 8px;font-size:10px;">${data.inspector || '—'}</td>
+                </tr>`;
+
+            pages += `
+            <div style="page-break-after:always; padding:20px 24px; font-family:'Helvetica Neue',Arial,sans-serif; max-width:750px; margin:0 auto; box-sizing:border-box;">
+                <!-- HEADER -->
+                <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #1e3a8a;padding-bottom:10px;margin-bottom:14px;">
+                    <div>
+                        <div style="font-size:20px;font-weight:900;color:#1e3a8a;letter-spacing:-0.5px;">🏨 ${L.hotelName}</div>
+                        <div style="font-size:10px;color:#6b7280;margin-top:2px;text-transform:uppercase;letter-spacing:1px;">${L.reportTitle}</div>
                     </div>
-                `;
-            }
+                    <div style="text-align:right;">
+                        <div style="font-size:28px;font-weight:900;color:${isEmpty ? '#9ca3af' : (isPerfect ? '#16a34a' : '#1e3a8a')};line-height:1;">${L.room} ${room}</div>
+                        <div style="font-size:9px;color:#9ca3af;margin-top:2px;">${floor}</div>
+                    </div>
+                </div>
+
+                <!-- INFO BAR -->
+                <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px;">
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;text-align:center;">
+                        <div style="font-size:8px;color:#94a3b8;text-transform:uppercase;font-weight:700;">Status</div>
+                        <div style="font-size:11px;font-weight:900;color:${isEmpty ? '#9ca3af' : statusColor};margin-top:2px;">${statusLabel}</div>
+                    </div>
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;text-align:center;">
+                        <div style="font-size:8px;color:#94a3b8;text-transform:uppercase;font-weight:700;">${isEn ? 'Bed' : 'Cama'}</div>
+                        <div style="font-size:10px;font-weight:700;color:#1f2937;margin-top:2px;">${isEmpty ? '—' : bedLabel(data.camas)}</div>
+                    </div>
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;text-align:center;">
+                        <div style="font-size:8px;color:#94a3b8;text-transform:uppercase;font-weight:700;">${isEn ? 'Bath' : 'Baño'}</div>
+                        <div style="font-size:10px;font-weight:700;color:#1f2937;margin-top:2px;">${isEmpty ? '—' : (data.bano === 'banera' ? L.tub : (data.bano === 'ducha' ? L.shower : '—'))}</div>
+                    </div>
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;text-align:center;">
+                        <div style="font-size:8px;color:#94a3b8;text-transform:uppercase;font-weight:700;">A/C</div>
+                        <div style="font-size:10px;font-weight:700;color:${data.ac === 'no' ? '#dc2626' : '#16a34a'};margin-top:2px;">${isEmpty ? '—' : (data.ac === 'si' ? L.acOk : (data.ac === 'no' ? L.acBad : '—'))}</div>
+                    </div>
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;text-align:center;">
+                        <div style="font-size:8px;color:#94a3b8;text-transform:uppercase;font-weight:700;">${L.inspector}</div>
+                        <div style="font-size:9px;font-weight:700;color:#1f2937;margin-top:2px;">${data.inspector || '—'}</div>
+                    </div>
+                </div>
+
+                ${isEmpty ? `<div style="text-align:center;padding:40px;color:#9ca3af;font-size:13px;">📋 ${L.noData}</div>` : `
+                <!-- CHECKLIST -->
+                ${checklistHTML}
+                <!-- MAINTENANCE -->
+                ${maintHTML}
+                <!-- NOTES -->
+                ${notesHTML}
+                `}
+
+                <!-- FOOTER -->
+                <div style="margin-top:10px;padding-top:8px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:8px;color:#9ca3af;">${L.genDate} ${dateStr}</span>
+                    <span style="font-size:8px;color:#9ca3af;">${data.fecha || ''}</span>
+                    <span style="font-size:8px;color:#9ca3af;">Chalet Motel 192 — chaletmotel192.com</span>
+                </div>
+            </div>`;
         });
 
-        if(!hasIssues) {
-            html += `<h3 style="text-align:center; color: #28a745; margin-top: 20px;">🎉 Todo en orden. No hay faltantes.</h3>`;
-        }
-        
-        return html;
+        // SUMMARY PAGE (first page)
+        const summaryPage = `
+        <div style="page-break-after:always; padding:28px 24px; font-family:'Helvetica Neue',Arial,sans-serif; max-width:750px; margin:0 auto; box-sizing:border-box;">
+            <div style="text-align:center;border-bottom:3px solid #1e3a8a;padding-bottom:16px;margin-bottom:20px;">
+                <div style="font-size:24px;font-weight:900;color:#1e3a8a;">🏨 Chalet Motel 192</div>
+                <div style="font-size:13px;color:#6b7280;margin-top:4px;text-transform:uppercase;letter-spacing:2px;">${L.summaryTitle}</div>
+                <div style="font-size:10px;color:#9ca3af;margin-top:4px;">${L.genDate} ${dateStr}</div>
+            </div>
+
+            <!-- KPI boxes -->
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:24px;">
+                <div style="background:#f0fdf4;border:2px solid #bbf7d0;border-radius:8px;padding:12px;text-align:center;">
+                    <div style="font-size:26px;font-weight:900;color:#16a34a;">${totalClean}</div>
+                    <div style="font-size:9px;color:#15803d;text-transform:uppercase;font-weight:700;">${L.sumClean}</div>
+                </div>
+                <div style="background:#fef2f2;border:2px solid #fecaca;border-radius:8px;padding:12px;text-align:center;">
+                    <div style="font-size:26px;font-weight:900;color:#dc2626;">${totalDirty}</div>
+                    <div style="font-size:9px;color:#b91c1c;text-transform:uppercase;font-weight:700;">${L.sumDirty}</div>
+                </div>
+                <div style="background:#f0fdf4;border:2px solid #bbf7d0;border-radius:8px;padding:12px;text-align:center;">
+                    <div style="font-size:26px;font-weight:900;color:#16a34a;">${totalPerfect}</div>
+                    <div style="font-size:9px;color:#15803d;text-transform:uppercase;font-weight:700;">${L.sumPerfect}</div>
+                </div>
+                <div style="background:#fff7ed;border:2px solid #fed7aa;border-radius:8px;padding:12px;text-align:center;">
+                    <div style="font-size:26px;font-weight:900;color:#ea580c;">${totalIssues}</div>
+                    <div style="font-size:9px;color:#c2410c;text-transform:uppercase;font-weight:700;">${L.sumIssues}</div>
+                </div>
+                <div style="background:#f8fafc;border:2px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center;">
+                    <div style="font-size:26px;font-weight:900;color:#6b7280;">${totalNoData}</div>
+                    <div style="font-size:9px;color:#6b7280;text-transform:uppercase;font-weight:700;">${L.sumNoData}</div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <table style="width:100%;border-collapse:collapse;font-family:'Helvetica Neue',Arial,sans-serif;">
+                <thead>
+                    <tr style="background:#1e3a8a;color:#ffffff;">
+                        <th style="padding:7px 8px;font-size:10px;text-align:left;border-radius:0;">${L.room}</th>
+                        <th style="padding:7px 8px;font-size:10px;text-align:left;">${isEn ? 'Floor' : 'Piso'}</th>
+                        <th style="padding:7px 8px;font-size:10px;text-align:left;">Status</th>
+                        <th style="padding:7px 8px;font-size:10px;text-align:left;">${isEn ? 'Bed' : 'Cama'}</th>
+                        <th style="padding:7px 8px;font-size:10px;text-align:center;">${isEn ? 'Result' : 'Resultado'}</th>
+                        <th style="padding:7px 8px;font-size:10px;text-align:left;">${L.inspector}</th>
+                    </tr>
+                </thead>
+                <tbody>${summaryRows}</tbody>
+            </table>
+        </div>`;
+
+        return summaryPage + pages;
     }
 
     function showSummaryModal() {

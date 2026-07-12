@@ -1873,7 +1873,7 @@
         setInterval(function() {
             var active = document.activeElement;
             var isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
-            if (!isTyping) {
+            if (!isTyping) { 
                 loadBookings();
             }
         }, 45000);
