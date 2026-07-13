@@ -151,20 +151,9 @@
                 <div class="absolute -inset-1 bg-gradient-to-r from-neonBlue to-neonGreen rounded-3xl blur opacity-25"></div>
                 
                 <div class="relative bg-[#020712] rounded-2xl overflow-hidden shadow-inner">
-                    <!-- Video Cover image placeholder style -->
-                    <div class="h-64 sm:h-72 w-full bg-slate-900 flex flex-col justify-center items-center relative group cursor-pointer border-b border-blue-900/40">
-                        <div class="absolute inset-0 bg-gradient-to-tr from-neonBlue/10 via-darkCard/50 to-neonGreen/10 z-0"></div>
-                        
-                        <!-- Floating play icon -->
-                        <div class="w-16 h-16 rounded-full bg-white/5 backdrop-blur-md flex items-center justify-center border border-white/10 z-10 transition duration-300 transform group-hover:scale-110 shadow-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8 text-neonBlue">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                        </div>
-                        <span class="mt-4 text-xs font-bold text-slate-300 tracking-wider z-10 group-hover:text-white uppercase transition-colors">
-                            Ver Introducción del Curso
-                        </span>
-
+                    <!-- Image Cover style -->
+                    <div class="w-full bg-slate-900 border-b border-blue-900/40 overflow-hidden relative group">
+                        <img src="{{ asset('images/magic_travel_banner.png') }}?v={{ time() }}" alt="Tutorial Preview" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-semibold text-slate-300 z-10 border border-white/10">
                             ⏱️ 10m de Contenido
                         </div>
