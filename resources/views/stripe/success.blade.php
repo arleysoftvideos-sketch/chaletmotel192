@@ -114,9 +114,9 @@
 
             <!-- Video instructions -->
             <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-400 pt-4 border-t border-blue-900/20">
-                <p>💡 <em>Tip: Puedes pausar y revisar la sección de ángulos de cámara y luz en el minuto 24:15.</em></p>
+                <p>💡 <em>Tip: Puedes pausar y revisar la sección de ángulos de cámara y luz en el minuto 4:30.</em></p>
                 <div class="flex items-center gap-3">
-                    <span>⏱️ Duración: 1h 45m</span>
+                    <span>⏱️ Duración: 10m</span>
                     <span>1080p FHD</span>
                 </div>
             </div>

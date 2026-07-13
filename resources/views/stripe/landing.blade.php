@@ -117,7 +117,7 @@
             </h1>
 
             <p class="text-lg text-slate-300 leading-relaxed max-w-2xl">
-                Las grandes empresas tecnológicas necesitan millones de horas de video en primera persona (POV) arreglando la casa, doblando ropa, limpiando u organizando para entrenar a la próxima generación de robots del hogar. En este videocurso de <strong>1h 45m</strong>, aprenderás los estándares técnicos exactos para grabar y comercializar tus videos.
+                Las grandes empresas tecnológicas necesitan millones de horas de video en primera persona (POV) arreglando la casa, doblando ropa, limpiando u organizando para entrenar a la próxima generación de robots del hogar. En este videocurso de <strong>10 minutos</strong>, aprenderás los estándares técnicos exactos para grabar y comercializar tus videos.
             </p>
 
             <!-- Key Features Badges -->
@@ -194,7 +194,7 @@
                         </span>
 
                         <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-semibold text-slate-300 z-10 border border-white/10">
-                            ⏱️ 1h 45m de Contenido
+                            ⏱️ 10m de Contenido
                         </div>
                     </div>
 
