@@ -93,7 +93,7 @@
             </h1>
 
             <p class="text-lg text-slate-300 leading-relaxed max-w-2xl">
-                Mira un video explicativo de <strong>10 minutos</strong> que te enseña paso a paso cómo iniciar y configurar tu cuenta de trabajo para empezar a recibir pagos de inmediato y de forma muy fácil.
+                Mira un video explicativo que te enseña paso a paso cómo iniciar y configurar tu cuenta de trabajo para empezar a recibir pagos de inmediato y de forma muy fácil.
             </p>
 
             <!-- Key Features Badges -->
@@ -104,7 +104,7 @@
                 </div>
                 <div class="flex items-center gap-3 bg-darkCard/50 p-3 rounded-xl border border-blue-900/30">
                     <span class="text-2xl">📹</span>
-                    <span class="text-sm font-medium text-slate-200">Video explicativo de 10 minutos</span>
+                    <span class="text-sm font-medium text-slate-200">Video explicativo paso a paso</span>
                 </div>
                 <div class="flex items-center gap-3 bg-darkCard/50 p-3 rounded-xl border border-blue-900/30">
                     <span class="text-2xl">📄</span>
@@ -154,9 +154,6 @@
                     <!-- Image Cover style -->
                     <div class="w-full bg-slate-900 border-b border-blue-900/40 overflow-hidden relative group">
                         <img src="{{ asset('images/magic_travel_banner.png') }}?v={{ time() }}" alt="Tutorial Preview" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute bottom-3 left-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-semibold text-slate-300 z-10 border border-white/10">
-                            ⏱️ 10m de Contenido
-                        </div>
                     </div>
 
                     <!-- Info text below video mockup -->
@@ -167,7 +164,7 @@
                         <ul class="space-y-2.5 text-sm text-slate-300">
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>
-                                <span>Video instructivo de 10 min: Cómo abrir la cuenta de aplicación TASK</span>
+                                <span>Video instructivo: Cómo abrir la cuenta de aplicación TASK</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>

@@ -112,7 +112,6 @@
             <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-400 pt-4 border-t border-blue-900/20">
                 <p>💡 <em>Consejo: Si te pierdes, ponle pausa al video y míralo con calma.</em></p>
                 <div class="flex items-center gap-3">
-                    <span>⏱️ Duración: 10m</span>
                     <span>1080p FHD</span>
                 </div>
             </div>

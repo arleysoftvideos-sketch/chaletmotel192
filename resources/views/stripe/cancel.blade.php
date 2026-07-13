@@ -66,7 +66,7 @@
         </div>
 
         <div class="bg-darkCard/50 p-5 rounded-2xl border border-blue-900/20 text-xs text-slate-400 leading-relaxed text-left">
-            📌 <strong>¿Sabías qué?</strong> El precio promocional de <strong>$27 USD</strong> es temporal. Si deseas acceder al videocurso de 10 minutos y obtener el listado de compradores de IA más tarde, puedes regresar a intentarlo cuando gustes.
+            📌 <strong>¿Sabías qué?</strong> El precio promocional de <strong>$27 USD</strong> es temporal. Si deseas acceder al video instructivo y obtener las listas de ayuda más tarde, puedes regresar cuando gustes.
         </div>
 
         <div class="flex flex-col gap-3 pt-2">
