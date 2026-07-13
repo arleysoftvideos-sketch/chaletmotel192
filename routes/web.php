@@ -135,10 +135,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/bookings/{booking}/status', [AdminController::class, 'updateBookingStatus'])->name('bookings.status');
 });
 
-// Rutas para la venta del tutorial de TikTok con Stripe
-Route::get('/tutorial-tiktok', [TikTokTutorialController::class, 'showLanding'])->name('tutorial.landing');
-Route::post('/tutorial-tiktok/checkout', [TikTokTutorialController::class, 'createCheckoutSession'])->name('tutorial.checkout');
-Route::get('/tutorial-tiktok/success', [TikTokTutorialController::class, 'success'])->name('tutorial.success');
-Route::get('/tutorial-tiktok/cancel', [TikTokTutorialController::class, 'cancel'])->name('tutorial.cancel');
+// Rutas para la venta del tutorial de POV con Stripe
+Route::get('/formula-pov', [TikTokTutorialController::class, 'showLanding'])->name('tutorial.landing');
+Route::post('/formula-pov/checkout', [TikTokTutorialController::class, 'createCheckoutSession'])->name('tutorial.checkout');
+Route::get('/formula-pov/success', [TikTokTutorialController::class, 'success'])->name('tutorial.success');
+Route::get('/formula-pov/cancel', [TikTokTutorialController::class, 'cancel'])->name('tutorial.cancel');
 
 require __DIR__.'/auth.php';

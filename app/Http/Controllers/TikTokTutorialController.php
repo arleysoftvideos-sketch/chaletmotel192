@@ -39,8 +39,8 @@ class TikTokTutorialController extends Controller
                             'price_data' => [
                                 'currency' => 'usd',
                                 'product_data' => [
-                                    'name' => 'TikTok Tutorial Pro: De Cero a Viral y Monetizado',
-                                    'description' => 'Aprende a ganarle al algoritmo, retener la atención y monetizar tu cuenta en tiempo récord. Incluye material descargable.',
+                                    'name' => 'Fórmula POV: Grabación para Entrenamiento de Robots e IA',
+                                    'description' => 'Aprende el estándar técnico, los ángulos de cámara y la estructura para vender tus videos POV a empresas de robótica.',
                                 ],
                                 'unit_amount' => 2700, // $27.00 USD en centavos
                             ],
