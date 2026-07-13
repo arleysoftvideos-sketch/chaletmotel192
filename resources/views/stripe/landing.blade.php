@@ -124,7 +124,7 @@
                         <span class="text-xs bg-neonBlue/20 text-neonBlue px-2 py-0.5 rounded font-bold">72% DESCUENTO</span>
                     </div>
                     <div class="text-3xl sm:text-4xl font-black font-outfit text-white flex items-baseline gap-1 mt-1">
-                        $50 <span class="text-sm text-slate-300 font-normal">USD</span>
+                        $27 <span class="text-sm text-slate-300 font-normal">USD</span>
                     </div>
                     <p class="text-xs text-slate-400 mt-1">Pago único. Acceso ilimitado de por vida.</p>
                 </div>
