@@ -89,30 +89,30 @@
             </span>
             
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black font-outfit leading-tight tracking-tight text-white">
-                Optimiza tus Resultados y <span class="text-neonBlue">Maximiza tus Ingresos</span> Diarios
+                Aprende a Configurar y <span class="text-neonBlue">Ganar Dinero</span> con tu Cuenta
             </h1>
 
             <p class="text-lg text-slate-300 leading-relaxed max-w-2xl">
-                Accede a nuestro videocurso práctico y especializado de <strong>10 minutos</strong>. Aprenderás las estrategias, trucos y metodologías paso a paso necesarias para optimizar tus flujos de trabajo diarios y rentabilizar tu tiempo al máximo.
+                Mira un video explicativo de <strong>10 minutos</strong> que te enseña paso a paso cómo iniciar y configurar tu cuenta de trabajo para empezar a recibir pagos de inmediato y de forma muy fácil.
             </p>
 
             <!-- Key Features Badges -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div class="flex items-center gap-3 bg-darkCard/50 p-3 rounded-xl border border-blue-900/30">
                     <span class="text-2xl">⚡</span>
-                    <span class="text-sm font-medium text-slate-200">Estrategias y Métodos de Alto Rendimiento</span>
+                    <span class="text-sm font-medium text-slate-200">Consejos fáciles para ganar más</span>
                 </div>
                 <div class="flex items-center gap-3 bg-darkCard/50 p-3 rounded-xl border border-blue-900/30">
                     <span class="text-2xl">📹</span>
-                    <span class="text-sm font-medium text-slate-200">Videotutorial Práctico Paso a Paso</span>
+                    <span class="text-sm font-medium text-slate-200">Video explicativo de 10 minutos</span>
                 </div>
                 <div class="flex items-center gap-3 bg-darkCard/50 p-3 rounded-xl border border-blue-900/30">
                     <span class="text-2xl">📄</span>
-                    <span class="text-sm font-medium text-slate-200">Guía Técnica de Apoyo en PDF</span>
+                    <span class="text-sm font-medium text-slate-200">Guía fácil en PDF para tu celular</span>
                 </div>
                 <div class="flex items-center gap-3 bg-darkCard/50 p-3 rounded-xl border border-blue-900/30">
                     <span class="text-2xl">📊</span>
-                    <span class="text-sm font-medium text-slate-200">Plantillas y Listados Descargables</span>
+                    <span class="text-sm font-medium text-slate-200">Lista de ayuda y control sencilla</span>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                     <div class="text-3xl sm:text-4xl font-black font-outfit text-white flex items-baseline gap-1 mt-1">
                         $27 <span class="text-sm text-slate-300 font-normal">USD</span>
                     </div>
-                    <p class="text-xs text-slate-400 mt-1">Pago único. Acceso ilimitado de por vida.</p>
+                    <p class="text-xs text-slate-400 mt-1">Pago único. Acceso de por vida.</p>
                 </div>
 
                 <div class="w-full sm:w-auto">
@@ -134,7 +134,7 @@
                         @csrf
                         <button type="submit" 
                                 class="glow-button w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-neonBlue to-blue-700 rounded-xl text-black font-black text-lg flex items-center justify-center gap-2 shadow-lg">
-                            Acceder al Tutorial
+                            Ver Video y Guías
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                             </svg>
@@ -167,19 +167,19 @@
                         <ul class="space-y-2.5 text-sm text-slate-300">
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>
-                                <span>Clase maestra intensiva en video (10 min)</span>
+                                <span>Video instructivo de 10 min: Cómo iniciar tu cuenta</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>
-                                <span>Guía técnica de apoyo en PDF de alta calidad</span>
+                                <span>Guía fácil en PDF para tu celular</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>
-                                <span>Plantillas de control y optimización en Excel</span>
+                                <span>Lista de ayuda y control sencilla</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>
-                                <span>Acceso inmediato multidispositivo de por vida</span>
+                                <span>Entra desde tu celular cuando quieras</span>
                             </li>
                         </ul>
                     </div>

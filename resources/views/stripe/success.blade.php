@@ -76,10 +76,10 @@
                 </div>
             </div>
             <h1 class="text-3xl sm:text-5xl font-black font-outfit text-white leading-tight">
-                ¡Acceso Concedido a tus Tutoriales!
+                ¡Acceso Concedido a tus Videos y Guías!
             </h1>
             <p class="text-slate-300 max-w-xl mx-auto text-base">
-                Has adquirido con éxito tus recursos de **Tutoriales Magic Travel**. A continuación tienes tu clase maestra en video y tus recursos descargables.
+                Ya tienes acceso a tu material. Abajo puedes ver el video explicativo y descargar tus guías de ayuda en tu celular de forma sencilla.
             </p>
         </div>
 
@@ -90,7 +90,7 @@
             </div>
             
             <h2 class="font-outfit font-bold text-white text-xl sm:text-2xl mb-4 pr-24 flex items-center gap-2">
-                🎬 Videocurso Principal
+                🎬 Video Instructivo: Cómo Iniciar tu Cuenta
             </h2>
 
             <!-- Video Player Container (Insert unlisted tutorial URL here) -->
@@ -110,7 +110,7 @@
 
             <!-- Video instructions -->
             <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-400 pt-4 border-t border-blue-900/20">
-                <p>💡 <em>Tip: Puedes pausar y revisar la sección clave en el minuto 4:30.</em></p>
+                <p>💡 <em>Consejo: Si te pierdes, ponle pausa al video y míralo con calma.</em></p>
                 <div class="flex items-center gap-3">
                     <span>⏱️ Duración: 10m</span>
                     <span>1080p FHD</span>
@@ -127,12 +127,12 @@
                     📄
                 </div>
                 <div class="space-y-1">
-                    <h3 class="font-outfit font-bold text-white text-base">Guía de Trabajo (PDF)</h3>
+                    <h3 class="font-outfit font-bold text-white text-base">Guía de Ayuda Sencilla (PDF)</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Documento con las pautas técnicas, configuraciones clave y el paso a paso detallado de la metodología explicada.
+                        Archivo fácil de leer que te explica paso a paso cómo configurar todo desde cero en tu celular.
                     </p>
                     <a href="#" class="inline-flex items-center gap-1 text-xs text-neonBlue font-bold hover:underline pt-2">
-                        Descargar Guía PDF (5.8 MB)
+                        Descargar Guía PDF para celular
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
@@ -146,12 +146,12 @@
                     📊
                 </div>
                 <div class="space-y-1">
-                    <h3 class="font-outfit font-bold text-white text-base">Plantilla de Control y Recursos</h3>
+                    <h3 class="font-outfit font-bold text-white text-base">Lista de Ayuda y Control</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Hoja de cálculo interactiva configurada para llevar el control de tus tareas, métricas e ingresos de optimización diaria.
+                        Una lista simple en Excel para ver lo que debes hacer y controlar tus ganancias diarias.
                     </p>
                     <a href="#" class="inline-flex items-center gap-1 text-xs text-neonGreen font-bold hover:underline pt-2">
-                        Descargar Planilla Excel (1.4 MB)
+                        Descargar Lista en Excel
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
@@ -164,16 +164,16 @@
         <!-- Order Summary Details -->
         @if(isset($paymentDetails))
             <div class="bg-darkCard/20 p-5 rounded-2xl border border-blue-900/10 text-xs text-slate-400 space-y-2">
-                <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Resumen del Recibo</h4>
+                <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Resumen de tu Compra</h4>
                 <div class="grid grid-cols-2 gap-1.5">
-                    <div>ID de Compra:</div>
+                    <div>Código de Pago:</div>
                     <div class="text-slate-300 text-right select-all font-mono">{{ $paymentDetails['id'] }}</div>
                     
                     <div>Monto Cobrado:</div>
                     <div class="text-slate-300 text-right">${{ number_format($paymentDetails['amount_total'] / 100, 2) }} {{ strtoupper($paymentDetails['currency']) }}</div>
                     
                     @if(isset($paymentDetails['customer_details']['email']))
-                        <div>Correo de Envío:</div>
+                        <div>Tu Correo:</div>
                         <div class="text-slate-300 text-right">{{ $paymentDetails['customer_details']['email'] }}</div>
                     @endif
                 </div>
@@ -182,11 +182,11 @@
 
         <!-- Customer Support section -->
         <div class="text-center py-6 border-t border-blue-900/10 text-xs text-slate-400 space-y-2">
-            <p>¿Tienes alguna duda o necesitas soporte técnico con tus archivos? Escríbenos directamente.</p>
+            <p>¿Tienes alguna duda o necesitas ayuda para abrir tus archivos? Escríbenos directamente a:</p>
             <p class="font-bold text-neonBlue select-all">soporte@magictravelacademy.com</p>
             <div class="pt-4">
                 <a href="{{ route('tutorial.landing') }}" class="px-5 py-2.5 bg-darkCard border border-blue-900/30 rounded-xl text-xs hover:text-white font-medium transition duration-300">
-                    ← Volver a la página de venta
+                    ← Volver a la página de inicio
                 </a>
             </div>
         </div>
