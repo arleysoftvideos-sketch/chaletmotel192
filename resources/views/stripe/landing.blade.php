@@ -151,9 +151,15 @@
                 <div class="absolute -inset-1 bg-gradient-to-r from-neonBlue to-neonGreen rounded-3xl blur opacity-25"></div>
                 
                 <div class="relative bg-[#020712] rounded-2xl overflow-hidden shadow-inner">
-                    <!-- Image Cover style -->
+                    <!-- Image Cover style with Text Overlay -->
                     <div class="w-full bg-slate-900 border-b border-blue-900/40 overflow-hidden relative group">
                         <img src="{{ asset('images/magic_travel_banner.png') }}?v={{ time() }}" alt="Tutorial Preview" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex flex-col justify-end p-5">
+                            <span class="text-xs font-bold text-neonBlue uppercase tracking-widest font-outfit">Guía de Ayuda</span>
+                            <h4 class="font-outfit font-black text-white text-lg sm:text-xl mt-0.5 leading-tight uppercase tracking-tight">
+                                Gana Dinero desde Casa
+                            </h4>
+                        </div>
                     </div>
 
                     <!-- Info text below video mockup -->
