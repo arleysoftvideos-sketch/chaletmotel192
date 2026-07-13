@@ -167,7 +167,7 @@
                         <ul class="space-y-2.5 text-sm text-slate-300">
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>
-                                <span>Video instructivo de 10 min: Cómo iniciar tu cuenta</span>
+                                <span>Video instructivo de 10 min: Cómo abrir la cuenta de aplicación TASK</span>
                             </li>
                             <li class="flex items-start gap-2.5">
                                 <span class="text-neonBlue">✓</span>

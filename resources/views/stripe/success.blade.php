@@ -90,7 +90,7 @@
             </div>
             
             <h2 class="font-outfit font-bold text-white text-xl sm:text-2xl mb-4 pr-24 flex items-center gap-2">
-                🎬 Video Instructivo: Cómo Iniciar tu Cuenta
+                🎬 Video Instructivo: Cómo Abrir la Cuenta de Aplicación TASK
             </h2>
 
             <!-- Video Player Container (Insert unlisted tutorial URL here) -->
