@@ -39,8 +39,8 @@ class TikTokTutorialController extends Controller
                             'price_data' => [
                                 'currency' => 'usd',
                                 'product_data' => [
-                                    'name' => 'Fórmula POV: Grabación para Entrenamiento de Robots e IA',
-                                    'description' => 'Aprende el estándar técnico, los ángulos de cámara y la estructura para vender tus videos POV a empresas de robótica.',
+                                    'name' => 'Guías y Tutoriales Magic Travel',
+                                    'description' => 'Acceso completo a videotutoriales de optimización, guías técnicas en PDF y recursos digitales descargables.',
                                 ],
                                 'unit_amount' => 2700, // $27.00 USD en centavos
                             ],

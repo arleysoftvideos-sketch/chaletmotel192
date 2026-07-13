@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>¡Acceso Concedido! - Fórmula POV</title>
+    <title>¡Acceso Concedido! - Tutoriales Magic Travel</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,10 +39,6 @@
                 radial-gradient(circle at 50% 120%, rgba(57, 255, 20, 0.1) 0%, transparent 50%);
             background-attachment: fixed;
         }
-        .neon-glow {
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
-            border: 1px solid rgba(0, 240, 255, 0.25);
-        }
         .bounce-glow {
             animation: bounce 2.5s infinite;
         }
@@ -58,7 +54,7 @@
     <header class="w-full py-6 px-6 max-w-7xl mx-auto flex justify-between items-center relative z-10 border-b border-blue-950/40">
         <div class="flex items-center gap-2">
             <span class="text-2xl font-black font-outfit tracking-tighter bg-gradient-to-r from-neonBlue via-white to-neonGreen bg-clip-text text-transparent">
-                POV ROBOTICS ACADEMY
+                TUTORIALES MAGIC TRAVEL
             </span>
         </div>
         <div>
@@ -76,14 +72,14 @@
         <div class="text-center space-y-4">
             <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-tr from-neonBlue to-neonGreen p-1 bounce-glow">
                 <div class="w-full h-full bg-[#050B14] rounded-full flex items-center justify-center text-3xl">
-                    🤖
+                    🌟
                 </div>
             </div>
             <h1 class="text-3xl sm:text-5xl font-black font-outfit text-white leading-tight">
-                ¡Acceso Concedido a Fórmula POV!
+                ¡Acceso Concedido a tus Tutoriales!
             </h1>
             <p class="text-slate-300 max-w-xl mx-auto text-base">
-                Has adquirido con éxito **Fórmula POV: Grabación para Entrenamiento de Robots e IA**. A continuación tienes la clase maestra completa y tus recursos de descarga.
+                Has adquirido con éxito tus recursos de **Tutoriales Magic Travel**. A continuación tienes tu clase maestra en video y tus recursos descargables.
             </p>
         </div>
 
@@ -94,17 +90,17 @@
             </div>
             
             <h2 class="font-outfit font-bold text-white text-xl sm:text-2xl mb-4 pr-24 flex items-center gap-2">
-                🎬 Videocurso Principal: Grabación de Datasets
+                🎬 Videocurso Principal
             </h2>
 
             <!-- Video Player Container (Insert unlisted tutorial URL here) -->
             <div class="aspect-video w-full rounded-2xl overflow-hidden bg-black/90 border border-blue-950 shadow-inner relative">
                 
-                <!-- IFRAME PLACEHOLDER: Puedes poner el enlace de YouTube, Vimeo, Drive, etc. -->
+                <!-- IFRAME PLACEHOLDER: Enlace del video de YouTube, Vimeo, Drive, etc. -->
                 <iframe 
                     class="w-full h-full" 
                     src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" 
-                    title="POV Robotics Video Tutorial" 
+                    title="Magic Travel Video Tutorial" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                     allowfullscreen>
@@ -114,7 +110,7 @@
 
             <!-- Video instructions -->
             <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-400 pt-4 border-t border-blue-900/20">
-                <p>💡 <em>Tip: Puedes pausar y revisar la sección de ángulos de cámara y luz en el minuto 4:30.</em></p>
+                <p>💡 <em>Tip: Puedes pausar y revisar la sección clave en el minuto 4:30.</em></p>
                 <div class="flex items-center gap-3">
                     <span>⏱️ Duración: 10m</span>
                     <span>1080p FHD</span>
@@ -131,9 +127,9 @@
                     📄
                 </div>
                 <div class="space-y-1">
-                    <h3 class="font-outfit font-bold text-white text-base">Guía Técnica de Grabación (PDF)</h3>
+                    <h3 class="font-outfit font-bold text-white text-base">Guía de Trabajo (PDF)</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Requisitos de iluminación, resolución, tasa de fotogramas (FPS) y formatos de archivo aceptados por las principales empresas de robótica.
+                        Documento con las pautas técnicas, configuraciones clave y el paso a paso detallado de la metodología explicada.
                     </p>
                     <a href="#" class="inline-flex items-center gap-1 text-xs text-neonBlue font-bold hover:underline pt-2">
                         Descargar Guía PDF (5.8 MB)
@@ -150,12 +146,12 @@
                     📊
                 </div>
                 <div class="space-y-1">
-                    <h3 class="font-outfit font-bold text-white text-base">Directorio de Compradores de Datasets</h3>
+                    <h3 class="font-outfit font-bold text-white text-base">Plantilla de Control y Recursos</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">
-                        Listado completo de empresas de IA, universidades y laboratorios internacionales que compran videos POV de entrenamiento.
+                        Hoja de cálculo interactiva configurada para llevar el control de tus tareas, métricas e ingresos de optimización diaria.
                     </p>
                     <a href="#" class="inline-flex items-center gap-1 text-xs text-neonGreen font-bold hover:underline pt-2">
-                        Descargar Directorio Excel (1.4 MB)
+                        Descargar Planilla Excel (1.4 MB)
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3 h-3">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
                         </svg>
@@ -186,8 +182,8 @@
 
         <!-- Customer Support section -->
         <div class="text-center py-6 border-t border-blue-900/10 text-xs text-slate-400 space-y-2">
-            <p>¿Tienes dudas sobre los formatos o la carga de tus videos? Escríbenos directamente.</p>
-            <p class="font-bold text-neonBlue select-all">soporte@povroboticsacademy.com</p>
+            <p>¿Tienes alguna duda o necesitas soporte técnico con tus archivos? Escríbenos directamente.</p>
+            <p class="font-bold text-neonBlue select-all">soporte@magictravelacademy.com</p>
             <div class="pt-4">
                 <a href="{{ route('tutorial.landing') }}" class="px-5 py-2.5 bg-darkCard border border-blue-900/30 rounded-xl text-xs hover:text-white font-medium transition duration-300">
                     ← Volver a la página de venta
@@ -200,7 +196,7 @@
     <!-- Footer -->
     <footer class="w-full py-8 border-t border-blue-950/40 bg-[#02050a] text-center text-xs text-slate-500 relative z-10">
         <div class="max-w-6xl mx-auto px-6">
-            <p>© 2026 POV Robotics Academy. Todos los derechos reservados.</p>
+            <p>© 2026 Tutoriales Magic Travel. Todos los derechos reservados.</p>
         </div>
     </footer>
 
