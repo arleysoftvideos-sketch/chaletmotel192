@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pago Cancelado - Tutorial TikTok Pro</title>
+    <title>Pago Cancelado - Fórmula POV</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,10 +21,10 @@
                         outfit: ['Outfit', 'sans-serif'],
                     },
                     colors: {
-                        tiktokPink: '#FE2C55',
-                        tiktokCyan: '#25F4EE',
-                        darkBg: '#090115',
-                        darkCard: '#120726',
+                        neonGreen: '#39FF14',
+                        neonBlue: '#00F0FF',
+                        darkBg: '#050B14',
+                        darkCard: '#0D1B2A',
                     }
                 }
             }
@@ -33,20 +33,20 @@
 
     <style>
         body {
-            background-color: #090115;
+            background-color: #050B14;
             background-image: 
-                radial-gradient(circle at 50% 20%, rgba(254, 44, 85, 0.1) 0%, transparent 40%);
+                radial-gradient(circle at 50% 20%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
             background-attachment: fixed;
         }
     </style>
 </head>
-<body class="text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-tiktokPink selection:text-white antialiased">
+<body class="text-slate-100 font-sans min-h-screen flex flex-col justify-between selection:bg-neonBlue selection:text-black antialiased">
 
     <!-- Header Navigation -->
     <header class="w-full py-6 px-6 max-w-7xl mx-auto flex justify-between items-center relative z-10">
         <div class="flex items-center gap-2">
-            <span class="text-2xl font-black font-outfit tracking-tighter bg-gradient-to-r from-tiktokCyan via-white to-tiktokPink bg-clip-text text-transparent">
-                TIKTOK VIRAL LAB
+            <span class="text-2xl font-black font-outfit tracking-tighter bg-gradient-to-r from-neonBlue via-white to-neonGreen bg-clip-text text-transparent">
+                POV ROBOTICS ACADEMY
             </span>
         </div>
     </header>
@@ -61,29 +61,26 @@
         <div class="space-y-3">
             <h1 class="text-3xl font-black font-outfit text-white">Pago Cancelado</h1>
             <p class="text-slate-300 text-sm leading-relaxed">
-                El proceso de pago de Stripe fue interrumpido y no se realizó ningún cargo en tu tarjeta. 
+                El proceso de pago de Stripe fue interrumpido y no se realizó ningún cargo en tu tarjeta.
             </p>
         </div>
 
-        <div class="bg-darkCard/50 p-5 rounded-2xl border border-purple-900/20 text-xs text-slate-400 leading-relaxed text-left">
-            📌 <strong>¿Sabías qué?</strong> El precio promocional de <strong>$27 USD</strong> es temporal. Si deseas acceder al videocurso, guías en PDF y plantillas de trabajo más tarde, puedes regresar a intentarlo cuando gustes.
+        <div class="bg-darkCard/50 p-5 rounded-2xl border border-blue-900/20 text-xs text-slate-400 leading-relaxed text-left">
+            📌 <strong>¿Sabías qué?</strong> El precio promocional de <strong>$27 USD</strong> es temporal. Si deseas acceder al videocurso de 10 minutos y obtener el listado de compradores de IA más tarde, puedes regresar a intentarlo cuando gustes.
         </div>
 
         <div class="flex flex-col gap-3 pt-2">
-            <a href="{{ route('tutorial.landing') }}" class="px-6 py-3.5 bg-gradient-to-r from-tiktokPink to-purple-600 rounded-xl text-white font-bold text-sm shadow-lg hover:shadow-tiktokPink/20 transition duration-300">
-                Volver a Intentar Pago
-            </a>
-            <a href="/" class="px-6 py-3 bg-darkCard/80 border border-purple-900/30 rounded-xl text-slate-300 hover:text-white font-semibold text-sm transition duration-300">
-                Regresar al Inicio del Sitio
+            <a href="{{ route('tutorial.landing') }}" class="px-6 py-3.5 bg-gradient-to-r from-neonBlue to-blue-700 rounded-xl text-black font-black text-sm shadow-lg hover:shadow-neonBlue/20 transition duration-300">
+                Regresar a la Página de Ventas
             </a>
         </div>
 
     </main>
 
     <!-- Footer -->
-    <footer class="w-full py-8 border-t border-purple-950/60 bg-darkBg text-center text-xs text-slate-500 relative z-10">
+    <footer class="w-full py-8 border-t border-blue-950/40 bg-[#02050a] text-center text-xs text-slate-500 relative z-10">
         <div class="max-w-6xl mx-auto px-6">
-            <p>© 2026 TikTok Viral Lab. Todos los derechos reservados.</p>
+            <p>© 2026 POV Robotics Academy. Todos los derechos reservados.</p>
         </div>
     </footer>
 
