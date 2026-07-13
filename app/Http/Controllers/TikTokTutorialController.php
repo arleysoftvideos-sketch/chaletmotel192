@@ -48,6 +48,7 @@ class TikTokTutorialController extends Controller
                         ]
                     ],
                     'mode' => 'payment',
+                    'allow_promotion_codes' => true,
                     'success_url' => route('tutorial.success') . '?session_id={CHECKOUT_SESSION_ID}',
                     'cancel_url' => route('tutorial.cancel'),
                 ]);
