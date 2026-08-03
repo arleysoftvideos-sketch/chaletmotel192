@@ -409,7 +409,7 @@
     <!-- Hero Banner with Hotel Photo -->
     <div class="hero-rooms-banner">
         <div class="hero-rooms-banner-content">
-            <h1 class="hero-rooms-banner-title" data-i18n="pageTitle">🏨 Control de Habitaciones y Reservas</h1>
+            <h1 class="hero-rooms-banner-title" data-i18n="pageTitle">Control de Habitaciones y Reservas</h1>
             <p class="hero-rooms-banner-subtitle" data-i18n="pageSubTitle">Panel de administración y control de disponibilidad en Kissimmee</p>
         </div>
     </div>
@@ -890,7 +890,7 @@
     // ========== LANGUAGE & TRANSLATIONS ==========
     const translations = {
         es: {
-            pageTitle: '🏨 Control de Habitaciones y Reservas',
+            pageTitle: 'Control de Habitaciones y Reservas',
             pageSubTitle: 'Panel de administración y control de disponibilidad en Kissimmee',
             calcTitle: '🧮 Calculadora de Tarifa',
             bedTypeLabel: '👥 Número de Personas',
@@ -959,7 +959,7 @@
             lblCalcTotal: 'TOTAL'
         },
         en: {
-            pageTitle: '🏨 Rooms and Bookings Control',
+            pageTitle: 'Rooms and Bookings Control',
             pageSubTitle: 'Administration panel and availability control in Kissimmee',
             calcTitle: '🧮 Rate Calculator',
             bedTypeLabel: '👥 Number of People',
