@@ -1654,8 +1654,8 @@
     }
 
     // ========== LOAD FROM API ==========
-    function loadBookings() {
-        showLoading('Cargando datos...');
+    function loadBookings(isSilent) {
+        if (!isSilent) showLoading('Cargando datos...');
         fetch('/api/rooms-control/bookings')
             .then(function(r) { return r.json(); })
             .then(function(res) { if (res.success) bookingsList = res.data || []; })
@@ -1666,7 +1666,7 @@
                 if (currentRoom) showDetails(currentRoom);
                 renderMonthly();
                 renderDashboardWidgets();
-                hideLoading();
+                if (!isSilent) hideLoading();
             });
     }
 
@@ -1868,15 +1868,23 @@
             if (el) el._customized = false;
         });
 
-        // Auto-sincronización cada 45 segundos desde Google Sheets
-        // Solo refresca si el usuario NO está activamente editando un campo
+        // Auto-sincronización rápida (cada 5 segundos) en segundo plano sin pantalla de carga
+        // Solo refresca si el usuario NO está activamente escribiendo o en un modal
         setInterval(function() {
             var active = document.activeElement;
             var isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT');
-            if (!isTyping) { 
-                loadBookings();
+            var isModalOpen = document.querySelector('.modal-overlay[style*="display: flex"]') || document.querySelector('.modal-overlay[style*="display: block"]');
+            if (!isTyping && !isModalOpen) { 
+                loadBookings(true);
             }
-        }, 45000);
+        }, 5000);
+
+        // Refresco instantáneo al cambiar de ventana o enfocar la pestaña
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                loadBookings(true);
+            }
+        });
     };
 </script>
 </body>
