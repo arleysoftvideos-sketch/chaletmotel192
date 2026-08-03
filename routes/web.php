@@ -6,6 +6,7 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GoogleSheetController;
+use App\Http\Controllers\RoomControlController;
 use App\Http\Controllers\RecyclingController;
 use App\Http\Controllers\TikTokTutorialController;
 use Illuminate\Support\Facades\Route;
@@ -59,12 +60,12 @@ Route::get('/rooms-control', function () {
     return view('rooms_control');
 })->name('rooms.control');
 
-// Rutas de API para Control de Habitaciones (Reservaciones en Google Sheets)
-Route::get('/api/rooms-control/bookings', [GoogleSheetController::class, 'getBookings'])->name('api.rooms-control.bookings');
-Route::post('/api/rooms-control/bookings', [GoogleSheetController::class, 'createBooking'])->name('api.rooms-control.create-booking');
-Route::put('/api/rooms-control/bookings/{row}', [GoogleSheetController::class, 'updateBooking'])->name('api.rooms-control.update-booking');
-Route::delete('/api/rooms-control/bookings/{row}', [GoogleSheetController::class, 'deleteBooking'])->name('api.rooms-control.delete-booking');
-Route::post('/api/rooms-control/bookings/{row}/checkout', [GoogleSheetController::class, 'checkoutBooking'])->name('api.rooms-control.checkout');
+// Rutas de API para Control de Habitaciones (Reservaciones en Base de Datos)
+Route::get('/api/rooms-control/bookings', [RoomControlController::class, 'getBookings'])->name('api.rooms-control.bookings');
+Route::post('/api/rooms-control/bookings', [RoomControlController::class, 'createBooking'])->name('api.rooms-control.create-booking');
+Route::put('/api/rooms-control/bookings/{row}', [RoomControlController::class, 'updateBooking'])->name('api.rooms-control.update-booking');
+Route::delete('/api/rooms-control/bookings/{row}', [RoomControlController::class, 'deleteBooking'])->name('api.rooms-control.delete-booking');
+Route::post('/api/rooms-control/bookings/{row}/checkout', [RoomControlController::class, 'checkoutBooking'])->name('api.rooms-control.checkout');
 
 
 // Ruta de Reciclaje
