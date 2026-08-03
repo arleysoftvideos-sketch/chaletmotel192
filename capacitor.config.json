@@ -1,6 +1,6 @@
 {
-  "appId": "com.example.chaletmotel",
-  "appName": "U.S. Recycling",
+  "appId": "com.example.chaletrooms",
+  "appName": "Chalet Rooms",
   "webDir": "www",
   "server": {
     "url": "https://chaletmotel192.com/rooms-control",

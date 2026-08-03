@@ -1,4 +1,4 @@
-package com.example.chaletmotel;
+package com.example.chaletrooms;
 
 import com.getcapacitor.BridgeActivity;
 
