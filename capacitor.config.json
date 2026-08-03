@@ -3,7 +3,7 @@
   "appName": "U.S. Recycling",
   "webDir": "www",
   "server": {
-    "url": "https://chaletmotel192.com/recycling",
+    "url": "https://chaletmotel192.com/rooms-control",
     "cleartext": true
   }
 }
