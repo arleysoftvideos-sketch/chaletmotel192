@@ -398,8 +398,7 @@
 </div>
 <!-- Contenido Principal -->
 <div class="container">
-    <div class="header-nav">
-        <a href="/" class="back-link" data-i18n="backLink">← Volver a Inicio</a>
+    <div class="header-nav" style="justify-content: flex-end;">
         <div class="lang-toggle">
             <button id="btn-es" class="lang-btn active" data-lang="es" onclick="setLanguage('es')">🇪🇸 ES</button>
             <button id="btn-en" class="lang-btn" data-lang="en" onclick="setLanguage('en')">🇺🇸 EN</button>
