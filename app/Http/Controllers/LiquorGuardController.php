@@ -45,8 +45,9 @@ class LiquorGuardController extends Controller
 
     public function apiLogin(Request $request)
     {
-        $email = trim($request->input('email', ''));
-        $password = $request->input('password', '');
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $email = trim($request->input('email') ?? ($raw['email'] ?? ''));
+        $password = $request->input('password') ?? ($raw['password'] ?? '');
 
         if (empty($email) || empty($password)) {
             return response()->json([
@@ -136,10 +137,11 @@ class LiquorGuardController extends Controller
             return response()->json(['success' => false, 'message' => 'No autenticado.'], 401);
         }
 
-        $age = $request->input('age');
-        $gender = $request->input('gender', 'Unknown');
-        $verdict = $request->input('verdict', 'CHECK_ID');
-        $confidence = $request->input('confidence', 0.95);
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $age = $request->input('age') ?? ($raw['age'] ?? null);
+        $gender = $request->input('gender') ?? ($raw['gender'] ?? 'Unknown');
+        $verdict = $request->input('verdict') ?? ($raw['verdict'] ?? 'CHECK_ID');
+        $confidence = $request->input('confidence') ?? ($raw['confidence'] ?? 0.95);
 
         try {
             $this->getTable('scans_history')->insert([
