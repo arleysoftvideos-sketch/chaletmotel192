@@ -77,8 +77,6 @@ return new class extends Migration
                 'can_view_logs' => true,
                 'max_devices' => 100,
                 'custom_min_age' => 18,
-                'created_at' => now(),
-                'updated_at' => now(),
             ]);
         } else {
             DB::table('lg_users')->where('email', $superEmail)->update([
@@ -89,7 +87,6 @@ return new class extends Migration
                 'can_export_reports' => true,
                 'can_change_min_age' => true,
                 'can_view_logs' => true,
-                'updated_at' => now(),
             ]);
         }
     }
