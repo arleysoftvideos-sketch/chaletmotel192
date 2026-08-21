@@ -23,12 +23,25 @@ class LiquorGuardController extends Controller
         return DB::table($lgName);
     }
 
+    private function logAudit($userId, $action, $details = '')
+    {
+        try {
+            $this->getTable('audit_logs')->insert([
+                'user_id'    => $userId,
+                'action'     => $action,
+                'details'    => $details,
+                'ip_address' => request()->ip(),
+                'created_at' => now(),
+            ]);
+        } catch (\Exception $e) {}
+    }
+
     // ─── Views ────────────────────────────────────────────────────────────────
 
     public function login()
     {
         if (session('lg_user_id')) {
-            return redirect('/liquorguard');
+            return session('lg_role') === 'superadmin' ? redirect('/liquorguard/admin') : redirect('/liquorguard');
         }
         return view('liquorguard.login');
     }
@@ -39,6 +52,17 @@ class LiquorGuardController extends Controller
             return redirect('/liquorguard/login');
         }
         return view('liquorguard.index');
+    }
+
+    public function admin()
+    {
+        if (!session('lg_user_id')) {
+            return redirect('/liquorguard/login');
+        }
+        if (session('lg_role') !== 'superadmin') {
+            return redirect('/liquorguard');
+        }
+        return view('liquorguard.admin');
     }
 
     // ─── Auth API ─────────────────────────────────────────────────────────────
@@ -56,14 +80,13 @@ class LiquorGuardController extends Controller
             ], 400);
         }
 
-        $data = ['email' => $email, 'password' => $password];
-
         try {
             $user = $this->getTable('users')
-                ->where('email', $data['email'])
+                ->where('email', $email)
                 ->first();
 
-            if (!$user || !Hash::check($data['password'], $user->password_hash)) {
+            if (!$user || !Hash::check($password, $user->password_hash)) {
+                $this->logAudit($user->id ?? null, 'LOGIN_FAILED', "Intento fallido para el correo: $email");
                 return response()->json([
                     'success' => false,
                     'message' => 'Credenciales inválidas. Verifique su correo o contraseña.',
@@ -71,6 +94,7 @@ class LiquorGuardController extends Controller
             }
 
             if ($user->status === 'suspended') {
+                $this->logAudit($user->id, 'LOGIN_BLOCKED', 'Cuenta suspendida intentó ingresar');
                 return response()->json([
                     'success' => false,
                     'message' => 'Su cuenta se encuentra suspendida. Contacte al administrador.',
@@ -82,6 +106,8 @@ class LiquorGuardController extends Controller
                 $expires = new \DateTime($user->subscription_expires_at);
                 $now     = new \DateTime();
                 if ($now > $expires || $user->status === 'expired') {
+                    $this->getTable('users')->where('id', $user->id)->update(['status' => 'expired']);
+                    $this->logAudit($user->id, 'LOGIN_BLOCKED', 'Cuenta con suscripción vencida');
                     return response()->json([
                         'success'    => false,
                         'message'    => 'Su suscripción ha vencido el ' . $expires->format('d/m/Y') . '.',
@@ -107,7 +133,9 @@ class LiquorGuardController extends Controller
                 ->where('id', $user->id)
                 ->update(['last_login' => now()]);
 
-            $redirect = ($user->role === 'superadmin') ? '/liquorguard' : '/liquorguard';
+            $this->logAudit($user->id, 'LOGIN_SUCCESS', 'Inicio de sesión exitoso');
+
+            $redirect = ($user->role === 'superadmin') ? '/liquorguard/admin' : '/liquorguard';
 
             return response()->json([
                 'success'  => true,
@@ -125,6 +153,10 @@ class LiquorGuardController extends Controller
 
     public function apiLogout(Request $request)
     {
+        $userId = session('lg_user_id');
+        if ($userId) {
+            $this->logAudit($userId, 'LOGOUT', 'Cierre de sesión');
+        }
         session()->forget(['lg_user_id', 'lg_role', 'lg_business', 'lg_email', 'lg_min_age', 'lg_can_change_age', 'lg_days']);
         return response()->json(['success' => true, 'redirect' => '/liquorguard/login']);
     }
@@ -197,6 +229,304 @@ class LiquorGuardController extends Controller
                     'avg_age'  => round((float) ($metrics->avg_age ?? 0), 1),
                 ],
             ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    // ─── Super Admin APIs ─────────────────────────────────────────────────────
+
+    private function ensureSuperAdmin()
+    {
+        if (!session('lg_user_id') || session('lg_role') !== 'superadmin') {
+            return response()->json(['success' => false, 'message' => 'Acceso denegado. Se requieren permisos de Super Administrador.'], 403);
+        }
+        return null;
+    }
+
+    public function apiAdminMetrics()
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        try {
+            $totalClients = $this->getTable('users')->where('role', 'client')->count();
+            $activeClients = $this->getTable('users')->where('role', 'client')->where('status', 'active')->where('subscription_expires_at', '>', now())->count();
+            $expiredClients = $this->getTable('users')->where('role', 'client')->where(function($q) {
+                $q->where('status', 'expired')->orWhere('subscription_expires_at', '<=', now());
+            })->count();
+            $totalScans = $this->getTable('scans_history')->count();
+
+            return response()->json([
+                'success' => true,
+                'metrics' => [
+                    'total_clients'   => $totalClients,
+                    'active_clients'  => $activeClients,
+                    'expired_clients' => $expiredClients,
+                    'total_scans'     => $totalScans,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function apiAdminClients(Request $request)
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        $status = $request->get('status', 'all');
+        $search = trim($request->get('search', ''));
+
+        try {
+            $query = $this->getTable('users')->where('role', 'client')->orderByDesc('id');
+
+            if ($status !== 'all') {
+                if ($status === 'active') {
+                    $query->where('status', 'active')->where('subscription_expires_at', '>', now());
+                } elseif ($status === 'expired') {
+                    $query->where(function($q) {
+                        $q->where('status', 'expired')->orWhere('subscription_expires_at', '<=', now());
+                    });
+                } elseif ($status === 'suspended') {
+                    $query->where('status', 'suspended');
+                }
+            }
+
+            if ($search !== '') {
+                $query->where(function($q) use ($search) {
+                    $q->where('business_name', 'like', "%{$search}%")
+                      ->orWhere('contact_name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+                });
+            }
+
+            $clients = $query->get()->map(function($c) {
+                $expires = new \DateTime($c->subscription_expires_at);
+                $now = new \DateTime();
+                $diff = $now->diff($expires);
+                $daysRemaining = ($now > $expires) ? -$diff->days : $diff->days;
+
+                return [
+                    'id'                      => $c->id,
+                    'business_name'           => $c->business_name,
+                    'contact_name'            => $c->contact_name,
+                    'email'                   => $c->email,
+                    'status'                  => ($c->status === 'suspended') ? 'suspended' : (($now > $expires) ? 'expired' : 'active'),
+                    'subscription_expires_at' => $c->subscription_expires_at,
+                    'formatted_expires'       => $expires->format('d/m/Y'),
+                    'days_remaining'          => $daysRemaining,
+                    'months_purchased'        => $c->months_purchased ?? 1,
+                    'can_export_reports'      => (bool)($c->can_export_reports ?? false),
+                    'can_change_min_age'      => (bool)($c->can_change_min_age ?? false),
+                    'can_view_logs'           => (bool)($c->can_view_logs ?? true),
+                    'custom_min_age'          => $c->custom_min_age ?? 18,
+                    'last_login'              => $c->last_login ? date('d/m/Y H:i', strtotime($c->last_login)) : 'Nunca',
+                ];
+            });
+
+            return response()->json(['success' => true, 'clients' => $clients]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function apiAdminCreateClient(Request $request)
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $businessName = trim((string)($request->input('business_name') ?: ($raw['business_name'] ?? '')));
+        $contactName  = trim((string)($request->input('contact_name') ?: ($raw['contact_name'] ?? '')));
+        $email        = trim((string)($request->input('email') ?: ($raw['email'] ?? '')));
+        $password     = (string)($request->input('password') ?: ($raw['password'] ?? ''));
+        $months       = max(1, (int)($request->input('months') ?: ($raw['months'] ?? 1)));
+        $canExport    = !empty($request->input('can_export_reports') ?: ($raw['can_export_reports'] ?? false)) ? 1 : 0;
+        $canChangeAge = !empty($request->input('can_change_min_age') ?: ($raw['can_change_min_age'] ?? false)) ? 1 : 0;
+        $canViewLogs  = !empty($request->input('can_view_logs') ?: ($raw['can_view_logs'] ?? true)) ? 1 : 0;
+
+        if (empty($businessName) || empty($email) || empty($password)) {
+            return response()->json(['success' => false, 'message' => 'Por favor complete todos los campos obligatorios.'], 400);
+        }
+
+        try {
+            $existing = $this->getTable('users')->where('email', $email)->first();
+            if ($existing) {
+                return response()->json(['success' => false, 'message' => 'Ya existe una cuenta con este correo electrónico.'], 400);
+            }
+
+            $expiresAt = (new \DateTime())->modify("+{$months} month");
+            $expiresAtStr = $expiresAt->format('Y-m-d H:i:s');
+            $passwordHash = Hash::make($password);
+
+            $newId = $this->getTable('users')->insertGetId([
+                'business_name'           => $businessName,
+                'contact_name'            => $contactName,
+                'email'                   => $email,
+                'password_hash'           => $passwordHash,
+                'role'                    => 'client',
+                'status'                  => 'active',
+                'subscription_expires_at' => $expiresAtStr,
+                'months_purchased'        => $months,
+                'can_export_reports'      => $canExport,
+                'can_change_min_age'      => $canChangeAge,
+                'can_view_logs'           => $canViewLogs,
+                'custom_min_age'          => 18,
+                'created_at'              => now(),
+            ]);
+
+            $this->logAudit(session('lg_user_id'), 'CLIENT_CREATED', "Nuevo cliente #$newId ($businessName) creado por $months meses");
+
+            $loginUrl = url('/liquorguard/login');
+            $whatsappMsg = "🛡️ *BIENVENIDO A LIQUORGUARD AI*\n\n"
+                . "Hola *{$contactName}*, tu cuenta para *{$businessName}* ha sido creada exitosamente.\n\n"
+                . "🔑 *Tus datos de acceso:*\n"
+                . "🌐 *Enlace:* {$loginUrl}\n"
+                . "📧 *Usuario:* {$email}\n"
+                . "🔒 *Contraseña:* {$password}\n"
+                . "📅 *Vencimiento:* {$expiresAt->format('d/m/Y')} ({$months} meses)\n\n"
+                . "Guarda este mensaje. ¡Gracias por tu compra!";
+
+            return response()->json([
+                'success'          => true,
+                'message'          => "Cliente $businessName creado exitosamente por $months meses.",
+                'client_id'        => $newId,
+                'login_url'        => $loginUrl,
+                'expires_at'       => $expiresAtStr,
+                'whatsapp_message' => $whatsappMsg,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al crear cliente: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function apiAdminRenew(Request $request)
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $clientId = (int)($request->input('client_id') ?: ($raw['client_id'] ?? 0));
+        $monthsToAdd = max(1, (int)($request->input('months') ?: ($raw['months'] ?? 1)));
+
+        try {
+            $client = $this->getTable('users')->where('id', $clientId)->where('role', 'client')->first();
+            if (!$client) {
+                return response()->json(['success' => false, 'message' => 'Cliente no encontrado.'], 404);
+            }
+
+            $currentExpires = new \DateTime($client->subscription_expires_at);
+            $now = new \DateTime();
+            $baseDate = ($currentExpires > $now) ? $currentExpires : $now;
+            $newExpires = (clone $baseDate)->modify("+{$monthsToAdd} month");
+            $newExpiresStr = $newExpires->format('Y-m-d H:i:s');
+
+            $this->getTable('users')->where('id', $clientId)->update([
+                'subscription_expires_at' => $newExpiresStr,
+                'status'                  => 'active',
+                'months_purchased'        => ($client->months_purchased ?? 0) + $monthsToAdd,
+            ]);
+
+            $this->logAudit(session('lg_user_id'), 'CLIENT_RENEWED', "Cliente {$client->business_name} renovado por $monthsToAdd meses hasta $newExpiresStr");
+
+            $formattedExp = $newExpires->format('d/m/Y');
+            $whatsappMsg = "✅ *RENOVACIÓN EXITOSA - LIQUORGUARD AI*\n\n"
+                . "Hola *{$client->contact_name}*, tu suscripción para *{$client->business_name}* ha sido renovada por *{$monthsToAdd} Mes(es)*.\n"
+                . "📅 *Nueva fecha de vencimiento:* {$formattedExp}\n"
+                . "¡Tu escáner facial continúa activo sin interrupciones!";
+
+            return response()->json([
+                'success'           => true,
+                'message'           => "Cliente renovado exitosamente hasta el $formattedExp (+ $monthsToAdd meses).",
+                'new_expires_at'    => $newExpiresStr,
+                'formatted_expires' => $formattedExp,
+                'whatsapp_message'  => $whatsappMsg,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function apiAdminUpdatePowers(Request $request)
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $clientId     = (int)($request->input('client_id') ?: ($raw['client_id'] ?? 0));
+        $canExport    = !empty($request->input('can_export_reports') ?: ($raw['can_export_reports'] ?? false)) ? 1 : 0;
+        $canChangeAge = !empty($request->input('can_change_min_age') ?: ($raw['can_change_min_age'] ?? false)) ? 1 : 0;
+        $canViewLogs  = !empty($request->input('can_view_logs') ?: ($raw['can_view_logs'] ?? true)) ? 1 : 0;
+
+        try {
+            $this->getTable('users')->where('id', $clientId)->where('role', 'client')->update([
+                'can_export_reports' => $canExport,
+                'can_change_min_age' => $canChangeAge,
+                'can_view_logs'      => $canViewLogs,
+            ]);
+
+            $this->logAudit(session('lg_user_id'), 'POWERS_UPDATED', "Poderes actualizados para cliente #$clientId");
+
+            return response()->json(['success' => true, 'message' => 'Permisos y poderes actualizados correctamente.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function apiAdminToggleStatus(Request $request)
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $clientId  = (int)($request->input('client_id') ?: ($raw['client_id'] ?? 0));
+        $newStatus = trim((string)($request->input('status') ?: ($raw['status'] ?? '')));
+
+        if (!in_array($newStatus, ['active', 'suspended', 'expired'])) {
+            return response()->json(['success' => false, 'message' => 'Estado inválido.'], 400);
+        }
+
+        try {
+            $this->getTable('users')->where('id', $clientId)->where('role', 'client')->update(['status' => $newStatus]);
+            $this->logAudit(session('lg_user_id'), 'STATUS_CHANGED', "Cliente #$clientId cambiado a estado $newStatus");
+
+            return response()->json(['success' => true, 'message' => "Estado actualizado a: $newStatus", 'status' => $newStatus]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function apiAdminResetPassword(Request $request)
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $clientId    = (int)($request->input('client_id') ?: ($raw['client_id'] ?? 0));
+        $newPassword = trim((string)($request->input('new_password') ?: ($raw['new_password'] ?? '')));
+
+        if ($clientId <= 0 || empty($newPassword)) {
+            return response()->json(['success' => false, 'message' => 'Debe ingresar la nueva contraseña.'], 400);
+        }
+
+        try {
+            $hash = Hash::make($newPassword);
+            $this->getTable('users')->where('id', $clientId)->where('role', 'client')->update(['password_hash' => $hash]);
+            $this->logAudit(session('lg_user_id'), 'PASSWORD_RESET', "Contraseña restablecida para cliente #$clientId");
+
+            return response()->json(['success' => true, 'message' => 'Contraseña restablecida exitosamente.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function apiAdminDelete(Request $request)
+    {
+        if ($deny = $this->ensureSuperAdmin()) return $deny;
+
+        $raw = json_decode($request->getContent(), true) ?: [];
+        $clientId = (int)($request->input('client_id') ?: ($raw['client_id'] ?? 0));
+
+        try {
+            $this->getTable('users')->where('id', $clientId)->where('role', 'client')->delete();
+            $this->logAudit(session('lg_user_id'), 'CLIENT_DELETED', "Cliente #$clientId eliminado");
+
+            return response()->json(['success' => true, 'message' => 'Cliente eliminado correctamente.']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }

@@ -149,6 +149,7 @@ Route::prefix('liquorguard')->name('liquorguard.')->group(function () {
     // Views
     Route::get('/',        [LiquorGuardController::class, 'index'])->name('index');
     Route::get('/login',   [LiquorGuardController::class, 'login'])->name('login');
+    Route::get('/admin',   [LiquorGuardController::class, 'admin'])->name('admin');
 
     // Auth API
     Route::post('/api/auth/login',  [LiquorGuardController::class, 'apiLogin'])->name('api.login');
@@ -157,6 +158,16 @@ Route::prefix('liquorguard')->name('liquorguard.')->group(function () {
     // Scans API
     Route::post('/api/scans/record',  [LiquorGuardController::class, 'apiScanRecord'])->name('api.scans.record');
     Route::get('/api/scans/history',  [LiquorGuardController::class, 'apiScanHistory'])->name('api.scans.history');
+
+    // Super Admin APIs
+    Route::get('/api/admin/metrics',           [LiquorGuardController::class, 'apiAdminMetrics'])->name('api.admin.metrics');
+    Route::get('/api/admin/list',              [LiquorGuardController::class, 'apiAdminClients'])->name('api.admin.list');
+    Route::post('/api/admin/create',           [LiquorGuardController::class, 'apiAdminCreateClient'])->name('api.admin.create');
+    Route::post('/api/admin/renew',            [LiquorGuardController::class, 'apiAdminRenew'])->name('api.admin.renew');
+    Route::post('/api/admin/update_powers',    [LiquorGuardController::class, 'apiAdminUpdatePowers'])->name('api.admin.update_powers');
+    Route::post('/api/admin/toggle_status',    [LiquorGuardController::class, 'apiAdminToggleStatus'])->name('api.admin.toggle_status');
+    Route::post('/api/admin/reset_password',   [LiquorGuardController::class, 'apiAdminResetPassword'])->name('api.admin.reset_password');
+    Route::post('/api/admin/delete',           [LiquorGuardController::class, 'apiAdminDelete'])->name('api.admin.delete');
 });
 
 require __DIR__.'/auth.php';
