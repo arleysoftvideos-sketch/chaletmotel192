@@ -46,10 +46,10 @@ class LiquorGuardController extends Controller
     public function apiLogin(Request $request)
     {
         $raw = json_decode($request->getContent(), true) ?: [];
-        $email = trim($request->input('email') ?? ($raw['email'] ?? ''));
-        $password = $request->input('password') ?? ($raw['password'] ?? '');
+        $email = trim((string)($request->input('email') ?: ($raw['email'] ?? '')));
+        $password = (string)($request->input('password') ?: ($raw['password'] ?? ''));
 
-        if (empty($email) || empty($password)) {
+        if ($email === '' || $password === '') {
             return response()->json([
                 'success' => false,
                 'message' => 'Por favor ingrese correo y contraseña.',
@@ -138,10 +138,10 @@ class LiquorGuardController extends Controller
         }
 
         $raw = json_decode($request->getContent(), true) ?: [];
-        $age = $request->input('age') ?? ($raw['age'] ?? null);
-        $gender = $request->input('gender') ?? ($raw['gender'] ?? 'Unknown');
-        $verdict = $request->input('verdict') ?? ($raw['verdict'] ?? 'CHECK_ID');
-        $confidence = $request->input('confidence') ?? ($raw['confidence'] ?? 0.95);
+        $age = $request->input('age') ?: ($raw['age'] ?? null);
+        $gender = $request->input('gender') ?: ($raw['gender'] ?? 'Unknown');
+        $verdict = $request->input('verdict') ?: ($raw['verdict'] ?? 'CHECK_ID');
+        $confidence = $request->input('confidence') ?: ($raw['confidence'] ?? 0.95);
 
         try {
             $this->getTable('scans_history')->insert([
