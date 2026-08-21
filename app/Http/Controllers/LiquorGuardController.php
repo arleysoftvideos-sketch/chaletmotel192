@@ -254,15 +254,26 @@ class LiquorGuardController extends Controller
             $expiredClients = $this->getTable('users')->where('role', 'client')->where(function($q) {
                 $q->where('status', 'expired')->orWhere('subscription_expires_at', '<=', now());
             })->count();
+            $suspendedClients = $this->getTable('users')->where('role', 'client')->where('status', 'suspended')->count();
+            
+            $sevenDaysFromNow = (new \DateTime())->modify('+7 day')->format('Y-m-d H:i:s');
+            $expiringSoon = $this->getTable('users')->where('role', 'client')
+                ->where('status', 'active')
+                ->where('subscription_expires_at', '>', now())
+                ->where('subscription_expires_at', '<=', $sevenDaysFromNow)
+                ->count();
+
             $totalScans = $this->getTable('scans_history')->count();
 
             return response()->json([
                 'success' => true,
                 'metrics' => [
-                    'total_clients'   => $totalClients,
-                    'active_clients'  => $activeClients,
-                    'expired_clients' => $expiredClients,
-                    'total_scans'     => $totalScans,
+                    'total_clients'     => $totalClients,
+                    'active_clients'    => $activeClients,
+                    'expiring_soon'     => $expiringSoon,
+                    'suspended_clients' => $suspendedClients,
+                    'expired_clients'   => $expiredClients,
+                    'total_scans'       => $totalScans,
                 ]
             ]);
         } catch (\Exception $e) {
@@ -339,7 +350,7 @@ class LiquorGuardController extends Controller
         $contactName  = trim((string)($request->input('contact_name') ?: ($raw['contact_name'] ?? '')));
         $email        = trim((string)($request->input('email') ?: ($raw['email'] ?? '')));
         $password     = (string)($request->input('password') ?: ($raw['password'] ?? ''));
-        $months       = max(1, (int)($request->input('months') ?: ($raw['months'] ?? 1)));
+        $months       = max(1, (int)($request->input('months_purchased') ?: ($request->input('months') ?: ($raw['months_purchased'] ?? ($raw['months'] ?? 1)))));
         $canExport    = !empty($request->input('can_export_reports') ?: ($raw['can_export_reports'] ?? false)) ? 1 : 0;
         $canChangeAge = !empty($request->input('can_change_min_age') ?: ($raw['can_change_min_age'] ?? false)) ? 1 : 0;
         $canViewLogs  = !empty($request->input('can_view_logs') ?: ($raw['can_view_logs'] ?? true)) ? 1 : 0;

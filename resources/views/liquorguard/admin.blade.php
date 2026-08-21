@@ -1336,7 +1336,7 @@
 
         async function loadClients() {
             try {
-                const url = `/liquorguard/api/admin/list&search=${encodeURIComponent(currentSearchQuery)}&status=${encodeURIComponent(currentStatusFilter)}`;
+                const url = `/liquorguard/api/admin/list?search=${encodeURIComponent(currentSearchQuery)}&status=${encodeURIComponent(currentStatusFilter)}`;
                 const res = await fetch(url, { credentials: 'include' });
                 const data = await res.json();
 
