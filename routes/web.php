@@ -152,6 +152,12 @@ Route::prefix('liquorguard')->name('liquorguard.')->group(function () {
     Route::get('/logout',  [LiquorGuardController::class, 'logout'])->name('logout');
     Route::get('/admin',   [LiquorGuardController::class, 'admin'])->name('admin');
 
+    // Legacy fallback redirects (for cached mobile browsers & old history)
+    Route::get('/logout.php', fn() => redirect('/liquorguard/logout'));
+    Route::get('/login.php',  fn() => redirect('/liquorguard/login'));
+    Route::get('/admin.php',  fn() => redirect('/liquorguard/admin'));
+    Route::get('/index.php',  fn() => redirect('/liquorguard'));
+
     // Auth API
     Route::post('/api/auth/login',  [LiquorGuardController::class, 'apiLogin'])->name('api.login');
     Route::post('/api/auth/logout', [LiquorGuardController::class, 'apiLogout'])->name('api.logout');
