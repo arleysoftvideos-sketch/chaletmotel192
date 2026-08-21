@@ -152,6 +152,17 @@ Route::prefix('liquorguard')->name('liquorguard.')->group(function () {
     Route::get('/logout',  [LiquorGuardController::class, 'logout'])->name('logout');
     Route::get('/admin',   [LiquorGuardController::class, 'admin'])->name('admin');
 
+    // Direct Native APK Download
+    Route::get('/download-apk', function () {
+        $path = public_path('download/LiquorGuard_AI.apk');
+        if (file_exists($path)) {
+            return response()->download($path, 'LiquorGuard_AI.apk', [
+                'Content-Type' => 'application/vnd.android.package-archive',
+            ]);
+        }
+        return redirect('/liquorguard');
+    })->name('download.apk');
+
     // Legacy fallback redirects (for cached mobile browsers & old history)
     Route::get('/logout.php', fn() => redirect('/liquorguard/logout'));
     Route::get('/login.php',  fn() => redirect('/liquorguard/login'));
