@@ -835,9 +835,9 @@
         </div>
 
         <div class="nav-actions">
-            <div class="admin-profile-pill">
-                <i class="fa-solid fa-user-gear"></i>
-                <span>Superadmin: <strong>{{ session("lg_business", "LiquorGuard Admin") }}</strong></span>
+            <div class="user-badge">
+                <i class="fa-solid fa-user-shield"></i>
+                <span>{{ session("lg_role") === "superadmin" ? "Superadmin" : "Admin" }}: <strong>{{ session("lg_name", session("lg_business", "Jovan Suarez")) }}</strong></span>
             </div>
             <a href="/liquorguard" class="btn-nav btn-nav-scanner">
                 <i class="fa-solid fa-camera"></i> Ir al Escáner
@@ -974,6 +974,14 @@
                         <div class="form-group">
                             <label class="form-label">Contraseña Inicial <span class="req">*</span></label>
                             <input type="text" name="password" id="inputNewClientPass" class="form-input" placeholder="Mínimo 6 caracteres" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tipo de Cuenta / Rol *</label>
+                            <select name="role" class="form-select" style="width:100%; background:var(--bg-card); border:1px solid var(--border-color); color:#fff; padding:10px; border-radius:var(--radius-md); font-weight:700;">
+                                <option value="client" selected>👤 Cliente (Solo Escáner Facial)</option>
+                                <option value="admin">🛡️ Administrador (Panel + Escáner)</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -1404,6 +1412,9 @@
                                 <div>
                                     <div class="client-name">
                                         ${escapeHtml(c.business_name)}
+                                        ${c.role === 'admin' 
+                                            ? '<span style="font-size: 10px; font-weight: 800; background: rgba(0,210,255,0.18); color: var(--accent-cyan); border: 1px solid rgba(0,210,255,0.4); padding: 1px 6px; border-radius: 4px; margin-left: 4px;">ADMIN</span>' 
+                                            : '<span style="font-size: 10px; font-weight: 800; background: rgba(255,255,255,0.06); color: var(--text-dim); border: 1px solid var(--border-color); padding: 1px 6px; border-radius: 4px; margin-left: 4px;">CLIENTE</span>'}
                                         <span style="font-size: 10px; font-weight: 800; background: rgba(0,240,255,0.12); color: var(--accent-cyan); border: 1px solid rgba(0,240,255,0.3); padding: 1px 5px; border-radius: 4px; margin-left: 4px;">
                                             ${c.language === 'en' ? '🇺🇸 EN' : '🇪🇸 ES'}
                                         </span>
@@ -1493,6 +1504,7 @@
                 contact_name: (formData.get('contact_name') || '').trim(),
                 email: (formData.get('email') || '').trim(),
                 password: (formData.get('password') || '').trim(),
+                role: formData.get('role') || 'client',
                 language: formData.get('language') || 'es',
                 months_purchased: parseInt(formData.get('months_purchased') || '1'),
                 can_export_reports: form.querySelector('input[name="can_export_reports"]')?.checked ? 1 : 0,
