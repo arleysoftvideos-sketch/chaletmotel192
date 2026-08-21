@@ -973,7 +973,7 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label">Contraseña Inicial <span class="req">*</span></label>
-                            <input type="text" name="password" class="form-input" placeholder="Mínimo 6 caracteres" required>
+                            <input type="text" name="password" id="inputNewClientPass" class="form-input" placeholder="Mínimo 6 caracteres" required>
                         </div>
 
                         <div class="form-group">
@@ -1311,9 +1311,12 @@
 
         // Open create modal
         document.getElementById('btnOpenCreateModal').addEventListener('click', () => {
-            document.getElementById('formCreateClient').reset();
-            // Generate random suggested password
-            document.getElementById('inputNewClientPass').value = 'LqGuard' + Math.floor(1000 + Math.random() * 9000) + '*';
+            const form = document.getElementById('formCreateClient');
+            if (form) form.reset();
+            const passInput = document.getElementById('inputNewClientPass');
+            if (passInput) {
+                passInput.value = 'LqGuard' + Math.floor(1000 + Math.random() * 9000) + '*';
+            }
             openModal('modalCreateClient');
         });
 
