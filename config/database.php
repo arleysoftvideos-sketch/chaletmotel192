@@ -43,6 +43,21 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        // LiquorGuard AI – dedicated connection
+        'liquorguard' => [
+            'driver'    => 'mysql',
+            'host'      => env('LG_DB_HOST', '127.0.0.1'),
+            'port'      => env('LG_DB_PORT', '3306'),
+            'database'  => env('LG_DB_DATABASE', 'liquorguard_db'),
+            'username'  => env('LG_DB_USERNAME', 'root'),
+            'password'  => env('LG_DB_PASSWORD', ''),
+            'charset'   => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix'    => '',
+            'strict'    => true,
+            'engine'    => null,
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

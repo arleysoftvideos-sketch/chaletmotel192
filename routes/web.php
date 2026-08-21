@@ -9,6 +9,7 @@ use App\Http\Controllers\GoogleSheetController;
 use App\Http\Controllers\RoomControlController;
 use App\Http\Controllers\RecyclingController;
 use App\Http\Controllers\TikTokTutorialController;
+use App\Http\Controllers\LiquorGuardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -141,5 +142,21 @@ Route::get('/formula-pov', [TikTokTutorialController::class, 'showLanding'])->na
 Route::post('/formula-pov/checkout', [TikTokTutorialController::class, 'createCheckoutSession'])->name('tutorial.checkout');
 Route::get('/formula-pov/success', [TikTokTutorialController::class, 'success'])->name('tutorial.success');
 Route::get('/formula-pov/cancel', [TikTokTutorialController::class, 'cancel'])->name('tutorial.cancel');
+
+
+// ─── LiquorGuard AI – Sistema de Verificación de Edad ───────────────────────
+Route::prefix('liquorguard')->name('liquorguard.')->group(function () {
+    // Views
+    Route::get('/',        [LiquorGuardController::class, 'index'])->name('index');
+    Route::get('/login',   [LiquorGuardController::class, 'login'])->name('login');
+
+    // Auth API
+    Route::post('/api/auth/login',  [LiquorGuardController::class, 'apiLogin'])->name('api.login');
+    Route::post('/api/auth/logout', [LiquorGuardController::class, 'apiLogout'])->name('api.logout');
+
+    // Scans API
+    Route::post('/api/scans/record',  [LiquorGuardController::class, 'apiScanRecord'])->name('api.scans.record');
+    Route::get('/api/scans/history',  [LiquorGuardController::class, 'apiScanHistory'])->name('api.scans.history');
+});
 
 require __DIR__.'/auth.php';
