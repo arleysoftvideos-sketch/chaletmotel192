@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/liquorguard/css/style.css">
+    <link rel="stylesheet" href="/liquorguard-assets/css/style.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#06090f">
 </head>
@@ -286,12 +286,12 @@ window.LIQUOR_GUARD_USER = {
     }
 };
 </script>
-    <script src="/liquorguard/js/face-api.min.js"></script>
+    <script src="/liquorguard-assets/js/face-api.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-    <script src="/liquorguard/js/app.js"></script>
+    <script src="/liquorguard-assets/js/app.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/liquorguard/sw.js').then(reg => {
+            navigator.serviceWorker.register('/liquorguard-assets/sw.js').then(reg => {
                 console.log('LiquorGuard Offline ServiceWorker registered', reg.scope);
             }).catch(err => {
                 console.warn('ServiceWorker registration skipped:', err);

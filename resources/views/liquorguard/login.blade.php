@@ -582,7 +582,7 @@
 
         // Service Worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/liquorguard/sw.js').catch(() => {});
+            navigator.serviceWorker.register('/liquorguard-assets/sw.js').catch(() => {});
         }
     </script>
 </body>
