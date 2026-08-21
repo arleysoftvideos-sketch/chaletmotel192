@@ -2,7 +2,7 @@
   "name": "LiquorGuard AI 2.0",
   "short_name": "LiquorGuard",
   "description": "Sistema Biométrico de Verificación Facial de Edad",
-  "start_url": "login.php",
+  "start_url": "/liquorguard/login",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#06090f",

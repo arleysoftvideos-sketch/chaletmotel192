@@ -33,6 +33,10 @@
                 </a>
                 @endif
 
+                <button id="btnMobileGuide" class="btn-icon" title="Abrir en Celular / QR">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </button>
+
                 <button id="btnSettings" class="btn-icon" title="Configuración">
                     <i class="fa-solid fa-sliders"></i>
                 </button>
@@ -84,7 +88,7 @@
 
                 <!-- Action Controls Overlay on Camera -->
                 <button id="btnGrantCamera" class="btn-grant-camera" style="display:none;">
-                    <i class="fa-solid fa-camera"></i> <span></span>
+                    <i class="fa-solid fa-camera"></i> <span>Activar Cámara</span>
                 </button>
 
                 <div class="viewport-quick-bar">
@@ -201,9 +205,9 @@
         <footer class="app-footer">
             <div class="client-account-pill">
                 <i class="fa-solid fa-store" style="color: var(--accent-cyan);"></i>
-                <strong style="color: #fff;"></strong>
-                <span class="badge-sub-days ">
-                    
+                <strong style="color: #fff;">{{ session('lg_business', 'LiquorGuard') }}</strong>
+                <span class="badge-sub-days">
+                    {{ session('lg_days', 30) }} días restantes
                 </span>
             </div>
         </footer>
@@ -218,7 +222,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Edad Mínima Legal Requerida</label>
-                        <input type="number" id="cfgMinAge" value="" min="16" max="25">
+                        <input type="number" id="cfgMinAge" value="{{ session('lg_min_age', 18) }}" min="16" max="25">
                     </div>
                     <div class="form-toggle">
                         <span>Alertas de Sonido</span>
@@ -267,24 +271,29 @@
     <!-- SCRIPTS -->
     <script>
 window.LIQUOR_GUARD_USER = {
-    id: 1,
-    business_name: "LiquorGuard",
-    role: "client",
+    id: {{ session('lg_user_id', 1) }},
+    business_name: "{{ session('lg_business', 'LiquorGuard') }}",
+    role: "{{ session('lg_role', 'client') }}",
     language: "es",
     powers: {
         can_export_reports: true,
-        can_change_min_age: false,
+        can_change_min_age: {{ session('lg_can_change_age') ? 'true' : 'false' }},
         can_view_logs: true,
-        custom_min_age: 18
+        custom_min_age: {{ session('lg_min_age', 18) }}
     }
 };
 </script>
-    <script src="/liquorguard-assets/js/face-api.min.js"></script>
+    <script src="/liquorguard-assets/js/face-api.min.js?v={{ time() }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <script src="/liquorguard-assets/js/app.js?v={{ time() }}"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/liquorguard-assets/sw.js').then(reg => {
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let reg of registrations) {
+                    reg.update();
+                }
+            });
+            navigator.serviceWorker.register('/liquorguard-assets/sw.js?v={{ time() }}').then(reg => {
                 console.log('LiquorGuard Offline ServiceWorker registered', reg.scope);
             }).catch(err => {
                 console.warn('ServiceWorker registration skipped:', err);

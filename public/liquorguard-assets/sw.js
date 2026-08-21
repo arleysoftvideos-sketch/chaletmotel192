@@ -1,9 +1,7 @@
-const CACHE_NAME = 'liquorguard-cache-v2';
+const CACHE_NAME = 'liquorguard-cache-v5';
 const ASSETS_TO_CACHE = [
-  './',
   'css/style.css',
   'js/face-api.min.js',
-  'js/app.js',
   'models/tiny_face_detector_model-weights_manifest.json',
   'models/tiny_face_detector_model-shard1',
   'models/age_gender_model-weights_manifest.json',
@@ -15,12 +13,13 @@ const ASSETS_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE).catch(err => {
         console.warn('Some assets could not be cached immediately:', err);
       });
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
@@ -30,6 +29,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log('Clearing old cache:', key);
             return caches.delete(key);
           }
         })
@@ -39,8 +39,8 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Always respond with cache first for model files and libraries to save mobile data
-  if (event.request.url.includes('/models/') || event.request.url.includes('/js/') || event.request.url.includes('/css/')) {
+  // Only cache-first for models and vendor libs to save bandwidth, NOT app.js
+  if (event.request.url.includes('/models/') || event.request.url.includes('face-api.min.js')) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
         if (cachedResponse) {
@@ -59,3 +59,4 @@ self.addEventListener('fetch', (event) => {
     );
   }
 });
+

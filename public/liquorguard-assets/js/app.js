@@ -236,8 +236,12 @@ class LiquorGuardApp {
     }
 
     bindEvents() {
-        this.btnSwitchCamera.addEventListener('click', () => this.toggleCamera());
-        this.btnToggleSound.addEventListener('click', () => this.toggleSound());
+        if (this.btnSwitchCamera) {
+            this.btnSwitchCamera.addEventListener('click', () => this.toggleCamera());
+        }
+        if (this.btnToggleSound) {
+            this.btnToggleSound.addEventListener('click', () => this.toggleSound());
+        }
         
         if (this.btnToggleLang) {
             this.btnToggleLang.addEventListener('click', () => this.toggleLanguage());
@@ -277,36 +281,68 @@ class LiquorGuardApp {
         }
         
         // Settings Modal
-        if (this.btnSettings) {
+        if (this.btnSettings && this.modalSettings) {
             this.btnSettings.addEventListener('click', () => {
                 this.modalSettings.classList.add('show');
             });
         }
-        document.getElementById('btnCloseSettings').addEventListener('click', () => {
-            this.modalSettings.classList.remove('show');
-        });
-        document.getElementById('btnSaveSettings').addEventListener('click', () => this.saveSettings());
+        const btnCloseSettings = document.getElementById('btnCloseSettings');
+        if (btnCloseSettings && this.modalSettings) {
+            btnCloseSettings.addEventListener('click', () => {
+                this.modalSettings.classList.remove('show');
+            });
+        }
+        const btnSaveSettings = document.getElementById('btnSaveSettings');
+        if (btnSaveSettings) {
+            btnSaveSettings.addEventListener('click', () => this.saveSettings());
+        }
         
         // Mobile Modal & QR
-        this.btnMobileGuide.addEventListener('click', () => {
-            this.generateQR();
-            this.modalMobile.classList.add('show');
-        });
-        document.getElementById('btnCloseMobile').addEventListener('click', () => {
-            this.modalMobile.classList.remove('show');
-        });
-        document.getElementById('btnCloseMobile2').addEventListener('click', () => {
-            this.modalMobile.classList.remove('show');
-        });
-        
-        document.getElementById('btnCopyUrl').addEventListener('click', () => {
-            const url = document.getElementById('mobileUrlDisplay').innerText;
-            navigator.clipboard.writeText(url).then(() => {
-                alert('¡Enlace copiado al portapapeles!');
+        if (this.btnMobileGuide && this.modalMobile) {
+            this.btnMobileGuide.addEventListener('click', () => {
+                this.generateQR();
+                this.modalMobile.classList.add('show');
             });
-        });
+        }
+        const btnCloseMobile = document.getElementById('btnCloseMobile');
+        if (btnCloseMobile && this.modalMobile) {
+            btnCloseMobile.addEventListener('click', () => {
+                this.modalMobile.classList.remove('show');
+            });
+        }
+        const btnCloseMobile2 = document.getElementById('btnCloseMobile2');
+        if (btnCloseMobile2 && this.modalMobile) {
+            btnCloseMobile2.addEventListener('click', () => {
+                this.modalMobile.classList.remove('show');
+            });
+        }
+        
+        const btnCopyUrl = document.getElementById('btnCopyUrl');
+        if (btnCopyUrl) {
+            btnCopyUrl.addEventListener('click', () => {
+                const urlEl = document.getElementById('mobileUrlDisplay');
+                const url = urlEl ? urlEl.innerText : window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('¡Enlace copiado al portapapeles!');
+                }).catch(() => {
+                    prompt('Copie el enlace:', url);
+                });
+            });
+        }
 
-        this.btnClearHistory.addEventListener('click', () => this.clearHistory());
+        if (this.btnClearHistory) {
+            this.btnClearHistory.addEventListener('click', () => this.clearHistory());
+        }
+
+        const btnExportCSV = document.getElementById('btnExportCSV');
+        if (btnExportCSV) {
+            btnExportCSV.addEventListener('click', () => this.exportCSV());
+        }
+
+        const btnExportJSON = document.getElementById('btnExportJSON');
+        if (btnExportJSON) {
+            btnExportJSON.addEventListener('click', () => this.exportJSON());
+        }
 
         // Update canvas sizing on window resize
         window.addEventListener('resize', () => this.resizeCanvas());
@@ -314,6 +350,18 @@ class LiquorGuardApp {
 
     async init() {
         try {
+            console.log('LiquorGuard: Initializing application...');
+            // Wait for faceapi if it is loading asynchronously
+            let retries = 0;
+            while (typeof faceapi === 'undefined' && retries < 30) {
+                await new Promise(r => setTimeout(r, 100));
+                retries++;
+            }
+
+            if (typeof faceapi === 'undefined') {
+                throw new Error('La librería face-api no se cargó correctamente.');
+            }
+
             await this.loadAIModels();
             await this.startCamera();
             this.startDetectionLoop();
@@ -322,10 +370,10 @@ class LiquorGuardApp {
             if (this.loaderStatusText) {
                 this.loaderStatusText.innerHTML = `
                     <div style="background:rgba(255,0,85,0.15); border:1px solid #ff0055; padding:12px; border-radius:10px; color:#fff;">
-                        <strong style="color:#ff0055;"><i class="fa-solid fa-triangle-exclamation"></i> Error al descargar modelos</strong><br>
-                        <small style="color:#94a3b8; font-size:12px;">Comprueba tu conexión a internet o datos móviles.</small><br><br>
-                        <button onclick="location.reload()" style="background:linear-gradient(135deg, #00f0ff, #0077ff); color:#000; border:none; padding:8px 18px; border-radius:8px; font-weight:800; cursor:pointer;">
-                            <i class="fa-solid fa-arrows-rotate"></i> Reintentar Carga
+                        <strong style="color:#ff0055;"><i class="fa-solid fa-triangle-exclamation"></i> Error al iniciar IA</strong><br>
+                        <small style="color:#94a3b8; font-size:12px;">${err.message || 'Comprueba tu conexión a internet o permisos.'}</small><br><br>
+                        <button onclick="location.reload(true)" style="background:linear-gradient(135deg, #00f0ff, #0077ff); color:#000; border:none; padding:8px 18px; border-radius:8px; font-weight:800; cursor:pointer;">
+                            <i class="fa-solid fa-arrows-rotate"></i> Reintentar
                         </button>
                     </div>
                 `;
@@ -334,11 +382,12 @@ class LiquorGuardApp {
     }
 
     async loadAIModels() {
+        console.log('LiquorGuard: Loading AI models...');
         if (this.loaderStatusText) this.loaderStatusText.innerText = (this.currentLang === 'en') ? 'Initializing Neural Engines...' : 'Iniciando Redes Neuronales...';
         if (this.progressBarFill) this.progressBarFill.style.width = '15%';
 
         const candidatePaths = [
-            'models',
+            '/liquorguard-assets/models',
             'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights'
         ];
 
@@ -347,6 +396,7 @@ class LiquorGuardApp {
 
         for (const modelPath of candidatePaths) {
             try {
+                console.log('Trying model path:', modelPath);
                 if (this.loaderStatusText) {
                     this.loaderStatusText.innerText = (this.currentLang === 'en') ? 'Loading Face Detection Engine (1/3)...' : 'Cargando Detector de Rostros (1/3)...';
                 }
@@ -367,6 +417,7 @@ class LiquorGuardApp {
                 if (this.progressBarFill) this.progressBarFill.style.width = '100%';
 
                 loaded = true;
+                console.log('AI models loaded successfully from:', modelPath);
                 break;
             } catch (err) {
                 lastErr = err;
@@ -382,7 +433,7 @@ class LiquorGuardApp {
         if (this.loaderStatusText) this.loaderStatusText.innerText = this.t('modelsReady');
         setTimeout(() => {
             if (this.viewportLoader) this.viewportLoader.style.display = 'none';
-        }, 400);
+        }, 300);
     }
 
     async startCamera() {
@@ -452,12 +503,10 @@ class LiquorGuardApp {
 
         if (!stream) {
             console.error('All camera attempts failed:', lastErr);
+            if (this.viewportLoader) this.viewportLoader.style.display = 'none';
             if (this.btnGrantCamera) this.btnGrantCamera.style.display = 'flex';
-            if (this.loaderStatusText) {
-                this.loaderStatusText.innerHTML = `
-                    <span style="color:#ef4444;"><i class="fa-solid fa-video-slash"></i> Cámara no disponible o permiso denegado.</span><br>
-                    <small style="color:#94a3b8;">Toca el botón en pantalla o permite el acceso en el navegador.</small>
-                `;
+            if (this.verdictInstruction) {
+                this.verdictInstruction.innerText = 'Cámara no detectada o permiso denegado. Toca el botón para activar.';
             }
             return;
         }
@@ -467,6 +516,7 @@ class LiquorGuardApp {
 
         // Hide grant button once stream acquired
         if (this.btnGrantCamera) this.btnGrantCamera.style.display = 'none';
+        if (this.viewportLoader) this.viewportLoader.style.display = 'none';
 
         // Wait for video to actually start playing
         await new Promise((resolve) => {
@@ -881,6 +931,36 @@ class LiquorGuardApp {
         }
     }
 
+    exportCSV() {
+        if (!this.history || this.history.length === 0) {
+            alert('No hay registros de escaneos para exportar.');
+            return;
+        }
+        let csv = 'Hora,Edad,Genero,Resultado\n';
+        this.history.forEach(item => {
+            csv += `"${item.timeStr}",${item.age},"${item.gender}","${item.status}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `escaneos_liquorguard_${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    exportJSON() {
+        if (!this.history || this.history.length === 0) {
+            alert('No hay registros de escaneos para exportar.');
+            return;
+        }
+        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.history, null, 2));
+        const a = document.createElement('a');
+        a.href = dataStr;
+        a.download = `escaneos_liquorguard_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+    }
+
     toggleFullscreen() {
         const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
         if (!isFullscreen) {
@@ -909,7 +989,16 @@ class LiquorGuardApp {
     }
 }
 
-// Initialize on DOM load
-window.addEventListener('DOMContentLoaded', () => {
-    window.liquorGuard = new LiquorGuardApp();
-});
+// Safe bootstrap for immediate and deferred execution
+function initLiquorGuardApp() {
+    if (!window.liquorGuard) {
+        console.log('LiquorGuard: Bootstrapping application instance...');
+        window.liquorGuard = new LiquorGuardApp();
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLiquorGuardApp);
+} else {
+    initLiquorGuardApp();
+}
