@@ -51,9 +51,10 @@ class LiquorGuardApp {
                 yearsUnit: 'AÑOS',
                 waitingFace: 'ESPERANDO CLIENTE',
                 placeClient: 'Coloque al cliente frente al lente',
-                genderDetected: 'GÉNERO DETECTADO',
-                aiConfidence: 'PRECISIÓN DE IA',
-                predominantEmotion: 'EMOCIÓN PREDOMINANTE',
+                ageEstimated: 'EDAD ESTIMADA',
+                genderDetected: 'GÉNERO',
+                aiConfidence: 'PRECISIÓN IA',
+                predominantEmotion: 'EMOCIÓN',
                 totalScans: 'Total Escaneos',
                 allowed18: 'Permitidos (+18)',
                 minorsBlocked: 'Menores Bloqueados',
@@ -92,13 +93,14 @@ class LiquorGuardApp {
             en: {
                 flag: '🇺🇸',
                 searchingFace: 'Scanning for face...',
-                pointCamera: 'Point camera at customer',
+                pointCamera: 'Point camera at person',
                 yearsUnit: 'YEARS',
                 waitingFace: 'WAITING FOR CUSTOMER',
-                placeClient: 'Position customer in front of lens',
-                genderDetected: 'GENDER DETECTED',
+                placeClient: 'Place customer in front of lens',
+                ageEstimated: 'ESTIMATED AGE',
+                genderDetected: 'GENDER',
                 aiConfidence: 'AI CONFIDENCE',
-                predominantEmotion: 'PREDOMINANT EMOTION',
+                predominantEmotion: 'EMOTION',
                 totalScans: 'Total Scans',
                 allowed18: 'Allowed (18+)',
                 minorsBlocked: 'Minors Blocked',
@@ -156,12 +158,14 @@ class LiquorGuardApp {
         const ageUnit = document.querySelector('.age-unit');
         if (ageUnit) ageUnit.textContent = dict.yearsUnit;
 
-        const labels = document.querySelectorAll('.meta-item .meta-label');
-        if (labels.length >= 3) {
-            labels[0].textContent = dict.genderDetected;
-            labels[1].textContent = dict.aiConfidence;
-            labels[2].textContent = dict.predominantEmotion;
-        }
+        const labelAge = document.getElementById('labelMetaAge');
+        if (labelAge) labelAge.textContent = dict.ageEstimated || 'EDAD ESTIMADA';
+        const labelGender = document.getElementById('labelMetaGender');
+        if (labelGender) labelGender.textContent = dict.genderDetected || 'GÉNERO';
+        const labelConfidence = document.getElementById('labelMetaConfidence');
+        if (labelConfidence) labelConfidence.textContent = dict.aiConfidence || 'PRECISIÓN IA';
+        const labelExpression = document.getElementById('labelMetaExpression');
+        if (labelExpression) labelExpression.textContent = dict.predominantEmotion || 'EMOCIÓN';
 
         // Stats labels
         const statLabels = document.querySelectorAll('.stat-info .stat-label');

@@ -14,41 +14,34 @@
 </head>
 <body class="theme-dark">
     <div class="app-container">
-        <!-- HEADER / TOP BAR (CLEAN & NON-OVERLAPPING) -->
+        <!-- HEADER / TOP BAR (CLEAN, MODERN & RESPONSIVE) -->
         <header class="app-header">
             <div class="brand">
                 <div class="logo-icon">
                     <i class="fa-solid fa-id-card-clip"></i>
                 </div>
-                <h1 class="brand-title">LiquorGuard <span class="badge-ai">AI 2.0</span></h1>
+                <div class="brand-info">
+                    <div class="brand-title">LiquorGuard <span class="badge-ai">AI</span></div>
+                    <div class="brand-sub">{{ session('lg_business', 'Licorería') }}</div>
+                </div>
             </div>
             
             <div class="header-actions">
-                
-                <a href="/liquorguard/admin" class="btn-icon btn-admin-crown" title="Panel de Super Administrador">
+                @if(in_array(session('lg_role'), ['superadmin', 'admin']))
+                <a href="/liquorguard/admin" class="btn-icon btn-admin-crown" title="Panel de Administración">
                     <i class="fa-solid fa-crown"></i>
                 </a>
-                
+                @endif
 
-                
-                <button id="btnSettings" class="btn-icon" title="Configuración / Settings">
+                <button id="btnSettings" class="btn-icon" title="Configuración">
                     <i class="fa-solid fa-sliders"></i>
                 </button>
-                
 
-                <button id="btnToggleFullscreen" class="btn-icon btn-fullscreen-pulse" title="">
-                    <i class="fa-solid fa-expand"></i>
+                <button id="btnToggleLang" class="btn-icon" title="Idioma">
+                    <span id="langFlag">🇪🇸</span>
                 </button>
 
-                <button id="btnToggleLang" class="btn-icon" title="Cambiar Idioma / Switch Language">
-                    <span id="langFlag"></span>
-                </button>
-
-                <button id="btnMobileGuide" class="btn-icon btn-guide-pulse" title="">
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-                </button>
-
-                <a href="/liquorguard/logout" class="btn-icon" title="" style="color: #ff4444; border-color: rgba(255,68,68,0.3);">
+                <a href="/liquorguard/logout" class="btn-icon btn-logout" title="Cerrar Sesión">
                     <i class="fa-solid fa-power-off"></i>
                 </a>
             </div>
@@ -116,19 +109,19 @@
                 </div>
                 <div class="decision-meta">
                     <div class="meta-item highlight">
-                        <span class="meta-label"></span>
+                        <span class="meta-label" id="labelMetaAge">EDAD ESTIMADA</span>
                         <span class="meta-val age-highlight" id="metaAge">--</span>
                     </div>
                     <div class="meta-item">
-                        <span class="meta-label"></span>
+                        <span class="meta-label" id="labelMetaGender">GÉNERO</span>
                         <span class="meta-val" id="metaGender">--</span>
                     </div>
                     <div class="meta-item">
-                        <span class="meta-label"></span>
+                        <span class="meta-label" id="labelMetaConfidence">PRECISIÓN IA</span>
                         <span class="meta-val" id="metaConfidence">--%</span>
                     </div>
                     <div class="meta-item">
-                        <span class="meta-label"></span>
+                        <span class="meta-label" id="labelMetaExpression">EMOCIÓN</span>
                         <span class="meta-val" id="metaExpression">--</span>
                     </div>
                 </div>
