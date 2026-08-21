@@ -146,9 +146,10 @@ Route::get('/formula-pov/cancel', [TikTokTutorialController::class, 'cancel'])->
 
 // ─── LiquorGuard AI – Sistema de Verificación de Edad ───────────────────────
 Route::prefix('liquorguard')->name('liquorguard.')->group(function () {
-    // Views
+    // Views & Auth Navigation
     Route::get('/',        [LiquorGuardController::class, 'index'])->name('index');
     Route::get('/login',   [LiquorGuardController::class, 'login'])->name('login');
+    Route::get('/logout',  [LiquorGuardController::class, 'logout'])->name('logout');
     Route::get('/admin',   [LiquorGuardController::class, 'admin'])->name('admin');
 
     // Auth API

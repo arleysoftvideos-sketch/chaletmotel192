@@ -842,7 +842,7 @@
             <a href="/liquorguard" class="btn-nav btn-nav-scanner">
                 <i class="fa-solid fa-camera"></i> Ir al Escáner
             </a>
-            <a href="logout.php" class="btn-nav btn-nav-logout">
+            <a href="/liquorguard/logout" class="btn-nav btn-nav-logout">
                 <i class="fa-solid fa-power-off"></i> Salir
             </a>
         </div>
@@ -1517,7 +1517,7 @@
                     loadClients();
 
                     // Open WhatsApp Modal with generated copyable text & clickable link
-                    const loginUrl = result.login_url || (window.location.origin + '/login.php');
+                    const loginUrl = result.login_url || (window.location.origin + '//liquorguard/login');
                     const linkAnchor = document.getElementById('directLinkAnchor');
                     linkAnchor.href = loginUrl;
                     linkAnchor.querySelector('span').textContent = loginUrl;
@@ -1582,7 +1582,7 @@
                     loadClients();
 
                     if (result.whatsapp_message) {
-                        const loginUrl = result.login_url || 'http://192.168.0.142:8080/login.php';
+                        const loginUrl = result.login_url || 'http://192.168.0.142:8080//liquorguard/login';
                         const linkAnchor = document.getElementById('directLinkAnchor');
                         linkAnchor.href = loginUrl;
                         linkAnchor.querySelector('span').textContent = loginUrl;

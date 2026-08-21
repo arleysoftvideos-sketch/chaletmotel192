@@ -48,7 +48,7 @@
                     <i class="fa-solid fa-mobile-screen-button"></i>
                 </button>
 
-                <a href="logout.php" class="btn-icon" title="" style="color: #ff4444; border-color: rgba(255,68,68,0.3);">
+                <a href="/liquorguard/logout" class="btn-icon" title="" style="color: #ff4444; border-color: rgba(255,68,68,0.3);">
                     <i class="fa-solid fa-power-off"></i>
                 </a>
             </div>

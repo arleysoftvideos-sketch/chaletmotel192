@@ -46,6 +46,16 @@ class LiquorGuardController extends Controller
         return view('liquorguard.login');
     }
 
+    public function logout(Request $request)
+    {
+        $userId = session('lg_user_id');
+        if ($userId) {
+            $this->logAudit($userId, 'LOGOUT', 'Cierre de sesión');
+        }
+        session()->forget(['lg_user_id', 'lg_role', 'lg_business', 'lg_email', 'lg_min_age', 'lg_can_change_age', 'lg_days']);
+        return redirect('/liquorguard/login');
+    }
+
     public function index()
     {
         if (!session('lg_user_id')) {
