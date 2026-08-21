@@ -5,9 +5,24 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
 class LiquorGuardController extends Controller
 {
+    // ─── Table Resolvers ──────────────────────────────────────────────────────
+
+    private function getTable($name)
+    {
+        $lgName = 'lg_' . $name;
+        if (Schema::hasTable($lgName)) {
+            return DB::table($lgName);
+        }
+        if (Schema::hasTable($name)) {
+            return DB::table($name);
+        }
+        return DB::table($lgName);
+    }
+
     // ─── Views ────────────────────────────────────────────────────────────────
 
     public function login()
@@ -36,8 +51,7 @@ class LiquorGuardController extends Controller
         ]);
 
         try {
-            $user = DB::connection('liquorguard')
-                ->table('users')
+            $user = $this->getTable('users')
                 ->where('email', $data['email'])
                 ->first();
 
@@ -71,22 +85,21 @@ class LiquorGuardController extends Controller
 
             // Store session
             session([
-                'lg_user_id'       => $user->id,
-                'lg_role'          => $user->role,
-                'lg_business'      => $user->business_name,
-                'lg_email'         => $user->email,
-                'lg_min_age'       => $user->custom_min_age ?? 18,
-                'lg_can_change_age'=> (bool) ($user->can_change_min_age ?? false),
-                'lg_days'          => max(0, (int) round((strtotime($user->subscription_expires_at) - time()) / 86400)),
+                'lg_user_id'        => $user->id,
+                'lg_role'           => $user->role,
+                'lg_business'       => $user->business_name,
+                'lg_email'          => $user->email,
+                'lg_min_age'        => $user->custom_min_age ?? 18,
+                'lg_can_change_age' => (bool) ($user->can_change_min_age ?? false),
+                'lg_days'           => max(0, (int) round((strtotime($user->subscription_expires_at) - time()) / 86400)),
             ]);
 
             // Update last login
-            DB::connection('liquorguard')
-                ->table('users')
+            $this->getTable('users')
                 ->where('id', $user->id)
                 ->update(['last_login' => now()]);
 
-            $redirect = ($user->role === 'superadmin') ? '/liquorguard/admin' : '/liquorguard';
+            $redirect = ($user->role === 'superadmin') ? '/liquorguard' : '/liquorguard';
 
             return response()->json([
                 'success'  => true,
@@ -124,7 +137,7 @@ class LiquorGuardController extends Controller
         ]);
 
         try {
-            DB::connection('liquorguard')->table('scans_history')->insert([
+            $this->getTable('scans_history')->insert([
                 'user_id'       => session('lg_user_id'),
                 'age_estimated' => $data['age'],
                 'gender'        => $data['gender'] ?? 'Unknown',
@@ -148,8 +161,7 @@ class LiquorGuardController extends Controller
         $limit = (int) $request->get('limit', 20);
 
         try {
-            $scans = DB::connection('liquorguard')
-                ->table('scans_history')
+            $scans = $this->getTable('scans_history')
                 ->where('user_id', session('lg_user_id'))
                 ->orderByDesc('id')
                 ->limit($limit)
@@ -158,8 +170,7 @@ class LiquorGuardController extends Controller
                     'formatted_time' => \Carbon\Carbon::parse($s->created_at)->format('H:i:s - d/m/Y'),
                 ]));
 
-            $metrics = DB::connection('liquorguard')
-                ->table('scans_history')
+            $metrics = $this->getTable('scans_history')
                 ->where('user_id', session('lg_user_id'))
                 ->selectRaw('COUNT(*) as total_scans,
                     SUM(CASE WHEN verdict = "ALLOWED"  THEN 1 ELSE 0 END) as allowed_count,
