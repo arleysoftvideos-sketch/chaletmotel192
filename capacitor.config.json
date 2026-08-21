@@ -1,9 +1,9 @@
 {
-  "appId": "com.example.chaletrooms",
-  "appName": "Chalet Rooms",
+  "appId": "com.liquorguard.ai",
+  "appName": "LiquorGuard AI",
   "webDir": "www",
   "server": {
-    "url": "https://chaletmotel192.com/rooms-control",
+    "url": "https://chaletmotel192.com/liquorguard/login",
     "cleartext": true
   }
 }

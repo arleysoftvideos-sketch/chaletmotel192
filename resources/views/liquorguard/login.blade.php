@@ -408,27 +408,6 @@
             <p class="brand-desc">Sistema de verificación de edad por IA</p>
         </div>
 
-        <!-- 1-TAP APP INSTALLERS (IOS & ANDROID) -->
-        <div class="install-box">
-            <div class="install-title">
-                <i class="fa-solid fa-mobile-screen-button" style="color:var(--accent-cyan);"></i>
-                Instala la app
-            </div>
-            <p class="install-desc">Úsala desde tu celular o tablet</p>
-            <div class="install-grid">
-                <button type="button" class="btn-install android" id="btnInstallAndroid">
-                    <i class="fa-brands fa-android"></i> Android
-                </button>
-                <button type="button" class="btn-install ios" id="btnInstallIos">
-                    <i class="fa-brands fa-apple"></i> iOS / iPhone
-                </button>
-            </div>
-        </div>
-
-        <div class="divider-text">
-            <span>Iniciar sesión</span>
-        </div>
-
         <!-- ERROR ALERT -->
         <div class="alert-error" id="errorAlert" style="">
             <i class="fa-solid fa-circle-exclamation"></i>
@@ -463,61 +442,7 @@
         </form>
     </div>
 
-    <!-- MODAL INSTRUCCIONES ANDROID -->
-    <div class="modal-backdrop" id="modalAndroid">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 style="color:#fff; font-size:15px; font-weight:800;"><i class="fa-brands fa-android" style="color:var(--accent-green);"></i> Instalar en Android</h3>
-            </div>
-            <div class="modal-step">
-                <div class="step-num">1</div>
-                <div>Abre Chrome y toca el menú ⋮</div>
-            </div>
-            <div class="modal-step">
-                <div class="step-num">2</div>
-                <div>Selecciona "Agregar a pantalla de inicio"</div>
-            </div>
-            <div class="modal-step">
-                <div class="step-num">3</div>
-                <div>Confirma tocando Agregar</div>
-            </div>
-            <button class="btn-modal-close" onclick="document.getElementById('modalAndroid').classList.remove('show')">Cerrar</button>
-        </div>
-    </div>
-
-    <!-- MODAL INSTRUCCIONES IOS -->
-    <div class="modal-backdrop" id="modalIos">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 style="color:#fff; font-size:15px; font-weight:800;"><i class="fa-brands fa-apple" style="color:var(--accent-cyan);"></i> Instalar en iOS</h3>
-            </div>
-            <div class="modal-step">
-                <div class="step-num">1</div>
-                <div>Abre Safari y toca el botón compartir</div>
-            </div>
-            <div class="modal-step">
-                <div class="step-num">2</div>
-                <div>Toca "Agregar a inicio"</div>
-            </div>
-            <div class="modal-step">
-                <div class="step-num">3</div>
-                <div>Confirma tocando Agregar</div>
-            </div>
-            <button class="btn-modal-close" onclick="document.getElementById('modalIos').classList.remove('show')">Cerrar</button>
-        </div>
-    </div>
-
     <script>
-        // Native PWA Deferred Prompt
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        document.getElementById('btnInstallAndroid').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 deferredPrompt = null;
             } else {
