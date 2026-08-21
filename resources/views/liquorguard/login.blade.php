@@ -401,8 +401,8 @@
     <div class="login-card">
         <!-- BRAND -->
         <div class="brand-header">
-            <div class="logo-icon-box">
-                <i class="fa-solid fa-id-card-clip"></i>
+            <div class="logo-icon-box" style="padding:0; overflow:hidden; background:transparent; border:none; box-shadow:0 0 25px rgba(0,240,255,0.4);">
+                <img src="/liquorguard-assets/img/icon-192.png?v={{ time() }}" alt="LiquorGuard AI" style="width:100%; height:100%; object-fit:cover; border-radius:14px;">
             </div>
             <h1 class="brand-title">LiquorGuard <span class="brand-badge">AI</span></h1>
             <p class="brand-desc">Sistema de verificación de edad por IA</p>
@@ -417,10 +417,10 @@
         <!-- LOGIN FORM -->
         <form id="loginForm" autocomplete="off">
             <div class="form-group">
-                <label class="form-label">Correo electrónico</label>
+                <label class="form-label">Usuario o Correo</label>
                 <div class="input-wrapper">
-                    <input type="email" id="email" class="form-control" placeholder="usuario@correo.com" required autocomplete="username">
-                    <i class="fa-solid fa-envelope input-icon"></i>
+                    <input type="text" id="email" class="form-control" placeholder="jovan.suarez.za o correo@..." required autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false">
+                    <i class="fa-solid fa-user input-icon"></i>
                 </div>
             </div>
 

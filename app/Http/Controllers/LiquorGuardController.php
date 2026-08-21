@@ -94,11 +94,15 @@ class LiquorGuardController extends Controller
 
         try {
             $user = $this->getTable('users')
-                ->where('email', $email)
+                ->where(function ($q) use ($email) {
+                    $q->where('email', $email)
+                      ->orWhere('email', 'LIKE', $email . '@%')
+                      ->orWhere('email', 'LIKE', '%' . $email . '%');
+                })
                 ->first();
 
             if (!$user || !Hash::check($password, $user->password_hash)) {
-                $this->logAudit($user->id ?? null, 'LOGIN_FAILED', "Intento fallido para el correo: $email");
+                $this->logAudit($user->id ?? null, 'LOGIN_FAILED', "Intento fallido para: $email");
                 return response()->json([
                     'success' => false,
                     'message' => 'Credenciales inválidas. Verifique su correo o contraseña.',

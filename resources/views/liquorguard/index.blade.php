@@ -17,8 +17,8 @@
         <!-- HEADER / TOP BAR (CLEAN, MODERN & RESPONSIVE) -->
         <header class="app-header">
             <div class="brand">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-id-card-clip"></i>
+                <div class="logo-icon" style="padding:0; overflow:hidden; background:transparent; border:none; box-shadow:0 0 15px rgba(0,240,255,0.35);">
+                    <img src="/liquorguard-assets/img/icon-192.png?v={{ time() }}" alt="LiquorGuard AI" style="width:100%; height:100%; object-fit:cover; border-radius:8px;">
                 </div>
                 <div class="brand-info">
                     <div class="brand-title">LiquorGuard <span class="badge-ai">AI</span></div>
