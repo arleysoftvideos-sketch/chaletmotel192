@@ -45,10 +45,17 @@ class LiquorGuardController extends Controller
 
     public function apiLogin(Request $request)
     {
-        $data = $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $email = trim($request->input('email', ''));
+        $password = $request->input('password', '');
+
+        if (empty($email) || empty($password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Por favor ingrese correo y contraseña.',
+            ], 400);
+        }
+
+        $data = ['email' => $email, 'password' => $password];
 
         try {
             $user = $this->getTable('users')
@@ -129,20 +136,18 @@ class LiquorGuardController extends Controller
             return response()->json(['success' => false, 'message' => 'No autenticado.'], 401);
         }
 
-        $data = $request->validate([
-            'age'        => 'required|numeric',
-            'gender'     => 'nullable|string|max:20',
-            'verdict'    => 'required|in:ALLOWED,REJECTED,CHECK_ID',
-            'confidence' => 'nullable|numeric',
-        ]);
+        $age = $request->input('age');
+        $gender = $request->input('gender', 'Unknown');
+        $verdict = $request->input('verdict', 'CHECK_ID');
+        $confidence = $request->input('confidence', 0.95);
 
         try {
             $this->getTable('scans_history')->insert([
                 'user_id'       => session('lg_user_id'),
-                'age_estimated' => $data['age'],
-                'gender'        => $data['gender'] ?? 'Unknown',
-                'verdict'       => $data['verdict'],
-                'confidence'    => $data['confidence'] ?? 0.95,
+                'age_estimated' => $age,
+                'gender'        => $gender,
+                'verdict'       => $verdict,
+                'confidence'    => $confidence,
                 'created_at'    => now(),
             ]);
 
