@@ -956,24 +956,24 @@
                 </div>
                 <button class="btn-close-modal" data-close="modalCreateClient">&times;</button>
             </div>
-            <form id="formCreateClient">
+            <form id="formCreateClient" autocomplete="off">
                 <div class="modal-body">
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label">Nombre del Negocio / Local *</label>
-                            <input type="text" name="business_name" class="form-input" placeholder="Ej: Discoteca La 70" required>
+                            <input type="text" name="business_name" class="form-input" placeholder="Ej: Discoteca La 70" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Nombre del Contacto / Dueño *</label>
-                            <input type="text" name="contact_name" class="form-input" placeholder="Ej: Carlos Pérez" required>
+                            <input type="text" name="contact_name" class="form-input" placeholder="Ej: Carlos Pérez" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Correo Electrónico (Usuario) *</label>
-                            <input type="email" name="email" class="form-input" placeholder="cliente@correo.com" required>
+                            <input type="email" name="email" id="newClientEmail" class="form-input" placeholder="cliente@correo.com" required autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Contraseña Inicial <span class="req">*</span></label>
-                            <input type="text" name="password" id="inputNewClientPass" class="form-input" placeholder="Mínimo 6 caracteres" required>
+                            <input type="text" name="password" id="inputNewClientPass" class="form-input" placeholder="Mínimo 6 caracteres" required autocomplete="new-password">
                         </div>
 
                         <div class="form-group">
@@ -1320,7 +1320,11 @@
         // Open create modal
         document.getElementById('btnOpenCreateModal').addEventListener('click', () => {
             const form = document.getElementById('formCreateClient');
-            if (form) form.reset();
+            if (form) {
+                form.reset();
+                const emailInput = document.getElementById('newClientEmail');
+                if (emailInput) emailInput.value = '';
+            }
             const passInput = document.getElementById('inputNewClientPass');
             if (passInput) {
                 passInput.value = 'LqGuard' + Math.floor(1000 + Math.random() * 9000) + '*';

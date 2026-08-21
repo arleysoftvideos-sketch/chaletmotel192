@@ -443,26 +443,17 @@
     </div>
 
     <script>
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-            } else {
-                document.getElementById('modalAndroid').classList.add('show');
-            }
-        });
-
-        document.getElementById('btnInstallIos').addEventListener('click', () => {
-            document.getElementById('modalIos').classList.add('show');
-        });
-
         // Toggle Password
         const passInput = document.getElementById('password');
         const btnTogglePass = document.getElementById('btnTogglePass');
         const eyeIcon = document.getElementById('eyeIcon');
-        btnTogglePass.addEventListener('click', () => {
-            const isPass = passInput.type === 'password';
-            passInput.type = isPass ? 'text' : 'password';
-            eyeIcon.className = isPass ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
-        });
+        if (btnTogglePass && passInput && eyeIcon) {
+            btnTogglePass.addEventListener('click', () => {
+                const isPass = passInput.type === 'password';
+                passInput.type = isPass ? 'text' : 'password';
+                eyeIcon.className = isPass ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye';
+            });
+        }
 
         // Form Submit
         const form = document.getElementById('loginForm');
@@ -470,40 +461,42 @@
         const errorAlert = document.getElementById('errorAlert');
         const errorText = document.getElementById('errorText');
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            errorAlert.style.display = 'none';
-            btnLogin.disabled = true;
-            btnLogin.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Iniciando sesión...';
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorAlert.style.display = 'none';
+                btnLogin.disabled = true;
+                btnLogin.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Iniciando sesión...';
 
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
 
-            try {
-                const res = await fetch('/liquorguard/api/auth/login', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
+                try {
+                    const res = await fetch('/liquorguard/api/auth/login', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
 
-                const data = await res.json();
+                    const data = await res.json();
 
-                if (data.success) {
-                    window.location.href = data.redirect || '/liquorguard';
-                } else {
-                    errorText.textContent = data.message || 'Error de credenciales';
+                    if (data.success) {
+                        window.location.href = data.redirect || '/liquorguard';
+                    } else {
+                        errorText.textContent = data.message || 'Error de credenciales';
+                        errorAlert.style.display = 'flex';
+                        btnLogin.disabled = false;
+                        btnLogin.innerHTML = '<span>Iniciar sesión</span> <i class="fa-solid fa-arrow-right"></i>';
+                    }
+                } catch (err) {
+                    errorText.textContent = 'Error de conexión. Intente nuevamente.';
                     errorAlert.style.display = 'flex';
                     btnLogin.disabled = false;
                     btnLogin.innerHTML = '<span>Iniciar sesión</span> <i class="fa-solid fa-arrow-right"></i>';
                 }
-            } catch (err) {
-                errorText.textContent = 'Error de conexión. Intente nuevamente.';
-                errorAlert.style.display = 'flex';
-                btnLogin.disabled = false;
-                btnLogin.innerHTML = '<span>Iniciar sesión</span> <i class="fa-solid fa-arrow-right"></i>';
-            }
-        });
+            });
+        }
 
         // Service Worker
         if ('serviceWorker' in navigator) {
