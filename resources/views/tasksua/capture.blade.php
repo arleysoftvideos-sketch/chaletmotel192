@@ -45,7 +45,7 @@
         }
 
         /* Contenedor del visor POV */
-        .camera-viewport {
+        .camera-viewport { position: fixed; inset: 0; width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; border-radius: 0; border: none; z-index: 1;
             position: relative;
             width: 100vw;
             height: 100vh;
@@ -1222,5 +1222,6 @@
     </script>
 </body>
 </html>
+
 
 
