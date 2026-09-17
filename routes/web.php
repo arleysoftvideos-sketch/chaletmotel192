@@ -10,6 +10,8 @@ use App\Http\Controllers\RoomControlController;
 use App\Http\Controllers\RecyclingController;
 use App\Http\Controllers\TikTokTutorialController;
 use App\Http\Controllers\LiquorGuardController;
+use App\Http\Controllers\TaskSuaController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -188,4 +190,12 @@ Route::prefix('liquorguard')->name('liquorguard.')->group(function () {
     Route::post('/api/admin/delete',           [LiquorGuardController::class, 'apiAdminDelete'])->name('api.admin.delete');
 });
 
+
+// ─── TaskSua 4K POV – Plataforma de Grabación & Sync Ultra HD ───────────────
+Route::prefix('tasksua')->name('tasksua.')->group(function () {
+    Route::get('/',        [TaskSuaController::class, 'index'])->name('capture');
+    Route::post('/upload', [TaskSuaController::class, 'upload'])->name('upload');
+});
+
 require __DIR__.'/auth.php';
+

@@ -20,3 +20,6 @@ yarn-error.log
 /scratch
 /database/*.sqlite
 
+
+/storage/app/credentials/*
+
