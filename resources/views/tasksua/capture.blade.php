@@ -45,7 +45,7 @@
         }
 
         /* Contenedor del visor POV */
-        .camera-viewport { position: fixed; inset: 0; width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; border-radius: 0; border: none; z-index: 1;
+        .camera-viewport {
             position: relative;
             width: 100vw;
             height: 100vh;
@@ -511,31 +511,27 @@
             object-fit: contain;
         }
 
-        .preview-meta-card {
-            background: rgba(22, 27, 38, 0.85);
-            border: 1px solid var(--surface-border);
-            border-radius: 16px;
-            padding: 16px;
+        .preview-quick-badges {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
         }
 
-        .meta-row {
-            display: flex;
-            justify-content: space-between;
+        .quick-badge {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 13px;
-        }
-
-        .meta-label {
-            color: var(--text-muted);
-        }
-
-        .meta-val {
             font-weight: 600;
             color: #e2e8f0;
             font-family: 'JetBrains Mono', monospace;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .preview-actions {
@@ -547,12 +543,18 @@
         .btn-action-discard {
             flex: 1;
             padding: 14px;
-            background: rgba(239, 68, 68, 0.15);
+            background: rgba(239, 68, 68, 0.12);
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: #f87171;
             border-radius: 14px;
             font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action-discard:active {
+            transform: scale(0.97);
         }
 
         .btn-action-save {
@@ -563,8 +565,14 @@
             color: white;
             border-radius: 14px;
             font-weight: 700;
+            font-size: 14px;
             cursor: pointer;
             box-shadow: 0 4px 15px var(--accent-green-glow);
+            transition: all 0.2s;
+        }
+
+        .btn-action-save:active {
+            transform: scale(0.97);
         }
 
         /* ── Drive Upload UI ── */
@@ -733,22 +741,33 @@
         .drive-status-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 12px 14px;
-            border-radius: 12px;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
             background: rgba(66, 133, 244, 0.1);
             border: 1px solid rgba(66, 133, 244, 0.25);
-            margin-top: 4px;
+            margin-bottom: 18px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .drive-status-row.success {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.35);
         }
 
         .drive-status-row.error {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.3);
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.35);
+        }
+
+        .drive-status-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
         }
 
         .drive-status-dot {
@@ -759,36 +778,52 @@
             flex-shrink: 0;
         }
 
-        .drive-status-row.success .drive-status-dot { background: #10b981; }
+        .drive-status-row.success .drive-status-dot { background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
         .drive-status-row.error .drive-status-dot { background: #ef4444; }
 
         .drive-status-text {
-            font-size: 12px;
-            color: #94a3b8;
-            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+            color: #f1f5f9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .drive-status-link {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
-            color: #60a5fa;
+            color: #38bdf8;
             text-decoration: none;
-            white-space: nowrap;
+            flex-shrink: 0;
+            padding: 6px 14px;
+            background: rgba(56, 189, 248, 0.15);
+            border-radius: 10px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .drive-status-link:hover {
+            background: rgba(56, 189, 248, 0.25);
         }
 
         .btn-retry-drive {
-            background: transparent;
-            border: 1px solid rgba(66,133,244,0.4);
-            color: #60a5fa;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #f87171;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             padding: 6px 14px;
-            border-radius: 20px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
-        .btn-retry-drive:hover { background: rgba(66,133,244,0.15); }
+        .btn-retry-drive:hover { background: rgba(239, 68, 68, 0.25); }
     </style>
 </head>
 <body>
@@ -883,44 +918,38 @@
         </div>
     </div>
 
-    <!-- Modal Previsualización (Puente a Fase 2: Bóveda Local) -->
+    <!-- Modal Previsualización -->
     <div class="preview-modal" id="previewModal">
-        <h3 style="font-size: 18px; margin-bottom: 12px; font-weight: 700;">Verificación de Toma POV</h3>
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 12px;">
+            <h3 style="font-size: 18px; font-weight: 800; color: #f8fafc; margin: 0;">Grabación Lista</h3>
+            <span style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(16,185,129,0.15); color: #34d399; font-weight: 700; border: 1px solid rgba(16,185,129,0.3);">LISTO</span>
+        </div>
         
         <div class="preview-video-container">
-            <video id="recordedVideo" controls playsinline></video>
+            <video id="recordedVideo" controls playsinline preload="auto"></video>
         </div>
 
-        <div class="preview-meta-card">
-            <div class="meta-row">
-                <span class="meta-label">Resolución de Grabación:</span>
-                <span class="meta-val" id="metaRes">3840×2160</span>
-            </div>
-            <div class="meta-row">
-                <span class="meta-label">Duración:</span>
-                <span class="meta-val" id="metaDuration">00:00</span>
-            </div>
-            <div class="meta-row">
-                <span class="meta-label">Tamaño Estimado:</span>
-                <span class="meta-val" id="metaSize">0.00 MB</span>
-            </div>
-            <div class="meta-row">
-                <span class="meta-label">ID Tarea:</span>
-                <span class="meta-val">{{ $taskId ?? 'POV-GEN-01' }}</span>
-            </div>
+        <!-- Badges directos (0 carreta) -->
+        <div class="preview-quick-badges">
+            <span class="quick-badge" id="badgeRes">4K</span>
+            <span class="quick-badge" id="badgeDuration">00:00</span>
+            <span class="quick-badge" id="badgeSize">0 MB</span>
         </div>
 
-        <div class="preview-actions">
-            <button class="btn-action-discard" id="btnDiscard">Descartar / Regrabar</button>
-            <button class="btn-action-save" id="btnNewRec" style="background: linear-gradient(135deg, #334155 0%, #1e293b 100%); border: 1px solid rgba(255,255,255,0.1); box-shadow: none;">🟢 Nueva grabación</button>
-        </div>
-
-        <!-- Estado de Drive (auto-gestionado, sólo muestra resultado) -->
+        <!-- Estado Drive limpio -->
         <div class="drive-status-row" id="driveStatusRow">
-            <span class="drive-status-dot" id="driveStatusDot"></span>
-            <span class="drive-status-text" id="driveStatusText">Guardando en Google Drive...</span>
-            <a class="drive-status-link" id="driveStatusLink" href="#" target="_blank" style="display:none">Ver →</a>
+            <div class="drive-status-info">
+                <span class="drive-status-dot" id="driveStatusDot"></span>
+                <span class="drive-status-text" id="driveStatusText">Guardando en Drive...</span>
+            </div>
+            <a class="drive-status-link" id="driveStatusLink" href="#" target="_blank" style="display:none">Ver en Drive ↗</a>
             <button class="btn-retry-drive" id="btnRetryDrive" style="display:none">Reintentar</button>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="preview-actions">
+            <button class="btn-action-discard" id="btnDiscard">Descartar</button>
+            <button class="btn-action-save" id="btnNewRec">🟢 Grabar otro</button>
         </div>
     </div>
 
@@ -947,11 +976,10 @@
             const crosshair      = document.getElementById('crosshair');
             const previewModal   = document.getElementById('previewModal');
             const recordedVideo  = document.getElementById('recordedVideo');
-            const metaRes        = document.getElementById('metaRes');
-            const metaDuration   = document.getElementById('metaDuration');
-            const metaSize       = document.getElementById('metaSize');
+            const badgeRes       = document.getElementById('badgeRes');
+            const badgeDuration  = document.getElementById('badgeDuration');
+            const badgeSize      = document.getElementById('badgeSize');
             const btnDiscard     = document.getElementById('btnDiscard');
-            const btnSaveLocal   = document.getElementById('btnSaveLocal');
 
             // Overlay de subida
             const uploadOverlay      = document.getElementById('uploadOverlay');
@@ -1050,7 +1078,8 @@
 
                 return new Promise((resolve, reject) => {
                     const xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/tasksua/upload', true);
+                    const uploadUrl = '{{ Route::has("tasksua.upload") ? route("tasksua.upload") : (Route::has("pov.upload") ? route("pov.upload") : url("/pov/upload")) }}';
+                    xhr.open('POST', uploadUrl, true);
 
                     xhr.upload.onprogress = (e) => {
                         if (e.lengthComputable) {
@@ -1064,37 +1093,31 @@
                     };
 
                     xhr.onload = () => {
-                        // ── LIBERAR MEMORIA DEL DISPOSITIVO INMEDIATAMENTE ──
-                        if (lastBlobUrl) { URL.revokeObjectURL(lastBlobUrl); lastBlobUrl = null; }
-                        lastRecordedBlob = null;
-                        recordedVideo.pause();
-                        recordedVideo.src = '';
-
                         uploadOverlay.classList.remove('show');
 
                         try {
                             const resp = JSON.parse(xhr.responseText);
                             if (xhr.status >= 200 && xhr.status < 300 && resp.success) {
-                                showPreview(null, metadata, resp);
-                                setDriveStatus('success', '✅ Guardado en Google Drive + JSON (celular libre)', resp.drive_url, resp.file_name);
+                                showPreview(blob, metadata, resp);
+                                setDriveStatus('success', 'Guardado en Google Drive', resp.drive_url, 'Ver en Drive ↗');
                                 resolve(resp);
                             } else {
                                 const errMsg = resp.error || `Error HTTP ${xhr.status}`;
-                                showPreview(null, metadata, null);
-                                setDriveStatus('error', '❌ ' + errMsg);
+                                showPreview(blob, metadata, null);
+                                setDriveStatus('error', 'Guardado local (Drive pendiente)');
                                 reject(new Error(errMsg));
                             }
                         } catch (err) {
-                            showPreview(null, metadata, null);
-                            setDriveStatus('error', '❌ Error en la respuesta del servidor');
+                            showPreview(blob, metadata, null);
+                            setDriveStatus('error', 'Error del servidor');
                             reject(err);
                         }
                     };
 
                     xhr.onerror = () => {
                         uploadOverlay.classList.remove('show');
-                        showPreview(null, metadata, null);
-                        setDriveStatus('error', '❌ Error de red al contactar servidor');
+                        showPreview(blob, metadata, null);
+                        setDriveStatus('error', 'Error de red al subir');
                         reject(new Error('Network error'));
                     };
 
@@ -1102,31 +1125,32 @@
                 });
             }
 
-            // ─── Mostrar modal de preview ───
-            // Si blob es null (ya fue liberado), muestra solo los metadatos y el link de Drive
+            // ─── Mostrar modal de preview con reproducción ───
             function showPreview(blob, metadata, driveResult = null) {
                 if (blob) {
                     if (lastBlobUrl) URL.revokeObjectURL(lastBlobUrl);
                     lastBlobUrl = URL.createObjectURL(blob);
                     recordedVideo.src = lastBlobUrl;
-                } else {
-                    // Ya liberado: mostrar placeholder en el video
-                    recordedVideo.src = '';
+                    recordedVideo.load();
                 }
-                metaRes.textContent      = `${metadata.resolution.width}×${metadata.resolution.height}`;
-                metaDuration.textContent = metadata.durationFormatted;
-                metaSize.textContent     = `${metadata.sizeMB} MB`;
+                if (metadata) {
+                    badgeRes.textContent      = metadata.resolution?.tier || `${metadata.resolution?.width || 0}p`;
+                    badgeDuration.textContent = metadata.durationFormatted || '00:00';
+                    badgeSize.textContent     = `${metadata.sizeMB || 0} MB`;
+                }
                 previewModal.classList.add('show');
             }
 
             // ─── Actualizar fila de estado de Drive ───
-            function setDriveStatus(state, text, link = null, name = null) {
+            function setDriveStatus(state, text, link = null, linkText = 'Ver en Drive ↗') {
                 driveStatusRow.className  = `drive-status-row ${state}`;
                 driveStatusText.textContent = text;
-                driveStatusLink.style.display = (link && state === 'success') ? 'inline' : 'none';
+                driveStatusLink.style.display = (link && state === 'success') ? 'inline-flex' : 'none';
                 btnRetryDrive.style.display   = (state === 'error') ? 'inline-block' : 'none';
-                if (link) driveStatusLink.href = link;
-                if (name) driveStatusLink.textContent = name + ' →';
+                if (link) {
+                    driveStatusLink.href = link;
+                    driveStatusLink.textContent = linkText;
+                }
             }
 
             // ─── Motor de Captura POV ───
@@ -1222,6 +1246,4 @@
     </script>
 </body>
 </html>
-
-
 
